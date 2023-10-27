@@ -65,6 +65,7 @@ public class Album implements Serializable {
     private String numberPhone;
     private String numberVideo;
     private String intro;
+    //1 yes 0 No
     private Integer errorType;
 
     @TableField(exist = false)
