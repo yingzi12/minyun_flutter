@@ -2,11 +2,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: org.sqlite.JDBC
-    url: jdbc:sqlite:C:\\git\\gallery\\db\\db_gallery
+    url: jdbc:sqlite:/usr/local/gallery/db_gallery
 # ??????
 server:
   # ????HTTP??????8080
-  port: 8097
+  port: 8098
   servlet:
     # ???????
     context-path: /

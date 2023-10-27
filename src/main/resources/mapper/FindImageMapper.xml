@@ -19,6 +19,6 @@
     </sql>
 
     <update id="updateCountFind">
-        update  album set count_find=count_find+1  where id= #{id}
+        update  find_image set count_find=count_find+1  where id= #{id}
     </update>
 </mapper>

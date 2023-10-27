@@ -31,7 +31,7 @@ public class FindImageController {
 
     @PostMapping("/add")
     public Result<Boolean> add(@Valid @RequestBody  FindImage dto) {
-        dto.setCreateTime(LocalDate.now().toString());
+        dto.setSubTime(LocalDate.now().toString());
         dto.setCountFind(0);
         // 创建一个查询条件包装器
         QueryWrapper<FindImage> queryWrapper = Wrappers.query();
