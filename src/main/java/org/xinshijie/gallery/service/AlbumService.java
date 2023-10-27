@@ -17,4 +17,6 @@ public interface AlbumService  {
     Integer count(AlbumDto dto);
 
     Album getInfo(Long id);
+
+    void updateError(Long id);
 }

@@ -36,4 +36,12 @@ public class AlbumController {
         Album list = albumService.getInfo(id);
         return Result.success(list);
     }
+
+    @GetMapping("/error")
+    public Result<String> error(@RequestParam("id") Long id) {
+        albumService.updateError(id);
+        return Result.success("");
+    }
+
+
 }

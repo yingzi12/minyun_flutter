@@ -21,6 +21,10 @@ public interface AlbumMapper  {
     Integer count(AlbumDto dto);
 
     Album getInfo(Long id);
+
+    Integer updateError(Long id);
+
+
 }
 
 

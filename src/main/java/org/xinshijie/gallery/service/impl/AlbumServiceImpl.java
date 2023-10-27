@@ -36,6 +36,11 @@ public class AlbumServiceImpl implements AlbumService{
     public Album getInfo(Long id) {
         return albumMapper.getInfo(id);
     }
+
+    @Override
+    public void updateError(Long id) {
+         albumMapper.updateError(id);
+    }
 }
 
 

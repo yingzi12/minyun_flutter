@@ -41,4 +41,7 @@
         select * from album where id= #{id}
 
     </select>
+    <update id="updateError">
+        update  album set count_error=count_error+1  where id= #{id}
+    </update>
 </mapper>
