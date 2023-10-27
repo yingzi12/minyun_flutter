@@ -31,6 +31,11 @@ public class AlbumServiceImpl implements AlbumService{
     public Integer count(AlbumDto dto) {
         return albumMapper.count(dto);
     }
+
+    @Override
+    public Album getInfo(Long id) {
+        return albumMapper.getInfo(id);
+    }
 }
 
 

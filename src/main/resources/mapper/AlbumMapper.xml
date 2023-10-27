@@ -36,4 +36,9 @@
             <if test="title != null "> and title like '%#{title}%'</if>
         </where>
     </select>
+
+    <select id="getInfo"  resultType="org.xinshijie.gallery.dao.Album">
+        select * from album where id= #{id}
+
+    </select>
 </mapper>

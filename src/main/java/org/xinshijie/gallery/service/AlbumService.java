@@ -15,4 +15,6 @@ public interface AlbumService  {
     List<Album> list(AlbumDto dto);
 
     Integer count(AlbumDto dto);
+
+    Album getInfo(Long id);
 }

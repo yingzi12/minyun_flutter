@@ -1,10 +1,7 @@
 package org.xinshijie.gallery.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.xinshijie.gallery.common.Result;
 import org.xinshijie.gallery.dao.Album;
 import org.xinshijie.gallery.dao.Image;
@@ -32,5 +29,11 @@ public class AlbumController {
         List<Album> list = albumService.list(dto);
 
         return Result.success(list,total);
+    }
+
+    @GetMapping("/info")
+    public Result<Album> list(@RequestParam("id") Long id) {
+        Album list = albumService.getInfo(id);
+        return Result.success(list);
     }
 }
