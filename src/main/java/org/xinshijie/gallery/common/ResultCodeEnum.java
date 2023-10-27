@@ -1,0 +1,134 @@
+package com.xinshijie.common.enums;
+
+public enum ResultCodeEnum {
+    SUCCESS(200, "请求成功"),
+    EXPIRED(401, "权限不足或者登录已过期"),
+
+    FAIL(0, "失败"),
+    PARAMS_IS_NULL(999001000, "参数为空错误"),
+    PARAMS_NOT_COMPLETE(999001010, "参数不全"),
+    PARAMS_TYPE_ERROR(999001020, "参数类型匹配错误"),
+    PARAMS_IS_INVALID(999001030, "参数无效"),
+    DATA_NOT_FOUND(999002000, "数据未找到"),
+    DATA_IS_WRONG(999002010, "数据有误"),
+    DATA_ALREADY_EXISTED(999002020, "数据已存在"),
+    USER_NOT_EXIST(999003000, "用户不存在"),
+    USER_NOT_LOGGED_IN(999003010, "用户未登陆"),
+    USER_ACCOUNT_ERROR(999003020, "用户名或密码错误"),
+    USER_ACCOUNT_FORBIDDEN(999003030, "用户账户已被禁用"),
+    USER_HAS_EXIST(999003040, "该用户已存在"),
+    USER_CODE_ERROR(999003050, "验证码错误"),
+    INTERFACE_INNER_INVOKE_ERROR(999005000, "系统内部接口调用异常"),
+    INTERFACE_OUTER_INVOKE_ERROR(999005010, "系统外部接口调用异常"),
+    INTERFACE_FORBIDDEN(999005020, "接口禁止访问"),
+    INTERFACE_ADDRESS_INVALID(999005030, "接口地址无效"),
+    INTERFACE_REQUEST_TIMEOUT(999005040, "接口请求超时"),
+    INTERFACE_EXCEED_LOAD(999005050, "接口负载过高"),
+    SYSTEM_INNER_ERROR(999005060, " 系统内部错误"),
+    SERVICE_TRANSFER_ERROR(999005070, "跨服务调用错误"),
+    SERVICE_HYSTRIX_ERROR(999005080, "服务不可用"),
+    BUSINESS_ERROR(999006000, "系统业务出现问题"),
+    ID_GENERATOR_ERROR(999006010, "ID生成异常"),
+    HTTP_REQUEST_METHOD_ERROR(999006020, "请求方式异常"),
+    CODE_IS_EXIST_ERROR(999006030, "该编码已存在"),
+    MONGO_QUERY_TYPE_ERROR(999006040, "查询mongo异常"),
+    MONGO_ADD_TYPE_ERROR(999006050, "新增mongo异常，主键重复"),
+    PERMISSION_NO_ACCESS(999007000, "当前按钮没有访问权限"),
+    TYPE_CODE_ALREADY_EXSIT(999009010, "类型名称已存在！"),
+    SERVICE_CODE_ALREADY_EXSIT(999009020, "服务类型编码已存在！"),
+    FEES_CODE_ALREADY_EXSIT(999009030, "费用类型编码已存在！"),
+    FILE_UPLOAD_ERROR(999008010, "文件上传失败"),
+    FILE_DOWNLOAD_ERROR(999008020, "文件下载失败"),
+    FILE_DELETE_ERROR(999008030, "文件删除失败"),
+    FILE_GET_ERROR(999008040, "获取文件失败"),
+    FILE_TYPE_ERROR(999008050, "文件类型错误"),
+    MODULE_TYPE_ERROR(999008060, "模块类型错误"),
+
+    OPERATOR_ERROR(999008061, "非法操作"),
+
+    REPEAT_FLLOW_ERROR(999008062, "已经关注,重复操作"),
+    THE_WORLD_DOES_NOT_EXIST_ERROR(999008062, "世界不存在"),
+    POSTED_AND_DISCUSSED_FREQUENTLY(999008063, "发布过于频繁，请1小时之后在尝试"),
+    CATEGORY_DOES_NOT_EXIST(999008064,  "请先创建分类,然后在发布"),
+
+    EXISTENCE_CLASSIFICATION  (999008065,  "存在分类,禁止删除"),
+    CATEGORY_ALREADY_EXISTS_WITH_THIS_NAME(999008066,  "同一层级分类,已存在该名称"),
+    EXCEED_MAX_BUILDABLE_CLASSIFICATION_COUNT (999008067,  "超出最大可建分类数"),
+    EXCEED_CURRENT_LEVEL_MAX_CLASSIFICATION_COUNT(999008068,  "超出当前层级最大分类数"),
+    PARENT_CATEGORY_DOES_NOT_EXIST(999008069,  "上级分类不存在"),
+    EXCEED_MAX_CLASSIFICATION_LEVEL (999008070,  "超出最大分类层级"),
+    EMAIL_ALREADY_SENT (999008071,  "邮件已经发送，如未收到，请稍等或去垃圾邮件中查看或稍等半个小时之后在重试"),
+    THE_EMAIL_IS_EMPTY_OR_ILLEGAL (999008072,  "邮箱为空或者非法"),
+    ALREADY_BOUND_ACCOUNT (999008073,  "该邮箱已经绑定其他账号，不能重复绑定"),
+//    EXPIRED (999008074,  "已过期"),
+    THE_EMAIL_DOES_NOT_EXIST_OR_IS_NOT_VERIFIED (999008075,  "邮箱不存在或者未验证"),
+    THE_WORLD_DOES_NOT_EXIST (999008076,  "世界不存在"),
+    THE_STORY_DOES_NOT_EXIST (999008077,  "故事不存在"),
+    THE_ELEMENT_DOES_NOT_EXIST (999008078,  "元素不存在"),
+    ABNORMAL_STATUS (999008079,  "状态异常"),
+    VISITED_TOO_OFTEN (999008080,"访问过于频繁，请稍候再试"),
+    ALREADY_EXISTS (999008081,"已经存在"),
+    CHAPTER_DOES_NOT_EXIST (999008082,"章节不存在"),
+    DIRECTORY_DOES_NOT_EXIST (999008083,"分卷/目录不存在"),
+    CATEGORY_MUST_BE_SELECTED (999008084,"分类不存在，请选择分类"),
+    DRAFT_DOES_NOT_EXIST (999008085,"草稿不存在"),
+    INSUFFICIENT_PERMISSIONS (999008086,"权限不足"),
+    ALREADY_FOLLOWED(999008087,"已经关注"),
+    POSTING_TOO_FREQUENTLY(999008088,"发布过于频繁，请1小时之后在尝试"),
+    USERNAME_DOES_NOT_EXIST(999008089,"用户名不存在"),
+    USERNAME_DOES_NOT_MATCH_ID(999008090,"用户名与id不匹配"),
+    USER_ALREADY_EXISTS(999008091,"用户已经存在"),
+    THE_SUPERIOR_COMMENT_DOES_NOT_EXIST(999008092,"上级评论不存在"),
+    MUST_HAVE_CONTENT(999008093,"内容不存在，请输入内容"),
+    MAXIMUM_ALLOWED_CONTENT_SECTIONS_EXCEEDED(999008094,"超出最大许可的内容小节数"),
+    THE_STATUS_IS_ABNORMAL_AND_MUST_BE_SAVED_BEFORE_PUBLISHING(999008095,"状态异常,必须保存之后才能发布"),
+    THERE_ARE_UNHANDLED_MODIFICATIONS_TO_THIS_ELEMENT(999008096,"该元素存在未处理的修改"),
+    THE_STORY_HAS_BEEN_GENERATED(999008097,"故事已经生成,禁止重复生成"),
+    CHAPTERS_EXIST_AND_CANNOT_BE_DELETED(999008098,"已经存在章节,不可以删除"),
+    FAILED_TO_CHANGE_PASSWORD(999008099,"修改密码失败，旧密码错误"),
+    CREATE_MANAGE_UP_TO_20_WORLDS(999008100,"超出范围，最多创建/管理20个世界"),
+    THE_WORLD_NAME_ALREADY_EXISTS_PLEASE_RE_ENTER_IT(999008101,"世界名称已经存在,请重新输入"),
+    THE_WORLD_HAS_BEEN_GENERATED_REPEATED(999008102,"世界已经生成,禁止重复生成"),
+    THERE_IS_A_CATEGORY_AND_DELETION_IS_PROHIBITED(999008103,"已经存在分类,不可以删除"),
+
+    ELEMENT_EXIST_AND_CANNOT_BE_DELETED(999008104,"已经存在元素,不可以删除"),
+
+    THE_DISCUSS_DOES_NOT_EXIST (999008105,  "讨论不存在"),
+
+    THE_COMMIT_DOES_NOT_EXIST (999008106,  "回复不存在"),
+
+    APPLY_AUTHOR_ERROR(999008107,"世界参与度不足,需要达到3级,请多多参与之后在申请,新增、编辑元素,发布评论等都可以增加"),
+
+    APPLY_AUTHOR_REPEAT_ERROR(999008108,"这个故事你已经申请过了，正在审核中"),
+
+    APPLY_WORLD_ERROR(999008109,"世界参与度不足,需要达到6级,请多多参与之后在申请,新增、编辑元素,发布评论等都可以增加"),
+    APPLY_WORLD_REPEAT_ERROR(999008110,"这个世界你已经申请过了，正在审核中"),
+    APPLY_AUTHOR_IS_NULL(999008111,"申请不存在"),
+
+    APPLY_WORLD_IS_NULL(999008112,"申请不存在"),
+    STORY_IS_PRIVE (999008113,  "该小说为不公开的,只有作家能够查看"),
+    WORLD_IS_PRIVE (999008113,  "该世界为不公开的,只有创造者能够查看"),
+
+    ;
+
+
+    private int code;
+    private String msg;
+
+    ResultCodeEnum() {
+    }
+
+    ResultCodeEnum(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public int getCode() {
+        return this.code;
+    }
+
+    public String getMsg() {
+        return this.msg;
+    }
+
+}
