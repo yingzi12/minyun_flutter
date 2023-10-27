@@ -61,6 +61,9 @@ public class Album implements Serializable {
 
     private String createTime;
     private String imgUrl;
+    private String size;
+    private String numberPhone;
+    private String numberVideo;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
