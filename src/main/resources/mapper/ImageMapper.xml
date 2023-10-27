@@ -1,36 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xinshijie.wiki.mapper.ApplyAuthorMapper">
+<mapper namespace="org.xinshijie.gallery.mapper.ImageMapper">
 
-    <select id="selectByWidSid"  resultType="com.xinshijie.wiki.vo.ApplyAuthorVo">
-       select * from wiki_apply_author where wid=#{wid} and sid=#{sid}
-        <if test="applyId != null "> and applyId = #{applyId}</if>
-        <if test="status != null "> and status = #{status}</if>
-        <if test="notStatus != null "> and status != #{notStatus}</if>
-
+    <select id="list"  resultType="org.xinshijie.gallery.dao.Image">
+       select * from image where aid=#{aid}
+       LIMIT #{pageSize}
+       OFFSET (#{pageNum} - 1) * #{pageSize};
     </select>
-
-    <select id="selectByUserid"  resultType="com.xinshijie.wiki.vo.ApplyAuthorVo">
-        select * from wiki_apply_author where applyId=#{userId} and  wid=#{wid} and sid=#{sid}
+    <select id="count"  resultType="Integer">
+        select count(1) from image
+        <where>
+            <if test="aid != null "> and aid = #{aid}</if>
+        </where>
     </select>
-    <select id="selectWidSidUserId"  resultType="com.xinshijie.wiki.vo.ApplyAuthorVo">
-        select * from wiki_apply_author where  wid=#{wid} and sid=#{sid}
-        <if test="userId != null "> and applyId = #{userId}</if>
-        <if test="status != null "> and status = #{status}</if>
-    </select>
-    <update id="audit">
-        update wiki_apply_author
-        set status=#{status},
-            audit_time=#{auditTime},
-            audit_explain=#{auditExplain},
-            audit_name=#{auditName},
-            audit_id=#{auditId}
-        where id=#{id}
-    </update>
-    <update id="close">
-        update wiki_apply_author
-        set status=3,
-            operator_time=SYSDATE()
-        where id=#{id}
-    </update>
 </mapper>

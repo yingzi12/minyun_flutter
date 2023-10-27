@@ -1,4 +1,4 @@
-package com.xinshijie.common.enums;
+package org.xinshijie.gallery.common;
 
 public enum ResultCodeEnum {
     SUCCESS(200, "请求成功"),

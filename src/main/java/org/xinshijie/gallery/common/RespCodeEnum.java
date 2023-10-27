@@ -1,4 +1,4 @@
-package com.xinshijie.common.enums;
+package org.xinshijie.gallery.common;
 
 /**
  * 云路供应链科技有限公司 版权所有  Copyright 2019<br>

@@ -5,27 +5,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.xinshijie.gallery.common.Result;
+import org.xinshijie.gallery.dao.Album;
 import org.xinshijie.gallery.dao.Image;
+import org.xinshijie.gallery.dto.AlbumDto;
 import org.xinshijie.gallery.dto.ImageDto;
+import org.xinshijie.gallery.service.AlbumService;
 import org.xinshijie.gallery.service.ImageService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/image")
-public class ImageController {
+@RequestMapping("/album")
+public class AlbumController {
     @Autowired
-    private ImageService imageService;
+    private AlbumService albumService;
 
     @GetMapping("/list")
-    public Result<List<Image>> list(ImageDto dto) {
+    public Result<List<Album>> list(AlbumDto dto) {
         if(dto.getPageNum()==null){
             dto.setPageNum(1);
         }
-        if(dto.getPageSize()==null){
-            dto.setPageSize(3);
-        }
-        List<Image> list = imageService.list(dto);
-        return Result.success(list);
+        dto.setPageSize(30);
+        Integer total = albumService.count(dto);
+        List<Album> list = albumService.list(dto);
+
+        return Result.success(list,total);
     }
 }

@@ -1,8 +1,5 @@
-package com.xinshijie.common.exception;
+package org.xinshijie.gallery.common;
 
-
-import com.xinshijie.common.enums.RespCodeEnum;
-import com.xinshijie.common.enums.ResultCodeEnum;
 
 import java.io.Serial;
 

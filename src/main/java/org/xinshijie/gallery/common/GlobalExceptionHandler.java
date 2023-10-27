@@ -1,20 +1,18 @@
-package com.xinshijie.framework.web.exception;
+package org.xinshijie.gallery.common;
 
-import com.xinshijie.common.constant.HttpStatus;
-import com.xinshijie.common.core.vo.Result;
-import com.xinshijie.common.enums.ResultCodeEnum;
-import com.xinshijie.common.exception.DemoModeException;
-import com.xinshijie.common.exception.ServiceException;
-import com.xinshijie.common.utils.StringUtils;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.sqlite.SQLiteException;
 
+import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 
 /**
@@ -25,18 +23,6 @@ import java.sql.SQLSyntaxErrorException;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    //private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    /**
-     * 权限校验异常
-     */
-    @ExceptionHandler(AccessDeniedException.class)
-    public Result handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
-        return Result.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
-    }
-
     /**
      * 请求方式不支持
      */
@@ -58,9 +44,16 @@ public class GlobalExceptionHandler {
 
 
 
-    @ExceptionHandler(SQLSyntaxErrorException.class)
-    public Result handSQLSyntaxErrorException(SQLSyntaxErrorException e,
+    @ExceptionHandler(SQLException.class)
+    public Result handSQLSyntaxErrorException(SQLException e,
                                             HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',系统内部错误'{}'请求", requestURI, e.getMessage());
+        return Result.error(ResultCodeEnum.INTERFACE_INNER_INVOKE_ERROR);
+    }
+    @ExceptionHandler(UncategorizedSQLException.class)
+    public Result handSQLSyntaxErrorException(UncategorizedSQLException e,
+                                              HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',系统内部错误'{}'请求", requestURI, e.getMessage());
         return Result.error(ResultCodeEnum.INTERFACE_INNER_INVOKE_ERROR);
@@ -72,7 +65,7 @@ public class GlobalExceptionHandler {
     public Result handleServiceException(ServiceException e, HttpServletRequest request) {
         log.error(e.getMessage(), e);
         Integer code = e.getCode();
-        return StringUtils.isNotNull(code) ? Result.error(code, e.getMessage()) : Result.error(e.getCode(), e.getMessage());
+        return code !=null ? Result.error(code, e.getMessage()) : Result.error(e.getCode(), e.getMessage());
     }
 
     /**
@@ -116,11 +109,4 @@ public class GlobalExceptionHandler {
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR.getCode(), message);
     }
 
-    /**
-     * 演示模式异常
-     */
-    @ExceptionHandler(DemoModeException.class)
-    public Result handleDemoModeException(DemoModeException e) {
-        return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR.getCode(), "演示模式，不允许操作");
-    }
 }
