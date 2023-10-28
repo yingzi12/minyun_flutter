@@ -24,6 +24,7 @@ public interface AlbumMapper  {
 
     Integer updateError(Long id);
 
+    Integer updateCountSee(Long id);
 
 }
 

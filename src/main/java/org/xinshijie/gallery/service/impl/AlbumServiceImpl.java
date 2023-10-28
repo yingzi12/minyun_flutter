@@ -34,6 +34,7 @@ public class AlbumServiceImpl implements AlbumService{
 
     @Override
     public Album getInfo(Long id) {
+        albumMapper.updateCountSee(id);
         return albumMapper.getInfo(id);
     }
 

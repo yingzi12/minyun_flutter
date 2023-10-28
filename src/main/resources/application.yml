@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: org.sqlite.JDBC
-    url: jdbc:sqlite:/usr/local/gallery/db_gallery
+    url: jdbc:sqlite:/Users/luhuang/Documents/git/gallery2/db/db_gallery.db
 # ??????
 server:
   # ????HTTP??????8080

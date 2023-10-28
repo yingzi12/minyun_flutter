@@ -44,4 +44,7 @@
     <update id="updateError">
         update  album set count_error=count_error+1  where id= #{id}
     </update>
+    <update id="updateCountSee">
+        update  album set count_see=count_see+1  where id= #{id}
+    </update>
 </mapper>
