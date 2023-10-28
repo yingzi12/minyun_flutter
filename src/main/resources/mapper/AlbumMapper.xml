@@ -26,6 +26,7 @@
             <if test="id != null "> and id = #{id}</if>
             <if test="title != null "> and title like '%#{title}%'</if>
         </where>
+        <if test="order != null "> order by count_see desc </if>
         LIMIT #{pageSize}
         OFFSET (#{pageNum} - 1) * #{pageSize};
     </select>

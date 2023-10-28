@@ -31,6 +31,17 @@ public class AlbumController {
         return Result.success(list,total);
     }
 
+    @GetMapping("/listSee")
+    public Result<List<Album>> listSee(AlbumDto dto) {
+        if(dto.getPageNum()==null){
+            dto.setPageNum(1);
+        }
+        dto.setPageSize(30);
+        Integer total = albumService.count(dto);
+        List<Album> list = albumService.list(dto);
+
+        return Result.success(list,total);
+    }
     @GetMapping("/info")
     public Result<Album> list(@RequestParam("id") Long id) {
         Album list = albumService.getInfo(id);
