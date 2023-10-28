@@ -24,9 +24,9 @@
         select * from album
         <where>
             <if test="id != null "> and id = #{id}</if>
-            <if test="title != null "> and title like '%#{title}%'</if>
+            <if test="title != null "> and title like  '%' || #{title} || '%'</if>
         </where>
-        <if test="order != null "> order by count_see desc </if>
+        <if test="order != null "> order by  count_see  desc </if>
         LIMIT #{pageSize}
         OFFSET (#{pageNum} - 1) * #{pageSize};
     </select>
@@ -34,7 +34,7 @@
         select count(1) from album
         <where>
             <if test="id != null "> and id = #{id}</if>
-            <if test="title != null "> and title like '%#{title}%'</if>
+            <if test="title != null "> and title like  '%' || #{title} || '%'</if>
         </where>
     </select>
 

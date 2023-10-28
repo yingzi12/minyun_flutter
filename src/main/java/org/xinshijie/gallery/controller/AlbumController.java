@@ -26,7 +26,7 @@ public class AlbumController {
             dto.setPageNum(1);
         }
         if(StringUtils.isEmpty(dto.getTitle()) ){
-            dto.setTitle("");
+            dto.setTitle(null);
         }
         dto.setPageSize(30);
         Integer total = albumService.count(dto);
@@ -41,8 +41,9 @@ public class AlbumController {
             dto.setPageNum(1);
         }
         if(StringUtils.isEmpty(dto.getTitle()) ){
-            dto.setTitle("");
+            dto.setTitle(null);
         }
+        dto.setOrder("count_see");
         dto.setPageSize(30);
         Integer total = albumService.count(dto);
         List<Album> list = albumService.list(dto);
