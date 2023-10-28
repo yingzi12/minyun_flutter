@@ -1,5 +1,6 @@
 package org.xinshijie.gallery.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xinshijie.gallery.common.Result;
@@ -24,6 +25,9 @@ public class AlbumController {
         if(dto.getPageNum()==null){
             dto.setPageNum(1);
         }
+        if(StringUtils.isEmpty(dto.getTitle()) ){
+            dto.setTitle("");
+        }
         dto.setPageSize(30);
         Integer total = albumService.count(dto);
         List<Album> list = albumService.list(dto);
@@ -35,6 +39,9 @@ public class AlbumController {
     public Result<List<Album>> listSee(AlbumDto dto) {
         if(dto.getPageNum()==null){
             dto.setPageNum(1);
+        }
+        if(StringUtils.isEmpty(dto.getTitle()) ){
+            dto.setTitle("");
         }
         dto.setPageSize(30);
         Integer total = albumService.count(dto);
