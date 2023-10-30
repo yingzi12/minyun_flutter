@@ -67,6 +67,7 @@ public class Album implements Serializable {
     private String intro;
     //1 yes 0 No
     private Integer countError;
+    private String sourceUrl;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
