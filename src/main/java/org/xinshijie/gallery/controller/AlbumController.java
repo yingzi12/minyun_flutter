@@ -9,6 +9,7 @@ import org.xinshijie.gallery.dao.Image;
 import org.xinshijie.gallery.dto.AlbumDto;
 import org.xinshijie.gallery.dto.ImageDto;
 import org.xinshijie.gallery.service.AlbumService;
+import org.xinshijie.gallery.service.IReptileImageService;
 import org.xinshijie.gallery.service.ImageService;
 
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.List;
 public class AlbumController {
     @Autowired
     private AlbumService albumService;
+
+    @Autowired
+    private IReptileImageService reptileImageService;
 
     @GetMapping("/list")
     public Result<List<Album>> list(AlbumDto dto) {
@@ -62,5 +66,10 @@ public class AlbumController {
         return Result.success("");
     }
 
+    @GetMapping("/cj")
+    public Result<String> cj(Integer id) {
+        reptileImageService.ayacData(id);
+        return Result.success("ss");
+    }
 
 }

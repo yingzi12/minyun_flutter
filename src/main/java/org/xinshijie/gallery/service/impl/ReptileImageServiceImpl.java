@@ -45,23 +45,30 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     private ImageService imageService;
 
      @Async
-     public void ayacData(){
+     public void ayacData(Integer id){
          //链式构建请求
-         String result = HttpRequest.post("url")
+         String result = HttpRequest.post("http://admin.aiavr.com/wiki/story/getReptileRule?id="+id)
                  .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
 //                 .form(paramMap)//表单内容
                  .timeout(20000)//超时，毫秒
                  .execute().body();
          JSONObject jsonObject=JSONObject.parseObject(result);
+         if(jsonObject.getIntValue("code")!=200){
+             throw new ServiceException(" reptileRuleVo 出现异常");
+         }
          ReptileRule reptileRuleVo = JSON.parseObject(jsonObject.getString("data"), ReptileRule.class);
 
          //链式构建请求
-         String result2 = HttpRequest.post("url")
+         String result2 = HttpRequest.post("http://admin.aiavr.com/wiki/story/getReptilePage?id="+id)
                  .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
 //                 .form(paramMap)//表单内容
                  .timeout(20000)//超时，毫秒
                  .execute().body();
+
          JSONObject pageJson=JSONObject.parseObject(result2);
+         if(jsonObject.getIntValue("code")!=200){
+             throw new ServiceException("pageJson 出现异常");
+         }
          List<ReptilePage> pageList = JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class);
          orderBySingle(reptileRuleVo,pageList);
      }
