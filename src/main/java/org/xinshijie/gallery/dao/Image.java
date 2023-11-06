@@ -27,5 +27,5 @@ public class Image {
 
     private String url;
 
-    private String aid;
+    private Long aid;
 }

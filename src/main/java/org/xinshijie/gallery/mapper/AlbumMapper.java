@@ -16,7 +16,7 @@ import java.util.List;
 * @Entity com.xinshijie.gallery.Album
 */
 @Mapper
-public interface AlbumMapper  {
+public interface AlbumMapper extends BaseMapper<Album> {
     List<Album> list(AlbumDto dto);
     Integer count(AlbumDto dto);
 

@@ -1,5 +1,6 @@
 package org.xinshijie.gallery.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xinshijie.gallery.dao.Image;
@@ -11,7 +12,7 @@ import org.xinshijie.gallery.service.ImageService;
 import java.util.List;
 
 @Service
-public class ImageServiceImpl implements ImageService {
+public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image>   implements ImageService {
     @Autowired
     private ImageMapper imageMapper;
     @Override
@@ -23,4 +24,6 @@ public class ImageServiceImpl implements ImageService {
     public Integer count(ImageDto dto) {
         return imageMapper.count(dto);
     }
+
+
 }

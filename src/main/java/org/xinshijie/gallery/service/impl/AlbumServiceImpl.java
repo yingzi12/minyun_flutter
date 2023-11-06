@@ -10,6 +10,7 @@ import org.xinshijie.gallery.mapper.ImageMapper;
 import org.xinshijie.gallery.service.AlbumService;
 import org.xinshijie.gallery.mapper.AlbumMapper;
 import org.springframework.stereotype.Service;
+import org.xinshijie.gallery.service.ImageService;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 * @createDate 2023-10-27 11:26:58
 */
 @Service
-public class AlbumServiceImpl implements AlbumService{
+public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   implements AlbumService{
     @Autowired
     private AlbumMapper albumMapper;
     @Override
@@ -36,6 +37,12 @@ public class AlbumServiceImpl implements AlbumService{
     public Album getInfo(Long id) {
         albumMapper.updateCountSee(id);
         return albumMapper.getInfo(id);
+    }
+
+    @Override
+    public Album getInfoBytitle(String title) {
+//        albumMapper.updateCountSee(id);
+        return albumMapper.getInfo(1L);
     }
 
     @Override
