@@ -23,7 +23,7 @@ public class ReptileRule implements Serializable{
     private Integer id;
 
     private Integer isHead;
-
+    private Integer   isUpdate;
 
     private LocalDateTime createTime;
 
@@ -139,12 +139,12 @@ public class ReptileRule implements Serializable{
 
 
     /**
-     * 手机网页会分页
+     * 手机网页会分页 第一层
      */
     //(description = "手机网页会分页 ")
     private String chapterPageRule;
     /**
-     * 手机网页会分页
+     * 手机网页会分页  url
      */
     //(description = "手机网页会分页 ")
     private String chapterPageUrlRule;
@@ -152,7 +152,7 @@ public class ReptileRule implements Serializable{
 
 
     /**
-     * 手机网页会分页 ,分页内容区
+     * 手机网页会分页 ,分页内容区 第二层
      */
     //(description = "手机网页会分页 ")
     private String contentPageRule;

@@ -12,4 +12,6 @@ public interface ImageService  extends IService<Image> {
 
     Integer count(ImageDto dto);
 
+    Integer delAlum(Long aid);
+
 }

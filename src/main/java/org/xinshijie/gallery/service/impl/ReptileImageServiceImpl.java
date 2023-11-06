@@ -44,6 +44,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
      @Autowired
     private ImageService imageService;
 
+     @Async
      public void ayacData(){
          //链式构建请求
          String result = HttpRequest.post("url")
@@ -62,9 +63,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                  .execute().body();
          JSONObject pageJson=JSONObject.parseObject(result2);
          List<ReptilePage> pageList = JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class);
+         orderBySingle(reptileRuleVo,pageList);
      }
 
-    @Async
     public void orderBySingle(ReptileRule reptileRule, List<ReptilePage> pageList ){
         if(reptileRule==null){
             throw new ServiceException("错误");
@@ -147,7 +148,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     albumService.updateById(album);
                     album= albumService.getInfoBytitle(title);
                 }
+                if(reptileRule.getIsUpdate()==2){
+                    return;
+                }else {
+                    imageService.delAlum(album.getId());
+                }
             }
+
             if(StringUtils.isEmpty(reptileRule.getContentPageRule())) {
                 addImageList(detailUrl,album,reptileRule);
             }else{
@@ -164,25 +171,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     }
                 }
             }
-
-
-//            Element chapterListContent = body.select(reptileRule.getChapterListRule()).first();
-//            if (chapterListContent != null) {
-//                    Elements imageListElement = chapterListContent.select(reptileRule.getChapterGroupRule());
-//                    List<Image> iamgeBatchInsertList = new CopyOnWriteArrayList<>();
-//                    for (Element element : imageListElement) {
-//                        String imageUrlSource = element.select(reptileRule.getChapterUrlRule()).first().attr("href");
-//                        if (StringUtils.isNotEmpty(imageUrlSource)){
-//                            Image image=new Image();
-//                            image.setAid(album.getId());
-//                            image.setSourceWeb(imageUrlSource);
-//                            image.setUrl(imageUrlSource);
-//                            iamgeBatchInsertList.add(image);
-//                        }
-//                    }
-//                    imageService.saveBatch(iamgeBatchInsertList);
-//                    iamgeBatchInsertList.clear();
-//            }
 
         } catch (Exception e) {
             addError(1,e.getMessage(),reptileRule.getId(),detailUrl);
@@ -261,17 +249,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     public static Long generate12DigitHash(String input) {
         try {
-            // Create an MD5 message digest
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(input.getBytes());
+            MessageDigest md = MessageDigest.getInstance("SHA-256"); // 选择合适的散列算法
+            byte[] hash = md.digest(input.getBytes());
+            BigInteger bigInt = new BigInteger(1, hash);
+            Long twelveBitHash = bigInt.longValue() % (long) Math.pow(10, 12); // 取模以确保是12位整数
 
-            // Convert the MD5 hash to a positive BigInteger
-            BigInteger bigInt = new BigInteger(1, messageDigest);
-
-            // Format the BigInteger as a 12-digit number
-            String hash = String.format("%012d", bigInt);
-
-            return Long.parseLong(hash);
+            return twelveBitHash+0L;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return System.currentTimeMillis();

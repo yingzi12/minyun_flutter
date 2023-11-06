@@ -1,5 +1,6 @@
 package org.xinshijie.gallery.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,13 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image>   implemen
     @Override
     public Integer count(ImageDto dto) {
         return imageMapper.count(dto);
+    }
+
+    @Override
+    public Integer delAlum(Long aid) {
+        QueryWrapper<Image> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("aid",aid);
+        return imageMapper.delete(queryWrapper);
     }
 
 
