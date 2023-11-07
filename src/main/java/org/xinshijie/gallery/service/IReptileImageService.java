@@ -12,6 +12,8 @@ public interface IReptileImageService {
 
     void ayacData(Integer id);
 
+    void singleData();
+
     void orderBySingle(ReptileRule reptileRule, List<ReptilePage> pageList );
 
 }

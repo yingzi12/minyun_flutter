@@ -52,7 +52,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
      @Value("${reptile.url}")
      private String reptileUrl;
 
-//     @Async
+     @Async
      public void ayacData(Integer id){
          //链式构建请求
          String result = HttpRequest.get(reptileUrl+"/wiki/reptileRule/getInfo/"+id)
@@ -80,6 +80,50 @@ public class ReptileImageServiceImpl implements IReptileImageService {
          List<ReptilePage> pageList = JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class);
          orderBySingle(reptileRuleVo,pageList);
      }
+
+    public void singleData(){
+        //链式构建请求
+        String ruleJson = HttpRequest.get(reptileUrl+"/wiki/reptileRule/getList/4")
+                .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
+//                 .form(paramMap)//表单内容
+                .timeout(20000)//超时，毫秒
+                .execute().body();
+        JSONObject ruleListObject=JSONObject.parseObject(ruleJson);
+        if(ruleListObject.getIntValue("code")!=200){
+            throw new ServiceException(" ruleList 出现异常");
+        }
+        List<ReptileRule> ruleList = JSON.parseArray(ruleListObject.getJSONArray("data").toJSONString(), ReptileRule.class);
+
+        for(ReptileRule reptileRule:ruleList) {
+            //链式构建请求
+//            String result = HttpRequest.get(reptileUrl + "/wiki/reptileRule/getInfo/" + id)
+////                .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
+////                 .form(paramMap)//表单内容
+//                    .timeout(20000)//超时，毫秒
+//                    .execute().body();
+//            JSONObject jsonObject = JSONObject.parseObject(result);
+//            if (jsonObject.getIntValue("code") != 200) {
+//                throw new ServiceException(" reptileRuleVo 出现异常");
+//            }
+//            ReptileRule reptileRuleVo = JSON.parseObject(jsonObject.getString("data"), ReptileRule.class);
+
+            //链式构建请求
+            String result2 = HttpRequest.get(reptileUrl + "/wiki/reptilePage/getList/" + reptileRule.getId())
+                    .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
+//                 .form(paramMap)//表单内容
+                    .timeout(20000)//超时，毫秒
+                    .execute().body();
+
+            JSONObject pageJson = JSONObject.parseObject(result2);
+            if (pageJson.getIntValue("code") != 200) {
+                throw new ServiceException("pageJson 出现异常");
+            }
+            List<ReptilePage> pageList = JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class);
+            orderBySingle(reptileRule, pageList);
+
+
+        }
+    }
 
     public void orderBySingle(ReptileRule reptileRule, List<ReptilePage> pageList ){
         if(reptileRule==null){
@@ -121,11 +165,15 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     addError(1,e.getMessage(),reptileRule.getId(),url);
                     log.error("出现异常 方法:{} reId:{} message","orderByExecutor",reptileRule.getId(),e);
                 }
+                pageVo.setNowPage(i);
+                updatePage(pageVo);
             }
 //            ReptilePage reptilePage=new ReptilePage();
 //            reptilePage.setId(pageVo.getId());
 //            reptilePage.setNowPage(pageVo.getPageTotal());
 //            pageService.updateById(reptilePage);
+
+
         }
         reptileRule.setEndTime(LocalDateTime.now());
 //        reptileRuleService.updateById(reptileRule);
@@ -343,5 +391,14 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
 
         return true;
+    }
+
+    public void updatePage(ReptilePage reptilePage){
+        //链式构建请求
+        String updateReq = HttpRequest.post(reptileUrl + "/wiki/reptilePage/edit")
+                .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
+                .body(JSONObject.toJSONString(reptilePage))//表单内容
+                .timeout(20000)//超时，毫秒
+                .execute().body();
     }
 }
