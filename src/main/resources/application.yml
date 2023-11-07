@@ -16,3 +16,5 @@ mybatis-plus:
   typeAliasesPackage: com.xinshijie.**.domain
   # ??mapper?????????mapper.xml????
   mapperLocations: classpath*:mapper/**/*Mapper.xml
+reptile:
+  url: http://127.0.0.1:8097

@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serial;
 
 @Data
-@TableName("wiki_apply_manage")
+@TableName("image")
 public class Image {
     @Serial
     private static final long serialVersionUID = 1L;

@@ -12,6 +12,7 @@ import org.xinshijie.gallery.mapper.AlbumMapper;
 import org.springframework.stereotype.Service;
 import org.xinshijie.gallery.service.ImageService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   impleme
 
     @Override
     public Album getInfo(Long id) {
-        albumMapper.updateCountSee(id);
+        albumMapper.updateCountSee(id, LocalDate.now().toString());
         return albumMapper.getInfo(id);
     }
 

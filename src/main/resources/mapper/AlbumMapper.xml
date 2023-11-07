@@ -16,9 +16,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,page,xh,
+        id,`page`,xh,
         url,title,source_web,
-        hash,count_see
+        `hash`,count_see
     </sql>
     <select id="list"  resultType="org.xinshijie.gallery.dao.Album">
         select * from album
@@ -26,6 +26,7 @@
             <if test="id != null "> and id = #{id}</if>
             <if test="title != null "> and title like  '%' || #{title} || '%'</if>
         </where>
+        <if test="order == null "> order by  update_time,count_see  desc </if>
         <if test="order != null "> order by  count_see  desc </if>
         LIMIT #{pageSize}
         OFFSET (#{pageNum} - 1) * #{pageSize};
@@ -46,6 +47,6 @@
         update  album set count_error=count_error+1  where id= #{id}
     </update>
     <update id="updateCountSee">
-        update  album set count_see=count_see+1  where id= #{id}
+        update  album set count_see=count_see+1,update_time= #{updateTime} where id= #{id}
     </update>
 </mapper>

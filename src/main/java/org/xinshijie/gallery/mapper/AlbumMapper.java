@@ -1,6 +1,7 @@
 package org.xinshijie.gallery.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.xinshijie.gallery.dao.Album;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.xinshijie.gallery.dao.Image;
@@ -24,7 +25,7 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Integer updateError(Long id);
 
-    Integer updateCountSee(Long id);
+    Integer updateCountSee(@Param("id") Long id,@Param("updateTime") String updateTime);
 
 }
 

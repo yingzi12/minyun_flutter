@@ -63,4 +63,9 @@ public class ReptileMain {
 
     }
 
+    @Test
+    public  void test10(){
+        reptileService.ayacData(10);
+    }
+
 }
