@@ -94,6 +94,7 @@ public class ReptileRule implements Serializable{
     //(description = "解析href ")
     private String storyPageHrefRule;
 
+    private String storyPageImgRule;
 
     /**
      * 需要不需要加URL

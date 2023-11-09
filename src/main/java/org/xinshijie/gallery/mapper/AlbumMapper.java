@@ -21,6 +21,8 @@ public interface AlbumMapper extends BaseMapper<Album> {
     List<Album> list(AlbumDto dto);
     Integer count(AlbumDto dto);
 
+    Integer add(@Param("dto") Album dto);
+
     Album getInfo(Long id);
 
     Integer updateError(Long id);

@@ -147,7 +147,14 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                             Element hrefElement = story.select(reptileRule.getStoryPageHrefRule()).first();
                             if(hrefElement !=null) {
                                 String detailUrl = hrefElement.attr("href");
-                                detail(detailUrl, reptileRule);
+                                String imgUrl="";
+                                if(StringUtils.isNotEmpty(reptileRule.getStoryPageImgRule())){
+                                    Element imgUrlEle = story.select(reptileRule.getStoryPageImgRule()).first();
+                                    if(imgUrlEle!=null){
+                                        imgUrl=imgUrlEle.attr("src");
+                                    }
+                                }
+                                detail(detailUrl,imgUrl, reptileRule);
                             }else{
                                 addError(1,story.html(),reptileRule.getId(),url);
                             }
@@ -178,7 +185,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         reptileRule.setEndTime(LocalDateTime.now());
 //        reptileRuleService.updateById(reptileRule);
     }
-    public void detail(String url, ReptileRule reptileRule ){
+    public void detail(String url,String imgUrl, ReptileRule reptileRule ){
         String detailUrl=url;
         try {
             if(StringUtils.isNotEmpty(reptileRule.getStoryUrl())){
@@ -191,33 +198,55 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             Document doc = requestUrl(detailUrl,reptileRule,0);
 
             String title = extractContent(doc, reptileRule.getTitleRule());
+
             String gril = extractContent(doc, reptileRule.getAuthorRule());
-            Long hash = generate12DigitHash(detailUrl,title);
+            String desc = extractContent(doc, reptileRule.getDescRule());
+
+            Long hash = generate12DigitHash(detailUrl, title);
             Album album= albumService.getInfoBytitle(title);
 
             if(album==null){
                 album=new Album();
+                album.setSourceWeb(reptileRule.getStoryUrl());
+                album.setSourceUrl(detailUrl);
+                album.setImgUrl(imgUrl);
                 album.setCountError(0);
                 album.setCountSee(0L);
                 album.setCreateTime(LocalDate.now().toString());
                 album.setGril(gril);
+                album.setIntro(desc);
                 album.setHash(hash);
+                albumService.add(album);
+                album= albumService.getInfoBytitle(title);
             }else{
+                //判断是否是同一组
                 if(hash.equals(album.getHash())||StringUtils.isEmpty(album.getGril())){
                     album.setHash(hash);
                     if(StringUtils.isNotEmpty(gril)) {
                         album.setGril(gril);
                     }
                     albumService.updateById(album);
-                    album= albumService.getInfoBytitle(title);
                 }
+                //判断是否需要强制更新
                 if(reptileRule.getIsUpdate()==2){
+                    //判断图片地址是否有效,无效会全部删除
                     boolean isImage=isCheckImage(album.getId(),reptileRule);
                     if(isImage){
                         return;
                     }
                 }else {
                     imageService.delAlum(album.getId());
+                    album=new Album();
+                    album.setSourceWeb(reptileRule.getStoryUrl());
+                    album.setSourceUrl(detailUrl);
+                    album.setImgUrl(imgUrl);
+                    album.setCountError(0);
+                    album.setCountSee(0L);
+                    album.setCreateTime(LocalDate.now().toString());
+                    album.setGril(gril);
+                    album.setHash(hash);
+                    albumService.add(album);
+                    album= albumService.getInfoBytitle(title);
                 }
             }
 
@@ -231,7 +260,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     Elements imageListElement = imagePageCoent.select(reptileRule.getChapterPageRule());
                     for (Element element : imageListElement) {
                         String pageUrl = element.select(reptileRule.getChapterPageUrlRule()).first().attr("href");
-                        if(StringUtils.isEmpty(reptileRule.getPageUrl())){
+                        if(StringUtils.isNotEmpty(reptileRule.getPageUrl())){
                             pageUrl=reptileRule.getPageUrl()+pageUrl;
                         }
                         addImageList(pageUrl,album,reptileRule);
@@ -258,7 +287,14 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             Elements imageListElement = chapterListContent.select(reptileRule.getChapterGroupRule());
             List<Image> iamgeBatchInsertList = new CopyOnWriteArrayList<>();
             for (Element element : imageListElement) {
-                String imageUrlSource = element.select(reptileRule.getChapterUrlRule()).first().attr("href");
+                String imageUrlSource="";
+                Element imgElemnt = element.select(reptileRule.getChapterUrlRule()).first();
+                if("a".equals(reptileRule.getChapterUrlRule())){
+                     imageUrlSource =imgElemnt .attr("href");
+                }
+                if("img".equals(reptileRule.getChapterUrlRule())){
+                     imageUrlSource = imgElemnt.attr("src");
+                }
                 if (StringUtils.isNotEmpty(imageUrlSource)){
                     Image image=new Image();
                     image.setAid(album.getId());
@@ -341,12 +377,23 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     }
 
     private String extractContent(Document doc, String rule) {
+         if(StringUtils.isEmpty(rule)){
+             return  null;
+         }
+         String value=null;
         try {
             if(StringUtils.isEmpty(rule)) {
                 return null;
             }
             Element element = doc.select(rule).first();
-            return (element != null) ? element.attr("content") : null;
+            if(element!=null){
+               value= element.attr("content");
+               if(StringUtils.isEmpty(value)){
+                   value= element.html();
+               }
+            }
+            return value;
+//            return (element != null) ? element.attr("content") : null;
         } catch (Exception e) {
             // 处理异常，例如记录日志
             log.error("获取内容错误 rele:{}",rule,e);

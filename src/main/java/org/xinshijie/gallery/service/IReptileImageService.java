@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IReptileImageService {
 
-    void detail(String url, ReptileRule reptileRule );
+    void detail(String url, String imgUrl,ReptileRule reptileRule );
 
     void ayacData(Integer id);
 

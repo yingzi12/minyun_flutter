@@ -43,6 +43,11 @@
         select * from album where id= #{id}
 
     </select>
+    <insert id="add"  parameterType="org.xinshijie.gallery.dao.Album">
+        INSERT INTO album (source_web, `hash`, count_see, gril, create_time, img_url, count_error )
+        VALUES
+        ( #{dto.sourceWeb},#{dto.hash}, #{dto.countSee}, #{dto.gril}, #{dto.createTime}, #{dto.imgUrl}, #{dto.countError} )
+    </insert>
     <update id="updateError">
         update  album set count_error=count_error+1  where id= #{id}
     </update>

@@ -22,6 +22,6 @@ public interface AlbumService   extends IService<Album> {
 
     Album getInfoBytitle(String title);
 
-
+    void add(Album album);
     void updateError(Long id);
 }

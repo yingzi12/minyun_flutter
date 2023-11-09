@@ -45,6 +45,10 @@ public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   impleme
 //        albumMapper.updateCountSee(id);
         return albumMapper.getInfo(1L);
     }
+    @Override
+    public void add(Album album) {
+         albumMapper.add(album);
+    }
 
     @Override
     public void updateError(Long id) {
