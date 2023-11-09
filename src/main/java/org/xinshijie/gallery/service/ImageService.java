@@ -1,6 +1,7 @@
 package org.xinshijie.gallery.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 import org.xinshijie.gallery.dao.Image;
 import org.xinshijie.gallery.dto.AlbumDto;
 import org.xinshijie.gallery.dto.ImageDto;
@@ -13,5 +14,7 @@ public interface ImageService  extends IService<Image> {
     Integer count(ImageDto dto);
 
     Integer delAlum(Long aid);
+
+    Integer addBatch(List<Image> list);
 
 }

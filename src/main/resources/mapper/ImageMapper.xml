@@ -13,4 +13,11 @@
             <if test="aid != null "> and aid = #{aid}</if>
         </where>
     </select>
+    <insert id="addBatch">
+        INSERT INTO image ( source_web, url, aid )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.sourceWeb}, #{item.url}, #{item.aid})
+        </foreach>
+    </insert>
 </mapper>

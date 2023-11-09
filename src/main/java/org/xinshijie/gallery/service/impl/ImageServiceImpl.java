@@ -33,5 +33,10 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image>   implemen
         return imageMapper.delete(queryWrapper);
     }
 
+    @Override
+    public Integer addBatch(List<Image> list) {
+        return imageMapper.addBatch(list);
+    }
+
 
 }

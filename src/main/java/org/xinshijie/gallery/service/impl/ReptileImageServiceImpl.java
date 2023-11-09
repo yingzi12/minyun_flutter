@@ -216,6 +216,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setGril(gril);
                 album.setIntro(desc);
                 album.setHash(hash);
+                album.setTitle(title);
                 albumService.add(album);
                 album= albumService.getInfoBytitle(title);
             }else{
@@ -235,17 +236,19 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         return;
                     }
                 }else {
-                    imageService.delAlum(album.getId());
+                    //更新内容
                     album=new Album();
                     album.setSourceWeb(reptileRule.getStoryUrl());
                     album.setSourceUrl(detailUrl);
                     album.setImgUrl(imgUrl);
-                    album.setCountError(0);
-                    album.setCountSee(0L);
                     album.setCreateTime(LocalDate.now().toString());
                     album.setGril(gril);
                     album.setHash(hash);
-                    albumService.add(album);
+                    album.setId(album.getId());
+                    albumService.updateById(album);
+                    //删除记录
+                    imageService.delAlum(album.getId());
+
                     album= albumService.getInfoBytitle(title);
                 }
             }
@@ -312,7 +315,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     iamgeBatchInsertList.add(image);
                 }
             }
-            imageService.saveBatch(iamgeBatchInsertList);
+            imageService.addBatch(iamgeBatchInsertList);
             iamgeBatchInsertList.clear();
         }
     }
