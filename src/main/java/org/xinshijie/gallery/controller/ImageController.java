@@ -24,7 +24,7 @@ public class ImageController {
         if(dto.getPageNum()==null){
             dto.setPageNum(1);
         }
-        dto.setPageSize(3);
+        dto.setPageSize(6);
         Integer total = imageService.count(dto);
 
         List<Image> list = imageService.list(dto);
