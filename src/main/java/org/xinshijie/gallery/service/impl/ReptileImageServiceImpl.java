@@ -81,6 +81,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
          orderBySingle(reptileRuleVo,pageList);
      }
 
+     @Async
     public void singleData(){
         //链式构建请求
         String ruleJson = HttpRequest.get(reptileUrl+"/wiki/reptileRule/getList/4")
