@@ -130,7 +130,6 @@ public class ReptileRule implements Serializable{
     /**
      * 需要部需要加url
      */
-    //(description = "需要部需要加url ")
     private Integer storyUrlType;
 
     private String chapterContentRule;
