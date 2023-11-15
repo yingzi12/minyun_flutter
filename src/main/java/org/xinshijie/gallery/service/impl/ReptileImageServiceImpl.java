@@ -201,9 +201,22 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             Long hash = generate12DigitHash(detailUrl, title);
             Album album= albumService.getInfoBytitle(title);
 
+            String sourceWeb="";
+            if(StringUtils.isNotEmpty(imgUrl) && imgUrl.startsWith("http")){
+                URL imgURLPath = new URL(imgUrl);
+                // 获取协议和主机名
+                String protocol = imgURLPath.getProtocol();
+                String host = imgURLPath.getHost();
+                // 构建基本 URL
+                sourceWeb = protocol + "://" + host;
+                // 获取资源路径
+                imgUrl = imgURLPath.getPath();
+            }else{
+                sourceWeb=reptileRule.getImgUrl();
+            }
             if(album==null){
                 album=new Album();
-                album.setSourceWeb(reptileRule.getStoryUrl());
+                album.setSourceWeb(sourceWeb);
                 album.setSourceUrl(detailUrl);
                 album.setUrl(detailUrl);
                 album.setImgUrl(imgUrl);
@@ -223,6 +236,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setSourceUrl(detailUrl);
                     if(StringUtils.isNotEmpty(desc)) {
                         album.setIntro(desc);
+                    }
+                    if(StringUtils.isNotEmpty(sourceWeb)) {
+                        album.setSourceWeb(sourceWeb);
                     }
                     if(StringUtils.isNotEmpty(imgUrl)) {
                         album.setImgUrl(imgUrl);

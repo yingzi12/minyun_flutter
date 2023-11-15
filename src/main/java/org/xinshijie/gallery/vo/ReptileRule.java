@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
  */
 @Data
 //(name = "ReptileRuleVo", description = " ")
-public class ReptileRule implements Serializable{
+public class ReptileRule implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
 
     private Integer isHead;
-    private Integer   isUpdate;
+    private Integer isUpdate;
 
     private LocalDateTime createTime;
 
@@ -150,7 +150,6 @@ public class ReptileRule implements Serializable{
     private String chapterPageUrlRule;
 
 
-
     /**
      * 手机网页会分页 ,分页内容区 第二层
      */
@@ -185,8 +184,9 @@ public class ReptileRule implements Serializable{
     public String findUrl;
     private String storyPageAuthorRule;
     private String storyPageNameRule;
-    public Integer  isLocal;
-    public String    local_path;
+    public Integer isLocal;
+    public String local_path;
+    private String imgUrl;
 
 
 }
