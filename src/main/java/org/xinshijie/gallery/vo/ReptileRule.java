@@ -185,6 +185,8 @@ public class ReptileRule implements Serializable{
     public String findUrl;
     private String storyPageAuthorRule;
     private String storyPageNameRule;
+    public Integer  isLocal;
+    public String    local_path;
 
 
 }

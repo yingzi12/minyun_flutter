@@ -14,10 +14,10 @@
         </where>
     </select>
     <insert id="addBatch">
-        INSERT INTO image ( source_web, url, aid )
+        INSERT INTO image ( source_web, url, aid,source_url )
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.sourceWeb}, #{item.url}, #{item.aid})
+            (#{item.sourceWeb}, #{item.url}, #{item.aid}, #{item.sourceUrl})
         </foreach>
     </insert>
 </mapper>

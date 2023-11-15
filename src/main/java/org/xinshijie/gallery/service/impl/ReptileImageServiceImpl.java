@@ -308,6 +308,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 if (StringUtils.isNotEmpty(imageUrlSource)){
                     Image image=new Image();
                     image.setAid(album.getId());
+                    image.setSourceUrl(imageUrlSource);
                     try {
                         URL url = new URL(imageUrlSource);
                         String domain = url.getProtocol() + "://" + url.getHost();
