@@ -17,7 +17,7 @@ import java.util.List;
 @Validated
 @CrossOrigin
 @RestController
-@RequestMapping("/findImage")
+@RequestMapping("/ ")
 public class FindImageController {
     @Autowired
     private FindImageService findImageService;

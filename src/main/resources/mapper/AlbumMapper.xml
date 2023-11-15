@@ -41,12 +41,15 @@
 
     <select id="getInfo"  resultType="org.xinshijie.gallery.dao.Album">
         select * from album where id= #{id}
+    </select>
 
+    <select id="getInfoByTitle"  resultType="org.xinshijie.gallery.dao.Album">
+        select * from album where title= #{title}
     </select>
     <insert id="add"  parameterType="org.xinshijie.gallery.dao.Album">
-        INSERT INTO album (title,source_web, `hash`, count_see, gril, create_time, img_url, count_error )
+        INSERT INTO album (url,title,source_web, `hash`, count_see, gril, create_time, img_url, count_error, source_url )
         VALUES
-        ( #{dto.title},#{dto.sourceWeb},#{dto.hash}, #{dto.countSee}, #{dto.gril}, #{dto.createTime}, #{dto.imgUrl}, #{dto.countError} )
+        (#{dto.url}, #{dto.title},#{dto.sourceWeb},#{dto.hash}, #{dto.countSee}, #{dto.gril}, #{dto.createTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl} )
     </insert>
     <update id="updateError">
         update  album set count_error=count_error+1  where id= #{id}

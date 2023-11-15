@@ -24,7 +24,10 @@ private static final long serialVersionUID=1L;
 
         private Integer pageTotal;
 
-        private Integer nowPage;
+    private Integer pageSize;
+
+
+    private Integer nowPage;
 
 
     /**

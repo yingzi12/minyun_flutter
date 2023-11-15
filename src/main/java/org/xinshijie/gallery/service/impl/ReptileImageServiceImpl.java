@@ -136,7 +136,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 pageStart=1;
             }
             for(int i=pageStart;i<= pageVo.getPageTotal();i++) {
-                String url = pageVo.getPageUrl().replaceAll("<地址>",i+"" );
+                String url = pageVo.getPageUrl();
+                if(pageVo.getPageSize()>0){
+                    url = pageVo.getPageUrl().replaceAll("<地址>",((i-1)*20)+"" );
+                }else {
+                    url = pageVo.getPageUrl().replaceAll("<地址>",i+"" );
+                }
                 try {
 
                     Document doc = requestUrl(url,reptileRule,0);
@@ -163,10 +168,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     }
                     if(i%10==0){
                         System.out.println("---------------++++++++++++++++++++++--------------------------");
-//                        ReptilePage reptilePage=new ReptilePage();
-//                        reptilePage.setId(pageVo.getId());
-//                        reptilePage.setNowPage(i);
-//                        pageService.updateById(reptilePage);
                     }
                     reptileRule.setStatus(2);
                 } catch (Exception e) {
@@ -176,12 +177,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 pageVo.setNowPage(i);
                 updatePage(pageVo);
             }
-//            ReptilePage reptilePage=new ReptilePage();
-//            reptilePage.setId(pageVo.getId());
-//            reptilePage.setNowPage(pageVo.getPageTotal());
-//            pageService.updateById(reptilePage);
-
-
         }
         reptileRule.setEndTime(LocalDateTime.now());
 //        reptileRuleService.updateById(reptileRule);
@@ -210,6 +205,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album=new Album();
                 album.setSourceWeb(reptileRule.getStoryUrl());
                 album.setSourceUrl(detailUrl);
+                album.setUrl(detailUrl);
                 album.setImgUrl(imgUrl);
                 album.setCountError(0);
                 album.setCountSee(0L);
@@ -222,8 +218,18 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album= albumService.getInfoBytitle(title);
             }else{
                 //判断是否是同一组
-                if(hash.equals(album.getHash())||StringUtils.isEmpty(album.getGril())){
+                if(hash.equals(album.getHash())||StringUtils.isEmpty(album.getGril())||StringUtils.isEmpty(album.getUrl())||StringUtils.isEmpty(album.getIntro())){
                     album.setHash(hash);
+                    album.setSourceUrl(detailUrl);
+                    if(StringUtils.isNotEmpty(desc)) {
+                        album.setIntro(desc);
+                    }
+                    if(StringUtils.isNotEmpty(imgUrl)) {
+                        album.setImgUrl(imgUrl);
+                    }
+                    if(StringUtils.isNotEmpty(detailUrl)) {
+                        album.setUrl(detailUrl);
+                    }
                     if(StringUtils.isNotEmpty(gril)) {
                         album.setGril(gril);
                     }

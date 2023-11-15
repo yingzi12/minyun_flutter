@@ -43,7 +43,7 @@ public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   impleme
     @Override
     public Album getInfoBytitle(String title) {
 //        albumMapper.updateCountSee(id);
-        return albumMapper.getInfo(1L);
+        return albumMapper.getInfoByTitle(title);
     }
     @Override
     public void add(Album album) {

@@ -25,6 +25,9 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Album getInfo(Long id);
 
+    Album getInfoByTitle(String title);
+
+
     Integer updateError(Long id);
 
     Integer updateCountSee(@Param("id") Long id,@Param("updateTime") String updateTime);

@@ -182,5 +182,9 @@ public class ReptileRule implements Serializable{
     //(description = "替换规则 ")
     private String iamgeUrlReplaceRule;
 
+    public String findUrl;
+    private String storyPageAuthorRule;
+    private String storyPageNameRule;
+
 
 }
