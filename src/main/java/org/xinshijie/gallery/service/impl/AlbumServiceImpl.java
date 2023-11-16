@@ -1,6 +1,7 @@
 package org.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xinshijie.gallery.dao.Album;
 import org.xinshijie.gallery.dao.Image;
@@ -11,6 +12,7 @@ import org.xinshijie.gallery.service.AlbumService;
 import org.xinshijie.gallery.mapper.AlbumMapper;
 import org.springframework.stereotype.Service;
 import org.xinshijie.gallery.service.ImageService;
+import org.xinshijie.gallery.vo.AlbumVo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,9 +37,16 @@ public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   impleme
     }
 
     @Override
-    public Album getInfo(Long id) {
+    public AlbumVo getInfo(Long id) {
+        AlbumVo albumVo=new AlbumVo();
         albumMapper.updateCountSee(id, LocalDate.now().toString());
-        return albumMapper.getInfo(id);
+        Album pre =albumMapper. previousChapter( id);
+        Album next= albumMapper.nextChapter( id);
+        Album album= albumMapper.getInfo(id);
+        BeanUtils.copyProperties(album,albumVo);
+        albumVo.setPre(pre);
+        albumVo.setNext(next);
+        return albumVo;
     }
 
     @Override

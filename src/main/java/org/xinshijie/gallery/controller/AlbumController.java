@@ -11,6 +11,7 @@ import org.xinshijie.gallery.dto.ImageDto;
 import org.xinshijie.gallery.service.AlbumService;
 import org.xinshijie.gallery.service.IReptileImageService;
 import org.xinshijie.gallery.service.ImageService;
+import org.xinshijie.gallery.vo.AlbumVo;
 
 import java.util.List;
 
@@ -55,9 +56,9 @@ public class AlbumController {
         return Result.success(list,total);
     }
     @GetMapping("/info")
-    public Result<Album> list(@RequestParam("id") Long id) {
-        Album list = albumService.getInfo(id);
-        return Result.success(list);
+    public Result<AlbumVo> list(@RequestParam("id") Long id) {
+        AlbumVo albumVo = albumService.getInfo(id);
+        return Result.success(albumVo);
     }
 
     @GetMapping("/error")

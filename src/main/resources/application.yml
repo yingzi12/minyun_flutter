@@ -19,5 +19,5 @@ mybatis-plus:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
 reptile:
-  url: http://127.0.0.1:8097
+  url: https://admin.aiavr.com
 

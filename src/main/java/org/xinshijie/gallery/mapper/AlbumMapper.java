@@ -23,14 +23,19 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Integer add(@Param("dto") Album dto);
 
-    Album getInfo(Long id);
+    Album getInfo(@Param("id")Long id);
 
-    Album getInfoByTitle(String title);
+    Album getInfoByTitle(@Param("title")String title);
 
 
-    Integer updateError(Long id);
+    Integer updateError(@Param("id")Long id);
 
     Integer updateCountSee(@Param("id") Long id,@Param("updateTime") String updateTime);
+
+    Album previousChapter(@Param("id")Long id);
+
+    Album nextChapter(@Param("id")Long id);
+
 
 }
 

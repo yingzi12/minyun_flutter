@@ -25,8 +25,9 @@
         <where>
             <if test="id != null "> and id = #{id}</if>
             <if test="title != null "> and title like  '%' || #{title} || '%'</if>
+            <if test="1=1"> and count_error &lt; 100</if>
         </where>
-        <if test="order == null "> order by  update_time,count_see  desc </if>
+        <if test="order == null "> order by  create_time  desc ,count_see  desc </if>
         <if test="order != null "> order by  count_see  desc </if>
         LIMIT #{pageSize}
         OFFSET (#{pageNum} - 1) * #{pageSize};
@@ -57,4 +58,18 @@
     <update id="updateCountSee">
         update  album set count_see=count_see+1,update_time= #{updateTime} where id= #{id}
     </update>
+    <select id="previousChapter" resultType="org.xinshijie.gallery.dao.Album">
+        SELECT *
+        FROM album a
+        WHERE   a.id &lt; #{id}
+        ORDER BY id desc
+        LIMIT 1
+    </select>
+    <select id="nextChapter" resultType="org.xinshijie.gallery.dao.Album">
+        SELECT *
+        FROM album a
+        WHERE a.id > #{id}
+        ORDER BY id
+        LIMIT 1 OFFSET 1
+    </select>
 </mapper>

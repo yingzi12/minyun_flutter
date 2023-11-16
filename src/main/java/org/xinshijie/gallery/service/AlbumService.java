@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.xinshijie.gallery.dao.Album;
 import org.xinshijie.gallery.dao.Image;
 import org.xinshijie.gallery.dto.AlbumDto;
+import org.xinshijie.gallery.vo.AlbumVo;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface AlbumService   extends IService<Album> {
 
     Integer count(AlbumDto dto);
 
-    Album getInfo(Long id);
+    AlbumVo getInfo(Long id);
 
     Album getInfoBytitle(String title);
 

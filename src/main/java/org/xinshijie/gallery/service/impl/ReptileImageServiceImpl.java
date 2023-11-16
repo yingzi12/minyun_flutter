@@ -143,7 +143,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     url = pageVo.getPageUrl().replaceAll("<地址>",i+"" );
                 }
                 try {
-
                     Document doc = requestUrl(url,reptileRule,0);
                     Element body = doc.body();
                     Element cont = body.select(reptileRule.getStoryPageRule()).first();
@@ -223,6 +222,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setCountError(0);
                 album.setCountSee(0L);
                 album.setCreateTime(LocalDate.now().toString());
+                album.setUpdateTime(LocalDate.now().toString());
                 album.setGril(gril);
                 album.setIntro(desc);
                 album.setHash(hash);
@@ -249,6 +249,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if(StringUtils.isNotEmpty(gril)) {
                         album.setGril(gril);
                     }
+                    album.setUpdateTime(LocalDate.now().toString());
                     albumService.updateById(album);
                 }
                 //判断是否需要强制更新
@@ -268,6 +269,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setGril(gril);
                     album.setHash(hash);
                     album.setId(album.getId());
+                    album.setUpdateTime(LocalDate.now().toString());
                     albumService.updateById(album);
                     //删除记录
                     imageService.delAlum(album.getId());
@@ -292,6 +294,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         addImageList(pageUrl,album,reptileRule);
                     }
                 }
+            }
+            //如果图片为空，就到图片列表里取一张图片
+            if(StringUtils.isEmpty(imgUrl)){
+                albumService.updateById(album);
             }
 
         } catch (Exception e) {
@@ -331,6 +337,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         String path = url.getPath() + (url.getQuery() != null ? "?" + url.getQuery() : "");
                         image.setSourceWeb(domain);
                         image.setUrl(path);
+                        if(StringUtils.isEmpty(album.getImgUrl())){
+                            album.setImgUrl(path);
+                            album.setSourceWeb(domain);
+                        }
                     } catch (MalformedURLException e) {
                         image.setSourceWeb("");
                         image.setUrl(imageUrlSource);
