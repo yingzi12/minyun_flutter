@@ -20,4 +20,8 @@
             (#{item.sourceWeb}, #{item.url}, #{item.aid}, #{item.sourceUrl})
         </foreach>
     </insert>
+
+    <insert id="updateSourceUrl">
+       update image set source_url = #{dto.sourceUrl} where id=#{dto.id}
+    </insert>
 </mapper>

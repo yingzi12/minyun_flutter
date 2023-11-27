@@ -43,6 +43,9 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Integer findMinId();
 
+    Integer updateSourceUrl(@Param("dto")Album dto);
+
+
 }
 
 

@@ -19,5 +19,6 @@ public interface ImageService  extends IService<Image> {
 
     List<Image> listAll(Long aid);
 
+    Integer updateSourceUrl(Image dto);
 
 }

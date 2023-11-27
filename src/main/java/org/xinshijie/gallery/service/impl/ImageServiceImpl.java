@@ -45,5 +45,10 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image>   implemen
         return imageMapper.selectList(queryWrapper);
     }
 
+    @Override
+    public Integer updateSourceUrl(Image dto) {
+        return imageMapper.updateSourceUrl(dto);
+    }
+
 
 }

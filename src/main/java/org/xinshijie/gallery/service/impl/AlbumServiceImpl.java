@@ -72,6 +72,10 @@ public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   impleme
         Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId -30);
         return albumMapper.findRandomStories(randomId,pageSize);
     }
+
+    public Integer updateSourceUrl(Album dto) {
+        return albumMapper.updateSourceUrl(dto);
+    }
 }
 
 

@@ -28,4 +28,5 @@ public interface AlbumService   extends IService<Album> {
 
     List<Album> findRandomStories( Integer pageSize);
 
+    Integer updateSourceUrl(Album dto);
 }

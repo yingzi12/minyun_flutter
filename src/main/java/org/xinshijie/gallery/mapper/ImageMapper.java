@@ -18,4 +18,6 @@ public interface ImageMapper extends BaseMapper<Image> {
 
     Integer addBatch(@Param("list") List<Image> list);
 
+    Integer updateSourceUrl(@Param("dto")Image dto);
+
 }

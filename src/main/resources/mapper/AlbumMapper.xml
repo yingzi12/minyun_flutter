@@ -84,4 +84,8 @@
     <select id="findMinId" resultType="Integer">
         SELECT min(id) FROM album s
     </select>
+
+    <insert id="updateSourceUrl">
+        update album set source_url = #{dto.sourceUrl} where id=#{dto.id}
+    </insert>
 </mapper>

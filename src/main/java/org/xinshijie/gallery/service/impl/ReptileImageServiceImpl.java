@@ -9,22 +9,18 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hc.client5.http.async.methods.*;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
-import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+import org.apache.hc.client5.http.classic.methods.HttpHead;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.concurrent.FutureCallback;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.TrustAllStrategy;
 import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.message.StatusLine;
-import org.apache.hc.core5.io.CloseMode;
-import org.apache.hc.core5.reactor.IOReactorConfig;
-import org.apache.hc.core5.util.Timeout;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,17 +48,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Future;
 
 @Slf4j
 @Service
@@ -79,6 +73,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     @Value("${image.path}")
     private String imagePath;
+
 
      @Async
      public void ayacData(Integer id){
@@ -217,32 +212,34 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         albumDto.setPageSize(100);
         List<Album> list = albumService.list(albumDto);
         for(Album album:list){
-            if(album.getUrl()!=null&&album.getUrl().length()>0 &&( album.getSourceUrl()==null || !album.getSourceUrl().startsWith("/image") )) {
-                String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+            if(album.getImgUrl()!=null&&album.getImgUrl().length()>0 &&( album.getSourceUrl()==null || !album.getSourceUrl().startsWith("/image") )) {
+                String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb() + album.getImgUrl());
                 if(sourceUrl.equals("")){
-                    log.error("同步album错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),album.getId(),album.getUrl());
+                    log.error("同步album错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}",album.getId(),album.getTitle(),album.getId(),album.getSourceWeb(),album.getImgUrl());
                 }else{
                     album.setSourceUrl(sourceUrl);
-                    albumService.updateById(album);
+                    albumService.updateSourceUrl(album);
                 }
             }else{
-                log.error("同步album错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),album.getId(),album.getUrl());
+                if(album.getImgUrl() ==null || !album.getImgUrl().startsWith("/image")) {
+                    log.error("同步album错误2，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), album.getId(), album.getSourceWeb(), album.getImgUrl());
+                }
             }
 
             List<Image>  values=  imageService.listAll(album.getId());
-
             for(Image image:values){
-                if(image.getUrl()!=null&&image.getUrl().length()>0 &&( image.getSourceUrl()==null || !image.getSourceUrl().startsWith("/image") )) {
+                if(image.getUrl()!=null && image.getUrl().length()>0 && ( image.getSourceUrl()==null || ! image.getSourceUrl().startsWith("/image") )) {
                     String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb() + image.getUrl());
-
                     if(sourceUrl.equals("")){
-                        log.error("同步url错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),image.getId(),image.getUrl());
+                        log.error("同步url错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}",album.getId(),album.getTitle(),image.getId(),image.getSourceWeb(),image.getUrl());
                     }else{
                         image.setSourceUrl(sourceUrl);
-                        imageService.updateById(image);
+                        imageService.updateSourceUrl(image);
                     }
                 }else{
-                    log.error("同步url错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),image.getId(),image.getUrl());
+                    if(image.getSourceUrl() ==null || !image.getSourceUrl().startsWith("/image")) {
+                        log.error("同步url错误2，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), image.getId(), image.getSourceWeb(), image.getUrl());
+                    }
                 }
             }
         }
@@ -285,8 +282,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 sourceWeb=reptileRule.getImgUrl();
             }
             if(album==null){
-
-
                 album=new Album();
                 album.setSourceWeb(sourceWeb);
                 album.setSourceUrl(detailUrl);
@@ -470,24 +465,22 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         return null;
     }
 
-    public  boolean isURLValid(String urlString,ReptileRule reptileRule) {
-        try {
-            URL url = new URL(urlString);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            if(StringUtils.isNotEmpty(reptileRule.getHost())){
-                connection.setRequestProperty("Host",reptileRule.getHost());
-            }else{
-//                URL urlPath = new URL(url);
-                // 使用getHost()方法获取主机部分
-                String host = url.getHost();
-                connection.setRequestProperty("Host",host);
-            }
-//            connection.setRequestMethod("HEAD"); // 使用HEAD请求，只获取响应头信息
-            int responseCode = connection.getResponseCode();
+    public boolean isURLValid(String urlString, ReptileRule reptileRule) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpHead request = new HttpHead(urlString);
 
-            // 2xx 表示成功响应，即URL可正常访问
-            return (responseCode >= 200 && responseCode < 300);
+            if (StringUtils.isNotEmpty(reptileRule.getHost())) {
+                request.addHeader("Host", reptileRule.getHost());
+            } else {
+                URL url = new URL(urlString);
+                request.addHeader("Host", url.getHost());
+            }
+
+            try (ClassicHttpResponse response = (ClassicHttpResponse) httpClient.execute(request)) {
+                int responseCode = response.getCode();
+                // 2xx 表示成功响应
+                return (responseCode >= 200 && responseCode < 300);
+            }
         } catch (IOException e) {
             // URL无法正常访问
             return false;
@@ -583,6 +576,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 return "";
             }
             if (!isImageUrlValid(url,0)) {
+                log.error("判断地址不可访问：name:{} ,imagePath:{}, url:{}",name,imagePath,url);
                 return "";
             }
             String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imagePath;
@@ -595,6 +589,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 return downloadImage(url, path,0);
             }
         }catch (Exception ex){
+            log.error("判断getImageUrl是否可以访问：name:{} ,imagePath:{}, url:{}",name,imagePath,url);
+            ex.printStackTrace();
             return "";
         }
     }
@@ -604,33 +600,36 @@ public class ReptileImageServiceImpl implements IReptileImageService {
      * @param imageUrl
      * @return
      */
-    public boolean isImageUrlValid(String imageUrl,int count) {
-        if(count > 3){
-            log.error("判断url是否可以访问： url:{}",imageUrl);
+    public boolean isImageUrlValid(String imageUrl, int count) {
+        if (count > 3) {
+            log.error("判断url是否可以访问： url:{}", imageUrl);
             return false;
         }
+
         try {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
+            SSLContextBuilder sslBuilder = SSLContextBuilder.create();
+            sslBuilder.loadTrustMaterial(new TrustAllStrategy()); // 忽略 SSL 验证
+            CloseableHttpClient httpClient = HttpClients.custom()
+//                    .setSSLContext(sslBuilder.build())
+//                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE) // 忽略主机名验证
+                    .build();
 
-            // 检查响应码
-            int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                return false;
+            HttpGet request = new HttpGet(imageUrl);
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int responseCode = response.getCode();
+                if (responseCode != 200) {
+                    return false;
+                }
+
+                String mimeType = ContentType.parse(response.getEntity().getContentType()).getMimeType();
+                if (mimeType.startsWith("image/")) {
+                    BufferedImage image = ImageIO.read(response.getEntity().getContent());
+                    EntityUtils.consume(response.getEntity());
+                    return image != null;
+                }
             }
-
-            // 检查内容类型
-            String contentType = connection.getContentType();
-            if (contentType != null && (contentType.startsWith("image/"))) {
-                // 尝试读取图片
-                BufferedImage image = ImageIO.read(url);
-                return image != null;
-            }
-
-        } catch (IOException e) {
-            isImageUrlValid(imageUrl,count+1);
+        } catch (IOException | GeneralSecurityException e) {
+            return isImageUrlValid(imageUrl, count + 1);
         }
         return false;
     }
@@ -690,9 +689,16 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
             downloadImage(url,destinationFile,count+1);
         }
         return "";
     }
 
+    public static void main(String args[]){
+        String str="https://1117.plmn5.com/uploadfile/202311/24/B5165933146.jpg";
+        ReptileImageServiceImpl service=new ReptileImageServiceImpl();
+//        service.getImageUrl("test",111,str);
+        service.isImageUrlValid("https://1025.plmn5.com/uploadfile/202311/14/8185444597.jpg",0);
+    }
 }
