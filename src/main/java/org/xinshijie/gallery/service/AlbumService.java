@@ -27,4 +27,5 @@ public interface AlbumService   extends IService<Album> {
     void updateError(Long id);
 
     List<Album> findRandomStories( Integer pageSize);
+
 }
