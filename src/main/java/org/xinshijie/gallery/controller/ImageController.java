@@ -30,4 +30,14 @@ public class ImageController {
         List<Image> list = imageService.list(dto);
         return Result.success(list,total);
     }
+
+    @GetMapping("/count")
+    public Result<Integer> count(ImageDto dto) {
+        if(dto.getPageNum()==null){
+            dto.setPageNum(1);
+        }
+        dto.setPageSize(6);
+        Integer total = imageService.count(dto);
+        return Result.success(total);
+    }
 }

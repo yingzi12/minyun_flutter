@@ -7,9 +7,14 @@ spring:
 server:
   # ????HTTP??????8080
   port: 8098
+
   servlet:
     # ???????
     context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 # MyBatis??
 mybatis-plus:
   # ???????
@@ -19,5 +24,5 @@ mybatis-plus:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
 reptile:
-  url: https://admin.aiavr.com
+  url: http://127.0.0.1:8097
 

@@ -36,6 +36,11 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Album nextChapter(@Param("id")Long id);
 
+    List<Album> findRandomStories(@Param("randomId") Integer randomId,@Param("pageSize") Integer pageSize);
+
+    Integer findMaxId();
+
+    Integer findMinId();
 
 }
 

@@ -16,6 +16,7 @@ import org.xinshijie.gallery.vo.AlbumVo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
 * @author User
@@ -62,6 +63,14 @@ public class AlbumServiceImpl  extends ServiceImpl<AlbumMapper, Album>   impleme
     @Override
     public void updateError(Long id) {
          albumMapper.updateError(id);
+    }
+
+    @Override
+    public List<Album> findRandomStories(Integer pageSize) {
+        Integer maxId = albumMapper.findMaxId(); // 你需要实现这个
+        Integer minId = albumMapper.findMinId(); // 还有这个
+        Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId -30);
+        return albumMapper.findRandomStories(randomId,pageSize);
     }
 }
 

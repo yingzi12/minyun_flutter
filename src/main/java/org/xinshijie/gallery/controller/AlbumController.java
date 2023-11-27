@@ -40,6 +40,13 @@ public class AlbumController {
         return Result.success(list,total);
     }
 
+    @GetMapping("/random")
+    public Result<List<Album>> random() {
+        List<Album> list = albumService.findRandomStories(8);
+
+        return Result.success(list);
+    }
+
     @GetMapping("/listSee")
     public Result<List<Album>> listSee(AlbumDto dto) {
         if(dto.getPageNum()==null){

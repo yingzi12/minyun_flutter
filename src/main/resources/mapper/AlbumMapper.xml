@@ -72,4 +72,16 @@
         ORDER BY id
         LIMIT 1 OFFSET 1
     </select>
+
+    <select id="findRandomStories" resultType="org.xinshijie.gallery.dao.Album">
+        SELECT * FROM album s WHERE s.id >= #{randomId}
+        ORDER BY s.id ASC
+        limit #{pageSize}
+    </select>
+    <select id="findMaxId" resultType="Integer">
+        SELECT max(id) FROM album s
+    </select>
+    <select id="findMinId" resultType="Integer">
+        SELECT min(id) FROM album s
+    </select>
 </mapper>
