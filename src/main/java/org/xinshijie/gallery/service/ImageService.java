@@ -17,4 +17,7 @@ public interface ImageService  extends IService<Image> {
 
     Integer addBatch(List<Image> list);
 
+    List<Image> listAll(Long aid);
+
+
 }

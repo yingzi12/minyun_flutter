@@ -19,6 +19,7 @@ import java.util.List;
 @Mapper
 public interface AlbumMapper extends BaseMapper<Album> {
     List<Album> list(AlbumDto dto);
+
     Integer count(AlbumDto dto);
 
     Integer add(@Param("dto") Album dto);
@@ -36,6 +37,11 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Album nextChapter(@Param("id")Long id);
 
+    List<Album> findRandomStories(@Param("randomId") Integer randomId,@Param("pageSize") Integer pageSize);
+
+    Integer findMaxId();
+
+    Integer findMinId();
 
 }
 

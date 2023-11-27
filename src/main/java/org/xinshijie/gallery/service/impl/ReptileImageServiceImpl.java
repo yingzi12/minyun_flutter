@@ -1,12 +1,30 @@
 package org.xinshijie.gallery.service.impl;
 
 
+import cn.hutool.core.util.HashUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hc.client5.http.async.methods.*;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.concurrent.FutureCallback;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.message.StatusLine;
+import org.apache.hc.core5.io.CloseMode;
+import org.apache.hc.core5.reactor.IOReactorConfig;
+import org.apache.hc.core5.util.Timeout;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.xinshijie.gallery.common.ServiceException;
 import org.xinshijie.gallery.dao.Album;
 import org.xinshijie.gallery.dao.Image;
+import org.xinshijie.gallery.dto.AlbumDto;
 import org.xinshijie.gallery.dto.ImageDto;
 import org.xinshijie.gallery.service.AlbumService;
 import org.xinshijie.gallery.service.IReptileImageService;
@@ -26,7 +45,12 @@ import org.xinshijie.gallery.service.ImageService;
 import org.xinshijie.gallery.vo.ReptilePage;
 import org.xinshijie.gallery.vo.ReptileRule;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -38,6 +62,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Future;
 
 @Slf4j
 @Service
@@ -51,6 +76,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
      @Value("${reptile.url}")
      private String reptileUrl;
+
+    @Value("${image.path}")
+    private String imagePath;
 
      @Async
      public void ayacData(Integer id){
@@ -178,8 +206,51 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             }
         }
         reptileRule.setEndTime(LocalDateTime.now());
-//        reptileRuleService.updateById(reptileRule);
     }
+
+    @Async
+    @Override
+    public void singleLocalData() {
+        AlbumDto albumDto=new AlbumDto();
+        albumDto.setPageNum(1);
+        albumDto.setOrder("count_see");
+        albumDto.setPageSize(100);
+        List<Album> list = albumService.list(albumDto);
+        for(Album album:list){
+            if(album.getUrl()!=null&&album.getUrl().length()>0 &&( album.getSourceUrl()==null || !album.getSourceUrl().startsWith("/image") )) {
+                String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+                if(sourceUrl.equals("")){
+                    log.error("同步album错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),album.getId(),album.getUrl());
+                }else{
+                    album.setSourceUrl(sourceUrl);
+                    albumService.updateById(album);
+                }
+            }else{
+                log.error("同步album错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),album.getId(),album.getUrl());
+            }
+
+            List<Image>  values=  imageService.listAll(album.getId());
+
+            for(Image image:values){
+                if(image.getUrl()!=null&&image.getUrl().length()>0 &&( image.getSourceUrl()==null || !image.getSourceUrl().startsWith("/image") )) {
+                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb() + image.getUrl());
+
+                    if(sourceUrl.equals("")){
+                        log.error("同步url错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),image.getId(),image.getUrl());
+                    }else{
+                        image.setSourceUrl(sourceUrl);
+                        imageService.updateById(image);
+                    }
+                }else{
+                    log.error("同步url错误，albumId:{},album:{},imageId:{},imageUrl:{}",album.getId(),album.getTitle(),image.getId(),image.getUrl());
+                }
+            }
+        }
+
+    }
+
+
+
     public void detail(String url,String imgUrl, ReptileRule reptileRule ){
         String detailUrl=url;
         try {
@@ -214,6 +285,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 sourceWeb=reptileRule.getImgUrl();
             }
             if(album==null){
+
+
                 album=new Album();
                 album.setSourceWeb(sourceWeb);
                 album.setSourceUrl(detailUrl);
@@ -227,8 +300,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setIntro(desc);
                 album.setHash(hash);
                 album.setTitle(title);
+
+                String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+                album.setUrl(sourceUrl);
                 albumService.add(album);
                 album= albumService.getInfoBytitle(title);
+
+
             }else{
                 //判断是否是同一组
                 if(hash.equals(album.getHash())||StringUtils.isEmpty(album.getGril())||StringUtils.isEmpty(album.getUrl())||StringUtils.isEmpty(album.getIntro())){
@@ -250,6 +328,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         album.setGril(gril);
                     }
                     album.setUpdateTime(LocalDate.now().toString());
+
+                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+                    if(!"".equals(sourceUrl)) {
+                        album.setUrl(sourceUrl);
+                    }
                     albumService.updateById(album);
                 }
                 //判断是否需要强制更新
@@ -270,6 +353,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setHash(hash);
                     album.setId(album.getId());
                     album.setUpdateTime(LocalDate.now().toString());
+                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+                    if(!"".equals(sourceUrl)) {
+                        album.setUrl(sourceUrl);
+                    }
                     albumService.updateById(album);
                     //删除记录
                     imageService.delAlum(album.getId());
@@ -345,6 +432,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         image.setSourceWeb("");
                         image.setUrl(imageUrlSource);
                         throw new RuntimeException(e);
+                    }
+                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb() + image.getUrl());
+                    if(!"".equals(sourceUrl)) {
+                        image.setUrl(sourceUrl);
                     }
                     iamgeBatchInsertList.add(image);
                 }
@@ -485,4 +576,123 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 .timeout(20000)//超时，毫秒
                 .execute().body();
     }
+
+    public String getImageUrl(String name,int imagePath,String url) {
+        try {
+            if (StringUtils.isEmpty(url)) {
+                return "";
+            }
+            if (!isImageUrlValid(url,0)) {
+                return "";
+            }
+            String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imagePath;
+            String extens = getFileExtensionFromURL(url);
+            if (StringUtils.isNotEmpty(extens)) {
+                path = path + "." + extens;
+                return downloadImage(url, path,0);
+            } else {
+                path = path + ".jpg";
+                return downloadImage(url, path,0);
+            }
+        }catch (Exception ex){
+            return "";
+        }
+    }
+
+    /**
+     * 判断url是否可以访问
+     * @param imageUrl
+     * @return
+     */
+    public boolean isImageUrlValid(String imageUrl,int count) {
+        if(count > 3){
+            log.error("判断url是否可以访问： url:{}",imageUrl);
+            return false;
+        }
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            // 检查响应码
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                return false;
+            }
+
+            // 检查内容类型
+            String contentType = connection.getContentType();
+            if (contentType != null && (contentType.startsWith("image/"))) {
+                // 尝试读取图片
+                BufferedImage image = ImageIO.read(url);
+                return image != null;
+            }
+
+        } catch (IOException e) {
+            isImageUrlValid(imageUrl,count+1);
+        }
+        return false;
+    }
+
+    public  String getFileExtensionFromURL(String urlString) {
+        try {
+            URL url = new URL(urlString);
+            String path = url.getPath();
+            int lastSlashIndex = path.lastIndexOf("/");
+            int lastDotIndex = path.lastIndexOf(".");
+
+            if (lastDotIndex > 0 && lastDotIndex > lastSlashIndex) {
+                return path.substring(lastDotIndex + 1);
+            }
+        } catch (Exception e) {
+            // URL解析错误
+            log.error("getFileExtensionFromURL urlString:{}",urlString,e);
+        }
+        return ""; // 无法提取文件扩展名
+    }
+
+    public  String downloadImage(String url, String destinationFile,int count) {
+        if(count>3){
+            log.error("同步url 下载图片，url:{}",url);
+        }
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet request = new HttpGet(url);
+
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                File outputFile = new File(imagePath+"/"+destinationFile);
+
+                File parentDir = outputFile.getParentFile();
+
+                // 如果父目录不存在，尝试创建它
+                if (parentDir != null && !parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+
+                try (InputStream inputStream = entity.getContent();
+                     FileOutputStream outputStream = new FileOutputStream(outputFile)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                // 验证图片是否正常
+                BufferedImage image = ImageIO.read(outputFile);
+                if (image == null) {
+                    return "";
+                } else {
+                    EntityUtils.consume(entity);
+                    return destinationFile;
+                }
+            }
+        } catch (IOException e) {
+            downloadImage(url,destinationFile,count+1);
+        }
+        return "";
+    }
+
 }

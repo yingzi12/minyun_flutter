@@ -38,5 +38,12 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image>   implemen
         return imageMapper.addBatch(list);
     }
 
+    @Override
+    public List<Image> listAll(Long aid) {
+        QueryWrapper<Image> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("aid",aid);
+        return imageMapper.selectList(queryWrapper);
+    }
+
 
 }

@@ -16,4 +16,5 @@ public interface IReptileImageService {
 
     void orderBySingle(ReptileRule reptileRule, List<ReptilePage> pageList );
 
+    void singleLocalData();
 }
