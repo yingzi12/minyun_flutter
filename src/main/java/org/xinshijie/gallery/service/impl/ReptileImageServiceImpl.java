@@ -745,8 +745,43 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     public static void main(String args[]){
         String str="https://1117.plmn5.com/uploadfile/202311/24/B5165933146.jpg";
-        ReptileImageServiceImpl service=new ReptileImageServiceImpl();
-//        service.getImageUrl("test",111,str);
-        service.isImageUrlValid("https://1025.plmn5.com/uploadfile/202311/14/8185444597.jpg",0);
+        System.out.println(getContentHash("https://1117.plmn5.com/uploadfile/202311/3/3E111144727.jpg"));
+    }
+
+    public static String getContentHash(String content) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(content.getBytes("UTF-8"));
+            String utl = new java.math.BigInteger(1, hash).toString();
+            System.out.println(content + " " + utl);
+            return utl;
+        } catch (NoSuchAlgorithmException | java.io.UnsupportedEncodingException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static String getContentHash16(String content) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(content.getBytes("UTF-8"));
+            String titleHash = bytesToHex(hash);
+            String utl = new java.math.BigInteger(1, hash).toString();
+            System.out.println(content + " " + utl);
+            return utl;
+        } catch (NoSuchAlgorithmException | java.io.UnsupportedEncodingException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }
