@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: org.sqlite.JDBC
-    url: jdbc:sqlite:/Users/luhuang/Documents/git/gallery2/db/db_gallery.db
+    url: jdbc:sqlite:D:\\git\\gallery\\db\\db_gallery.db
 # ??????
 server:
   # ????HTTP??????8080
@@ -23,6 +23,6 @@ mybatis-plus:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
 reptile:
-  url: http://127.0.0.1:8097
+  url: https://admin.aiavr.com
 image:
-  path: /Users/luhuang/Documents/git/gallery2/db
+  path: E:\\folder\\sjk

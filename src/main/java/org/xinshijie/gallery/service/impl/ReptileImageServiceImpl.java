@@ -9,18 +9,14 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpHead;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
-import org.apache.hc.client5.http.ssl.TrustAllStrategy;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -515,10 +511,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 request.addHeader("Host", url.getHost());
             }
 
-            try (ClassicHttpResponse response = (ClassicHttpResponse) httpClient.execute(request)) {
-                int responseCode = response.getCode();
-                // 2xx 表示成功响应
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int responseCode = response.getStatusLine().getStatusCode();
                 return (responseCode >= 200 && responseCode < 300);
+                // 2xx 表示成功响应
+
             }
         } catch (IOException e) {
             // URL无法正常访问
@@ -655,16 +652,21 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet request = new HttpGet(imageUrl);
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                int responseCode = response.getCode();
+                int responseCode = response.getStatusLine().getStatusCode();
                 if (responseCode != 200) {
                     return false;
                 }
 
-                String mimeType = ContentType.parse(response.getEntity().getContentType()).getMimeType();
-                if (mimeType.startsWith("image/")) {
-                    BufferedImage image = ImageIO.read(response.getEntity().getContent());
-                    EntityUtils.consume(response.getEntity());
-                    return image != null;
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    ContentType contentType = ContentType.getOrDefault(entity);
+                    String mimeType = contentType.getMimeType();
+
+                    if (mimeType.startsWith("image/")) {
+                        BufferedImage image = ImageIO.read(entity.getContent());
+                        EntityUtils.consume(entity);
+                        return image != null;
+                    }
                 }
             }
         } catch (IOException  e) {
