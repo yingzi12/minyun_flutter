@@ -58,6 +58,7 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -77,33 +78,33 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     @Value("${image.path}")
     private String imagePath;
 
-    private static SSLContext sc;
-    static {
-
-        try {
-            // 创建信任所有证书的 TrustManager
-            TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[0];
-                        }
-
-                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                        }
-
-                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                        }
-                    }
-            };
-
-            // 安装信任所有证书的 TrustManager
-            sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new SecureRandom());
-
-        }catch (Exception ex){
-            ex.getMessage();
-        }
-    }
+//    private static SSLContext sc;
+//    static {
+//
+//        try {
+//            // 创建信任所有证书的 TrustManager
+//            TrustManager[] trustAllCerts = new TrustManager[]{
+//                    new X509TrustManager() {
+//                        public X509Certificate[] getAcceptedIssuers() {
+//                            return new X509Certificate[0];
+//                        }
+//
+//                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+//                        }
+//
+//                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+//                        }
+//                    }
+//            };
+//
+//            // 安装信任所有证书的 TrustManager
+//            sc = SSLContext.getInstance("SSL");
+//            sc.init(null, trustAllCerts, new SecureRandom());
+//
+//        }catch (Exception ex){
+//            ex.getMessage();
+//        }
+//    }
 
     // 类成
      @Async
@@ -131,7 +132,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
          if(jsonObject.getIntValue("code")!=200){
              throw new ServiceException("pageJson 出现异常");
          }
-         List<ReptilePage> pageList = JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class);
+         List<ReptilePage> pageList =new ArrayList<>();
+         pageList.addAll( JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class));
          orderBySingle(reptileRuleVo,pageList);
      }
 
@@ -355,7 +357,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     }
                     album.setUpdateTime(LocalDate.now().toString());
 
-                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
                     if(!"".equals(sourceUrl)) {
                         album.setUrl(sourceUrl);
                     }
@@ -379,7 +381,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setHash(hash);
                     album.setId(album.getId());
                     album.setUpdateTime(LocalDate.now().toString());
-                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
+                    String sourceUrl =  getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
                     if(!"".equals(sourceUrl)) {
                         album.setUrl(sourceUrl);
                     }
@@ -497,6 +499,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     }
 
     public boolean isURLValid(String urlString, ReptileRule reptileRule) {
+//        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//        // 创建所有主机名都有效的 HostnameVerifier
+//        HostnameVerifier allHostsValid = (hostname, session) -> true;
+//        // 安装 HostnameVerifier
+//        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpHead request = new HttpHead(urlString);
 
@@ -638,11 +646,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
 
         try {
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            // 创建所有主机名都有效的 HostnameVerifier
-            HostnameVerifier allHostsValid = (hostname, session) -> true;
-            // 安装 HostnameVerifier
-            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+//            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//            // 创建所有主机名都有效的 HostnameVerifier
+//            HostnameVerifier allHostsValid = (hostname, session) -> true;
+//            // 安装 HostnameVerifier
+//            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet request = new HttpGet(imageUrl);
@@ -686,11 +694,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         if(count>3){
             log.error("同步url 下载图片，url:{}",url);
         }
-        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        // 创建所有主机名都有效的 HostnameVerifier
-        HostnameVerifier allHostsValid = (hostname, session) -> true;
-        // 安装 HostnameVerifier
-        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+//        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//        // 创建所有主机名都有效的 HostnameVerifier
+//        HostnameVerifier allHostsValid = (hostname, session) -> true;
+//        // 安装 HostnameVerifier
+//        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
