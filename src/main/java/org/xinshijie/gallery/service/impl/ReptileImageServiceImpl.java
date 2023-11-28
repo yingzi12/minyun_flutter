@@ -42,6 +42,7 @@ import org.xinshijie.gallery.vo.ReptilePage;
 import org.xinshijie.gallery.vo.ReptileRule;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,6 +54,8 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -74,7 +77,35 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     @Value("${image.path}")
     private String imagePath;
 
+    private static SSLContext sc;
+    static {
 
+        try {
+            // 创建信任所有证书的 TrustManager
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        }
+
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        }
+                    }
+            };
+
+            // 安装信任所有证书的 TrustManager
+            sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+
+        }catch (Exception ex){
+            ex.getMessage();
+        }
+    }
+
+    // 类成
      @Async
      public void ayacData(Integer id){
          //链式构建请求
@@ -607,13 +638,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
 
         try {
-            SSLContextBuilder sslBuilder = SSLContextBuilder.create();
-            sslBuilder.loadTrustMaterial(new TrustAllStrategy()); // 忽略 SSL 验证
-            CloseableHttpClient httpClient = HttpClients.custom()
-//                    .setSSLContext(sslBuilder.build())
-//                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE) // 忽略主机名验证
-                    .build();
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            // 创建所有主机名都有效的 HostnameVerifier
+            HostnameVerifier allHostsValid = (hostname, session) -> true;
+            // 安装 HostnameVerifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 
+            CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet request = new HttpGet(imageUrl);
             try (CloseableHttpResponse response = httpClient.execute(request)) {
                 int responseCode = response.getCode();
@@ -628,7 +659,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     return image != null;
                 }
             }
-        } catch (IOException | GeneralSecurityException e) {
+        } catch (IOException  e) {
             return isImageUrlValid(imageUrl, count + 1);
         }
         return false;
@@ -655,6 +686,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         if(count>3){
             log.error("同步url 下载图片，url:{}",url);
         }
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        // 创建所有主机名都有效的 HostnameVerifier
+        HostnameVerifier allHostsValid = (hostname, session) -> true;
+        // 安装 HostnameVerifier
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
 
