@@ -655,24 +655,25 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 int responseCode = response.getStatusLine().getStatusCode();
                 if (responseCode != 200) {
                     return false;
+                }else{
+                    return true;
                 }
 
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    ContentType contentType = ContentType.getOrDefault(entity);
-                    String mimeType = contentType.getMimeType();
-
-                    if (mimeType.startsWith("image/")) {
-                        BufferedImage image = ImageIO.read(entity.getContent());
-                        EntityUtils.consume(entity);
-                        return image != null;
-                    }
-                }
+//                HttpEntity entity = response.getEntity();
+//                if (entity != null) {
+//                    ContentType contentType = ContentType.getOrDefault(entity);
+//                    String mimeType = contentType.getMimeType();
+//
+//                    if (mimeType.startsWith("image/")) {
+//                        BufferedImage image = ImageIO.read(entity.getContent());
+//                        EntityUtils.consume(entity);
+//                        return image != null;
+//                    }
+//                }
             }
         } catch (IOException  e) {
             return isImageUrlValid(imageUrl, count + 1);
         }
-        return false;
     }
 
     public  String getFileExtensionFromURL(String urlString) {
