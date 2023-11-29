@@ -13,7 +13,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -38,7 +37,6 @@ import org.xinshijie.gallery.vo.ReptilePage;
 import org.xinshijie.gallery.vo.ReptileRule;
 
 import javax.imageio.ImageIO;
-import javax.net.ssl.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,11 +45,8 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -238,7 +233,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         AlbumDto albumDto=new AlbumDto();
         albumDto.setPageNum(1);
         albumDto.setOrder("count_see");
-        albumDto.setPageSize(100);
+        albumDto.setPageSize(800);
         List<Album> list = albumService.list(albumDto);
         for(Album album:list){
             if(album.getImgUrl()!=null&&album.getImgUrl().length()>0 &&( album.getSourceUrl()==null || !album.getSourceUrl().startsWith("/image") )) {
