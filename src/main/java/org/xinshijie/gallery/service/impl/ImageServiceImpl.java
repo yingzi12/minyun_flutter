@@ -50,5 +50,10 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image>   implemen
         return imageMapper.updateSourceUrl(dto);
     }
 
+    @Override
+    public Integer delCfAid(Long aid) {
+        return imageMapper.delCfAid(aid);
+    }
+
 
 }

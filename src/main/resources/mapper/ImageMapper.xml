@@ -24,4 +24,13 @@
     <insert id="updateSourceUrl">
        update image set source_url = #{dto.sourceUrl} where id=#{dto.id}
     </insert>
+    <delete id="delCfAid">
+        DELETE FROM image
+        WHERE id NOT IN (
+            SELECT MIN(id)
+            FROM image
+            where aid=#{aid}
+            GROUP BY url
+        ) and aid=#{aid}
+    </delete>
 </mapper>

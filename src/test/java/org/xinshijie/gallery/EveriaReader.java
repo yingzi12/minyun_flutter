@@ -31,12 +31,14 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
 @SpringBootTest(classes = GalleryApplication.class)
-public class BatchFileReader {
+public class EveriaReader {
 
     @Autowired
     private AlbumService albumService;
@@ -46,34 +48,9 @@ public class BatchFileReader {
 
     private String sourceWeb="https://image.51x.uk/xinshijie";
 
-//    public void update() {
-//        Path dirPath = Paths.get("E:\\folder\\x6o");
-//        int batchSize = 10; // 设置你想每批处理的文件数量
-//
-//        try (Stream<Path> files = Files.list(dirPath)) {
-//            long skippedFiles = 0;
-//            boolean keepProcessing = true;
-//
-//            while (keepProcessing) {
-//                List<Path> batch = files.skip(skippedFiles)
-//                        .limit(batchSize)
-//                        .toList();
-//
-//                if (batch.isEmpty()) {
-//                    keepProcessing = false;
-//                } else {
-//                    processBatch(batch);
-//                    skippedFiles += batch.size();
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     @Test
     public void update() {
-        Path dirPath = Paths.get("E:\\folder\\x6o");
+        Path dirPath = Paths.get("E:\\folder\\everia");
         int batchSize = 100; // 设置你想每批处理的文件数量
         long skippedFiles = 0;
         boolean keepProcessing = true;
@@ -96,6 +73,45 @@ public class BatchFileReader {
         }
     }
 
+    @Test
+    public void updateThread() throws InterruptedException {
+        Path dirPath = Paths.get("E:\\folder\\everia");
+        int batchSize = 100;
+        long skippedFiles = 0;
+        boolean keepProcessing = true;
+
+        // Create a fixed thread pool
+        ExecutorService executorService = Executors.newFixedThreadPool(10); // Number of threads can be adjusted
+
+        while (keepProcessing) {
+            try (Stream<Path> files = Files.list(dirPath)) {
+                List<Path> batch = files.skip(skippedFiles)
+                        .limit(batchSize)
+                        .collect(Collectors.toList());
+
+                if (batch.isEmpty()) {
+                    keepProcessing = false;
+                } else {
+                    executorService.submit(() -> {
+                        try {
+                            processBatch(batch);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    skippedFiles += batch.size();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        executorService.shutdown(); // Shutdown the executor service
+        while (!executorService.isTerminated()) {
+            Thread.sleep(1000); // Wait for all tasks to finish
+        }
+    }
+
     private  void processBatch(List<Path> batchs) throws IOException {
         for (Path file : batchs) {
 
@@ -109,7 +125,14 @@ public class BatchFileReader {
                 if(albumVo == null) {
                     addAlum(title,files);
                 }else{
+                    imageService.delCfAid(albumVo.getId());
                     List<Image>  values=  imageService.listAll(albumVo.getId());
+
+                    if(values.size() <= files.size()){
+                        imageService.delAlum(albumVo.getId());
+                        addImageList(albumVo,files);
+                    }
+
                     int count=0;
                     for(Image image:values){
                         if(image.getSourceUrl() ==null || !image.getSourceUrl().startsWith("/image")) {
@@ -117,28 +140,25 @@ public class BatchFileReader {
                             Path imageName = path.getFileName(); // 这将获取路径的最后一部分
 
                             String imageLJ ="/image/"+ Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
-                            String destinationPath = "E:\\folder\\x6o_e2" + imageLJ;
+                            String destinationPath = "E:\\folder\\everia_e2" + imageLJ;
                             boolean ok=downloadImage(image.getSourceWeb()+image.getUrl(),destinationPath,0);
                             if(ok){
+                                updateImage(image.getId(),image.getAid(),imageLJ);
                                 count=count+1;
                             }else{
                                 imageService.removeById(image.getId());
                             }
                         }
                     }
-                    if(count != files.size()){
-//                        imageService.delAlum(album.getId());
-//                        albumService.removeById(albumVo.getId());
-                        addImageList(albumVo,files);
-                    }
+
                     if(count==0){
-                        imageService.delAlum(albumVo.getId());
-                        albumService.removeById(albumVo.getId());
+                         imageService.delAlum(albumVo.getId());
+                         albumService.removeById(albumVo.getId());
                     }
                 }
-            }else{
-                Files.delete(file);
             }
+
+            Files.delete(file);
         }
     }
 
@@ -151,14 +171,28 @@ public class BatchFileReader {
         return image;
     }
 
+    public void updateImage(Long id,Long aid,String path){
+        Image image=new Image();
+        image.setId(id);
+        image.setAid(aid);
+        image.setUrl(path);
+        image.setSourceWeb(sourceWeb);
+        image.setSourceUrl(path);
+        imageService.updateById(image);
+    }
+
     public  boolean downloadImage(String url, String destinationFile,int count) {
         if(count>3){
             log.error("同步url 下载图片，url:{}",url);
         }
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet(url);
-
+        CloseableHttpClient httpClient =null;
+        HttpGet request=null;
+        try {
+            httpClient = HttpClients.createDefault();
+            request = new HttpGet(url);
+        }catch (Exception exception){
+            return false;
+        }
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
@@ -190,7 +224,6 @@ public class BatchFileReader {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
             downloadImage(url,destinationFile,count+1);
         }
         return false;
@@ -217,13 +250,13 @@ public class BatchFileReader {
         List<Image> imageList = new ArrayList<>();
         for (Path imagePath : files) {
             String imageName = imagePath.getFileName().toString();
-            Path destinationPathFile = Paths.get("E:\\folder\\x6o_e2\\image\\" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "\\" + DigestUtil.md5Hex(album.getTitle()));
+            Path destinationPathFile = Paths.get("E:\\folder\\everia_e2\\image\\" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "\\" + DigestUtil.md5Hex(album.getTitle()));
             if (destinationPathFile != null && !Files.exists(destinationPathFile)) {
                 // 如果目标目录不存在，则创建它
                 Files.createDirectories(destinationPathFile);
             }
             String imageLJ = "/image/" +Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + imageName;
-            Path destinationPath = Paths.get("E:\\folder\\x6o_e2" + imageLJ);
+            Path destinationPath = Paths.get("E:\\folder\\everia_e2" + imageLJ);
             try {
                 // 移动文件，如果目标文件存在则替换它
                 Files.move(imagePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);

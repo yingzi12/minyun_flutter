@@ -10,16 +10,6 @@ public class AlbumVo {
     /**
      *
      */
-    private String page;
-
-    /**
-     *
-     */
-    private String xh;
-
-    /**
-     *
-     */
     private String url;
 
     /**

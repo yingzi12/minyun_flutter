@@ -6,8 +6,6 @@
 
     <resultMap id="BaseResultMap" type="org.xinshijie.gallery.dao.Album">
             <id property="id" column="id" jdbcType="OTHER"/>
-            <result property="page" column="page" jdbcType="VARCHAR"/>
-            <result property="xh" column="xh" jdbcType="VARCHAR"/>
             <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="sourceWeb" column="source_web" jdbcType="VARCHAR"/>
@@ -16,8 +14,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,`page`,xh,
-        url,title,source_web,
+        id,url,title,source_web,
         `hash`,count_see
     </sql>
     <select id="list"  resultType="org.xinshijie.gallery.dao.Album">
@@ -48,9 +45,9 @@
         select * from album where title= #{title}
     </select>
     <insert id="add"  parameterType="org.xinshijie.gallery.dao.Album">
-        INSERT INTO album (url,title,source_web, `hash`, count_see, gril, create_time, img_url, count_error, source_url )
+        INSERT INTO album (url,title,source_web, `hash`, count_see, gril, create_time,update_time, img_url, count_error, source_url ,number_photos)
         VALUES
-        (#{dto.url}, #{dto.title},#{dto.sourceWeb},#{dto.hash}, #{dto.countSee}, #{dto.gril}, #{dto.createTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl} )
+        (#{dto.url}, #{dto.title},#{dto.sourceWeb},#{dto.hash}, #{dto.countSee}, #{dto.gril}, #{dto.createTime},#{dto.updateTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl}, #{dto.numberPhones} )
     </insert>
     <update id="updateError">
         update  album set count_error=count_error+1  where id= #{id}
@@ -88,4 +85,5 @@
     <insert id="updateSourceUrl">
         update album set source_url = #{dto.sourceUrl} where id=#{dto.id}
     </insert>
+
 </mapper>

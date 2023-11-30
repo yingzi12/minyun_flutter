@@ -20,15 +20,6 @@ public class Album implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 
-     */
-    private String page;
-
-    /**
-     * 
-     */
-    private String xh;
 
     /**
      * 
@@ -64,7 +55,7 @@ public class Album implements Serializable {
 
     private String imgUrl;
     private String size;
-    private String numberPhone;
+    private String numberPhones;
     private String numberVideo;
     private String intro;
     //1 yes 0 No

@@ -143,17 +143,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         List<ReptileRule> ruleList = JSON.parseArray(ruleListObject.getJSONArray("data").toJSONString(), ReptileRule.class);
 
         for(ReptileRule reptileRule:ruleList) {
-            //链式构建请求
-//            String result = HttpRequest.get(reptileUrl + "/wiki/reptileRule/getInfo/" + id)
-////                .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
-////                 .form(paramMap)//表单内容
-//                    .timeout(20000)//超时，毫秒
-//                    .execute().body();
-//            JSONObject jsonObject = JSONObject.parseObject(result);
-//            if (jsonObject.getIntValue("code") != 200) {
-//                throw new ServiceException(" reptileRuleVo 出现异常");
-//            }
-//            ReptileRule reptileRuleVo = JSON.parseObject(jsonObject.getString("data"), ReptileRule.class);
 
             //链式构建请求
             String result2 = HttpRequest.get(reptileUrl + "/wiki/reptilePage/getList/" + reptileRule.getId())

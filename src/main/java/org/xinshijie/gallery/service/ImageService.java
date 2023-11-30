@@ -21,4 +21,5 @@ public interface ImageService  extends IService<Image> {
 
     Integer updateSourceUrl(Image dto);
 
+    Integer delCfAid(Long aid);
 }
