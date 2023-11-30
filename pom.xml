@@ -17,7 +17,7 @@
         <java.version>17</java.version>
         <fastjson.version>2.0.7</fastjson.version>
         <jsoup.version>1.16.2</jsoup.version>
-
+        <mysql.version>8.0.33</mysql.version>
     </properties>
     <dependencies>
         <dependency>
@@ -96,6 +96,12 @@
             <artifactId>commons-compress</artifactId>
             <version>1.24.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.httpcomponents.client5</groupId>-->
@@ -107,6 +113,12 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.13</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.hankcs/hanlp -->
+<!--        <dependency>-->
+<!--            <groupId>com.hankcs</groupId>-->
+<!--            <artifactId>hanlp</artifactId>-->
+<!--            <version>portable-1.8.4</version>-->
+<!--        </dependency>-->
 
     </dependencies>
 

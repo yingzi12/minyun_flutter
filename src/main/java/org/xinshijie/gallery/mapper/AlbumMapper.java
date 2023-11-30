@@ -28,7 +28,6 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Album getInfoByTitle(@Param("title")String title);
 
-
     Integer updateError(@Param("id")Long id);
 
     Integer updateCountSee(@Param("id") Long id,@Param("updateTime") String updateTime);
@@ -44,8 +43,6 @@ public interface AlbumMapper extends BaseMapper<Album> {
     Integer findMinId();
 
     Integer updateSourceUrl(@Param("dto")Album dto);
-
-
 }
 
 

@@ -20,7 +20,6 @@ public class Album implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-
     /**
      * 
      */
