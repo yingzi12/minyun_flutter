@@ -1,0 +1,107 @@
+package com.xinshijie.gallery.domain;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ * 用户创建的
+ * </p>
+ *
+ * @author 作者
+ * @since 2023-12-03
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@TableName("user_album")
+@Schema(description = " 用户创建的")
+public class UserAlbum implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
+     * 标题
+     */
+    private String title;
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+    /**
+     * 用户id
+     */
+    private Long userId;
+    /**
+     * 用户名称
+     */
+    private String userName;
+    /**
+     * 简介
+     */
+    private String intro;
+    /**
+     * 标签
+     */
+    private String tags;
+    /**
+     * 是否vip
+     */
+    private Integer isVip;
+    /**
+     * 是否免费
+     */
+    private Integer isFree;
+    /**
+     * 价格
+     */
+    private Double amount;
+    /**
+     * 折扣
+     */
+    private Double discount;
+    /**
+     * 模特
+     */
+    private String gril;
+    /**
+     * 查看数
+     */
+    private Integer countSee;
+    /**
+     * 照片数
+     */
+    private Integer numberPhotos;
+    /**
+     * 视频数
+     */
+    private Integer numberVideo;
+    /**
+     * 收藏数
+     */
+    private Integer countCollection;
+    /**
+     * 购买数
+     */
+    private Integer countBuy;
+    private Double score;
+    /**
+     * 介绍
+     */
+    private String introduce;
+    /**
+     * 状态
+     */
+    private Integer status;
+}

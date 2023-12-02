@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshijie.gallery.mapper.UserAttentionMapper">
+
+    <sql id="selectUserAttention">
+        select
+                  id,
+                user_id,
+                user_name,
+                create_time,
+                att_user_name,
+                att_user_id
+        from user_attention
+    </sql>
+
+    <select id="selectListUserAttention" parameterType="com.xinshijie.gallery.dto.UserAttentionDto" resultType="com.xinshijie.gallery.vo.UserAttentionVo">
+        <include refid="selectUserAttention"/>
+        <where>
+                    <if test="id !=null ">and id= #{id}</if>
+                    <if test="userId !=null ">and user_id= #{userId}</if>
+                    <if test="userName !=null ">and user_name= #{userName}</if>
+                    <if test="createTime !=null ">and create_time= #{createTime}</if>
+                    <if test="attUserName !=null ">and att_user_name= #{attUserName}</if>
+                    <if test="attUserId !=null ">and att_user_id= #{attUserId}</if>
+        </where>
+    </select>
+
+    <select id="selectPageUserAttention"  resultType="com.xinshijie.gallery.vo.UserAttentionVo">
+        <include refid="selectUserAttention"/>
+        <where>
+                    <if test="dto.id !=null ">and id= #{dto.id}</if>
+                    <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
+                    <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
+                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+                    <if test="dto.attUserName !=null ">and att_user_name= #{dto.attUserName}</if>
+                    <if test="dto.attUserId !=null ">and att_user_id= #{dto.attUserId}</if>
+        </where>
+    </select>
+
+    <select id="getPageUserAttention"  resultType="com.xinshijie.gallery.vo.UserAttentionVo">
+        <include refid="selectUserAttention"/> ${ew.customSqlSegment}
+    </select>
+
+    <insert id="add"  >
+        insert into user_attention (
+                id,
+                user_id,
+                user_name,
+                create_time,
+                att_user_name,
+                att_user_id
+          )
+        values
+            (
+                    #{ id },
+                    #{ userId },
+                    #{ userName },
+                    #{ createTime },
+                    #{ attUserName },
+                    #{ attUserId }
+       )
+    </insert>
+
+    <update id="edit"  >
+        update  user_attention
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="id !=null ">  id= #{id},</if>
+                    <if test="userId !=null ">  user_id= #{userId},</if>
+                    <if test="userName !=null ">  user_name= #{userName},</if>
+                    <if test="createTime !=null ">  create_time= #{createTime},</if>
+                    <if test="attUserName !=null ">  att_user_name= #{attUserName},</if>
+                    <if test="attUserId !=null ">  att_user_id= #{attUserId},</if>
+        </trim>
+        where   id=#{id}
+    </update>
+
+    <delete id="delById"  >
+        delete FROM  user_attention where  id = #{id}
+    </delete>
+
+    <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserAttentionVo">
+        <include refid="selectUserAttention"/> where  id = #{id}
+    </select>
+
+</mapper>
