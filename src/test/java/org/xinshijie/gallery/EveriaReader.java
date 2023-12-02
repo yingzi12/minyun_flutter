@@ -47,10 +47,12 @@ public class EveriaReader {
     private ImageService imageService;
 
     private String sourceWeb="https://image.51x.uk/xinshijie";
+    
+    private String sourcePaht="E:\\folder\\xietaku2";
 
     @Test
     public void update() {
-        Path dirPath = Paths.get("E:\\folder\\everia");
+        Path dirPath = Paths.get(sourcePaht);
         int batchSize = 100; // 设置你想每批处理的文件数量
         long skippedFiles = 0;
         boolean keepProcessing = true;
@@ -75,7 +77,7 @@ public class EveriaReader {
 
     @Test
     public void updateThread() throws InterruptedException {
-        Path dirPath = Paths.get("E:\\folder\\everia");
+        Path dirPath = Paths.get(sourcePaht);
         int batchSize = 100;
         long skippedFiles = 0;
         boolean keepProcessing = true;
@@ -135,30 +137,39 @@ public class EveriaReader {
 
                     int count=0;
                     for(Image image:values){
-                        if(image.getSourceUrl() ==null || !image.getSourceUrl().startsWith("/image")) {
-                            Path path = Paths.get(image.getUrl());
-                            Path imageName = path.getFileName(); // 这将获取路径的最后一部分
+                        try {
+                            if(image.getSourceUrl() ==null || !image.getSourceUrl().startsWith("/image")) {
+                                Path path = Paths.get(image.getUrl());
+                                Path imageName = path.getFileName(); // 这将获取路径的最后一部分
 
-                            String imageLJ ="/image/"+ Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
-                            String destinationPath = "E:\\folder\\everia_e2" + imageLJ;
-                            boolean ok=downloadImage(image.getSourceWeb()+image.getUrl(),destinationPath,0);
-                            if(ok){
-                                updateImage(image.getId(),image.getAid(),imageLJ);
-                                count=count+1;
-                            }else{
-                                imageService.removeById(image.getId());
+                                String imageLJ ="/image/"+ Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
+                                String destinationPath = sourcePaht+"_e2" + imageLJ;
+                                boolean ok=downloadImage(image.getSourceWeb()+image.getUrl(),destinationPath,0);
+                                if(ok){
+                                    updateImage(image.getId(),image.getAid(),imageLJ);
+                                    count=count+1;
+                                }else{
+                                    imageService.removeById(image.getId());
+                                }
                             }
+                        }catch (Exception e ){
+                            e.printStackTrace();
                         }
                     }
 
                     if(count==0){
-                         imageService.delAlum(albumVo.getId());
-                         albumService.removeById(albumVo.getId());
+                        imageService.delAlum(albumVo.getId());
+                        albumService.removeById(albumVo.getId());
                     }
                 }
             }
+            try {
+                Files.delete(file);
+            }catch (Exception e ){
+                e.printStackTrace();
+            }
 
-            Files.delete(file);
+
         }
     }
 
@@ -184,6 +195,7 @@ public class EveriaReader {
     public  boolean downloadImage(String url, String destinationFile,int count) {
         if(count>3){
             log.error("同步url 下载图片，url:{}",url);
+            return false;
         }
         CloseableHttpClient httpClient =null;
         HttpGet request=null;
@@ -234,7 +246,7 @@ public class EveriaReader {
         album.setSourceWeb(sourceWeb);
         album.setTitle(title);
         album.setHash(HashUtil.hfHash(album.getTitle()));
-        album.setNumberPhones(files.size() + "");
+        album.setNumberPhotos(files.size());
         album.setCreateTime(LocalDate.now().toString());
         album.setUpdateTime(LocalDate.now().toString());
 
@@ -250,19 +262,19 @@ public class EveriaReader {
         List<Image> imageList = new ArrayList<>();
         for (Path imagePath : files) {
             String imageName = imagePath.getFileName().toString();
-            Path destinationPathFile = Paths.get("E:\\folder\\everia_e2\\image\\" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "\\" + DigestUtil.md5Hex(album.getTitle()));
+            Path destinationPathFile = Paths.get(sourcePaht+"_e2\\image\\" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "\\" + DigestUtil.md5Hex(album.getTitle()));
             if (destinationPathFile != null && !Files.exists(destinationPathFile)) {
                 // 如果目标目录不存在，则创建它
                 Files.createDirectories(destinationPathFile);
             }
             String imageLJ = "/image/" +Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + imageName;
-            Path destinationPath = Paths.get("E:\\folder\\everia_e2" + imageLJ);
+            Path destinationPath = Paths.get(sourcePaht+"_e2" + imageLJ);
             try {
                 // 移动文件，如果目标文件存在则替换它
                 Files.move(imagePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
                 Image image = addImage(album.getId(), imageLJ);
                 imageList.add(image);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.println("Error occurred while moving the file.");
                 e.printStackTrace();
             }

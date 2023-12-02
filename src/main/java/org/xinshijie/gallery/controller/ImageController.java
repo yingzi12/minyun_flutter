@@ -25,6 +25,7 @@ public class ImageController {
             dto.setPageNum(1);
         }
         dto.setPageSize(6);
+        dto.setOffset(dto.getPageSize()*(dto.getPageNum()-1));
         Integer total = imageService.count(dto);
 
         List<Image> list = imageService.list(dto);
