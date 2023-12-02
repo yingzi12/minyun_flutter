@@ -98,7 +98,6 @@ public class BatchFileReader {
 
     private  void processBatch(List<Path> batchs) throws IOException {
         for (Path file : batchs) {
-
             // 读取文件内容
             List<Path> files = Files.walk(file)
                     .filter(Files::isRegularFile)
@@ -154,6 +153,7 @@ public class BatchFileReader {
     public  boolean downloadImage(String url, String destinationFile,int count) {
         if(count>3){
             log.error("同步url 下载图片，url:{}",url);
+            return false;
         }
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -201,7 +201,7 @@ public class BatchFileReader {
         album.setSourceWeb(sourceWeb);
         album.setTitle(title);
         album.setHash(HashUtil.hfHash(album.getTitle()));
-        album.setNumberPhones(files.size() + "");
+        album.setNumberPhotos(files.size());
         album.setCreateTime(LocalDate.now().toString());
         album.setUpdateTime(LocalDate.now().toString());
 

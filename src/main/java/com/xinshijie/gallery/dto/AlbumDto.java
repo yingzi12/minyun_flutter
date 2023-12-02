@@ -14,7 +14,8 @@ public class AlbumDto implements Serializable {
     private Long id;
     private String title;
     private Integer pageSize;
+    private Integer offset;
     private Integer pageNum;
     private String order;
-
+    private String notSource;
 }
