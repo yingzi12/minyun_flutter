@@ -70,34 +70,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     @Value("${image.path}")
     private String imagePath;
 
-//    private static SSLContext sc;
-//    static {
-//
-//        try {
-//            // 创建信任所有证书的 TrustManager
-//            TrustManager[] trustAllCerts = new TrustManager[]{
-//                    new X509TrustManager() {
-//                        public X509Certificate[] getAcceptedIssuers() {
-//                            return new X509Certificate[0];
-//                        }
-//
-//                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-//                        }
-//
-//                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-//                        }
-//                    }
-//            };
-//
-//            // 安装信任所有证书的 TrustManager
-//            sc = SSLContext.getInstance("SSL");
-//            sc.init(null, trustAllCerts, new SecureRandom());
-//
-//        }catch (Exception ex){
-//            ex.getMessage();
-//        }
-//    }
-
     // 类成
     @Async
     public void ayacData(Integer id) {
@@ -144,7 +116,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         List<ReptileRule> ruleList = JSON.parseArray(ruleListObject.getJSONArray("data").toJSONString(), ReptileRule.class);
 
         for (ReptileRule reptileRule : ruleList) {
-
             //链式构建请求
             String result2 = HttpRequest.get(reptileUrl + "/wiki/reptilePage/getList/" + reptileRule.getId())
                     .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
@@ -401,6 +372,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     }
                 }
             }
+
             //如果图片为空，就到图片列表里取一张图片
             if (StringUtils.isEmpty(imgUrl)) {
                 albumService.updateById(album);
@@ -456,12 +428,17 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if (StringUtils.isNotEmpty(sourceUrl)) {
                         album.setSourceUrl(sourceUrl);
                         album.setSourceWeb("https://image.51x.uk/xinshijie");
+                        iamgeBatchInsertList.add(image);
                     }
-                    iamgeBatchInsertList.add(image);
                 }
             }
-            imageService.addBatch(iamgeBatchInsertList);
+            if(iamgeBatchInsertList.size()>0) {
+                imageService.addBatch(iamgeBatchInsertList);
+            }else {
+                albumService.removeById(album.getId());
+            }
             iamgeBatchInsertList.clear();
+
         }
     }
 
