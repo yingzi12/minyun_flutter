@@ -1,7 +1,7 @@
-package org.xinshijie.gallery.service;
+package com.xinshijie.gallery.service;
 
-import org.xinshijie.gallery.vo.ReptilePage;
-import org.xinshijie.gallery.vo.ReptileRule;
+import com.xinshijie.gallery.vo.ReptilePage;
+import com.xinshijie.gallery.vo.ReptileRule;
 
 import java.util.List;
 

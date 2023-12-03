@@ -1,4 +1,4 @@
-package org.xinshijie.gallery.service.impl;
+package com.xinshijie.gallery.service.impl;
 
 import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -18,12 +18,12 @@ import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.xinshijie.gallery.dao.Album;
-import org.xinshijie.gallery.dao.Image;
-import org.xinshijie.gallery.dto.AlbumDto;
-import org.xinshijie.gallery.service.AlbumService;
-import org.xinshijie.gallery.service.ILocalImageService;
-import org.xinshijie.gallery.service.ImageService;
+import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.dao.Image;
+import com.xinshijie.gallery.dto.AlbumDto;
+import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.ILocalImageService;
+import com.xinshijie.gallery.service.ImageService;
 
 import javax.imageio.ImageIO;
 import javax.net.ssl.SSLHandshakeException;
