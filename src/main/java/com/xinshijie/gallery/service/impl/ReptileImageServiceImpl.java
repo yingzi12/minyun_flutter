@@ -231,7 +231,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 if (sourceUrl.equals("")) {
                     log.error("同步album错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), album.getId(), album.getSourceWeb(), album.getImgUrl());
                 } else {
-                    album.setSourceUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
+                    }
                     albumService.updateSourceUrl(album);
                 }
             } else {
@@ -247,7 +250,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if (sourceUrl.equals("")) {
                         log.error("同步url错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), image.getId(), image.getSourceWeb(), image.getUrl());
                     } else {
-                        image.setSourceUrl(sourceUrl);
+                        if (StringUtils.isNotEmpty(sourceUrl)) {
+                            album.setSourceUrl(sourceUrl);
+                            album.setSourceWeb("https://image.51x.uk/xinshijie");
+                        }
                         imageService.updateSourceUrl(image);
                     }
                 } else {
@@ -310,7 +316,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setTitle(title);
 
                 String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
-                album.setUrl(sourceUrl);
+                if (StringUtils.isNotEmpty(sourceUrl)) {
+                    album.setSourceUrl(sourceUrl);
+                    album.setSourceWeb("https://image.51x.uk/xinshijie");
+                }
                 albumService.add(album);
                 album = albumService.getInfoBytitle(title);
 
@@ -338,8 +347,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setUpdateTime(LocalDate.now().toString());
 
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
-                    if (!"".equals(sourceUrl)) {
-                        album.setUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
                     }
                     albumService.updateById(album);
                 }
@@ -362,8 +372,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setId(album.getId());
                     album.setUpdateTime(LocalDate.now().toString());
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
-                    if (!"".equals(sourceUrl)) {
-                        album.setUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
                     }
                     albumService.updateById(album);
                     //删除记录
@@ -442,8 +453,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         throw new RuntimeException(e);
                     }
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb() + image.getUrl());
-                    if (!"".equals(sourceUrl)) {
-                        image.setUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
                     }
                     iamgeBatchInsertList.add(image);
                 }
