@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshijie.gallery.mapper.UserImageMapper">
+
+    <sql id="selectUserImage">
+        select
+                  id,
+                url,
+                is_vip,
+                is_free,
+                create_time,
+                aid
+        from user_image
+    </sql>
+
+    <select id="selectListUserImage" parameterType="com.xinshijie.gallery.dto.UserImageDto" resultType="com.xinshijie.gallery.vo.UserImageVo">
+        <include refid="selectUserImage"/>
+        <where>
+                    <if test="id !=null ">and id= #{id}</if>
+                    <if test="url !=null ">and url= #{url}</if>
+                    <if test="isVip !=null ">and is_vip= #{isVip}</if>
+                    <if test="isFree !=null ">and is_free= #{isFree}</if>
+                    <if test="createTime !=null ">and create_time= #{createTime}</if>
+                    <if test="aid !=null ">and aid= #{aid}</if>
+        </where>
+    </select>
+
+    <select id="selectPageUserImage"  resultType="com.xinshijie.gallery.vo.UserImageVo">
+        <include refid="selectUserImage"/>
+        <where>
+                    <if test="dto.id !=null ">and id= #{dto.id}</if>
+                    <if test="dto.url !=null ">and url= #{dto.url}</if>
+                    <if test="dto.isVip !=null ">and is_vip= #{dto.isVip}</if>
+                    <if test="dto.isFree !=null ">and is_free= #{dto.isFree}</if>
+                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+                    <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
+        </where>
+    </select>
+
+    <select id="getPageUserImage"  resultType="com.xinshijie.gallery.vo.UserImageVo">
+        <include refid="selectUserImage"/> ${ew.customSqlSegment}
+    </select>
+
+    <insert id="add"  >
+        insert into user_image (
+                id,
+                url,
+                is_vip,
+                is_free,
+                create_time,
+                aid
+          )
+        values
+            (
+                    #{ id },
+                    #{ url },
+                    #{ isVip },
+                    #{ isFree },
+                    #{ createTime },
+                    #{ aid }
+       )
+    </insert>
+
+    <update id="edit"  >
+        update  user_image
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="id !=null ">  id= #{id},</if>
+                    <if test="url !=null ">  url= #{url},</if>
+                    <if test="isVip !=null ">  is_vip= #{isVip},</if>
+                    <if test="isFree !=null ">  is_free= #{isFree},</if>
+                    <if test="createTime !=null ">  create_time= #{createTime},</if>
+                    <if test="aid !=null ">  aid= #{aid},</if>
+        </trim>
+        where   id=#{id}
+    </update>
+
+    <delete id="delById"  >
+        delete FROM  user_image where  id = #{id}
+    </delete>
+
+    <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserImageVo">
+        <include refid="selectUserImage"/> where  id = #{id}
+    </select>
+
+</mapper>

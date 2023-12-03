@@ -113,6 +113,14 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.13</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.xiaoymin/knife4j-openapi3-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.hankcs/hanlp -->
 <!--        <dependency>-->
 <!--            <groupId>com.hankcs</groupId>-->

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.xinshijie.gallery.mapper.FindImageMapper">
+<mapper namespace="com.xinshijie.gallery.mapper.FindImageMapper">
 
-    <resultMap id="BaseResultMap" type="org.xinshijie.gallery.dao.FindImage">
+    <resultMap id="BaseResultMap" type="com.xinshijie.gallery.dao.FindImage">
             <id property="id" column="id" jdbcType="OTHER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="gril" column="gril" jdbcType="VARCHAR"/>
