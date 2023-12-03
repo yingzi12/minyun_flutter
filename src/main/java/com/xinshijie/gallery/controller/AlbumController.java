@@ -46,8 +46,14 @@ public class AlbumController {
     }
 
     @GetMapping("/random")
-    public Result<List<Album>> random() {
-        List<Album> list = albumService.findRandomStories(8);
+    public Result<List<Album>> random(@RequestParam(value = "pageSize",required = false)Integer pageSize) {
+        if(pageSize==null){
+            pageSize=8;
+        }
+        if(pageSize<10){
+            pageSize=9;
+        }
+        List<Album> list = albumService.findRandomStories(pageSize);
 
         return Result.success(list);
     }
@@ -72,6 +78,7 @@ public class AlbumController {
     @GetMapping("/info")
     public Result<AlbumVo> list(@RequestParam("id") Long id) {
         AlbumVo albumVo = albumService.getInfo(id);
+
         return Result.success(albumVo);
     }
 

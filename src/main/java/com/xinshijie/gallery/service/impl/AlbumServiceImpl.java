@@ -41,6 +41,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         Album pre = albumMapper.previousChapter(id);
         Album next = albumMapper.nextChapter(id);
         Album album = albumMapper.getInfo(id);
+
         BeanUtils.copyProperties(album, albumVo);
         albumVo.setPre(pre);
         albumVo.setNext(next);

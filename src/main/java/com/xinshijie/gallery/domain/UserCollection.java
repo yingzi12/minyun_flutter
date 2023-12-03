@@ -35,4 +35,6 @@ public class UserCollection implements Serializable {
     private LocalDateTime createTime;
     private String title;
     private Long aid;
+    private Integer ctype;
+
 }

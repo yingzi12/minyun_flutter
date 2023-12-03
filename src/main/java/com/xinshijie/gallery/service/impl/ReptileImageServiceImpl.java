@@ -46,6 +46,8 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -590,7 +592,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 log.error("判断地址不可访问：name:{} ,imagePath:{}, url:{}", name, imagePath, url);
                 return "";
             }
-            String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imagePath;
+//            Path path = Paths.get(image.getUrl());
+//            Path imageName = path.getFileName(); // 这将获取路径的最后一部分
+
+//            String path = url.getPath();
+            String imageName = url.substring(url.lastIndexOf('/') + 1);
+//            String imageLJ ="/image/"+ Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
+            String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imageName;
             String extens = getFileExtensionFromURL(url);
             if (StringUtils.isNotEmpty(extens)) {
                 path = path + "." + extens;
