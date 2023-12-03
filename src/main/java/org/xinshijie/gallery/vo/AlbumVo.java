@@ -39,7 +39,7 @@ public class AlbumVo {
     private String createTime;
     private String imgUrl;
     private String size;
-    private String numberPhone;
+    private String numberPhotos;
     private String numberVideo;
     private String intro;
     //1 yes 0 No

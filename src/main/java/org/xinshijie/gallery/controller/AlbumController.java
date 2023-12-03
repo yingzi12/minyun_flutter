@@ -9,6 +9,7 @@ import org.xinshijie.gallery.dao.Image;
 import org.xinshijie.gallery.dto.AlbumDto;
 import org.xinshijie.gallery.dto.ImageDto;
 import org.xinshijie.gallery.service.AlbumService;
+import org.xinshijie.gallery.service.ILocalImageService;
 import org.xinshijie.gallery.service.IReptileImageService;
 import org.xinshijie.gallery.service.ImageService;
 import org.xinshijie.gallery.vo.AlbumVo;
@@ -24,6 +25,8 @@ public class AlbumController {
 
     @Autowired
     private IReptileImageService reptileImageService;
+    @Autowired
+    private ILocalImageService localImageService;
 
     @GetMapping("/list")
     public Result<List<Album>> list(AlbumDto dto) {
@@ -86,6 +89,12 @@ public class AlbumController {
     @GetMapping("/singleLocal")
     public Result<String> singleLocalData() {
         reptileImageService.singleLocalData();
+        return Result.success("ss");
+    }
+
+    @GetMapping("/updateThread")
+    public Result<String> updateThread() {
+        localImageService.updateThread();
         return Result.success("ss");
     }
 
