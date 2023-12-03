@@ -11,6 +11,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 /**
@@ -31,7 +37,7 @@ public class UserAlbumController extends BaseController {
     private IUserAlbumService userAlbumService;
 
     /**
-     * 世界年表 添加
+     *  添加
      *
      * @return
      */
@@ -43,7 +49,7 @@ public class UserAlbumController extends BaseController {
     }
 
     /**
-     * 世界年表 删除
+     *  删除
      *
      * @return
      */
@@ -56,7 +62,7 @@ public class UserAlbumController extends BaseController {
 
 
     /**
-     * 世界年表 修改
+     *  修改
      *
      * @return
      */
@@ -69,7 +75,7 @@ public class UserAlbumController extends BaseController {
 
 
     /**
-     * 世界年表 查询详情
+     *  查询详情
      *
      * @return
      */
@@ -82,7 +88,7 @@ public class UserAlbumController extends BaseController {
 
 
     /**
-     * 世界年表 查询
+     *  查询
      *
      * @return
      */
@@ -91,6 +97,18 @@ public class UserAlbumController extends BaseController {
     public Result<Page<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo);
+    }
+
+    @PostMapping("/upload")
+    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
+        saveUploadedFiles(uploadfile);
+    }
+
+    private String saveUploadedFiles(final MultipartFile file) throws IOException {
+        final byte[] bytes = file.getBytes();
+        final Path path = Paths.get("YOUR_ABSOLUTE_PATH" + file.getOriginalFilename());
+        Files.write(path, bytes);
+        return "";
     }
 
 

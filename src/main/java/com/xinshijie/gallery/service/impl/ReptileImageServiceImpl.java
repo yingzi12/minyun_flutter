@@ -46,6 +46,8 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -69,34 +71,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     @Value("${image.path}")
     private String imagePath;
-
-//    private static SSLContext sc;
-//    static {
-//
-//        try {
-//            // 创建信任所有证书的 TrustManager
-//            TrustManager[] trustAllCerts = new TrustManager[]{
-//                    new X509TrustManager() {
-//                        public X509Certificate[] getAcceptedIssuers() {
-//                            return new X509Certificate[0];
-//                        }
-//
-//                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-//                        }
-//
-//                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-//                        }
-//                    }
-//            };
-//
-//            // 安装信任所有证书的 TrustManager
-//            sc = SSLContext.getInstance("SSL");
-//            sc.init(null, trustAllCerts, new SecureRandom());
-//
-//        }catch (Exception ex){
-//            ex.getMessage();
-//        }
-//    }
 
     // 类成
     @Async
@@ -144,7 +118,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         List<ReptileRule> ruleList = JSON.parseArray(ruleListObject.getJSONArray("data").toJSONString(), ReptileRule.class);
 
         for (ReptileRule reptileRule : ruleList) {
-
             //链式构建请求
             String result2 = HttpRequest.get(reptileUrl + "/wiki/reptilePage/getList/" + reptileRule.getId())
                     .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
@@ -231,7 +204,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 if (sourceUrl.equals("")) {
                     log.error("同步album错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), album.getId(), album.getSourceWeb(), album.getImgUrl());
                 } else {
-                    album.setSourceUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
+                    }
                     albumService.updateSourceUrl(album);
                 }
             } else {
@@ -247,7 +223,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if (sourceUrl.equals("")) {
                         log.error("同步url错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), image.getId(), image.getSourceWeb(), image.getUrl());
                     } else {
-                        image.setSourceUrl(sourceUrl);
+                        if (StringUtils.isNotEmpty(sourceUrl)) {
+                            album.setSourceUrl(sourceUrl);
+                            album.setSourceWeb("https://image.51x.uk/xinshijie");
+                        }
                         imageService.updateSourceUrl(image);
                     }
                 } else {
@@ -310,7 +289,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setTitle(title);
 
                 String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getUrl());
-                album.setUrl(sourceUrl);
+                if (StringUtils.isNotEmpty(sourceUrl)) {
+                    album.setSourceUrl(sourceUrl);
+                    album.setSourceWeb("https://image.51x.uk/xinshijie");
+                }
                 albumService.add(album);
                 album = albumService.getInfoBytitle(title);
 
@@ -338,8 +320,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setUpdateTime(LocalDate.now().toString());
 
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
-                    if (!"".equals(sourceUrl)) {
-                        album.setUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
                     }
                     albumService.updateById(album);
                 }
@@ -362,8 +345,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     album.setId(album.getId());
                     album.setUpdateTime(LocalDate.now().toString());
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
-                    if (!"".equals(sourceUrl)) {
-                        album.setUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
                     }
                     albumService.updateById(album);
                     //删除记录
@@ -390,6 +374,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     }
                 }
             }
+
             //如果图片为空，就到图片列表里取一张图片
             if (StringUtils.isEmpty(imgUrl)) {
                 albumService.updateById(album);
@@ -442,14 +427,20 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         throw new RuntimeException(e);
                     }
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb() + image.getUrl());
-                    if (!"".equals(sourceUrl)) {
-                        image.setUrl(sourceUrl);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setSourceUrl(sourceUrl);
+                        album.setSourceWeb("https://image.51x.uk/xinshijie");
+                        iamgeBatchInsertList.add(image);
                     }
-                    iamgeBatchInsertList.add(image);
                 }
             }
-            imageService.addBatch(iamgeBatchInsertList);
+            if(iamgeBatchInsertList.size()>0) {
+                imageService.addBatch(iamgeBatchInsertList);
+            }else {
+                albumService.removeById(album.getId());
+            }
             iamgeBatchInsertList.clear();
+
         }
     }
 
@@ -601,7 +592,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 log.error("判断地址不可访问：name:{} ,imagePath:{}, url:{}", name, imagePath, url);
                 return "";
             }
-            String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imagePath;
+//            Path path = Paths.get(image.getUrl());
+//            Path imageName = path.getFileName(); // 这将获取路径的最后一部分
+
+//            String path = url.getPath();
+            String imageName = url.substring(url.lastIndexOf('/') + 1);
+//            String imageLJ ="/image/"+ Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
+            String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imageName;
             String extens = getFileExtensionFromURL(url);
             if (StringUtils.isNotEmpty(extens)) {
                 path = path + "." + extens;

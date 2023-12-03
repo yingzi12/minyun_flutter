@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserAttention;
+import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserAttentionDto;
 import com.xinshijie.gallery.service.IUserAttentionService;
 import com.xinshijie.gallery.vo.UserAttentionVo;
@@ -31,19 +32,27 @@ public class UserAttentionController extends BaseController {
     private IUserAttentionService userAttentionService;
 
     /**
-     * 世界年表 添加
+     *  添加
      *
      * @return
      */
-
-    @PostMapping("/add")
-    public Result<UserAttention> add(@RequestBody UserAttentionDto dto) {
-        UserAttention vo = userAttentionService.add(dto);
+    /**
+     *  添加
+     *
+     * @return
+     */
+    @GetMapping("/add")
+    public Result<UserAttention> add(@PathVariable("userId") Long userId, @PathVariable("userName") String userName) {
+        UserAttentionDto userAttention=new UserAttentionDto();
+//        userAttention.setUserId();
+//        userAttention.setUserName();
+        userAttention.setAttUserId(userId);
+        userAttention.setAttUserName(userName);
+        UserAttention vo = userAttentionService.add(userAttention);
         return Result.success(vo);
     }
-
     /**
-     * 世界年表 删除
+     *  删除
      *
      * @return
      */
@@ -55,21 +64,9 @@ public class UserAttentionController extends BaseController {
     }
 
 
-    /**
-     * 世界年表 修改
-     *
-     * @return
-     */
-
-    @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserAttentionDto dto) {
-        Integer vo = userAttentionService.edit(dto);
-        return Result.success(vo);
-    }
-
 
     /**
-     * 世界年表 查询详情
+     *  查询详情
      *
      * @return
      */
@@ -82,7 +79,7 @@ public class UserAttentionController extends BaseController {
 
 
     /**
-     * 世界年表 查询
+     *  查询
      *
      * @return
      */

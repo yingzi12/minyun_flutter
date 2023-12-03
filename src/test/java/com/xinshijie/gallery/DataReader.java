@@ -51,5 +51,10 @@ import java.util.stream.Stream;
 @SpringBootTest(classes = GalleryApplication.class)
 public class DataReader {
 
+    @Autowired
+    private AlbumService albumService;
+
+    @Autowired
+    private ImageService imageService;
 
 }

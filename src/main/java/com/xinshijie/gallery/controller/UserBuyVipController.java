@@ -31,7 +31,7 @@ public class UserBuyVipController extends BaseController {
     private IUserBuyVipService userBuyVipService;
 
     /**
-     * 世界年表 添加
+     *  添加
      *
      * @return
      */
@@ -43,7 +43,7 @@ public class UserBuyVipController extends BaseController {
     }
 
     /**
-     * 世界年表 删除
+     *  删除
      *
      * @return
      */
@@ -56,7 +56,7 @@ public class UserBuyVipController extends BaseController {
 
 
     /**
-     * 世界年表 修改
+     *  修改
      *
      * @return
      */
@@ -69,7 +69,7 @@ public class UserBuyVipController extends BaseController {
 
 
     /**
-     * 世界年表 查询详情
+     *  查询详情
      *
      * @return
      */
@@ -82,7 +82,7 @@ public class UserBuyVipController extends BaseController {
 
 
     /**
-     * 世界年表 查询
+     *  查询
      *
      * @return
      */
