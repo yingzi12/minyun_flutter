@@ -332,38 +332,43 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if (StringUtils.isNotEmpty(gril)) {
                         album.setGril(gril);
                     }
+                    if (StringUtils.isNotEmpty(desc)) {
+                        album.setIntro(desc);
+                    }
                     album.setUpdateTime(LocalDate.now().toString());
 
                     String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
                     if (StringUtils.isNotEmpty(sourceUrl)) {
+                        album.setUrl(album.getSourceWeb() + album.getImgUrl());
                         album.setSourceUrl(sourceUrl);
                         album.setSourceWeb("https://image.51x.uk/xinshijie");
                     }
                     albumService.updateById(album);
-                }else {
-                    //判断是否需要强制更新
-                    //更新内容
-                    album = new Album();
-                    album.setSourceWeb(sourceWeb);
-                    album.setSourceUrl(detailUrl);
-                    album.setImgUrl(imgUrl);
-                    album.setCreateTime(LocalDate.now().toString());
-                    album.setGril(gril);
-                    album.setHash(hash);
-                    album.setId(album.getId());
-                    album.setTitle(title);
-                    album.setUpdateTime(LocalDate.now().toString());
-                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb() + album.getImgUrl());
-                    if (StringUtils.isNotEmpty(sourceUrl)) {
-                        album.setSourceUrl(sourceUrl);
-                        album.setSourceWeb("https://image.51x.uk/xinshijie");
-                    }
-                    albumService.updateById(album);
-                    //删除记录
-                    imageService.delAlum(album.getId());
-
-                    album = albumService.getInfoBytitle(title);
                 }
+//                else {
+//                    //判断是否需要强制更新
+//                    //更新内容
+//                    album = new Album();
+//                    album.setSourceWeb(sourceWeb);
+//                    album.setSourceUrl(detailUrl);
+//                    album.setImgUrl(imgUrl);
+//                    album.setCreateTime(LocalDate.now().toString());
+//                    album.setGril(gril);
+//                    album.setHash(hash);
+//                    album.setId(album.getId());
+//                    album.setTitle(title);
+//                    album.setUpdateTime(LocalDate.now().toString());
+//                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb() + album.getImgUrl());
+//                    if (StringUtils.isNotEmpty(sourceUrl)) {
+//                        album.setSourceUrl(sourceUrl);
+//                        album.setSourceWeb("https://image.51x.uk/xinshijie");
+//                    }
+//                    albumService.updateById(album);
+//                    //删除记录
+//                    imageService.delAlum(album.getId());
+//
+//                    album = albumService.getInfoBytitle(title);
+//                }
 
             }
 
