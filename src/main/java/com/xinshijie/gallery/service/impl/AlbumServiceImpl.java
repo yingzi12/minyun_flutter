@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.mapper.AlbumMapper;
@@ -41,7 +42,9 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         Album pre = albumMapper.previousChapter(id);
         Album next = albumMapper.nextChapter(id);
         Album album = albumMapper.getInfo(id);
-
+        if(album==null){
+            throw new ServiceException("图集不存在！");
+        }
         BeanUtils.copyProperties(album, albumVo);
         albumVo.setPre(pre);
         albumVo.setNext(next);

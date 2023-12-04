@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.xinshijie.gallery.common.Result;
@@ -76,9 +77,11 @@ public class AlbumController {
     }
 
     @GetMapping("/info")
-    public Result<AlbumVo> list(@RequestParam("id") Long id) {
+    public Result<AlbumVo> info(@RequestParam("id") Long id) {
         AlbumVo albumVo = albumService.getInfo(id);
-
+        Album album=new Album();
+        BeanUtils.copyProperties(albumVo,album);
+        localImageService.saveLocalAlbum(album);
         return Result.success(albumVo);
     }
 

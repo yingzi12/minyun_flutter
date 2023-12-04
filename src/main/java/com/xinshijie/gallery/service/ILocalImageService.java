@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.service;
 
+import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.vo.ReptilePage;
 import com.xinshijie.gallery.vo.ReptileRule;
 
@@ -9,4 +10,5 @@ public interface ILocalImageService {
 
     void updateThread();
 
+    void saveLocalAlbum(Album album);
 }

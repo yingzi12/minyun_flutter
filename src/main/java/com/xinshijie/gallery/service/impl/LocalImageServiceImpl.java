@@ -41,7 +41,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 @Service
@@ -49,13 +51,16 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
     @Autowired
     private AlbumService albumService;
+    private final Semaphore semaphore = new Semaphore(30); // Adjust the number of permits as needed
+    private final Set<Long> currentAlbumIds = ConcurrentHashMap.newKeySet();
+
 
     @Autowired
     private ImageService imageService;
 
     private String sourceWeb="https://image.51x.uk/xinshijie";
 
-    private String sourcePaht="/data/e2";
+    private String sourcePaht="E:\\folder\\e2";
     private ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个固定大小的线程池
 
     private Map<String,Integer> notHostnameMap=new ConcurrentHashMap<>();
@@ -104,6 +109,26 @@ public class LocalImageServiceImpl implements ILocalImageService {
         }
     }
 
+    @Async
+    public void saveLocalAlbum(Album album) {
+        Long albumId = album.getId();
+
+        if (currentAlbumIds.add(albumId)) { // Add returns true if the set did not already contain the specified element
+            try {
+                semaphore.acquire();
+                log.info("下载图片到本地：{}",albumId);
+                saveAlbum(album);
+                log.info("下载图片到本地完成：{}",albumId);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                // Handle thread interruption
+            } finally {
+                currentAlbumIds.remove(albumId); // Remove the album id after processing
+                semaphore.release();
+            }
+        }
+    }
+
     public  void saveAlbum(Album albumVo)  {
 
         List<Image>  values=  imageService.listAll(albumVo.getId());
@@ -111,6 +136,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
         updateAlbum(albumVo);
         imageService.delCfAid(albumVo.getId());
         int count=0;
+        int error=0;
         for(Image image:values){
             try {
                 if(image.getSourceUrl() ==null || !image.getSourceUrl().startsWith("/image")) {
@@ -131,6 +157,11 @@ public class LocalImageServiceImpl implements ILocalImageService {
                             updateImage(image.getId(), image.getAid(), imageLJ);
                             count = count + 1;
                         } else {
+                            error=error+1;
+                            if(error>5){
+                                count=0;
+                                break;
+                            }
                             //                            imageService.removeById(image.getId());
                         }
                     }
