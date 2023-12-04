@@ -109,4 +109,13 @@ public class AlbumController {
         return Result.success("ss");
     }
 
+//    @GetMapping("/info2")
+//    public Result<String> info2(@RequestParam("id")Long id) {
+//        AlbumVo albumVo = albumService.getInfo(id);
+//        Album album=new Album();
+//        BeanUtils.copyProperties(albumVo,album);
+//        localImageService.saveLocalAlbum(album);
+//        return Result.success("ss");
+//    }
+
 }

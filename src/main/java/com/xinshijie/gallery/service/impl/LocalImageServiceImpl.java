@@ -60,7 +60,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
     private String sourceWeb="https://image.51x.uk/xinshijie";
 
-    private String sourcePaht="E:\\folder\\e2";
+    private String sourcePaht="/data/e2";
     private ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个固定大小的线程池
 
     private Map<String,Integer> notHostnameMap=new ConcurrentHashMap<>();
