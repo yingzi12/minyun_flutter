@@ -314,7 +314,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
             } else {
                 //判断是否是同一组
-                if (hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGril()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
+                if (!hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGril()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
                     album.setHash(hash);
                     album.setSourceUrl(detailUrl);
                     if (StringUtils.isNotEmpty(desc)) {
@@ -442,10 +442,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 //                            image.setUrl(imageUrlSource);
 //                            throw new RuntimeException(e);
 //                        }
+                        image.setUrl(imageUrlSource);
                         String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(imageName), imageUrlSource);
                         if (StringUtils.isNotEmpty(sourceUrl)) {
-                            album.setSourceUrl(sourceUrl);
-                            album.setSourceWeb("https://image.51x.uk/xinshijie");
+                            image.setSourceUrl(sourceUrl);
+                            image.setSourceWeb("https://image.51x.uk/xinshijie");
                             iamgeBatchInsertList.add(image);
                         }else{
                             errorCount=errorCount+1;
