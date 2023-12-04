@@ -313,8 +313,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
 
             } else {
+                boolean ok=isImageUrlValid(album.getSourceWeb()+album.getSourceUrl(),0);
                 //判断是否是同一组
-                if (!hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGril()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
+                if (!ok || !hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGril()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
                     album.setHash(hash);
                     album.setSourceUrl(detailUrl);
                     if (StringUtils.isNotEmpty(desc)) {

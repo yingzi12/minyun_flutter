@@ -220,7 +220,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                         albumVo.setSourceWeb(sourceWeb);
                         albumService.updateById(albumVo);
                     }else{
-                        {
+                        if(StringUtils.isNotEmpty(albumVo.getSourceUrl()) && albumVo.getSourceUrl().startsWith("http")) {
                             Document doc = requestUrl(albumVo.getSourceUrl(), 0);
                             if (doc == null) {
                                 albumVo.setSourceWeb(sourceWeb);
@@ -228,8 +228,8 @@ public class LocalImageServiceImpl implements ILocalImageService {
                                 albumService.updateById(albumVo);
                                 return;
                             }
-                            String  imgUlr=getString(doc,"meta[property=og:image]");
-                            if(StringUtils.isEmpty(imgUlr)){
+                            String imgUlr = getString(doc, "meta[property=og:image]");
+                            if (StringUtils.isEmpty(imgUlr)) {
                                 albumVo.setSourceWeb(sourceWeb);
                                 albumVo.setSourceUrl("");
                                 albumService.updateById(albumVo);
@@ -237,14 +237,14 @@ public class LocalImageServiceImpl implements ILocalImageService {
                             }
                             String fileName = imgUlr.substring(imgUlr.lastIndexOf('/') + 1);
 
-                            imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/"+fileName ;
+                            imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + fileName;
                             destinationPath = sourcePaht + "" + imageLJ;
                             ok = downloadImage(imgUlr, destinationPath, 0);
                             if (ok) {
                                 albumVo.setSourceUrl(imageLJ);
                                 albumVo.setSourceWeb(sourceWeb);
                                 albumService.updateById(albumVo);
-                            }else{
+                            } else {
                                 albumVo.setSourceWeb(sourceWeb);
                                 albumVo.setSourceUrl("");
                                 albumService.updateById(albumVo);
