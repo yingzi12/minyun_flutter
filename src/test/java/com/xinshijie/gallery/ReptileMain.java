@@ -5,12 +5,17 @@ import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;
+import com.xinshijie.gallery.vo.AlbumVo;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.xinshijie.gallery.vo.ReptilePage;
@@ -24,7 +29,10 @@ import java.util.List;
 public class ReptileMain {
     @Autowired
     private IReptileImageService reptileService;
-
+    @Autowired
+    private ILocalImageService localImageService;
+    @Autowired
+    private AlbumService albumService;
     @Test
     public  void detail(){
 
@@ -66,6 +74,13 @@ public class ReptileMain {
         reptileService.ayacData(10);
     }
 
+    @Test
+    public  void info(){
+        AlbumVo albumVo = albumService.getInfo(56597L);
+        Album album=new Album();
+        BeanUtils.copyProperties(albumVo,album);
+        localImageService.saveAlbum(album);
+    }
 
 
 

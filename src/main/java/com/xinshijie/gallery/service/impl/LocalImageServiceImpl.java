@@ -180,6 +180,8 @@ public class LocalImageServiceImpl implements ILocalImageService {
                             count=0;
                             break;
                         }
+                    }else {
+                        count++;
                     }
                 }
             }catch (Exception e ){
