@@ -153,7 +153,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                         count = count + 1;
                     }else {
                         String imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
-                        String destinationPath = sourcePaht + "" + imageLJ;
+                        String destinationPath = sourcePaht  + imageLJ;
                         String imgUrl=image.getSourceWeb() + image.getUrl();
                         if(StringUtils.isNotEmpty(image.getSourceUrl())){
                             imgUrl=image.getSourceUrl();
@@ -175,7 +175,12 @@ public class LocalImageServiceImpl implements ILocalImageService {
                     if(!sourceWeb.equals(image.getSourceWeb())) {
                         updateImage(image.getId(), image.getAid(), image.getSourceUrl());
                     }
-                    count = count + 1;
+                    if(!isImageUrlValid(image.getSourceWeb()+image.getSourceUrl(),0)){
+                        if(error>5){
+                            count=0;
+                            break;
+                        }
+                    }
                 }
             }catch (Exception e ){
                 e.printStackTrace();
@@ -400,4 +405,29 @@ public class LocalImageServiceImpl implements ILocalImageService {
         }
         return "";
     }
+
+    /**
+     * 判断url是否可以访问
+     *
+     * @param imageUrl
+     * @return
+     */
+    public boolean isImageUrlValid(String imageUrl, int count) {
+        if (count > 3) {
+            log.error("判断url是否可以访问： url:{}", imageUrl);
+            return false;
+        }
+
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet request = new HttpGet(imageUrl);
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int responseCode = response.getStatusLine().getStatusCode();
+                return responseCode == 200;
+            }
+        } catch (IOException e) {
+            return isImageUrlValid(imageUrl, count + 1);
+        }
+    }
+
 }

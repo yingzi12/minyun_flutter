@@ -259,7 +259,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }else{
                     detailUrl=  reptileRule.getStoryUrl().replaceAll("<地址>", url);
                 }
-//                detailUrl = reptileRule.getStoryUrl() + url;
             } else {
                 if (reptileRule.getStoryUrlType() != null) {
                     detailUrl = reptileRule.getStoryUrl() + url;
@@ -268,12 +267,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             Document doc = requestUrl(detailUrl, reptileRule, 0);
 
             String title = extractContent(doc, reptileRule.getTitleRule());
-
             String gril = extractContent(doc, reptileRule.getAuthorRule());
             String desc = extractContent(doc, reptileRule.getDescRule());
 
             Long hash = generate12DigitHash(detailUrl, title);
             Album album = albumService.getInfoBytitle(title);
+            log.info("开始导入 name:{},",title);
 
             String sourceWeb = "";
             if (StringUtils.isNotEmpty(imgUrl) && imgUrl.startsWith("http")) {
@@ -310,8 +309,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
                 albumService.add(album);
                 album = albumService.getInfoBytitle(title);
-
-
             } else {
                 boolean ok=isImageUrlValid(album.getSourceWeb()+album.getSourceUrl(),0);
                 //判断是否是同一组
@@ -371,12 +368,14 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             if (StringUtils.isEmpty(imgUrl)) {
                 albumService.updateById(album);
             }
+            log.info("结束导入 id：{}，name:{},",album.getId(),title);
 
         } catch (Exception e) {
             addError(1, e.getMessage(), reptileRule.getId(), detailUrl);
 
             log.error("线程名-地址：{}，  href:{}", Thread.currentThread().getName(), detailUrl, e);
         }
+
     }
 
     public void addImageList(String detailUrl, Album album, ReptileRule reptileRule,Set<String> urlList) {
@@ -609,7 +608,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             log.error("判断url是否可以访问： url:{}", imageUrl);
             return false;
         }
-
         try {
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet request = new HttpGet(imageUrl);
@@ -644,7 +642,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             log.error("同步url 下载图片，url:{}", url);
             return "";
         }
-
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
 
@@ -652,14 +649,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 File outputFile = new File(imagePath + "/" + destinationFile);
-
                 File parentDir = outputFile.getParentFile();
 
                 // 如果父目录不存在，尝试创建它
                 if (parentDir != null && !parentDir.exists()) {
                     parentDir.mkdirs();
                 }
-
                 try (InputStream inputStream = entity.getContent();
                      FileOutputStream outputStream = new FileOutputStream(outputFile)) {
                     byte[] buffer = new byte[1024];
@@ -730,14 +725,32 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     public Set<String> getList(Long aid){
         List<Image> list = imageService.listAll(aid);
         Set<String> urlist=new HashSet<>();
+        int errorCount=0;
         for(Image image:list){
             if(image.getUrl().startsWith("/image")) {
                 String imageName = image.getSourceUrl().substring(image.getSourceUrl().lastIndexOf('/') + 1);
-                urlist.add(imageName);
+                boolean ok = isImageUrlValid(image.getSourceWeb()+image.getSourceUrl(),0);
+                if(ok) {
+                    urlist.add(imageName);
+                }else {
+                    errorCount=errorCount+1;
+                }
             }else{
                 String imageName = image.getUrl().substring(image.getUrl().lastIndexOf('/') + 1);
-                urlist.add(imageName);
+                boolean ok = isImageUrlValid(image.getSourceWeb()+image.getUrl(),0);
+                if(ok) {
+                    urlist.add(imageName);
+                }else {
+                    errorCount=errorCount+1;
+                }
             }
+            if(errorCount>5){
+                imageService.delAlum(aid);
+                urlist.clear();
+                list.clear();
+                return urlist;
+            }
+
         }
         list.clear();
         return  urlist;

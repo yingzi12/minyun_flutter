@@ -21,7 +21,7 @@
         select * from album
         <where>
             <if test="id != null "> and id = #{id}</if>
-            <if test="title != null "> and title like  '%' || #{title} || '%'</if>
+            <if test="title != null "> and title LIKE CONCAT('%', #{title}, '%')</if>
             <if test="notSource != null "> and source_web !=  #{notSource}</if>
             and count_error &lt; 100
         </where>
@@ -33,7 +33,7 @@
         select count(1) from album
         <where>
             <if test="id != null "> and id = #{id}</if>
-            <if test="title != null "> and title like  '%' || #{title} || '%'</if>
+            <if test="title != null "> and title LIKE CONCAT('%', #{title}, '%')</if>
             <if test="notSource != null "> and source_web !=  #{notSource}</if>
         </where>
     </select>
