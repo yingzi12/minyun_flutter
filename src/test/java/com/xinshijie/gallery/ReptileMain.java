@@ -1,6 +1,15 @@
 package com.xinshijie.gallery;
 
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.service.IReptileImageService;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,49 +25,40 @@ public class ReptileMain {
     @Autowired
     private IReptileImageService reptileService;
 
-
-
     @Test
-    public  void test(){
+    public  void detail(){
 
-        ReptileRule ruleDto=new ReptileRule();
-        ruleDto.setIsHead(0);
-        ruleDto.setIsUpdate(1);
-        ruleDto.setStoryPageRule("div#blog-entries");
-        ruleDto.setStoryPageGroupRule("div.thumbnail");
-        ruleDto.setStoryPageHrefRule("a");
-
-        ruleDto.setTitleRule("meta[property=og:title]");
-//        ruleDto.setAuthorRule("og:title");
-        ruleDto.setImageUrlRule("meta[property=og:image]");
-
-        ruleDto.setChapterListRule("div.book_list");
-        ruleDto.setChapterGroupRule("ul.chapterlist li a");
-        ruleDto.setChapterUrlRule("a");
-
-//        ruleDto.setChapterPageRule("");
-//        ruleDto.setContentPageRule("a");
-//        ruleDto.setChapterPageUrlRule("a");
-
-        ReptilePage reptilePage=new ReptilePage();
-        reptilePage.setNowPage(1);
-        reptilePage.setPageTotal(5);
-        reptilePage.setRuleId(1);
-        reptilePage.setStatus(1);
-        reptilePage.setPageUrl("https://everia.club/category/korea/page/<地址>/");
-        List<ReptilePage> pages=new ArrayList<>();
-        pages.add(reptilePage);
-        reptileService.orderBySingle(ruleDto,pages);
-
-
-//        ruleDto.setChapterContentRule("div#htmlContent");
-//        Map<String,String> replaceListRule=new HashMap<>();
-//        replaceListRule.put("燃文小说网 www.ranwen8.com","");
-//        ruleDto.setReplaceListRule(replaceListRule);
-//        reptileService.orderByExecutor("https://www.ranwen8.com/fenlei/1_2/",ruleDto);
-
-//       reptileService.chapter("https://www.ranwen8.com/fenlei/1_2/",ruleDto);
-
+        //链式构建请求
+        String result = HttpRequest.get( "https://admin.aiavr.com/wiki/reptileRule/getInfo/11")
+                .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
+//                 .form(paramMap)//表单内容
+                .timeout(20000)//超时，毫秒
+                .execute().body();
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (jsonObject.getIntValue("code") != 200) {
+            throw new ServiceException(" reptileRuleVo 出现异常");
+        }
+        ReptileRule reptileRule = JSON.parseObject(jsonObject.getString("data"), ReptileRule.class);
+        Document doc = reptileService.requestUrl("https://xiutaku.com/14310", reptileRule, 0);
+        Element body = doc.body();
+        Element cont = body.select(reptileRule.getStoryPageRule()).first();
+        Elements storyList = cont.select(reptileRule.getStoryPageGroupRule());
+        if (storyList != null) {
+            for (Element story : storyList) {
+                Element hrefElement = story.select(reptileRule.getStoryPageHrefRule()).first();
+                if (hrefElement != null) {
+                    String detailUrl = hrefElement.attr("href");
+                    String imgUrl = "";
+                    if (StringUtils.isNotEmpty(reptileRule.getStoryPageImgRule())) {
+                        Element imgUrlEle = story.select(reptileRule.getStoryPageImgRule()).first();
+                        if (imgUrlEle != null) {
+                            imgUrl = imgUrlEle.attr("src");
+                        }
+                    }
+                    reptileService.detail(detailUrl, imgUrl, reptileRule);
+                }
+            }
+        }
     }
 
     @Test
