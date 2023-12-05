@@ -43,11 +43,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -70,6 +67,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     @Value("${reptile.url}")
     private String reptileUrl;
+
+    @Value("${image.sourceWeb}")
+    private String imageSourceWeb;
 
     @Value("${image.path}")
     private String imagePath;
@@ -216,7 +216,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 } else {
                     if (StringUtils.isNotEmpty(sourceUrl)) {
                         album.setSourceUrl(sourceUrl);
-                        album.setSourceWeb("https://image.51x.uk/xinshijie");
+                        album.setSourceWeb(imageSourceWeb);
                     }
                     albumService.updateSourceUrl(album);
                 }
@@ -235,7 +235,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     } else {
                         if (StringUtils.isNotEmpty(sourceUrl)) {
                             album.setSourceUrl(sourceUrl);
-                            album.setSourceWeb("https://image.51x.uk/xinshijie");
+                            album.setSourceWeb(imageSourceWeb);
                         }
                         imageService.updateSourceUrl(image);
                     }
@@ -306,7 +306,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() + album.getImgUrl());
                 if (StringUtils.isNotEmpty(sourceUrl)) {
                     album.setSourceUrl(sourceUrl);
-                    album.setSourceWeb("https://image.51x.uk/xinshijie");
+                    album.setSourceWeb(imageSourceWeb);
                 }
                 albumService.add(album);
                 album = albumService.getInfoBytitle(title);
@@ -342,35 +342,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if (StringUtils.isNotEmpty(sourceUrl)) {
                         album.setUrl(album.getSourceWeb() + album.getImgUrl());
                         album.setSourceUrl(sourceUrl);
-                        album.setSourceWeb("https://image.51x.uk/xinshijie");
+                        album.setSourceWeb(imageSourceWeb);
                     }
                     albumService.updateById(album);
                 }
-//                else {
-//                    //判断是否需要强制更新
-//                    //更新内容
-//                    album = new Album();
-//                    album.setSourceWeb(sourceWeb);
-//                    album.setSourceUrl(detailUrl);
-//                    album.setImgUrl(imgUrl);
-//                    album.setCreateTime(LocalDate.now().toString());
-//                    album.setGril(gril);
-//                    album.setHash(hash);
-//                    album.setId(album.getId());
-//                    album.setTitle(title);
-//                    album.setUpdateTime(LocalDate.now().toString());
-//                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb() + album.getImgUrl());
-//                    if (StringUtils.isNotEmpty(sourceUrl)) {
-//                        album.setSourceUrl(sourceUrl);
-//                        album.setSourceWeb("https://image.51x.uk/xinshijie");
-//                    }
-//                    albumService.updateById(album);
-//                    //删除记录
-//                    imageService.delAlum(album.getId());
-//
-//                    album = albumService.getInfoBytitle(title);
-//                }
-
             }
 
             Set<String> urlList=getList(album.getId());
@@ -432,27 +407,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         Image image = new Image();
                         image.setAid(album.getId());
                         image.setSourceUrl(imageUrlSource);
- //                            image.setUrl(path);
-//                        try {
-//                            URL url = new URL(imageUrlSource);
-//                            String domain = url.getProtocol() + "://" + url.getHost();
-//                            String path = url.getPath() + (url.getQuery() != null ? "?" + url.getQuery() : "");
-//                            image.setSourceWeb(domain);
-//                            image.setUrl(path);
-//                            if (StringUtils.isEmpty(album.getImgUrl())) {
-//                                album.setImgUrl(path);
-//                                album.setSourceWeb(domain);
-//                            }
-//                        } catch (MalformedURLException e) {
-//                            image.setSourceWeb("");
-//                            image.setUrl(imageUrlSource);
-//                            throw new RuntimeException(e);
-//                        }
                         image.setUrl(imageUrlSource);
                         String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(imageName), imageUrlSource);
                         if (StringUtils.isNotEmpty(sourceUrl)) {
                             image.setSourceUrl(sourceUrl);
-                            image.setSourceWeb("https://image.51x.uk/xinshijie");
+                            image.setSourceWeb(imageSourceWeb);
                             iamgeBatchInsertList.add(image);
                         }else{
                             errorCount=errorCount+1;
@@ -502,12 +461,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     }
 
     public boolean isURLValid(String urlString, ReptileRule reptileRule) {
-//        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-//        // 创建所有主机名都有效的 HostnameVerifier
-//        HostnameVerifier allHostsValid = (hostname, session) -> true;
-//        // 安装 HostnameVerifier
-//        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpHead request = new HttpHead(urlString);
 
@@ -658,29 +611,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
 
         try {
-//            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-//            // 创建所有主机名都有效的 HostnameVerifier
-//            HostnameVerifier allHostsValid = (hostname, session) -> true;
-//            // 安装 HostnameVerifier
-//            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet request = new HttpGet(imageUrl);
             try (CloseableHttpResponse response = httpClient.execute(request)) {
                 int responseCode = response.getStatusLine().getStatusCode();
                 return responseCode == 200;
-
-//                HttpEntity entity = response.getEntity();
-//                if (entity != null) {
-//                    ContentType contentType = ContentType.getOrDefault(entity);
-//                    String mimeType = contentType.getMimeType();
-//
-//                    if (mimeType.startsWith("image/")) {
-//                        BufferedImage image = ImageIO.read(entity.getContent());
-//                        EntityUtils.consume(entity);
-//                        return image != null;
-//                    }
-//                }
             }
         } catch (IOException e) {
             return isImageUrlValid(imageUrl, count + 1);
@@ -709,11 +644,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             log.error("同步url 下载图片，url:{}", url);
             return "";
         }
-//        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-//        // 创建所有主机名都有效的 HostnameVerifier
-//        HostnameVerifier allHostsValid = (hostname, session) -> true;
-//        // 安装 HostnameVerifier
-//        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);

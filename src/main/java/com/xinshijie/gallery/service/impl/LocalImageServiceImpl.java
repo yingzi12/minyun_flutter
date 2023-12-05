@@ -16,6 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.xinshijie.gallery.dao.Album;
@@ -58,9 +59,14 @@ public class LocalImageServiceImpl implements ILocalImageService {
     @Autowired
     private ImageService imageService;
 
-    private String sourceWeb="https://image.51x.uk/xinshijie";
+//    private String sourceWeb="https://image.51x.uk/xinshijie";
+//
+//    private String sourcePaht="/data/e2";
+    @Value("${image.sourceWeb}")
+    private String sourceWeb;
 
-    private String sourcePaht="/data/e2";
+    @Value("${image.path}")
+    private String sourcePaht;
     private ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个固定大小的线程池
 
     private Map<String,Integer> notHostnameMap=new ConcurrentHashMap<>();

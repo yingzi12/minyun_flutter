@@ -37,7 +37,6 @@ public class AlbumController {
         if (StringUtils.isEmpty(dto.getTitle())) {
             dto.setTitle(null);
         }
-        dto.setNotSource("https://image.51x.uk/xinshijie");
         dto.setPageSize(30);
         dto.setOffset(dto.getPageSize()*(dto.getPageNum()-1));
         Integer total = albumService.count(dto);
