@@ -75,9 +75,9 @@ public class AlbumController {
     @GetMapping("/info")
     public Result<AlbumVo> info(@RequestParam("id") Long id) {
         AlbumVo albumVo = albumService.getInfo(id);
-        Album album=new Album();
-        BeanUtils.copyProperties(albumVo,album);
-        localImageService.saveLocalAlbum(album);
+//        Album album=new Album();
+//        BeanUtils.copyProperties(albumVo,album);
+//        localImageService.saveLocalAlbum(album);
         return Result.success(albumVo);
     }
 
@@ -95,15 +95,15 @@ public class AlbumController {
 
     @GetMapping("/singleLocal")
     public Result<String> singleLocalData() {
-        reptileImageService.singleLocalData();
+        reptileImageService.singleDataThread();
         return Result.success("ss");
     }
 
-    @GetMapping("/updateThread")
-    public Result<String> updateThread() {
-        localImageService.updateThread();
-        return Result.success("ss");
-    }
+//    @GetMapping("/updateThread")
+//    public Result<String> updateThread() {
+//        localImageService.updateThread();
+//        return Result.success("ss");
+//    }
 
 //    @GetMapping("/info2")
 //    public Result<String> info2(@RequestParam("id")Long id) {

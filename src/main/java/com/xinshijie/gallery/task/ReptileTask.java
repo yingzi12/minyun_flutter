@@ -14,7 +14,7 @@ public class ReptileTask {
     private IReptileImageService reptileImageService;
 
     // 每分钟执行一次
-    @Scheduled(cron = "0 0 3 * * ?")
+//    @Scheduled(cron = "0 0 3 * * ?")
     public void tongbu() {
         log.info("同步图片");
         reptileImageService.singleDataThread();

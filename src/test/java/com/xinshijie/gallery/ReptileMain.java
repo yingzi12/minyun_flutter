@@ -50,22 +50,9 @@ public class ReptileMain {
         Document doc = reptileService.requestUrl("https://everia.club/category/japan/page/2/", reptileRule, 0);
         Element body = doc.body();
         Element cont = body.select(reptileRule.getStoryPageRule()).first();
-        Elements storyList = cont.select(reptileRule.getStoryPageGroupRule());
-        if (storyList != null) {
-            for (Element story : storyList) {
-                Element hrefElement = story.select(reptileRule.getStoryPageHrefRule()).first();
-                if (hrefElement != null) {
-                    String detailUrl = hrefElement.attr("href");
-                    String imgUrl = "";
-                    if (StringUtils.isNotEmpty(reptileRule.getStoryPageImgRule())) {
-                        Element imgUrlEle = story.select(reptileRule.getStoryPageImgRule()).first();
-                        if (imgUrlEle != null) {
-                            imgUrl = imgUrlEle.attr("src");
-                        }
-                    }
-                    reptileService.detail(detailUrl, imgUrl, reptileRule);
-                }
-            }
+        Elements elementList = cont.select(reptileRule.getStoryPageGroupRule());
+        if (elementList != null) {
+            reptileService.threadElment(  elementList, reptileRule);
         }
     }
 
@@ -81,8 +68,4 @@ public class ReptileMain {
         BeanUtils.copyProperties(albumVo,album);
         localImageService.saveAlbum(album);
     }
-
-
-
-
 }
