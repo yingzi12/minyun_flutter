@@ -2,6 +2,7 @@ package com.xinshijie.gallery.service.impl;
 
 
 import cn.hutool.core.util.HashUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
@@ -54,6 +55,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 @Service
@@ -73,6 +75,22 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     @Value("${image.path}")
     private String imagePath;
+    //防止被多次调用
+    private final ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lockData = new ReentrantLock();
+
+    @Async
+    public void ayacDataThread(Integer id) {
+        if (lockData.tryLock()) {
+            try {
+                ayacData(id);
+            } finally {
+                lockData.unlock();
+            }
+        } else {
+            log.warn("上一个ayacDataThread操作尚未完成，本次调用将被忽略");
+        }
+    }
 
     // 类成
     @Async
@@ -103,6 +121,19 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         List<ReptilePage> pageList = new ArrayList<>();
         pageList.addAll(JSON.parseArray(pageJson.getJSONArray("data").toJSONString(), ReptilePage.class));
         orderBySingle(reptileRuleVo, pageList);
+    }
+
+    @Async
+    public void singleDataThread() {
+        if (lock.tryLock()) {
+            try {
+                singleData();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            log.warn("上一个singleDataThread操作尚未完成，本次调用将被忽略");
+        }
     }
 
     @Async
@@ -186,7 +217,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         }
                     }
                     if (i % 10 == 0) {
-                        System.out.println("---------------++++++++++++++++++++++--------------------------");
+                        log.info("---------------++++++++++++++++++++++--------------------------");
                     }
                     reptileRule.setStatus(2);
                 } catch (Exception e) {
@@ -294,7 +325,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setUrl(detailUrl);
                 album.setImgUrl(imgUrl);
                 album.setCountError(0);
-                album.setCountSee(0L);
+                album.setCountSee(RandomUtil.randomLong(10, 100));
                 album.setCreateTime(LocalDate.now().toString());
                 album.setUpdateTime(LocalDate.now().toString());
                 album.setGril(gril);
@@ -346,9 +377,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             }
 
             Set<String> urlList=getList(album.getId());
-
+            int count=0;
             if (StringUtils.isEmpty(reptileRule.getContentPageRule())) {
-                addImageList(detailUrl, album, reptileRule,urlList);
+                 count=count+addImageList(detailUrl, album, reptileRule,urlList);
             } else {
                 Element body = doc.body();
                 Element imagePageCoent = body.select(reptileRule.getContentPageRule()).first();
@@ -359,15 +390,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         if (StringUtils.isNotEmpty(reptileRule.getPageUrl())) {
                             pageUrl = reptileRule.getPageUrl() + pageUrl;
                         }
-                        addImageList(pageUrl, album, reptileRule,urlList);
+                        count=count+addImageList(pageUrl, album, reptileRule,urlList);
                     }
                 }
             }
-
-            //如果图片为空，就到图片列表里取一张图片
-            if (StringUtils.isEmpty(imgUrl)) {
-                albumService.updateById(album);
-            }
+            album.setNumberPhotos(count);
+            albumService.updateById(album);
             log.info("结束导入 id：{}，name:{},",album.getId(),title);
 
         } catch (Exception e) {
@@ -378,15 +406,17 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     }
 
-    public void addImageList(String detailUrl, Album album, ReptileRule reptileRule,Set<String> urlList) {
+    public int addImageList(String detailUrl, Album album, ReptileRule reptileRule,Set<String> urlList) {
 
         Document doc = requestUrl(detailUrl, reptileRule, 0);
         if (doc == null) {
-            return;
+            return 0;
         }
         Element body = doc.body();
         Element chapterListContent = body.select(reptileRule.getChapterListRule()).first();
         int errorCount=0;
+        int count=0;
+
         if (chapterListContent != null) {
             Elements imageListElement = chapterListContent.select(reptileRule.getChapterGroupRule());
             List<Image> iamgeBatchInsertList = new CopyOnWriteArrayList<>();
@@ -412,12 +442,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                             image.setSourceUrl(sourceUrl);
                             image.setSourceWeb(imageSourceWeb);
                             iamgeBatchInsertList.add(image);
+                            count++;
                         }else{
                             errorCount=errorCount+1;
                             if(errorCount>5){
                                 albumService.removeById(album.getId());
                                 iamgeBatchInsertList.clear();
-                                return;
+                                return 0;
                             }
                         }
                     }
@@ -426,11 +457,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             if(iamgeBatchInsertList.size()>0) {
                 imageService.addBatch(iamgeBatchInsertList);
             }else {
+                count=0;
                 albumService.removeById(album.getId());
             }
             iamgeBatchInsertList.clear();
 
         }
+        return count;
     }
 
     public Document requestUrl(String url, ReptileRule reptileRule, Integer replyCount) {

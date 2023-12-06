@@ -175,7 +175,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                     if(!sourceWeb.equals(image.getSourceWeb())) {
                         updateImage(image.getId(), image.getAid(), image.getSourceUrl());
                     }
-                    if(!isImageUrlValid(image.getSourceWeb()+image.getSourceUrl(),0)){
+                    if(count<6 && !isImageUrlValid(image.getSourceWeb()+image.getSourceUrl(),0)){
                         if(error>5){
                             count=0;
                             break;

@@ -6,13 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.dao.Album;
-import com.xinshijie.gallery.dao.Image;
 import com.xinshijie.gallery.dto.AlbumDto;
-import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.service.AlbumService;
 import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;
-import com.xinshijie.gallery.service.ImageService;
 import com.xinshijie.gallery.vo.AlbumVo;
 
 import java.util.List;
@@ -92,7 +89,7 @@ public class AlbumController {
 
     @GetMapping("/cj")
     public Result<String> cj(Integer id) {
-        reptileImageService.ayacData(id);
+        reptileImageService.ayacDataThread(id);
         return Result.success("ss");
     }
 

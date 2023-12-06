@@ -10,9 +10,11 @@ public interface IReptileImageService {
 
     void detail(String url, String imgUrl, ReptileRule reptileRule);
 
-    void ayacData(Integer id);
+    void ayacDataThread(Integer id);
 
     void singleData();
+
+    void singleDataThread();
 
     void orderBySingle(ReptileRule reptileRule, List<ReptilePage> pageList);
 

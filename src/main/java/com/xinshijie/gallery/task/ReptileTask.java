@@ -17,7 +17,7 @@ public class ReptileTask {
     @Scheduled(cron = "0 0 3 * * ?")
     public void tongbu() {
         log.info("同步图片");
-        reptileImageService.singleData();
+        reptileImageService.singleDataThread();
 //        System.out.println("Task 2 executed at: " + new Date());
     }
 

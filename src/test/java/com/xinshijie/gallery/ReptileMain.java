@@ -37,7 +37,7 @@ public class ReptileMain {
     public  void detail(){
 
         //链式构建请求
-        String result = HttpRequest.get( "https://admin.aiavr.com/wiki/reptileRule/getInfo/11")
+        String result = HttpRequest.get( "https://admin.aiavr.com/wiki/reptileRule/getInfo/10")
                 .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
 //                 .form(paramMap)//表单内容
                 .timeout(20000)//超时，毫秒
@@ -47,7 +47,7 @@ public class ReptileMain {
             throw new ServiceException(" reptileRuleVo 出现异常");
         }
         ReptileRule reptileRule = JSON.parseObject(jsonObject.getString("data"), ReptileRule.class);
-        Document doc = reptileService.requestUrl("https://xiutaku.com/14310", reptileRule, 0);
+        Document doc = reptileService.requestUrl("https://everia.club/category/japan/page/2/", reptileRule, 0);
         Element body = doc.body();
         Element cont = body.select(reptileRule.getStoryPageRule()).first();
         Elements storyList = cont.select(reptileRule.getStoryPageGroupRule());
@@ -71,7 +71,7 @@ public class ReptileMain {
 
     @Test
     public  void test10(){
-        reptileService.ayacData(10);
+        reptileService.ayacDataThread(10);
     }
 
     @Test
