@@ -31,43 +31,6 @@ public class UserSettingVipController extends BaseController {
     private IUserSettingVipService userSettingVipService;
 
     /**
-     *  添加
-     *
-     * @return
-     */
-
-    @PostMapping("/add")
-    public Result<UserSettingVip> add(@RequestBody UserSettingVipDto dto) {
-        UserSettingVip vo = userSettingVipService.add(dto);
-        return Result.success(vo);
-    }
-
-    /**
-     *  删除
-     *
-     * @return
-     */
-
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userSettingVipService.delById(id);
-        return Result.success(vo);
-    }
-
-
-    /**
-     *  修改
-     *
-     * @return
-     */
-    @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserSettingVipDto dto) {
-        Integer vo = userSettingVipService.edit(dto);
-        return Result.success(vo);
-    }
-
-
-    /**
      *  查询详情
      *
      * @return

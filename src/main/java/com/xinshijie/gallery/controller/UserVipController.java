@@ -30,43 +30,6 @@ public class UserVipController extends BaseController {
     @Autowired
     private IUserVipService userVipService;
 
-    /**
-     *  添加
-     *
-     * @return
-     */
-
-    @PostMapping("/add")
-    public Result<UserVip> add(@RequestBody UserVipDto dto) {
-        UserVip vo = userVipService.add(dto);
-        return Result.success(vo);
-    }
-
-    /**
-     *  删除
-     *
-     * @return
-     */
-
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userVipService.delById(id);
-        return Result.success(vo);
-    }
-
-
-    /**
-     *  修改
-     *
-     * @return
-     */
-
-    @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserVipDto dto) {
-        Integer vo = userVipService.edit(dto);
-        return Result.success(vo);
-    }
-
 
     /**
      *  查询详情

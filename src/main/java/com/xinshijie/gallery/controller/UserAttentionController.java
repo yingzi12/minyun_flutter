@@ -32,40 +32,6 @@ public class UserAttentionController extends BaseController {
     private IUserAttentionService userAttentionService;
 
     /**
-     *  添加
-     *
-     * @return
-     */
-    /**
-     *  添加
-     *
-     * @return
-     */
-    @GetMapping("/add")
-    public Result<UserAttention> add(@PathVariable("userId") Long userId, @PathVariable("userName") String userName) {
-        UserAttentionDto userAttention=new UserAttentionDto();
-//        userAttention.setUserId();
-//        userAttention.setUserName();
-        userAttention.setAttUserId(userId);
-        userAttention.setAttUserName(userName);
-        UserAttention vo = userAttentionService.add(userAttention);
-        return Result.success(vo);
-    }
-    /**
-     *  删除
-     *
-     * @return
-     */
-
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userAttentionService.delById(id);
-        return Result.success(vo);
-    }
-
-
-
-    /**
      *  查询详情
      *
      * @return

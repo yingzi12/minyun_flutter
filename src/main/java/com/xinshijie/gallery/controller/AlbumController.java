@@ -23,8 +23,6 @@ public class AlbumController {
 
     @Autowired
     private IReptileImageService reptileImageService;
-    @Autowired
-    private ILocalImageService localImageService;
 
     @GetMapping("/list")
     public Result<List<Album>> list(AlbumDto dto) {

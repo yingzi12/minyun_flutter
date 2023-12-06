@@ -31,34 +31,6 @@ public class UserCollectionController extends BaseController {
     private IUserCollectionService userCollectionService;
 
     /**
-     *  添加
-     *
-     * @return
-     */
-    @GetMapping("/add")
-    public Result<UserCollection> add(@PathVariable("aid") Long aid,@PathVariable("title") Long title,@PathVariable("ctype") Long ctype) {
-        UserCollectionDto dto=new UserCollectionDto();
-//        userCollection.setUserId();
-//        userCollection.setUserName();
-        dto.setAid(aid);
-//        userCollection.setTitle(title);
-//        userCollection.setCtype(ctype);
-        UserCollection vo = userCollectionService.add(dto);
-        return Result.success(vo);
-    }
-
-    /**
-     *  删除
-     *
-     * @return
-     */
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userCollectionService.delById(id);
-        return Result.success(vo);
-    }
-
-    /**
      * 获取
      *
      * @return

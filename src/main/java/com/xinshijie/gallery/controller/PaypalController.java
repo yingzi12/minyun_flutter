@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -18,6 +19,7 @@ import java.util.Map;
 @Validated
 @CrossOrigin
 @RestController
+@RequestMapping("/admin/paypal")
 public class PaypalController {
     public static final String WebhookId = "4JH86294D6297924G";
 

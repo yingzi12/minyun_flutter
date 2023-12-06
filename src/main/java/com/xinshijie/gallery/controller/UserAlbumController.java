@@ -37,44 +37,6 @@ public class UserAlbumController extends BaseController {
     private IUserAlbumService userAlbumService;
 
     /**
-     *  添加
-     *
-     * @return
-     */
-
-    @PostMapping("/add")
-    public Result<UserAlbum> add(@RequestBody UserAlbumDto dto) {
-        UserAlbum vo = userAlbumService.add(dto);
-        return Result.success(vo);
-    }
-
-    /**
-     *  删除
-     *
-     * @return
-     */
-
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userAlbumService.delById(id);
-        return Result.success(vo);
-    }
-
-
-    /**
-     *  修改
-     *
-     * @return
-     */
-
-    @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserAlbumDto dto) {
-        Integer vo = userAlbumService.edit(dto);
-        return Result.success(vo);
-    }
-
-
-    /**
      *  查询详情
      *
      * @return
@@ -96,18 +58,5 @@ public class UserAlbumController extends BaseController {
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo);
     }
-
-    @PostMapping("/upload")
-    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
-        saveUploadedFiles(uploadfile);
-    }
-
-    private String saveUploadedFiles(final MultipartFile file) throws IOException {
-        final byte[] bytes = file.getBytes();
-        final Path path = Paths.get("YOUR_ABSOLUTE_PATH" + file.getOriginalFilename());
-        Files.write(path, bytes);
-        return "";
-    }
-
 
 }

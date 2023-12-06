@@ -35,43 +35,6 @@ public class UserVedioController extends BaseController {
     @Autowired
     private IUserVedioService userVedioService;
 
-    /**
-     *  添加
-     *
-     * @return
-     */
-
-    @PostMapping("/add")
-    public Result<UserVedio> add(@RequestBody UserVedioDto dto) {
-        UserVedio vo = userVedioService.add(dto);
-        return Result.success(vo);
-    }
-
-    /**
-     *  删除
-     *
-     * @return
-     */
-
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userVedioService.delById(id);
-        return Result.success(vo);
-    }
-
-
-    /**
-     *  修改
-     *
-     * @return
-     */
-
-    @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserVedioDto dto) {
-        Integer vo = userVedioService.edit(dto);
-        return Result.success(vo);
-    }
-
 
     /**
      *  查询详情
@@ -97,23 +60,4 @@ public class UserVedioController extends BaseController {
         return Result.success(vo);
     }
 
-    @PostMapping("/uploadImages")
-    public List<ResuImageVo> uploadEditFiles(@RequestParam("uploads") MultipartFile[] files) {
-        List<ResuImageVo> uploadedFiles = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            // You can still compute MD5 or perform other operations on each file
-            // String md5 = DigestUtils.md5Hex(file.getInputStream());
-
-            // Process each file and add the result to the uploadedFiles list
-            // For example, you can save each file and create a new ResuImageVo object for it
-            // ResuImageVo resuImage = saveFile(file);
-            // uploadedFiles.add(resuImage);
-
-            // For now, let's just add a placeholder result for each file
-//            uploadedFiles.add(new ResuImageVo(file.getOriginalFilename()));
-        }
-
-        return uploadedFiles;
-    }
 }
