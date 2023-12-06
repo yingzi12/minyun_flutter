@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshijie.gallery.mapper.UserBankMapper">
+
+    <sql id="selectUserBank">
+        select
+                  id,
+                bank_name,
+                bank_card,
+                bank_user,
+                create_time,
+                update_time
+        from user_bank
+    </sql>
+
+    <select id="selectListUserBank" parameterType="com.xinshijie.gallery.dto.UserBankDto" resultType="com.xinshijie.gallery.vo.UserBankVo">
+        <include refid="selectUserBank"/>
+        <where>
+                    <if test="id !=null ">and id= #{id}</if>
+                    <if test="bankName !=null ">and bank_name= #{bankName}</if>
+                    <if test="bankCard !=null ">and bank_card= #{bankCard}</if>
+                    <if test="bankUser !=null ">and bank_user= #{bankUser}</if>
+                    <if test="createTime !=null ">and create_time= #{createTime}</if>
+                    <if test="updateTime !=null ">and update_time= #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectPageUserBank"  resultType="com.xinshijie.gallery.vo.UserBankVo">
+        <include refid="selectUserBank"/>
+        <where>
+                    <if test="dto.id !=null ">and id= #{dto.id}</if>
+                    <if test="dto.bankName !=null ">and bank_name= #{dto.bankName}</if>
+                    <if test="dto.bankCard !=null ">and bank_card= #{dto.bankCard}</if>
+                    <if test="dto.bankUser !=null ">and bank_user= #{dto.bankUser}</if>
+                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+                    <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
+        </where>
+    </select>
+
+    <select id="getPageUserBank"  resultType="com.xinshijie.gallery.vo.UserBankVo">
+        <include refid="selectUserBank"/> ${ew.customSqlSegment}
+    </select>
+
+    <insert id="add"  >
+        insert into user_bank (
+                id,
+                bank_name,
+                bank_card,
+                bank_user,
+                create_time,
+                update_time
+          )
+        values
+            (
+                    #{ id },
+                    #{ bankName },
+                    #{ bankCard },
+                    #{ bankUser },
+                    #{ createTime },
+                    #{ updateTime }
+       )
+    </insert>
+
+    <update id="edit"  >
+        update  user_bank
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="id !=null ">  id= #{id},</if>
+                    <if test="bankName !=null ">  bank_name= #{bankName},</if>
+                    <if test="bankCard !=null ">  bank_card= #{bankCard},</if>
+                    <if test="bankUser !=null ">  bank_user= #{bankUser},</if>
+                    <if test="createTime !=null ">  create_time= #{createTime},</if>
+                    <if test="updateTime !=null ">  update_time= #{updateTime},</if>
+        </trim>
+        where   id=#{id}
+    </update>
+
+    <delete id="delById"  >
+        delete FROM  user_bank where  id = #{id}
+    </delete>
+
+    <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserBankVo">
+        <include refid="selectUserBank"/> where  id = #{id}
+    </select>
+
+</mapper>

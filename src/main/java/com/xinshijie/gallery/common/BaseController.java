@@ -1,6 +1,10 @@
 package com.xinshijie.gallery.common;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import static com.xinshijie.gallery.common.ResultCodeEnum.SYSTEM_INNER_ERROR;
 
 /**
@@ -10,9 +14,6 @@ import static com.xinshijie.gallery.common.ResultCodeEnum.SYSTEM_INNER_ERROR;
  */
 @Slf4j
 public class BaseController<T> {
-
-
-
 
     /**
      * 返回成功
@@ -61,6 +62,5 @@ public class BaseController<T> {
     protected Result<String> toAjax(boolean result) {
         return result ? success() : error();
     }
-
 
 }

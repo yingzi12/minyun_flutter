@@ -1,0 +1,44 @@
+package com.xinshijie.gallery.service;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.xinshijie.gallery.domain.SystemUser;
+import com.xinshijie.gallery.dto.SystemUserDto;
+import com.xinshijie.gallery.vo.LoginUserVo;
+import com.xinshijie.gallery.vo.SystemUserVo;
+import java.util.List;
+
+/**
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author 作者
+ * @since 2023-12-06
+ */
+public interface ISystemUserService extends IService<SystemUser> {
+
+    LoginUserVo login(String username, String password, String code, String uuid);
+
+    LoginUserVo loginModile(String username, String password);
+
+    Integer resetPwd(Integer userId,String newPassword,String oldPassword);
+
+    Boolean checkUserNameUnique(String username);
+
+    Boolean checkEmailUnique(String email);
+
+    Integer resetUserPwd(Integer userId, String password);
+
+    SystemUserVo info(Integer userId);
+
+    Boolean add(SystemUserDto userDto);
+
+    Boolean edit(SystemUserDto userDto);
+
+    Integer updateEmail(Integer userId,String email);
+
+    SystemUser selectByEmail(String email);
+
+    String getCacheKey(String username);
+}

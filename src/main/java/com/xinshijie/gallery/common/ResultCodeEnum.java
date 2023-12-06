@@ -15,6 +15,9 @@ public enum ResultCodeEnum {
     USER_NOT_EXIST(999003000, "用户不存在"),
     USER_NOT_LOGGED_IN(999003010, "用户未登陆"),
     USER_ACCOUNT_ERROR(999003020, "用户名或密码错误"),
+
+    USER_ACCOUNT_ERROR_LONG_TIME(999003021, "用户名或密码错误.超过错误次数，请1个小时之后在试。"),
+
     USER_ACCOUNT_FORBIDDEN(999003030, "用户账户已被禁用"),
     USER_HAS_EXIST(999003040, "该用户已存在"),
     USER_CODE_ERROR(999003050, "验证码错误"),
@@ -60,6 +63,9 @@ public enum ResultCodeEnum {
     EMAIL_ALREADY_SENT(999008071, "邮件已经发送，如未收到，请稍等或去垃圾邮件中查看或稍等半个小时之后在重试"),
     THE_EMAIL_IS_EMPTY_OR_ILLEGAL(999008072, "邮箱为空或者非法"),
     ALREADY_BOUND_ACCOUNT(999008073, "该邮箱已经绑定其他账号，不能重复绑定"),
+
+    THE_EMAIL_DOES_NOT_EXIST(999008074, "邮箱不存在"),
+
     //    EXPIRED (999008074,  "已过期"),
     THE_EMAIL_DOES_NOT_EXIST_OR_IS_NOT_VERIFIED(999008075, "邮箱不存在或者未验证"),
     THE_WORLD_DOES_NOT_EXIST(999008076, "世界不存在"),
@@ -78,6 +84,9 @@ public enum ResultCodeEnum {
     USERNAME_DOES_NOT_EXIST(999008089, "用户名不存在"),
     USERNAME_DOES_NOT_MATCH_ID(999008090, "用户名与id不匹配"),
     USER_ALREADY_EXISTS(999008091, "用户已经存在"),
+    USERNAME_ALREADY_EXISTS(999008091, "用户名已经存在"),
+    EMAIL_ALREADY_EXISTS(999008091, "Email已经存在"),
+
     THE_SUPERIOR_COMMENT_DOES_NOT_EXIST(999008092, "上级评论不存在"),
     MUST_HAVE_CONTENT(999008093, "内容不存在，请输入内容"),
     MAXIMUM_ALLOWED_CONTENT_SECTIONS_EXCEEDED(999008094, "超出最大许可的内容小节数"),
@@ -107,7 +116,8 @@ public enum ResultCodeEnum {
 
     APPLY_WORLD_IS_NULL(999008112, "申请不存在"),
     STORY_IS_PRIVE(999008113, "该小说为不公开的,只有作家能够查看"),
-    WORLD_IS_PRIVE(999008113, "该世界为不公开的,只有创造者能够查看"),
+    WORLD_IS_PRIVE(999008114, "该世界为不公开的,只有创造者能够查看"),
+    PASSWORD_NULL(999008115, "密码不符合规范"),
 
     ;
 

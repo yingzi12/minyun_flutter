@@ -1,0 +1,49 @@
+package com.xinshijie.gallery.vo;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author 作者
+ * @since 2023-12-06
+ */
+@Data
+@Schema(name = "SystemUserVo", description = " ")
+public class SystemUserVo implements Serializable{
+
+private static final long serialVersionUID=1L;
+
+        private Integer id;
+
+        private String name;
+
+        private String nickname;
+
+        private String email;
+
+        private Integer isEmail;
+
+        private String password;
+
+        private String salt;
+
+        private LocalDateTime createTime;
+
+        private LocalDateTime updateTime;
+
+        private String intro;
+
+        private String directions;
+
+
+}
