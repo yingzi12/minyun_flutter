@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
+
 
 /**
  * <p>
@@ -36,13 +39,13 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/add")
-    public Result<UserCollection> add(@PathVariable("aid") Long aid,@PathVariable("title") Long title,@PathVariable("ctype") Long ctype) {
+    public Result<UserCollection> add(@RequestParam("aid") Long aid,@RequestParam("title") String title,@RequestParam("ctype") Integer ctype) {
         UserCollectionDto dto=new UserCollectionDto();
-//        userCollection.setUserId();
-//        userCollection.setUserName();
+        dto.setUserId(getUserId()+0l);
+        dto.setUserName(getUserName());
         dto.setAid(aid);
-//        userCollection.setTitle(title);
-//        userCollection.setCtype(ctype);
+        dto.setTitle(title);
+        dto.setCtype(ctype);
         UserCollection vo = userCollectionService.add(dto);
         return Result.success(vo);
     }
@@ -53,8 +56,8 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userCollectionService.delById(id);
+    public Result<Integer> del(@PathVariable("id") Long id,@RequestParam("ctype") Integer ctype) {
+        Integer vo = userCollectionService.delById(getUserId(),id,ctype);
         return Result.success(vo);
     }
 
@@ -64,8 +67,8 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/get/{id}")
-    public Result<UserCollectionVo> getInfo(@PathVariable("id") Long id) {
-        UserCollectionVo vo = userCollectionService.getInfo(id);
+    public Result<UserCollection> getInfo(@PathVariable("id") Long id,@RequestParam("ctype") Integer ctype) {
+        UserCollection vo = userCollectionService.getInfo(getUserId(),id,ctype);
         return Result.success(vo);
     }
 
@@ -78,6 +81,7 @@ public class AdminUserCollectionController extends BaseController {
 
     @PostMapping("/select")
     public Result<Page<UserCollectionVo>> select(@RequestBody UserCollectionDto findDto) {
+        findDto.setUserId(getUserId()+0l);
         Page<UserCollectionVo> vo = userCollectionService.selectPageUserCollection(findDto);
         return Result.success(vo);
     }

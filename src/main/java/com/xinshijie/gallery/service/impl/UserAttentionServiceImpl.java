@@ -74,27 +74,27 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     }
 
     /**
-     * 根据id修改数据
-     */
-    @Override
-    public Integer edit(UserAttentionDto dto) {
-        return mapper.edit(dto);
-    }
-
-    /**
      * 删除数据
      */
     @Override
-    public Integer delById(Long id) {
-        return mapper.delById(id);
+    public Integer delById(Integer userId,Long id) {
+        QueryWrapper<UserAttention> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("id",id);
+
+        return mapper.delete(queryWrapper);
     }
 
     /**
      * 根据id数据
      */
     @Override
-    public UserAttentionVo getInfo(Long id) {
-        return mapper.getInfo(id);
+    public UserAttention getInfo(Integer userId,Long id) {
+        QueryWrapper<UserAttention> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("id",id);
+
+        return mapper.selectOne(queryWrapper);
     }
 
 }

@@ -3,6 +3,7 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.domain.UserAttention;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserCollectionDto;
 import com.xinshijie.gallery.mapper.UserCollectionMapper;
@@ -73,28 +74,31 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
         return value;
     }
 
-    /**
-     * 根据id修改数据
-     */
-    @Override
-    public Integer edit(UserCollectionDto dto) {
-        return mapper.edit(dto);
-    }
 
     /**
      * 删除数据
      */
     @Override
-    public Integer delById(Long id) {
-        return mapper.delById(id);
+    public Integer delById(Integer userId,Long id,Integer ctype) {
+        QueryWrapper<UserCollection> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("id",id);
+        queryWrapper.eq("ctype",ctype);
+
+        return mapper.delete(queryWrapper);
     }
 
     /**
      * 根据id数据
      */
     @Override
-    public UserCollectionVo getInfo(Long id) {
-        return mapper.getInfo(id);
+    public UserCollection getInfo(Integer userId,Long id,Integer ctype) {
+        QueryWrapper<UserCollection> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("id",id);
+        queryWrapper.eq("ctype",ctype);
+
+        return mapper.selectOne(queryWrapper);
     }
 
 }

@@ -40,6 +40,9 @@ public class UserCollectionDto implements Serializable {
 
     private Long aid;
 
+    private Integer ctype;
+
+
     private Long pageNum;
 
     private Long pageSize;

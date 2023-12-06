@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -67,6 +68,8 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     public UserBuyAlbum add(UserBuyAlbumDto dto) {
         UserBuyAlbum value = new UserBuyAlbum();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
+        value.setCreateTime(LocalDateTime.now());
+
         mapper.insert(value);
         return value;
     }

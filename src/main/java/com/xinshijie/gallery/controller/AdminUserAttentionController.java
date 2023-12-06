@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
+
 
 /**
  * <p>
@@ -43,8 +46,8 @@ public class AdminUserAttentionController extends BaseController {
     @GetMapping("/add")
     public Result<UserAttention> add(@PathVariable("userId") Long userId, @PathVariable("userName") String userName) {
         UserAttentionDto userAttention=new UserAttentionDto();
-//        userAttention.setUserId();
-//        userAttention.setUserName();
+        userAttention.setUserId(getUserId()+0L);
+        userAttention.setUserName(getUserName());
         userAttention.setAttUserId(userId);
         userAttention.setAttUserName(userName);
         UserAttention vo = userAttentionService.add(userAttention);
@@ -58,7 +61,7 @@ public class AdminUserAttentionController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userAttentionService.delById(id);
+        Integer vo = userAttentionService.delById(getUserId(),id);
         return Result.success(vo);
     }
 
@@ -71,8 +74,8 @@ public class AdminUserAttentionController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserAttentionVo> getInfo(@PathVariable("id") Long id) {
-        UserAttentionVo vo = userAttentionService.getInfo(id);
+    public Result<UserAttention> getInfo(@PathVariable("id") Long id) {
+        UserAttention vo = userAttentionService.getInfo(getUserId(),id);
         return Result.success(vo);
     }
 
@@ -85,6 +88,7 @@ public class AdminUserAttentionController extends BaseController {
 
     @PostMapping("/select")
     public Result<Page<UserAttentionVo>> select(@RequestBody UserAttentionDto findDto) {
+        findDto.setUserId(getUserId()+0l);
         Page<UserAttentionVo> vo = userAttentionService.selectPageUserAttention(findDto);
         return Result.success(vo);
     }

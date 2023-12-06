@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -67,6 +68,7 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
     public UserVedio add(UserVedioDto dto) {
         UserVedio value = new UserVedio();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
+        value.setCreateTime(LocalDateTime.now());
         mapper.insert(value);
         return value;
     }

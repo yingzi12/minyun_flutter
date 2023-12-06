@@ -2,31 +2,33 @@ package com.xinshijie.gallery.filter;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.common.CacheConstants;
+import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.security.Keys;
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final String secretKey;
+//    private final String secretKey;
 
     public JwtAuthenticationFilter(RedisTemplate<String, String> redisTemplate, String secretKey) {
         this.redisTemplate = redisTemplate;
-        this.secretKey = secretKey;
+//        this.secretKey = secretKey;
     }
-
 
     @Override
     public void doFilter(jakarta.servlet.ServletRequest servletRequest, jakarta.servlet.ServletResponse servletResponse, jakarta.servlet.FilterChain filterChain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String token = httpServletRequest.getHeader("Authorization");
 
         if (token != null && !token.isEmpty() && redisTemplate.hasKey(token)) {
@@ -53,21 +55,30 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                         if(oldToken.equals(token)) {
                             httpServletRequest.setAttribute("userId",systemUserVo.getId() );
                             httpServletRequest.setAttribute("userName",systemUserVo.getName() );
+                            filterChain.doFilter(servletRequest, servletResponse);
                         }else {
-                            throw new ServiceException("过期");
+                            sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                         }
                     }
                 }else{
-                    throw new ServiceException("错误");
+                    sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                 }
             } catch (Exception e) {
-                // JWT 验证失败
-                httpServletRequest.setAttribute("jwtValid", false);
-                // Handle exception (e.g., logging, throw custom exception, etc.)
+                sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
+
             }
+        }else {
+            sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
+
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, ResultCodeEnum resultCode) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 更合适的状态码
+        response.setContentType("application/json");
+        Result<Object> result = Result.error(resultCode);
+        response.getWriter().write(JSONObject.toJSONString(result));
     }
 }
 

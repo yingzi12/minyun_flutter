@@ -40,18 +40,14 @@ public interface IUserCollectionService extends IService<UserCollection> {
      */
     UserCollection add(UserCollectionDto id);
 
-    /**
-     * 根据id修改数据
-     */
-    Integer edit(UserCollectionDto dto);
 
     /**
      * 删除数据
      */
-    Integer delById(Long id);
+    Integer delById(Integer userId,Long id,Integer ctype);
 
     /**
      * 根据id数据
      */
-    UserCollectionVo getInfo(Long id);
+    UserCollection getInfo(Integer userId,Long id,Integer ctype);
 }

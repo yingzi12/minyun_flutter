@@ -41,17 +41,12 @@ public interface IUserAttentionService extends IService<UserAttention> {
     UserAttention add(UserAttentionDto id);
 
     /**
-     * 根据id修改数据
-     */
-    Integer edit(UserAttentionDto dto);
-
-    /**
      * 删除数据
      */
-    Integer delById(Long id);
+    Integer delById(Integer userId,Long id);
 
     /**
      * 根据id数据
      */
-    UserAttentionVo getInfo(Long id);
+    UserAttention getInfo(Integer userId,Long id);
 }
