@@ -27,10 +27,10 @@ import java.util.List;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserImageController", description = "后台- 用户上传的图片")
+@Tag(name = " AdminUserImageController", description = "后台- 用户上传的图片")
 @RestController
-@RequestMapping("/userImage")
-public class UserImageController extends BaseController {
+@RequestMapping("/admin/userImage")
+public class AdminUserImageController extends BaseController {
 
     @Autowired
     private IUserImageService userImageService;

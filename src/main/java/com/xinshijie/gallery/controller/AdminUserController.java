@@ -24,7 +24,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 
 @Slf4j
-@Tag(name = " SystemUserController", description = "后台- ")
+@Tag(name = " AdminUserController", description = "后台- ")
 @RestController
 @RequestMapping("/admin/systemUser")
 public class  AdminUserController  extends BaseController {

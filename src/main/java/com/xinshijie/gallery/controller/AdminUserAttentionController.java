@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserAttention;
-import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserAttentionDto;
 import com.xinshijie.gallery.service.IUserAttentionService;
 import com.xinshijie.gallery.vo.UserAttentionVo;
@@ -23,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserAttentionController", description = "后台- 用户关注的用户")
+@Tag(name = " AdminUserAttentionController", description = "后台- 用户关注的用户")
 @RestController
-@RequestMapping("/userAttention")
-public class UserAttentionController extends BaseController {
+@RequestMapping("/admin/userAttention")
+public class AdminUserAttentionController extends BaseController {
 
     @Autowired
     private IUserAttentionService userAttentionService;

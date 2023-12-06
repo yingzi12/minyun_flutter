@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 @Tag(name = " UserVedioController", description = "后台- ")
 @RestController
-@RequestMapping("/UserVedio")
+@RequestMapping("/userVedio")
 public class UserVedioController extends BaseController {
 
     @Autowired

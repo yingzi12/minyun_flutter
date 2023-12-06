@@ -3,11 +3,11 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.domain.UserImage;
-import com.xinshijie.gallery.dto.UserImageDto;
-import com.xinshijie.gallery.service.IUserImageService;
+import com.xinshijie.gallery.domain.UserVedio;
+import com.xinshijie.gallery.dto.UserVedioDto;
+import com.xinshijie.gallery.service.IUserVedioService;
 import com.xinshijie.gallery.vo.ResuImageVo;
-import com.xinshijie.gallery.vo.UserImageVo;
+import com.xinshijie.gallery.vo.UserVedioVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +20,20 @@ import java.util.List;
 
 /**
  * <p>
- * 用户上传的图片 前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 作者
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserImageController", description = "后台- 用户上传的图片")
+@Tag(name = " AdminUserVedioController", description = "后台- ")
 @RestController
-@RequestMapping("/userImage")
-public class UserImageController extends BaseController {
+@RequestMapping("/admin/userVedio")
+public class AdminUserVedioController extends BaseController {
 
     @Autowired
-    private IUserImageService userImageService;
+    private IUserVedioService userVedioService;
 
     /**
      *  添加
@@ -42,8 +42,8 @@ public class UserImageController extends BaseController {
      */
 
     @PostMapping("/add")
-    public Result<UserImage> add(@RequestBody UserImageDto dto) {
-        UserImage vo = userImageService.add(dto);
+    public Result<UserVedio> add(@RequestBody UserVedioDto dto) {
+        UserVedio vo = userVedioService.add(dto);
         return Result.success(vo);
     }
 
@@ -55,7 +55,7 @@ public class UserImageController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userImageService.delById(id);
+        Integer vo = userVedioService.delById(id);
         return Result.success(vo);
     }
 
@@ -67,8 +67,8 @@ public class UserImageController extends BaseController {
      */
 
     @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserImageDto dto) {
-        Integer vo = userImageService.edit(dto);
+    public Result<Integer> edit(@RequestBody UserVedioDto dto) {
+        Integer vo = userVedioService.edit(dto);
         return Result.success(vo);
     }
 
@@ -80,8 +80,8 @@ public class UserImageController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserImageVo> getInfo(@PathVariable("id") Long id) {
-        UserImageVo vo = userImageService.getInfo(id);
+    public Result<UserVedioVo> getInfo(@PathVariable("id") Long id) {
+        UserVedioVo vo = userVedioService.getInfo(id);
         return Result.success(vo);
     }
 
@@ -91,13 +91,11 @@ public class UserImageController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/select")
-    public Result<Page<UserImageVo>> select(@RequestBody UserImageDto findDto) {
-        Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
+    public Result<Page<UserVedioVo>> select(@RequestBody UserVedioDto findDto) {
+        Page<UserVedioVo> vo = userVedioService.selectPageUserVedio(findDto);
         return Result.success(vo);
     }
-
 
     @PostMapping("/uploadImages")
     public List<ResuImageVo> uploadEditFiles(@RequestParam("uploads") MultipartFile[] files) {

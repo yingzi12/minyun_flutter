@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserCollectionController", description = "后台- 用户收藏的album")
+@Tag(name = " AdminUserCollectionController", description = "后台- 用户收藏的album")
 @RestController
-@RequestMapping("/userCollection")
-public class UserCollectionController extends BaseController {
+@RequestMapping("/admin/userCollection")
+public class AdminUserCollectionController extends BaseController {
 
     @Autowired
     private IUserCollectionService userCollectionService;

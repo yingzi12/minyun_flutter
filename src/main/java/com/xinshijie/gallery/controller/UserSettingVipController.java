@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Tag(name = " UserSettingVipController", description = "后台- 用户vip")
 @RestController
-@RequestMapping("/UserSettingVip")
+@RequestMapping("/userSettingVip")
 public class UserSettingVipController extends BaseController {
 
     @Autowired

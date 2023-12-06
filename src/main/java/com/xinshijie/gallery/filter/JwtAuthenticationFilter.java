@@ -61,6 +61,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     throw new ServiceException("错误");
                 }
             } catch (Exception e) {
+                // JWT 验证失败
+                httpServletRequest.setAttribute("jwtValid", false);
                 // Handle exception (e.g., logging, throw custom exception, etc.)
             }
         }

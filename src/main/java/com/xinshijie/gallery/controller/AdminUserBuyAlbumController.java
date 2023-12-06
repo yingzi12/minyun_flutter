@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserBuyAlbumController", description = "后台- 用户购买记录")
+@Tag(name = " AdminUserBuyAlbumController", description = "后台- 用户购买记录")
 @RestController
-@RequestMapping("/UserBuyAlbum")
-public class UserBuyAlbumController extends BaseController {
+@RequestMapping("/admin/userBuyAlbum")
+public class AdminUserBuyAlbumController extends BaseController {
 
     @Autowired
     private IUserBuyAlbumService userBuyAlbumService;

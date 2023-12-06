@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Tag(name = " AlbumCollectionController", description = "后台- 用户收藏的album")
 @RestController
-@RequestMapping("/AlbumCollection")
+@RequestMapping("/admin/albumCollection")
 public class AlbumCollectionController extends BaseController {
 
     @Autowired

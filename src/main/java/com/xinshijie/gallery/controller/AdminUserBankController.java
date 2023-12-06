@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserBank;
-import com.xinshijie.gallery.service.IUserBankService;
 import com.xinshijie.gallery.dto.UserBankDto;
+import com.xinshijie.gallery.service.IUserBankService;
 import com.xinshijie.gallery.vo.UserBankVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserBankController", description = "后台- ")
+@Tag(name = " AdminUserBankController", description = "后台- ")
 @RestController
-@RequestMapping("/UserBank")
-public class  UserBankController  extends BaseController {
+@RequestMapping("/userBank")
+public class AdminUserBankController extends BaseController {
 
     @Autowired
     private IUserBankService userBankService;

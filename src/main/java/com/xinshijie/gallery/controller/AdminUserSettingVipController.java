@@ -3,10 +3,10 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.domain.UserBuyVip;
-import com.xinshijie.gallery.dto.UserBuyVipDto;
-import com.xinshijie.gallery.service.IUserBuyVipService;
-import com.xinshijie.gallery.vo.UserBuyVipVo;
+import com.xinshijie.gallery.domain.UserSettingVip;
+import com.xinshijie.gallery.dto.UserSettingVipDto;
+import com.xinshijie.gallery.service.IUserSettingVipService;
+import com.xinshijie.gallery.vo.UserSettingVipVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
- * 用户购买记录 前端控制器
+ * 用户vip 前端控制器
  * </p>
  *
  * @author 作者
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserBuyVipController", description = "后台- 用户购买记录")
+@Tag(name = " AdminUserSettingVipController", description = "后台- 用户vip")
 @RestController
-@RequestMapping("/UserBuyVip")
-public class UserBuyVipController extends BaseController {
+@RequestMapping("/admin/userSettingVip")
+public class AdminUserSettingVipController extends BaseController {
 
     @Autowired
-    private IUserBuyVipService userBuyVipService;
+    private IUserSettingVipService userSettingVipService;
 
     /**
      *  添加
@@ -37,8 +37,8 @@ public class UserBuyVipController extends BaseController {
      */
 
     @PostMapping("/add")
-    public Result<UserBuyVip> add(@RequestBody UserBuyVipDto dto) {
-        UserBuyVip vo = userBuyVipService.add(dto);
+    public Result<UserSettingVip> add(@RequestBody UserSettingVipDto dto) {
+        UserSettingVip vo = userSettingVipService.add(dto);
         return Result.success(vo);
     }
 
@@ -50,7 +50,7 @@ public class UserBuyVipController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userBuyVipService.delById(id);
+        Integer vo = userSettingVipService.delById(id);
         return Result.success(vo);
     }
 
@@ -60,10 +60,9 @@ public class UserBuyVipController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserBuyVipDto dto) {
-        Integer vo = userBuyVipService.edit(dto);
+    public Result<Integer> edit(@RequestBody UserSettingVipDto dto) {
+        Integer vo = userSettingVipService.edit(dto);
         return Result.success(vo);
     }
 
@@ -75,8 +74,8 @@ public class UserBuyVipController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserBuyVipVo> getInfo(@PathVariable("id") Long id) {
-        UserBuyVipVo vo = userBuyVipService.getInfo(id);
+    public Result<UserSettingVipVo> getInfo(@PathVariable("id") Long id) {
+        UserSettingVipVo vo = userSettingVipService.getInfo(id);
         return Result.success(vo);
     }
 
@@ -86,9 +85,10 @@ public class UserBuyVipController extends BaseController {
      *
      * @return
      */
+
     @PostMapping("/select")
-    public Result<Page<UserBuyVipVo>> select(@RequestBody UserBuyVipDto findDto) {
-        Page<UserBuyVipVo> vo = userBuyVipService.selectPageUserBuyVip(findDto);
+    public Result<Page<UserSettingVipVo>> select(@RequestBody UserSettingVipDto findDto) {
+        Page<UserSettingVipVo> vo = userSettingVipService.selectPageUserSettingVip(findDto);
         return Result.success(vo);
     }
 

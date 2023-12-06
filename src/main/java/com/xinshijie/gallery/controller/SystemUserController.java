@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Tag(name = " SystemUserController", description = "后台- ")
 @RestController
-@RequestMapping("/SystemUser")
+@RequestMapping("/systemUser")
 public class  SystemUserController  extends BaseController {
 
     @Autowired

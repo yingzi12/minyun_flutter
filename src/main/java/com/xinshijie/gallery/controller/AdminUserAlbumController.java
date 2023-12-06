@@ -28,10 +28,10 @@ import java.nio.file.Paths;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserAlbumController", description = "后台- 用户创建的")
+@Tag(name = " AdminUserAlbumController", description = "后台- 用户创建的")
 @RestController
-@RequestMapping("/userAlbum")
-public class UserAlbumController extends BaseController {
+@RequestMapping("/admin/userAlbum")
+public class AdminUserAlbumController extends BaseController {
 
     @Autowired
     private IUserAlbumService userAlbumService;

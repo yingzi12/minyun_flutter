@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserVipController", description = "后台- 用户vip")
+@Tag(name = " AdminUserVipController", description = "后台- 用户vip")
 @RestController
-@RequestMapping("/userVip")
-public class UserVipController extends BaseController {
+@RequestMapping("/admin/userVip")
+public class AdminUserVipController extends BaseController {
 
     @Autowired
     private IUserVipService userVipService;

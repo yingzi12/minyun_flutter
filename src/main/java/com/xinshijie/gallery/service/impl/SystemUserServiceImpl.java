@@ -299,7 +299,8 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
      * @param username 用户名
      * @return 缓存键key
      */
-    private String getCacheKey(String username) {
+    @Override
+    public String getCacheKey(String username) {
         return PWD_ERR_CNT_KEY + username;
     }
 
