@@ -38,4 +38,6 @@ public class UserImage implements Serializable {
     private Integer isFree;
     private LocalDateTime createTime;
     private Long aid;
+
+    private String md5;
 }

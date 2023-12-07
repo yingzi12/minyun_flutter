@@ -6,6 +6,8 @@ import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.vo.LoginUserVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
@@ -41,4 +43,6 @@ public interface ISystemUserService extends IService<SystemUser> {
     SystemUser selectByEmail(String email);
 
     String getCacheKey(String username);
+
+    Boolean saveUploadedFiles(Integer userId, MultipartFile file);
 }

@@ -14,7 +14,12 @@
                 create_time,
                 update_time,
                 intro,
-                directions
+                directions,
+                imgUrl,
+                count_like,
+                  count_see,
+                  count_attention
+
         from system_user
     </sql>
 
@@ -68,7 +73,8 @@
                 create_time,
                 update_time,
                 intro,
-                directions
+                directions,
+                                 img_url
           )
         values
             (
@@ -82,7 +88,8 @@
                     #{ createTime },
                     #{ updateTime },
                     #{ intro },
-                    #{ directions }
+                    #{ directions },
+                    #{imgUrl}
        )
     </insert>
 
@@ -100,6 +107,8 @@
                     <if test="updateTime !=null ">  update_time= #{updateTime},</if>
                     <if test="intro !=null ">  intro= #{intro},</if>
                     <if test="directions !=null ">  directions= #{directions},</if>
+            <if test="imgUrl !=null ">  img_url= #{imgUrl},</if>
+
         </trim>
         where   id=#{id}
     </update>

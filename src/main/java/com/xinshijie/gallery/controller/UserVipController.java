@@ -30,7 +30,6 @@ public class UserVipController extends BaseController {
     @Autowired
     private IUserVipService userVipService;
 
-
     /**
      *  查询详情
      *

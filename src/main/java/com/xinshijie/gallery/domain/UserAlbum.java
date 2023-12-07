@@ -104,4 +104,7 @@ public class UserAlbum implements Serializable {
      * 状态
      */
     private Integer status;
+
+    private String imgUrl;
+
 }

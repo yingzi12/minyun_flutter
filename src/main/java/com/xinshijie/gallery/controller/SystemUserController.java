@@ -75,7 +75,7 @@ public class  SystemUserController  extends BaseController {
 
     @PostMapping("/regis")
     public Result<Boolean> regis(@RequestBody SystemUserDto userDto) {
-        if(StringUtils.isEmpty(userDto.getPassword()) ||userDto.getPassword().length()>6){
+        if(StringUtils.isEmpty(userDto.getPassword()) || userDto.getPassword().length() <6){
             throw  new ServiceException(ResultCodeEnum.PASSWORD_NULL);
         }
         // 生成令牌

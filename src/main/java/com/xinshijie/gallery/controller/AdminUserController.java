@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.concurrent.TimeUnit;
 
@@ -126,4 +127,9 @@ public class  AdminUserController  extends BaseController {
         return Result.success("成功");
     }
 
+    @PostMapping("/upload")
+    public Result<Boolean> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile)  {
+        Boolean ok = systemUserService.saveUploadedFiles(getUserId(),uploadfile);
+        return Result.success(ok);
+    }
 }

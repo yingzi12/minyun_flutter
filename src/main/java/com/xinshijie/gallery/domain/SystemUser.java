@@ -39,4 +39,8 @@ private static final long serialVersionUID=1L;
                 private LocalDateTime updateTime;
                 private String intro;
                 private String directions;
+    private String imgUrl;
+    private Integer  countLike;
+    private Integer       countSee;
+    private Integer       countAttention;
 }

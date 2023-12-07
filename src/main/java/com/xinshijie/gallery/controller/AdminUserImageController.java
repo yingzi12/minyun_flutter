@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,5 +121,17 @@ public class AdminUserImageController extends BaseController {
         }
 
         return uploadedFiles;
+    }
+
+    @PostMapping("/upload")
+    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
+        saveUploadedFiles(uploadfile);
+    }
+
+    private String saveUploadedFiles(final MultipartFile file) throws IOException {
+        final byte[] bytes = file.getBytes();
+        final Path path = Paths.get("YOUR_ABSOLUTE_PATH" + file.getOriginalFilename());
+        Files.write(path, bytes);
+        return null;
     }
 }

@@ -11,5 +11,7 @@ public class ImageDto {
     private Integer pageNum;
 
     private Integer offset;
+    private String imgUrl;
+    private String md5;
 
 }

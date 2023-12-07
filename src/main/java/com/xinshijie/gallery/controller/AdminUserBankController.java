@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Tag(name = " AdminUserBankController", description = "后台- ")
 @RestController
-@RequestMapping("/userBank")
+@RequestMapping("/admin/userBank")
 public class AdminUserBankController extends BaseController {
 
     @Autowired

@@ -55,6 +55,10 @@ public class SystemUserDto implements Serializable {
     @Size(max = 100, message = " 超出最大长度 100")
     private String directions;
 
+    private Integer  countLike;
+    private Integer       countSee;
+    private Integer       countAttention;
+
 private Long pageNum;
 
 private Long pageSize;

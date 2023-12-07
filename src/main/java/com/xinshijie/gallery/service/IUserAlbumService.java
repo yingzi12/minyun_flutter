@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.vo.UserAlbumVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -54,4 +55,7 @@ public interface IUserAlbumService extends IService<UserAlbum> {
      * 根据id数据
      */
     UserAlbumVo getInfo(Long id);
+
+    Boolean saveUploadedFiles(Integer userId, MultipartFile file);
+
 }

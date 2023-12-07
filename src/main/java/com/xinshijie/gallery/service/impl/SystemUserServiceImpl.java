@@ -17,10 +17,21 @@ import com.xinshijie.gallery.vo.LoginUserVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +56,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
     @Autowired
     private RedisCache redisCache;
+
+    @Value("${image.sourceWeb}")
+    private String imageSourceWeb;
+
+    @Value("${image.path}")
+    private String imagePath;
 
     /**
      * 登录验证
@@ -302,6 +319,52 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public String getCacheKey(String username) {
         return PWD_ERR_CNT_KEY + username;
+    }
+
+
+    public Boolean saveUploadedFiles(Integer userId, MultipartFile file)  {
+        try {
+            String[] imgArr = file.getOriginalFilename().split("\\.");
+            String imgUrl = "/user/head/" + System.currentTimeMillis() + "." + imgArr[imgArr.length - 1];
+//            final byte[] bytes = file.getBytes();
+
+            // 构建文件路径
+            File outputFile = new File(imagePath + imgUrl);
+            File parentDir = outputFile.getParentFile();
+
+            // 如果父目录不存在，尝试创建它
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
+            try (InputStream inputStream = file.getInputStream();
+                 FileOutputStream outputStream = new FileOutputStream(outputFile)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+
+            // 验证图片是否正常
+            BufferedImage image = ImageIO.read(outputFile);
+            if (image == null) {
+                 Path path=  Paths.get(imagePath + imgUrl);
+                Files.delete(path);
+                // 图片不是有效的图像格式，可以根据需要进行处理
+                return false;
+            } else {
+                // 图片验证通过，更新用户信息
+                SystemUser user = new SystemUser();
+                user.setId(userId);
+                user.setImgUrl(imageSourceWeb + imgUrl);
+                mapper.updateById(user);
+                return true;
+            }
+        } catch (Exception exception) {
+            // 处理异常
+            return false;
+        }
     }
 
 }
