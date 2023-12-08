@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+
 
 /**
  * <p>
@@ -75,8 +77,8 @@ public class AdminUserBuyAlbumController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserBuyAlbumVo> getInfo(@PathVariable("id") Long id) {
-        UserBuyAlbumVo vo = userBuyAlbumService.getInfo(id);
+    public Result<UserBuyAlbum> getInfo(@PathVariable("aid") Long aid) {
+        UserBuyAlbum vo = userBuyAlbumService.getInfo(getUserId(),aid);
         return Result.success(vo);
     }
 

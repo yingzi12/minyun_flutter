@@ -119,6 +119,10 @@ public enum ResultCodeEnum {
     WORLD_IS_PRIVE(999008114, "该世界为不公开的,只有创造者能够查看"),
     PASSWORD_NULL(999008115, "密码不符合规范"),
 
+    ALBUM_IMGURL_NULL(999008116, "Album图片不存在"),
+    ALBUM_IMGURL_UPLOAD_ERROR(999008116, "Album图片上传错误"),
+
+    ALBUM_FREE_STATUS(999008117, "收费金额不能为0"),
     ;
 
 

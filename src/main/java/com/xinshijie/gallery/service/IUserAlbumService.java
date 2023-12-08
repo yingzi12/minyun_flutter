@@ -49,13 +49,22 @@ public interface IUserAlbumService extends IService<UserAlbum> {
     /**
      * 删除数据
      */
-    Integer delById(Long id);
+    Integer delById(Integer userId,Long id);
 
     /**
      * 根据id数据
      */
-    UserAlbumVo getInfo(Long id);
+    UserAlbum getInfo(Integer userId,Long id);
 
-    Boolean saveUploadedFiles(Integer userId, MultipartFile file);
+    Boolean updateVip(Integer userId,Long id,Integer isVip);
+
+    Boolean updateFree(Integer userId,Long id,Integer isFree,Double price);
+
+    Boolean updatePrice(Integer userId,Long id,Double price);
+
+    Boolean updateStatus(Integer userId,Long id, Integer status);
+
+
+    String saveUploadedFiles(Integer userId, MultipartFile file);
 
 }

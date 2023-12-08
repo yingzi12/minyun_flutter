@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 
 
 /**
@@ -49,6 +50,8 @@ public class AdminUserAlbumController extends BaseController {
     @PostMapping("/add")
     public Result<UserAlbum> add(@RequestBody UserAlbumDto dto) {
         UserAlbum vo = userAlbumService.add(dto);
+        vo.setUserId(getUserId());
+        vo.setUserName(getUserName());
         return Result.success(vo);
     }
 
@@ -60,7 +63,8 @@ public class AdminUserAlbumController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userAlbumService.delById(id);
+
+        Integer vo = userAlbumService.delById(getUserId(),id);
         return Result.success(vo);
     }
 
@@ -73,6 +77,7 @@ public class AdminUserAlbumController extends BaseController {
 
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserAlbumDto dto) {
+        dto.setUserId(getUserId());
         Integer vo = userAlbumService.edit(dto);
         return Result.success(vo);
     }
@@ -84,11 +89,43 @@ public class AdminUserAlbumController extends BaseController {
      * @return
      */
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserAlbumVo> getInfo(@PathVariable("id") Long id) {
-        UserAlbumVo vo = userAlbumService.getInfo(id);
+    public Result<UserAlbum> getInfo(@PathVariable("id") Long id) {
+        UserAlbum vo = userAlbumService.getInfo(getUserId(),id);
         return Result.success(vo);
     }
 
+    /**
+     *  修改vip
+     *
+     * @return
+     */
+    @GetMapping(value = "/updateVip")
+    public Result<Boolean> updateVip(@PathVariable("id") Long id,@PathVariable("isVip") Integer isVip) {
+        Boolean vo = userAlbumService.updateVip(getUserId(),id,isVip);
+        return Result.success(vo);
+    }
+    /**
+     *  修改是否免费
+     *
+     * @return
+     */
+    @GetMapping(value = "/updateFree")
+    public Result<Boolean> updateFree(@PathVariable("id") Long id,@PathVariable("isFree") Integer isFree,@PathVariable("price") Double price) {
+        Boolean vo = userAlbumService.updateFree(getUserId(),id,isFree,price);
+        return Result.success(vo);
+    }
+
+    @GetMapping(value = "/updatePrice")
+    public Result<Boolean> updatePrice(@PathVariable("id") Long id,@PathVariable("price") Double price) {
+        Boolean vo = userAlbumService.updatePrice(getUserId(),id,price);
+        return Result.success(vo);
+    }
+
+    @GetMapping(value = "/updateStatus")
+    public Result<Boolean> updateStatus(@PathVariable("id") Long id,@PathVariable("status") Integer status) {
+        Boolean vo = userAlbumService.updateStatus(getUserId(),id,status);
+        return Result.success(vo);
+    }
 
     /**
      *  查询
@@ -97,14 +134,16 @@ public class AdminUserAlbumController extends BaseController {
      */
     @PostMapping("/select")
     public Result<Page<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
+        findDto.setUserId(getUserId());
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo);
     }
 
+
     @PostMapping("/upload")
-    public Result<Boolean> handleFileUpload(@RequestParam("file") MultipartFile file) {
+    public Result<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         log.info("system update");
-        Boolean ok = userAlbumService.saveUploadedFiles(getUserId(),file);
-        return Result.success(ok);
+        String url = userAlbumService.saveUploadedFiles(getUserId(),file);
+        return Result.success(url);
     }
 }

@@ -53,5 +53,5 @@ public interface IUserBuyAlbumService extends IService<UserBuyAlbum> {
     /**
      * 根据id数据
      */
-    UserBuyAlbumVo getInfo(Long id);
+     UserBuyAlbum getInfo(Integer userId, Long aid);
 }

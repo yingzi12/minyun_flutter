@@ -5,6 +5,7 @@ import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
 
 /**
@@ -42,8 +45,8 @@ public class UserAlbumController extends BaseController {
      * @return
      */
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserAlbumVo> getInfo(@PathVariable("id") Long id) {
-        UserAlbumVo vo = userAlbumService.getInfo(id);
+    public Result<UserAlbum> getInfo(@PathVariable("id") Long id) {
+        UserAlbum vo = userAlbumService.getInfo(getUserId(),id);
         return Result.success(vo);
     }
 
@@ -55,6 +58,7 @@ public class UserAlbumController extends BaseController {
      */
     @PostMapping("/select")
     public Result<Page<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
+        findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo);
     }

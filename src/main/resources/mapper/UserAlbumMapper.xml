@@ -14,7 +14,7 @@
                 tags,
                 is_vip,
                 is_free,
-                amount,
+                price,
                 discount,
                 gril,
                 count_see,
@@ -41,7 +41,7 @@
                     <if test="tags !=null ">and tags= #{tags}</if>
                     <if test="isVip !=null ">and is_vip= #{isVip}</if>
                     <if test="isFree !=null ">and is_free= #{isFree}</if>
-                    <if test="amount !=null ">and amount= #{amount}</if>
+                    <if test="price !=null ">and price= #{price}</if>
                     <if test="discount !=null ">and discount= #{discount}</if>
                     <if test="gril !=null ">and gril= #{gril}</if>
                     <if test="countSee !=null ">and count_see= #{countSee}</if>
@@ -68,7 +68,7 @@
                     <if test="dto.tags !=null ">and tags= #{dto.tags}</if>
                     <if test="dto.isVip !=null ">and is_vip= #{dto.isVip}</if>
                     <if test="dto.isFree !=null ">and is_free= #{dto.isFree}</if>
-                    <if test="dto.amount !=null ">and amount= #{dto.amount}</if>
+                    <if test="dto.price !=null ">and price= #{dto.price}</if>
                     <if test="dto.discount !=null ">and discount= #{dto.discount}</if>
                     <if test="dto.gril !=null ">and gril= #{dto.gril}</if>
                     <if test="dto.countSee !=null ">and count_see= #{dto.countSee}</if>
@@ -98,7 +98,7 @@
                 tags,
                 is_vip,
                 is_free,
-                amount,
+                price,
                 discount,
                 gril,
                 count_see,
@@ -122,7 +122,7 @@
                     #{ tags },
                     #{ isVip },
                     #{ isFree },
-                    #{ amount },
+                    #{ price },
                     #{ discount },
                     #{ gril },
                     #{ countSee },
@@ -149,7 +149,7 @@
                     <if test="tags !=null ">  tags= #{tags},</if>
                     <if test="isVip !=null ">  is_vip= #{isVip},</if>
                     <if test="isFree !=null ">  is_free= #{isFree},</if>
-                    <if test="amount !=null ">  amount= #{amount},</if>
+                    <if test="price !=null ">  price= #{price},</if>
                     <if test="discount !=null ">  discount= #{discount},</if>
                     <if test="gril !=null ">  gril= #{gril},</if>
                     <if test="countSee !=null ">  count_see= #{countSee},</if>
@@ -161,15 +161,15 @@
                     <if test="introduce !=null ">  introduce= #{introduce},</if>
                     <if test="status !=null ">  status= #{status},</if>
         </trim>
-        where   id=#{id}
+        where   id=#{id} and user_id= #{userId}
     </update>
 
     <delete id="delById"  >
-        delete FROM  user_album where  id = #{id}
+        delete FROM  user_album where  id = #{id} and user_id= #{userId}
     </delete>
 
     <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserAlbumVo">
-        <include refid="selectUserAlbum"/> where  id = #{id}
+        <include refid="selectUserAlbum"/> where  id = #{id} and user_id= #{userId}
     </select>
 
 </mapper>

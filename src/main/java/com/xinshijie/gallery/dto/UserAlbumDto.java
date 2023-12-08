@@ -48,7 +48,7 @@ public class UserAlbumDto implements Serializable {
      * 用户id
      */
     @Schema(description = "用户id ")
-    private Long userId;
+    private Integer userId;
 
     /**
      * 用户名称

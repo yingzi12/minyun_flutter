@@ -3,6 +3,7 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.UserVipDto;
 import com.xinshijie.gallery.mapper.UserVipMapper;
@@ -89,12 +90,13 @@ public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVip> impl
         return mapper.delById(id);
     }
 
-    /**
-     * 根据id数据
-     */
     @Override
-    public UserVipVo getInfo(Long id) {
-        return mapper.getInfo(id);
+    public UserVip getInfo(Integer userId, Integer vipUserId) {
+        QueryWrapper<UserVip> qw=new QueryWrapper<>();
+        qw.eq("user_id",userId);
+        qw.eq("vip_user_id",vipUserId);
+        return mapper.selectOne(qw);
     }
+
 
 }

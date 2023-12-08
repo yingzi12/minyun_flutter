@@ -27,7 +27,7 @@ public class UserVip implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private Long userId;
+    private Integer userId;
     private String userName;
     /**
      * 创建时间
@@ -44,7 +44,7 @@ public class UserVip implements Serializable {
     /**
      * vip的用户id
      */
-    private Long vipUserId;
+    private Integer vipUserId;
     /**
      * vip的用户名称
      */

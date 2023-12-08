@@ -42,7 +42,7 @@ public class UserAlbum implements Serializable {
     /**
      * 用户id
      */
-    private Long userId;
+    private Integer userId;
     /**
      * 用户名称
      */
@@ -60,13 +60,13 @@ public class UserAlbum implements Serializable {
      */
     private Integer isVip;
     /**
-     * 是否免费
+     * 是否免费 1.是，2不是
      */
     private Integer isFree;
     /**
      * 价格
      */
-    private Double amount;
+    private Double price;
     /**
      * 折扣
      */

@@ -27,7 +27,7 @@ public class UserBuyAlbum implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private Long userId;
+    private Integer userId;
     private String userName;
     /**
      * 创建时间
