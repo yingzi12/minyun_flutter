@@ -3,28 +3,21 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.mapper.UserAlbumMapper;
+import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.IUserAlbumService;
-import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,6 +35,9 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
 
     @Autowired
     private UserAlbumMapper mapper;
+
+    @Autowired
+    private IFileService fileService;
 
     @Value("${image.sourceWeb}")
     private String imageSourceWeb;
@@ -121,49 +117,48 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         return mapper.getInfo(id);
     }
 
-    public Boolean saveUploadedFiles(Integer userId, MultipartFile file)  {
+    public Boolean saveUploadedFiles(Integer userId,MultipartFile file)  {
         try {
-            String[] imgArr = file.getOriginalFilename().split("\\.");
-            String imgUrl = "/user/head/" + System.currentTimeMillis() + "." + imgArr[imgArr.length - 1];
-//            final byte[] bytes = file.getBytes();
-
-            // 构建文件路径
-            File outputFile = new File(imagePath + imgUrl);
-            File parentDir = outputFile.getParentFile();
-
-            // 如果父目录不存在，尝试创建它
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
-            }
-
-            try (InputStream inputStream = file.getInputStream();
-                 FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-            }
-
-            // 验证图片是否正常
-            BufferedImage image = ImageIO.read(outputFile);
-            if (image == null) {
-                Path path=  Paths.get(imagePath + imgUrl);
-                Files.delete(path);
-                // 图片不是有效的图像格式，可以根据需要进行处理
+            if (file.isEmpty()) {
+                log.error( "No image file provided");
                 return false;
-            } else {
-                // 图片验证通过，更新用户信息
-                UserAlbum user = new UserAlbum();
-                user.setId(userId);
-                user.setImgUrl(imageSourceWeb + imgUrl);
-                mapper.updateById(user);
-                return true;
             }
+            try {
+                String mm5=fileService.getMD5(file.getInputStream());
+                String imgUrl = "/user/album/" +userId+"_"+mm5 + ".jpg";
+                // 假设我们将图片保存在服务器的某个位置
+                File destinationFile = new File(imagePath+imgUrl);
+                File parentDir = destinationFile.getParentFile();
+                // 如果父目录不存在，尝试创建它
+                if (parentDir != null && !parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+                // 根据图片大小设置压缩质量
+                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
+
+                // 转换图片格式为JPG并添加水印
+                Thumbnails.of(file.getInputStream())
+                        .size(213,320)
+                        .outputQuality(outputQuality) // 设置压缩质量
+                        .outputFormat("jpg")
+                        .toFile(destinationFile); // 保存到文件
+
+
+                // 图片验证通过，更新用户信息
+//                UserAlbum user = new UserAlbum();
+//                user.setId(userId);
+//                user.setImgUrl(imageSourceWeb + imgUrl);
+//                mapper.updateById(user);
+                return true;
+            } catch (IOException e) {
+                log.error("Error during image processing: " + e.getMessage());
+                return false;
+            }
+
+
         } catch (Exception exception) {
             // 处理异常
             return false;
         }
     }
-
 }

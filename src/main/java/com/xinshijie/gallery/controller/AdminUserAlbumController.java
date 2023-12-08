@@ -102,12 +102,9 @@ public class AdminUserAlbumController extends BaseController {
     }
 
     @PostMapping("/upload")
-    public Result<List<String>> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile)  {
-       Boolean ok = userAlbumService.saveUploadedFiles(getUserId(),uploadfile);
-       return Result.success(new ArrayList<>());
+    public Result<Boolean> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        log.info("system update");
+        Boolean ok = userAlbumService.saveUploadedFiles(getUserId(),file);
+        return Result.success(ok);
     }
-
-
-
-
 }

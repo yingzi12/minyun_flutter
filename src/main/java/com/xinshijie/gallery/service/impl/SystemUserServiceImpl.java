@@ -1,37 +1,30 @@
 package com.xinshijie.gallery.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.jwt.JWT;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.common.CacheConstants;
-import com.xinshijie.gallery.common.RedisCache;
-import com.xinshijie.gallery.common.ResultCodeEnum;
-import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.mapper.SystemUserMapper;
+import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.util.EntityUtils;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -53,9 +46,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Autowired
     private SystemUserMapper mapper;
 
+    @Autowired
+    private IFileService fileService;
+
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisTemplate redisTemplate;
 
     @Value("${image.sourceWeb}")
     private String imageSourceWeb;
@@ -84,7 +80,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         ajax.setUser(systemUser);
         ajax.setAccessToken(ajax.getToken());
         ajax.setRefreshToken(ajax.getToken());
-        redisCache.setCacheString(CacheConstants.LOGIN_TOKEN_KEY+ajax.getUser().getId(),ajax.getToken(),1, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY+ajax.getUser().getId(),ajax.getToken(),1, TimeUnit.HOURS);
         // 生成token
         return ajax;
     }
@@ -106,7 +102,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         ajax.setUser(systemUser);
         ajax.setAccessToken(ajax.getToken());
         ajax.setRefreshToken(ajax.getToken());
-        redisCache.setCacheString(CacheConstants.LOGIN_TOKEN_KEY+ajax.getUser().getId(),ajax.getToken(),1, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY+ajax.getUser().getId(),ajax.getToken(),1, TimeUnit.HOURS);
         // 生成token
         return ajax;
     }
@@ -117,18 +113,18 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         queryWrapper.eq("name",username).or().eq("email",username);
         SystemUser systemUser= mapper.selectOne(queryWrapper);
         if(systemUser!=null){
-            if(redisCache.hasKey(PWD_ERR_CNT_KEY+":"+systemUser.getId())){
-                int count=redisCache.getCacheInteger(PWD_ERR_CNT_KEY+":"+systemUser.getId());
+            if(redisTemplate.hasKey(PWD_ERR_CNT_KEY+":"+systemUser.getId())){
+                int count=Integer.parseInt(redisTemplate.opsForValue().get(PWD_ERR_CNT_KEY+":"+systemUser.getId()).toString());
                 if(count>3){
                     throw new ServiceException(ResultCodeEnum.USER_ACCOUNT_ERROR_LONG_TIME);
                 }
             }
             if(!SecurityUtils.matchesPassword(password,systemUser.getPassword())){
-                if(redisCache.hasKey(PWD_ERR_CNT_KEY+":"+systemUser.getId())){
-                    int count=redisCache.getCacheInteger(PWD_ERR_CNT_KEY+":"+systemUser.getId());
-                    redisCache.setCacheInteger(PWD_ERR_CNT_KEY + ":" + systemUser.getId(), count+1, 1, TimeUnit.HOURS);
+                if(redisTemplate.hasKey(PWD_ERR_CNT_KEY+":"+systemUser.getId())){
+                    int count=Integer.parseInt(redisTemplate.opsForValue().get(PWD_ERR_CNT_KEY+":"+systemUser.getId()).toString());
+                    redisTemplate.opsForValue().set(PWD_ERR_CNT_KEY + ":" + systemUser.getId(), count+1, 1, TimeUnit.HOURS);
                 }else {
-                    redisCache.setCacheInteger(PWD_ERR_CNT_KEY + ":" + systemUser.getId(), 1, 1, TimeUnit.HOURS);
+                    redisTemplate.opsForValue().set(PWD_ERR_CNT_KEY + ":" + systemUser.getId(), 1, 1, TimeUnit.HOURS);
                 }
                 throw new ServiceException(ResultCodeEnum.USER_ACCOUNT_ERROR);
             }
@@ -149,8 +145,11 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
      */
     public void validateCaptcha(String username, String code, String uuid) {
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
-        String captcha = redisCache.getCacheString(verifyKey);
-        redisCache.deleteObject(verifyKey);
+        if(!redisTemplate.hasKey(verifyKey)){
+            throw new ServiceException(ResultCodeEnum.USER_CODE_ERROR);
+        }
+        String captcha =redisTemplate.opsForValue().get(verifyKey).toString();
+        redisTemplate.delete(verifyKey);
         if (captcha == null) {
             throw new ServiceException(ResultCodeEnum.USER_CODE_ERROR);
         }
@@ -193,12 +192,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
 
     /**
-     * 重置用户密码
+     * 修改用户用户密码
      *
      * @return 结果
      */
     @Override
-    public Integer resetPwd(Integer userId,String newPassword,String oldPassword) {
+    public Integer updatePwd(Integer userId,String newPassword,String oldPassword) {
         SystemUser userVo = mapper.selectById(userId);
         if (userVo == null) {
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
@@ -256,15 +255,17 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         systemUser.setIsEmail(2);
         systemUser.setNickname(userDto.getName());
         systemUser.setSalt(RandomUtil.randomNumbers(10)+"");
+        systemUser.setCreateTime(LocalDateTime.now());
+
         mapper.insert(systemUser);
         return true;
     }
 
     @Override
-    public Boolean edit(SystemUserDto userDto) {
+    public SystemUser edit(SystemUserDto userDto) {
         SystemUser systemUser=mapper.selectById(userDto.getId());
         BeanUtils.copyProperties(userDto,systemUser);
-        systemUser.setPassword(SecurityUtils.encryptPassword(userDto.getPassword()));
+//        systemUser.setPassword(SecurityUtils.encryptPassword(userDto.getPassword()));
         if(!systemUser.getEmail().equals(userDto.getEmail())) {
             QueryWrapper<SystemUser> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("email",userDto.getEmail());
@@ -275,23 +276,22 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 throw new ServiceException(ResultCodeEnum.ALREADY_BOUND_ACCOUNT);
             }
         }
-        systemUser.setNickname(userDto.getName());
+        systemUser.setNickname(userDto.getNickname());
         systemUser.setSalt(null);
         systemUser.setPassword(null);
+        systemUser.setUpdateTime(LocalDateTime.now());
         mapper.updateById(systemUser);
-        return true;
+        return systemUser;
     }
 
     public String getToken(SystemUser systemUser)  {
-        // Build the token
-        String jws = Jwts.builder()
-                .setSubject(JSONObject.toJSONString(systemUser))
-                .setIssuer("发行者")
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 设置过期时间（例如1小时后）
-               // .signWith(SignatureAlgorithm.HS256,systemUser.getSalt().getBytes("utf-8"))
-                .compact();
-        return jws;
+        String token = JWT.create()
+                .setIssuer("登录")
+                .setPayload("user",JSONObject.toJSONString(systemUser))
+                .setExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 设置过期时间（例如1小时后）
+                .setKey(Constants.TOKEN_KEY)
+                .sign();
+        return token;
     }
 
     @Override
@@ -322,49 +322,52 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
 
-    public Boolean saveUploadedFiles(Integer userId, MultipartFile file)  {
+    public Boolean saveUploadedFiles(Integer userId,MultipartFile file)  {
         try {
-            String[] imgArr = file.getOriginalFilename().split("\\.");
-            String imgUrl = "/user/head/" + System.currentTimeMillis() + "." + imgArr[imgArr.length - 1];
-//            final byte[] bytes = file.getBytes();
-
-            // 构建文件路径
-            File outputFile = new File(imagePath + imgUrl);
-            File parentDir = outputFile.getParentFile();
-
-            // 如果父目录不存在，尝试创建它
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
-            }
-
-            try (InputStream inputStream = file.getInputStream();
-                 FileOutputStream outputStream = new FileOutputStream(outputFile)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-            }
-
-            // 验证图片是否正常
-            BufferedImage image = ImageIO.read(outputFile);
-            if (image == null) {
-                 Path path=  Paths.get(imagePath + imgUrl);
-                Files.delete(path);
-                // 图片不是有效的图像格式，可以根据需要进行处理
+            if (file.isEmpty()) {
+                log.error( "No image file provided");
                 return false;
-            } else {
+            }
+            try {
+                String mm5=fileService.getMD5(file.getInputStream());
+                String imgUrl = "/user/head/" +userId+"_"+mm5 + ".jpg";
+                // 假设我们将图片保存在服务器的某个位置
+                File destinationFile = new File(imagePath+imgUrl);
+                File parentDir = destinationFile.getParentFile();
+                // 如果父目录不存在，尝试创建它
+                if (parentDir != null && !parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+                // 根据图片大小设置压缩质量
+                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
+
+                // 转换图片格式为JPG并添加水印
+                Thumbnails.of(file.getInputStream())
+                        .size(100,100)
+                        .outputQuality(outputQuality) // 设置压缩质量
+                        .outputFormat("jpg")
+                        .toFile(destinationFile); // 保存到文件
+
+
                 // 图片验证通过，更新用户信息
                 SystemUser user = new SystemUser();
                 user.setId(userId);
                 user.setImgUrl(imageSourceWeb + imgUrl);
                 mapper.updateById(user);
                 return true;
+            } catch (IOException e) {
+                log.error("Error during image processing: " + e.getMessage());
+                return false;
             }
+
+
         } catch (Exception exception) {
             // 处理异常
             return false;
         }
     }
+
+
+
 
 }

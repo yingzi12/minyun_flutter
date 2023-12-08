@@ -27,10 +27,10 @@ public class RequestContextUtil {
      */
     public static Integer getUserId() {
         HttpServletRequest request = getCurrentRequest();
-        if(request == null || request.getHeader("userId")==null ){
+        if(request == null || request.getAttribute("userId")==null ){
             throw new ServiceException(ResultCodeEnum.EXPIRED);
         }
-        return Integer.parseInt(request.getHeader("userId"));
+        return Integer.parseInt(request.getAttribute("userId").toString());
     }
 
     /**
@@ -39,9 +39,9 @@ public class RequestContextUtil {
      */
     public static String getUserName() {
         HttpServletRequest request = getCurrentRequest();
-        if(request == null || request.getHeader("username")==null ){
+        if(request == null || request.getAttribute("username")==null ){
             throw new ServiceException(ResultCodeEnum.EXPIRED);
         }
-        return request.getHeader("username") ;
+        return request.getAttribute("username").toString() ;
     }
 }

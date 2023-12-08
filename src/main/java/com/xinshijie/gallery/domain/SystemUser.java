@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 作者
@@ -25,20 +25,20 @@ import java.time.LocalDateTime;
 @TableName("system_user")
 @Schema(description = " ")
 public class SystemUser implements Serializable{
-private static final long serialVersionUID=1L;
-            @Id
+    private static final long serialVersionUID=1L;
+    @Id
     @TableId(value = "id", type = IdType.AUTO)
-        private Integer id;
-                private String name;
-                private String nickname;
-                private String email;
-                private Integer isEmail;
-                private String password;
-                private String salt;
-                private LocalDateTime createTime;
-                private LocalDateTime updateTime;
-                private String intro;
-                private String directions;
+    private Integer id;
+    private String name;
+    private String nickname;
+    private String email;
+    private Integer isEmail;
+    private String password;
+    private String salt;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+    private String intro;
+    private String directions;
     private String imgUrl;
     private Integer  countLike;
     private Integer       countSee;

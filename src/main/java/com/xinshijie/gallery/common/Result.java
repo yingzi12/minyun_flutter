@@ -67,6 +67,9 @@ public class Result<T> {
     public static <T> Result<T> success(T data) {
         return new Result(data);
     }
+    public static <T> Result<T> success(ResultCodeEnum ResultCodeEnum) {
+        return new Result(ResultCodeEnum);
+    }
 
     public static <T> Result<T> success(T data, Integer total) {
         return new Result(data, total);

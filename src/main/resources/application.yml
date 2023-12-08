@@ -18,6 +18,10 @@ spring:
       database: 0
       password: sha@335610
       timeout: 10s
+  servlet:
+     multipart:
+       max-file-size: 1024MB
+       max-request-size: 1024MB
 server:
   port: 8098
   servlet:
@@ -37,3 +41,5 @@ reptile:
 image:
   path: ./data/e2
   sourceWeb: https://image.51x.uk/xinshijie
+ffm:
+  path:  /Users/luhuang/Documents/git/SubtitleGenerated/src/main/resources/ffmpeg

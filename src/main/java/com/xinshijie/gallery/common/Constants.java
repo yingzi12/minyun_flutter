@@ -141,4 +141,7 @@ public class Constants {
 
     public static final Integer ELEMENT_LOCK_EXPIRATION = 24;
 
+    public static byte[] TOKEN_KEY = "xinshijie".getBytes();
+
+
 }

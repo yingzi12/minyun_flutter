@@ -62,11 +62,11 @@ public class  AdminUserController  extends BaseController {
     }
 
     @PostMapping("/edit")
-    public Result<Boolean> edit(@RequestBody SystemUserDto userDto) {
+    public Result<SystemUser> edit(@RequestBody SystemUserDto userDto) {
         userDto.setId(getUserId());
         // 生成令牌
-        systemUserService.edit(userDto);
-        return Result.success(true);
+        SystemUser systemUser= systemUserService.edit(userDto);
+        return Result.success(systemUser);
     }
 
 //    @Log(title = "发送邮箱验证链接", businessType = BusinessType.UPDATE)
@@ -128,8 +128,9 @@ public class  AdminUserController  extends BaseController {
     }
 
     @PostMapping("/upload")
-    public Result<Boolean> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile)  {
-        Boolean ok = systemUserService.saveUploadedFiles(getUserId(),uploadfile);
+    public Result<Boolean> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        log.info("system update");
+        Boolean ok = systemUserService.saveUploadedFiles(getUserId(),file);
         return Result.success(ok);
     }
 }

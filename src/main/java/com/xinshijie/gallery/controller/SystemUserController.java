@@ -29,6 +29,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+
 
 /**
  * <p>
@@ -80,6 +82,16 @@ public class  SystemUserController  extends BaseController {
         }
         // 生成令牌
         systemUserService.add(userDto);
+        return Result.success(true);
+    }
+
+    @PostMapping("/updatePassworld")
+    public Result<Boolean> updatePassworld(@RequestBody UserPasswordDto passwordDto) {
+        if(StringUtils.isEmpty(passwordDto.getNewPassword()) || passwordDto.getNewPassword().length() <6){
+            throw  new ServiceException(ResultCodeEnum.PASSWORD_NULL);
+        }
+        // 生成令牌
+        systemUserService.updatePwd(getUserId(),passwordDto.getNewPassword(),passwordDto.getOldPassword());
         return Result.success(true);
     }
 

@@ -24,7 +24,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     LoginUserVo loginModile(String username, String password);
 
-    Integer resetPwd(Integer userId,String newPassword,String oldPassword);
+    Integer updatePwd(Integer userId,String newPassword,String oldPassword);
 
     Boolean checkUserNameUnique(String username);
 
@@ -36,7 +36,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     Boolean add(SystemUserDto userDto);
 
-    Boolean edit(SystemUserDto userDto);
+    SystemUser edit(SystemUserDto userDto);
 
     Integer updateEmail(Integer userId,String email);
 
