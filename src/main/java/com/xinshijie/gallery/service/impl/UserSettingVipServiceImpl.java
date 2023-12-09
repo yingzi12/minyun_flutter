@@ -3,12 +3,14 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserSettingVip;
 import com.xinshijie.gallery.dto.UserSettingVipDto;
 import com.xinshijie.gallery.mapper.UserSettingVipMapper;
 import com.xinshijie.gallery.service.IUserSettingVipService;
 import com.xinshijie.gallery.vo.UserSettingVipVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,23 +92,36 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
      */
     @Override
     public Integer edit(UserSettingVipDto dto) {
-        return mapper.edit(dto);
+        QueryWrapper<UserSettingVip> qw=new QueryWrapper<>();
+        qw.eq("user_id",dto.getUserId());
+        qw.eq("id",dto.getId());
+        UserSettingVip settingVip=new UserSettingVip();
+        BeanUtils.copyProperties(settingVip,dto);
+        settingVip.setUpdateTime(LocalDateTime.now());
+        return mapper.update(settingVip,qw);
     }
 
     /**
      * 删除数据
      */
     @Override
-    public Integer delById(Long id) {
-        return mapper.delById(id);
+    public Integer delById(Integer userId,Long id) {
+        QueryWrapper<UserSettingVip> qw=new QueryWrapper<>();
+        qw.eq("user_id",userId);
+        qw.eq("id",id);
+        return mapper.delete(qw);
     }
 
     /**
      * 根据id数据
      */
     @Override
-    public UserSettingVipVo getInfo(Long id) {
-        return mapper.getInfo(id);
+    public UserSettingVip getInfo(Integer userId,Long id) {
+        QueryWrapper<UserSettingVip> qw=new QueryWrapper<>();
+        qw.eq("user_id",userId);
+        qw.eq("id",id);
+
+        return mapper.selectOne(qw);
     }
 
 }

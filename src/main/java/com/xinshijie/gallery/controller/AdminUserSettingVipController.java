@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
+
 
 /**
  * <p>
@@ -40,6 +43,8 @@ public class AdminUserSettingVipController extends BaseController {
 
     @PostMapping("/add")
     public Result<UserSettingVip> add(@RequestBody UserSettingVipDto dto) {
+        dto.setUserId(getUserId());
+        dto.setUserName(getUserName());
         UserSettingVip vo = userSettingVipService.add(dto);
         return Result.success(vo);
     }
@@ -52,7 +57,7 @@ public class AdminUserSettingVipController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userSettingVipService.delById(id);
+        Integer vo = userSettingVipService.delById(getUserId(),id);
         return Result.success(vo);
     }
 
@@ -64,6 +69,8 @@ public class AdminUserSettingVipController extends BaseController {
      */
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserSettingVipDto dto) {
+        dto.setUserId(getUserId());
+        dto.setUserName(getUserName());
         Integer vo = userSettingVipService.edit(dto);
         return Result.success(vo);
     }
@@ -76,8 +83,8 @@ public class AdminUserSettingVipController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserSettingVipVo> getInfo(@PathVariable("id") Long id) {
-        UserSettingVipVo vo = userSettingVipService.getInfo(id);
+    public Result<UserSettingVip> getInfo(@PathVariable("id") Long id) {
+        UserSettingVip vo = userSettingVipService.getInfo(getUserId(),id);
         return Result.success(vo);
     }
 

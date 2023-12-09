@@ -48,10 +48,10 @@ public interface IUserSettingVipService extends IService<UserSettingVip> {
     /**
      * 删除数据
      */
-    Integer delById(Long id);
+    Integer delById(Integer userId,Long id);
 
     /**
      * 根据id数据
      */
-    UserSettingVipVo getInfo(Long id);
+    UserSettingVip getInfo(Integer userId,Long id);
 }

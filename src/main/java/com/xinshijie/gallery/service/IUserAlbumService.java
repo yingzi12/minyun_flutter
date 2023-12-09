@@ -44,7 +44,7 @@ public interface IUserAlbumService extends IService<UserAlbum> {
     /**
      * 根据id修改数据
      */
-    Integer edit(UserAlbumDto dto);
+    Boolean edit(UserAlbumDto dto);
 
     /**
      * 删除数据

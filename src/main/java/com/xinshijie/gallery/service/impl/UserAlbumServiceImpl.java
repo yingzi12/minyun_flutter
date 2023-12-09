@@ -118,9 +118,28 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
      * 根据id修改数据
      */
     @Override
-    public Integer edit(UserAlbumDto dto) {
-        dto.setUpdateTime(LocalDateTime.now());
-        return mapper.edit(dto);
+    public Boolean edit(UserAlbumDto dto) {
+        UserAlbum userAlbum=new UserAlbum();
+        userAlbum.setCharge(dto.getCharge());
+        userAlbum.setIntro(dto.getIntro());
+        userAlbum.setIntroduce(dto.getIntroduce());
+        userAlbum.setTitle(dto.getTitle());
+        userAlbum.setGril(dto.getGril());
+        userAlbum.setTags(dto.getTags());
+        userAlbum.setPrice(dto.getPrice());
+        userAlbum.setVipPrice(dto.getVipPrice());
+        userAlbum.setUpdateTime(LocalDateTime.now());
+        setPrice(userAlbum,dto.getCharge(),dto.getPrice(),dto.getVipPrice());
+        QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
+        qw.eq("user_id",dto.getUserId());
+        qw.eq("id",dto.getId());
+
+        int i=mapper.update(userAlbum,qw);
+        if(i==1) {
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**

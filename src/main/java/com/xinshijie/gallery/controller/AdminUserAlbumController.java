@@ -77,9 +77,9 @@ public class AdminUserAlbumController extends BaseController {
      */
 
     @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserAlbumDto dto) {
+    public Result<Boolean> edit(@RequestBody UserAlbumDto dto) {
         dto.setUserId(getUserId());
-        Integer vo = userAlbumService.edit(dto);
+        Boolean vo = userAlbumService.edit(dto);
         return Result.success(vo);
     }
 
@@ -106,12 +106,12 @@ public class AdminUserAlbumController extends BaseController {
         return Result.success(vo);
     }
 
-
     @GetMapping(value = "/updateStatus")
     public Result<Boolean> updateStatus(@PathVariable("id") Long id,@PathVariable("status") Integer status) {
         Boolean vo = userAlbumService.updateStatus(getUserId(),id,status);
         return Result.success(vo);
     }
+
 
     /**
      *  查询

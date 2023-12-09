@@ -61,10 +61,15 @@ public class AdminUserImageController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userImageService.delById(id);
+        Integer vo = userImageService.delById(getUserId(),id);
         return Result.success(vo);
     }
 
+    @GetMapping(value = "/updateIsFree")
+    public Result<Integer> updateIsFree(@RequestParam("id") Long id,@RequestParam("isFree") Integer isFree) {
+        Integer vo = userImageService.updateIsFree(getUserId(),id,isFree);
+        return Result.success(vo);
+    }
 
     /**
      *  修改

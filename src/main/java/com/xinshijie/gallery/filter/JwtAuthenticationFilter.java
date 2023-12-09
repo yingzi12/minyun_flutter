@@ -76,12 +76,15 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                             } else {
                                 sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                             }
+                        }else {
+                            sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                         }
                     } else {
                         sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                     }
                 } catch (Exception e) {
-                    log.error(e.getMessage());
+                    e.printStackTrace();
+                    log.error("错误，出现异常，",e);
                     sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                 }
             } else {

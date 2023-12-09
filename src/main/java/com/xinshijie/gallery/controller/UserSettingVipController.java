@@ -37,8 +37,8 @@ public class UserSettingVipController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserSettingVipVo> getInfo(@PathVariable("id") Long id) {
-        UserSettingVipVo vo = userSettingVipService.getInfo(id);
+    public Result<UserSettingVip> getInfo(@PathVariable("id") Long id) {
+        UserSettingVip vo = userSettingVipService.getInfo(null,id);
         return Result.success(vo);
     }
 

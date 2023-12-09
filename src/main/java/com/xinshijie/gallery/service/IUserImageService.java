@@ -49,7 +49,10 @@ public interface IUserImageService extends IService<UserImage> {
     /**
      * 删除数据
      */
-    Integer delById(Long id);
+    Integer  delById(Integer userId,Long id);
+
+    Integer  updateIsFree(Integer userId,Long id,Integer isFree);
+
 
     /**
      * 根据id数据
