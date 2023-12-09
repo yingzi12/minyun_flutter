@@ -64,4 +64,7 @@ public interface IUserAlbumService extends IService<UserAlbum> {
 
     String saveUploadedFiles(Integer userId, MultipartFile file);
 
+    Integer updateCountImage(Integer id);
+
+    Integer updateCountVideo(Integer id);
 }

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
@@ -57,10 +58,10 @@ public class UserAlbumController extends BaseController {
      * @return
      */
     @PostMapping("/select")
-    public Result<Page<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
+    public Result<List<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 }

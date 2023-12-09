@@ -172,4 +172,11 @@
         <include refid="selectUserAlbum"/> where  id = #{id} and user_id= #{userId}
     </select>
 
+    <update id="updateCountImage">
+        UPDATE user_album  SET number_photos  = (SELECT COUNT(*) FROM user_image where aid=#{id} ) where id=#{id}
+
+    </update>
+    <update id="updateCountVideo">
+        UPDATE user_album  SET number_video  = (SELECT COUNT(*) FROM user_video where aid=#{id} ) where id=#{id}
+    </update>
 </mapper>

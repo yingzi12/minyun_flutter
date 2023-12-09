@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -78,9 +80,9 @@ public class AdminUserBankController extends BaseController {
     * @return
     */
     @PostMapping("/select")
-    public Result<Page<UserBankVo>> select(@RequestBody UserBankDto findDto){
+    public Result<List<UserBankVo>> select(@RequestBody UserBankDto findDto){
         Page<UserBankVo> vo = userBankService.selectPageUserBank(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 

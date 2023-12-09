@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -87,9 +89,9 @@ public class AdminUserSettingVipController extends BaseController {
      */
 
     @PostMapping("/select")
-    public Result<Page<UserSettingVipVo>> select(@RequestBody UserSettingVipDto findDto) {
+    public Result<List<UserSettingVipVo>> select(@RequestBody UserSettingVipDto findDto) {
         Page<UserSettingVipVo> vo = userSettingVipService.selectPageUserSettingVip(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 

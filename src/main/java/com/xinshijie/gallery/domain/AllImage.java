@@ -20,23 +20,17 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("user_image")
+@TableName("all_image")
 @Schema(description = " 用户上传的图片")
-public class UserImage implements Serializable {
+public class AllImage implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private String url;
-    /**
-     * 是否免费
-     */
-    private Integer isFree;
-    private LocalDateTime createTime;
-    private Integer aid;
-
+    private String source_web;
+    private String source_url;
     private String md5;
+    private String title;
 
-    private Integer createUserid;
-
+    private Long size;
 }

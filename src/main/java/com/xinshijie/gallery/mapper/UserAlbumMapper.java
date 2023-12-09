@@ -54,5 +54,10 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
      * 根据id数据
      */
     UserAlbumVo getInfo(Integer userId,Long id);
+
+    Integer updateCountImage(Integer id);
+
+    Integer updateCountVideo(Integer id);
+
 }
 

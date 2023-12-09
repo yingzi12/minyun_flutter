@@ -5,7 +5,7 @@ import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.dto.UserVideoDto;
-import com.xinshijie.gallery.service.IUserVedioService;
+import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +22,7 @@ import java.nio.file.StandardOpenOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 
 /**
@@ -33,13 +34,13 @@ import java.security.NoSuchAlgorithmException;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " UserVedioController", description = "后台- ")
+@Tag(name = " UserVideoController", description = "后台- ")
 @RestController
 @RequestMapping("/userVideo")
-public class UserVedioController extends BaseController {
+public class UserVideoController extends BaseController {
 
     @Autowired
-    private IUserVedioService userVideoService;
+    private IUserVideoService userVideoService;
 
     private final  static String UPLOAD_DIR="./data/";
 
@@ -62,9 +63,9 @@ public class UserVedioController extends BaseController {
      * @return
      */
     @PostMapping("/select")
-    public Result<Page<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
-        Page<UserVideoVo> vo = userVideoService.selectPageUserVedio(findDto);
-        return Result.success(vo);
+    public Result<List<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
+        Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
     @PostMapping("/upload")

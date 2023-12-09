@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
-import com.xinshijie.gallery.mapper.UserVedioMapper;
-import com.xinshijie.gallery.service.IUserVedioService;
+import com.xinshijie.gallery.mapper.UserVideoMapper;
+import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,24 +25,24 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVideo> implements IUserVedioService {
+public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo> implements IUserVideoService {
 
     @Autowired
-    private UserVedioMapper mapper;
+    private UserVideoMapper mapper;
 
     /**
      * 查询图片信息表
      */
     @Override
-    public List<UserVideoVo> selectUserVedioList(UserVideoDto dto) {
-        return mapper.selectListUserVedio(dto);
+    public List<UserVideoVo> selectUserVideoList(UserVideoDto dto) {
+        return mapper.selectListUserVideo(dto);
     }
 
     /**
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserVideoVo> selectPageUserVedio(UserVideoDto dto) {
+    public Page<UserVideoVo> selectPageUserVideo(UserVideoDto dto) {
         Page<UserVideoVo> page = new Page<>();
         if(dto.getPageNum()==null){
             dto.setPageNum(20L);
@@ -52,14 +52,14 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVideo
         }
         page.setSize(dto.getPageSize());
         page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
-        return mapper.selectPageUserVedio(page, dto);
+        return mapper.selectPageUserVideo(page, dto);
     }
 
     /**
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserVideoVo> getPageUserVedio(UserVideoDto dto) {
+    public Page<UserVideoVo> getPageUserVideo(UserVideoDto dto) {
         Page<UserVideoVo> page = new Page<>();
         if(dto.getPageNum()==null){
             dto.setPageNum(20L);
@@ -70,7 +70,7 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVideo
         page.setSize(dto.getPageSize());
         page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         QueryWrapper<UserVideoVo> qw = new QueryWrapper<>();
-        return mapper.getPageUserVedio(page, qw);
+        return mapper.getPageUserVideo(page, qw);
     }
 
     /**

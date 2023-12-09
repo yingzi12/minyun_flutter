@@ -291,4 +291,14 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             throw new ServiceException(ResultCodeEnum.ALBUM_IMGURL_UPLOAD_ERROR);
         }
     }
+
+    @Override
+    public Integer updateCountImage(Integer id) {
+        return mapper.updateCountImage(id);
+    }
+
+    @Override
+    public Integer updateCountVideo(Integer id) {
+        return mapper.updateCountVideo(id);
+    }
 }

@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -83,9 +85,9 @@ public class AlbumVipController extends BaseController {
      * @return
      */
     @PostMapping("/select")
-    public Result<Page<AlbumVipVo>> select(@RequestBody AlbumVipDto findDto) {
+    public Result<List<AlbumVipVo>> select(@RequestBody AlbumVipDto findDto) {
         Page<AlbumVipVo> vo = albumVipService.selectPageAlbumVip(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 

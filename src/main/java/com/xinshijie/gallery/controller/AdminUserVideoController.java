@@ -5,7 +5,7 @@ import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
-import com.xinshijie.gallery.service.IUserVedioService;
+import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.ResuImageVo;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,13 +27,13 @@ import java.util.List;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " AdminUserVedioController", description = "后台- ")
+@Tag(name = " AdminUserVideoController", description = "后台- ")
 @RestController
 @RequestMapping("/admin/userVideo")
 public class AdminUserVideoController extends BaseController {
 
     @Autowired
-    private IUserVedioService userVideoService;
+    private IUserVideoService userVideoService;
 
     /**
      *  添加
@@ -92,9 +92,9 @@ public class AdminUserVideoController extends BaseController {
      * @return
      */
     @PostMapping("/select")
-    public Result<Page<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
-        Page<UserVideoVo> vo = userVideoService.selectPageUserVedio(findDto);
-        return Result.success(vo);
+    public Result<List<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
+        Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
     @PostMapping("/uploadImages")

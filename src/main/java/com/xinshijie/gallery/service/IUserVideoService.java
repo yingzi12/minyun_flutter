@@ -16,24 +16,24 @@ import java.util.List;
  * @author 作者
  * @since 2023-12-03
  */
-public interface IUserVedioService extends IService<UserVideo> {
+public interface IUserVideoService extends IService<UserVideo> {
 
 
     /**
      * 查询信息表
      */
-    List<UserVideoVo> selectUserVedioList(UserVideoDto dto);
+    List<UserVideoVo> selectUserVideoList(UserVideoDto dto);
 
     /**
      * 分页查询。普通方法
      * 查询图片信息表
      */
-    Page<UserVideoVo> selectPageUserVedio(UserVideoDto dto);
+    Page<UserVideoVo> selectPageUserVideo(UserVideoDto dto);
 
     /**
      * 分页查询信息表
      */
-    Page<UserVideoVo> getPageUserVedio(UserVideoDto dto);
+    Page<UserVideoVo> getPageUserVideo(UserVideoDto dto);
 
     /**
      * 新增数据

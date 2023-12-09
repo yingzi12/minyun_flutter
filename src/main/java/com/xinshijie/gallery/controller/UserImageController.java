@@ -57,9 +57,9 @@ public class UserImageController extends BaseController {
      */
 
     @PostMapping("/select")
-    public Result<Page<UserImageVo>> select(@RequestBody UserImageDto findDto) {
+    public Result<List<UserImageVo>> select(@RequestBody UserImageDto findDto) {
         findDto.setCreateUserid(getUserId());
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 }

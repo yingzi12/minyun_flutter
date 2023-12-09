@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -20,23 +19,17 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("user_image")
+@TableName("all_video")
 @Schema(description = " 用户上传的图片")
-public class UserImage implements Serializable {
+public class AllVideo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private String url;
-    /**
-     * 是否免费
-     */
-    private Integer isFree;
-    private LocalDateTime createTime;
-    private Integer aid;
-
+    private String source_web;
+    private String source_url;
     private String md5;
+    private Long size;
 
-    private Integer createUserid;
 
 }

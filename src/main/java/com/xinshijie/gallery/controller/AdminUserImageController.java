@@ -21,6 +21,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+
 
 /**
  * <p>
@@ -97,9 +99,9 @@ public class AdminUserImageController extends BaseController {
      */
 
     @PostMapping("/select")
-    public Result<Page<UserImageVo>> select(@RequestBody UserImageDto findDto) {
+    public Result<List<UserImageVo>> select(@RequestBody UserImageDto findDto) {
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 
@@ -124,15 +126,10 @@ public class AdminUserImageController extends BaseController {
     }
 
     @PostMapping("/upload")
-    public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
-        log.info("upload");
-        saveUploadedFiles(uploadfile);
+    public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile,@RequestParam("aid")Integer aid,@RequestParam("isFree")Integer isFree) {
+        log.info("upload aid:"+aid);
+        String url = userImageService.saveUploadedFiles(getUserId(),aid,isFree,uploadfile);
+        return Result.success(url);
     }
 
-    private String saveUploadedFiles(final MultipartFile file) throws IOException {
-        final byte[] bytes = file.getBytes();
-        final Path path = Paths.get("YOUR_ABSOLUTE_PATH" + file.getOriginalFilename());
-        Files.write(path, bytes);
-        return null;
-    }
 }

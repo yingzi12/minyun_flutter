@@ -65,7 +65,6 @@ public class AdminUserAlbumController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-
         Integer vo = userAlbumService.delById(getUserId(),id);
         return Result.success(vo);
     }

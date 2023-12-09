@@ -2,6 +2,8 @@ package com.xinshijie.gallery.service.impl;
 
 import java.io.IOException;
 
+import cn.hutool.core.util.HashUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.xinshijie.gallery.service.IFileService;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -25,16 +27,14 @@ public class FileServiceImpl implements IFileService {
     @Value("${image.path}")
     private String imagePath;
     @Override
-    public String saveUploadedFilesWatermark(String haeadPath,String title, MultipartFile file)  {
+    public String saveUploadedFilesWatermark(String headPath,String title, MultipartFile file)  {
         try {
             if (file.isEmpty()) {
                 log.error( "No image file provided");
                 return null;
             }
             try {
-                String[] imgArr = file.getOriginalFilename().split("\\.");
-                String mm5=getMD5(file.getInputStream());
-                String imgUrl = haeadPath +title+"_"+mm5 + ".jpg";
+                String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title)+"/"+ HashUtil.apHash(file.getOriginalFilename())+ ".jpg";
 
                 // 假设我们将图片保存在服务器的某个位置
                 File destinationFile = new File(imagePath+imgUrl);
@@ -43,24 +43,14 @@ public class FileServiceImpl implements IFileService {
                 if (parentDir != null && !parentDir.exists()) {
                     parentDir.mkdirs();
                 }
-                // 创建水印图像
-//                BufferedImage watermarkImage = new BufferedImage(100, 50, BufferedImage.TYPE_INT_ARGB);
-//                Graphics2D g2d = watermarkImage.createGraphics();
-//
-//                // 设置水印文字和样式
-//                g2d.setPaint(new Color(255, 255, 255, 128)); // 白色半透明
-//                g2d.setFont(new Font("Arial", Font.BOLD, 30));
-//                String watermarkText = "aiavr.uk "+nickName;
-//                g2d.drawString(watermarkText, 10, 40);
-//                g2d.dispose();
-
+                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
                 // 转换图片格式为JPG并添加水印
                 Thumbnails.of(file.getInputStream())
                         .scale(1.0) // 保持原始大小
-                        .outputQuality(0.8) // 设置压缩质量
+                        .outputQuality(outputQuality) // 设置压缩质量
                         .outputFormat("jpg")
                         //.watermark(Positions.BOTTOM_RIGHT, watermarkImage, 0.5f) // 添加水印
-                        .toFile(new File("path/to/destination/image.jpg")); // 保存到文件
+                        .toFile(new File(imagePath+imgUrl)); // 保存到文件
 
                 return imgUrl;
             } catch (IOException e) {
@@ -70,8 +60,9 @@ public class FileServiceImpl implements IFileService {
 
 
         } catch (Exception exception) {
+            log.error("Error during image processing: " + exception.getMessage());
             // 处理异常
-            return null;
+            return "";
         }
     }
 

@@ -21,24 +21,24 @@ import java.util.List;
  * @since 2023-12-03
  */
 @Mapper
-public interface UserVedioMapper extends BaseMapper<UserVideo> {
+public interface UserVideoMapper extends BaseMapper<UserVideo> {
 
     /**
      * 查询讨论主题表
      */
-    List<UserVideoVo> selectListUserVedio(UserVideoDto dto);
+    List<UserVideoVo> selectListUserVideo(UserVideoDto dto);
 
     /**
      * 普通方法
      * 分页查询讨论主题表
      */
-    Page<UserVideoVo> selectPageUserVedio(Page<UserVideoVo> page, @Param("dto") UserVideoDto dto);
+    Page<UserVideoVo> selectPageUserVideo(Page<UserVideoVo> page, @Param("dto") UserVideoDto dto);
 
     /**
      * 分页查询讨论主题表
      * 基于 MyBatis-Plus 的写法，xml文件中的 ${ew.customSqlSegment} 会根据 Wrapper wrapper的传参自动生成wherer 条件。不推荐复杂where或者是多表联合查询
      */
-    Page<UserVideoVo> getPageUserVedio(Page<UserVideoVo> page, @Param(Constants.WRAPPER) Wrapper wrapper);
+    Page<UserVideoVo> getPageUserVideo(Page<UserVideoVo> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
     /**
      * 删除数据

@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 
@@ -80,10 +82,10 @@ public class AdminUserCollectionController extends BaseController {
      */
 
     @PostMapping("/select")
-    public Result<Page<UserCollectionVo>> select(@RequestBody UserCollectionDto findDto) {
+    public Result<List<UserCollectionVo>> select(@RequestBody UserCollectionDto findDto) {
         findDto.setUserId(getUserId()+0l);
         Page<UserCollectionVo> vo = userCollectionService.selectPageUserCollection(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 }

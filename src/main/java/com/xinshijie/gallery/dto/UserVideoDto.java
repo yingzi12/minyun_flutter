@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @since 2023-12-03
  */
 @Data
-@Schema(name = "UserVedioDto", description = " ")
+@Schema(name = "UserVideoDto", description = " ")
 public class UserVideoDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
