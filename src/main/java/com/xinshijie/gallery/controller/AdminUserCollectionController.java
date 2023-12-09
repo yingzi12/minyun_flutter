@@ -81,8 +81,8 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
 
-    @PostMapping("/select")
-    public Result<List<UserCollectionVo>> select(@RequestBody UserCollectionDto findDto) {
+    @GetMapping("/list")
+    public Result<List<UserCollectionVo>> select( UserCollectionDto findDto) {
         findDto.setUserId(getUserId()+0l);
         Page<UserCollectionVo> vo = userCollectionService.selectPageUserCollection(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));

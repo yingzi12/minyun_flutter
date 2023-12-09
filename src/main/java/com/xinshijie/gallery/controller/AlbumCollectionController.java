@@ -84,8 +84,8 @@ public class AlbumCollectionController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<List<AlbumCollectionVo>> select(@RequestBody AlbumCollectionDto findDto) {
+    @GetMapping("/list")
+    public Result<List<AlbumCollectionVo>> select( AlbumCollectionDto findDto) {
         Page<AlbumCollectionVo> vo = albumCollectionService.selectPageAlbumCollection(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

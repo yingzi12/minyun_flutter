@@ -151,6 +151,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     return value.getUrl();
                 }else {
                     UserImage userImage=new UserImage();
+                    userImage.setCreateUserid(userId);
                     userImage.setCreateTime(LocalDateTime.now());
                     userImage.setAid(aid);
                     userImage.setUrl(allImage.getSource_url());
@@ -171,6 +172,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
                 }
                 UserImage userImage=new UserImage();
+                userImage.setCreateUserid(userId);
                 userImage.setCreateTime(LocalDateTime.now());
                 userImage.setAid(aid);
                 userImage.setUrl(imgUrl);

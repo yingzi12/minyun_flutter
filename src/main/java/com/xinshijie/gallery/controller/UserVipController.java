@@ -50,8 +50,8 @@ public class UserVipController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<Page<UserVipVo>> select(@RequestBody UserVipDto findDto) {
+    @GetMapping("/list")
+    public Result<Page<UserVipVo>> select( UserVipDto findDto) {
         Page<UserVipVo> vo = userVipService.selectPageUserVip(findDto);
         return Result.success(vo);
     }

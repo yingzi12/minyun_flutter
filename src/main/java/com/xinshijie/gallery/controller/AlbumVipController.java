@@ -84,8 +84,8 @@ public class AlbumVipController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<List<AlbumVipVo>> select(@RequestBody AlbumVipDto findDto) {
+    @GetMapping("/list")
+    public Result<List<AlbumVipVo>> select( AlbumVipDto findDto) {
         Page<AlbumVipVo> vo = albumVipService.selectPageAlbumVip(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

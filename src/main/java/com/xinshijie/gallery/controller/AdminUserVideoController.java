@@ -91,8 +91,8 @@ public class AdminUserVideoController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<List<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
+    @GetMapping("/list")
+    public Result<List<UserVideoVo>> select( UserVideoDto findDto) {
         Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

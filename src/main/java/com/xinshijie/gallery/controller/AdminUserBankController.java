@@ -79,8 +79,8 @@ public class AdminUserBankController extends BaseController {
     * 世界年表 查询
     * @return
     */
-    @PostMapping("/select")
-    public Result<List<UserBankVo>> select(@RequestBody UserBankDto findDto){
+    @GetMapping("/list")
+    public Result<List<UserBankVo>> select( UserBankDto findDto){
         Page<UserBankVo> vo = userBankService.selectPageUserBank(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

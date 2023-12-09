@@ -90,8 +90,8 @@ public class AdminUserVipController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<List<UserVipVo>> select(@RequestBody UserVipDto findDto) {
+    @GetMapping("/list")
+    public Result<List<UserVipVo>> select( UserVipDto findDto) {
         Page<UserVipVo> vo = userVipService.selectPageUserVip(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

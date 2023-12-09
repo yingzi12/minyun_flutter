@@ -49,8 +49,8 @@ public class UserSettingVipController extends BaseController {
      * @return
      */
 
-    @PostMapping("/select")
-    public Result<Page<UserSettingVipVo>> select(@RequestBody UserSettingVipDto findDto) {
+    @GetMapping("/list")
+    public Result<Page<UserSettingVipVo>> select( UserSettingVipDto findDto) {
         Page<UserSettingVipVo> vo = userSettingVipService.selectPageUserSettingVip(findDto);
         return Result.success(vo);
     }

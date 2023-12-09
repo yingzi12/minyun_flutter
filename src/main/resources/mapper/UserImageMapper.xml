@@ -6,7 +6,6 @@
         select
                   id,
                 url,
-                is_vip,
                 is_free,
                 create_time,
                 aid
@@ -18,10 +17,10 @@
         <where>
                     <if test="id !=null ">and id= #{id}</if>
                     <if test="url !=null ">and url= #{url}</if>
-                    <if test="isVip !=null ">and is_vip= #{isVip}</if>
                     <if test="isFree !=null ">and is_free= #{isFree}</if>
                     <if test="createTime !=null ">and create_time= #{createTime}</if>
-                    <if test="aid !=null ">and aid= #{aid}</if>
+            <if test="createUserid !=null ">and create_userid= #{createUserid}</if>
+            <if test="aid !=null ">and aid= #{aid}</if>
         </where>
     </select>
 
@@ -30,36 +29,16 @@
         <where>
                     <if test="dto.id !=null ">and id= #{dto.id}</if>
                     <if test="dto.url !=null ">and url= #{dto.url}</if>
-                    <if test="dto.isVip !=null ">and is_vip= #{dto.isVip}</if>
-                    <if test="dto.isFree !=null ">and is_free= #{dto.isFree}</if>
+                    <if test="dto.isFree !=null ">and is_free= #{isFree}</if>
                     <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-                    <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
+            <if test="dto.createUserid !=null ">and create_userid= #{dto.createUserid}</if>
+            <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
         </where>
     </select>
 
     <select id="getPageUserImage"  resultType="com.xinshijie.gallery.vo.UserImageVo">
         <include refid="selectUserImage"/> ${ew.customSqlSegment}
     </select>
-
-    <insert id="add"  >
-        insert into user_image (
-                id,
-                url,
-                is_vip,
-                is_free,
-                create_time,
-                aid
-          )
-        values
-            (
-                    #{ id },
-                    #{ url },
-                    #{ isVip },
-                    #{ isFree },
-                    #{ createTime },
-                    #{ aid }
-       )
-    </insert>
 
 
     <delete id="delById"  >

@@ -88,8 +88,8 @@ public class AdminUserAttentionController extends BaseController {
      * @return
      */
 
-    @PostMapping("/select")
-    public Result<List<UserAttentionVo>> select(@RequestBody UserAttentionDto findDto) {
+    @GetMapping("/list")
+    public Result<List<UserAttentionVo>> select( UserAttentionDto findDto) {
         findDto.setUserId(getUserId()+0l);
         Page<UserAttentionVo> vo = userAttentionService.selectPageUserAttention(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));

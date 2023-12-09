@@ -57,8 +57,8 @@ public class UserAlbumController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<List<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
+    @GetMapping("/list")
+    public Result<List<UserAlbumVo>> select( UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
