@@ -77,7 +77,7 @@ public class AdminUserBuyAlbumController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserBuyAlbum> getInfo(@PathVariable("aid") Long aid) {
+    public Result<UserBuyAlbum> getInfo(@PathVariable("aid") Integer aid) {
         UserBuyAlbum vo = userBuyAlbumService.getInfo(getUserId(),aid);
         return Result.success(vo);
     }

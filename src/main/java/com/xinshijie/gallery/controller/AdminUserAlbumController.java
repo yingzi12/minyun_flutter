@@ -8,6 +8,7 @@ import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +50,10 @@ public class AdminUserAlbumController extends BaseController {
 
     @PostMapping("/add")
     public Result<UserAlbum> add(@RequestBody UserAlbumDto dto) {
+        dto.setUserId(getUserId());
+        dto.setUserName(getUserName());
         UserAlbum vo = userAlbumService.add(dto);
-        vo.setUserId(getUserId());
-        vo.setUserName(getUserName());
+
         return Result.success(vo);
     }
 
@@ -95,31 +97,16 @@ public class AdminUserAlbumController extends BaseController {
     }
 
     /**
-     *  修改vip
-     *
-     * @return
-     */
-    @GetMapping(value = "/updateVip")
-    public Result<Boolean> updateVip(@PathVariable("id") Long id,@PathVariable("isVip") Integer isVip) {
-        Boolean vo = userAlbumService.updateVip(getUserId(),id,isVip);
-        return Result.success(vo);
-    }
-    /**
      *  修改是否免费
      *
      * @return
      */
-    @GetMapping(value = "/updateFree")
-    public Result<Boolean> updateFree(@PathVariable("id") Long id,@PathVariable("isFree") Integer isFree,@PathVariable("price") Double price) {
-        Boolean vo = userAlbumService.updateFree(getUserId(),id,isFree,price);
+    @GetMapping(value = "/updateCharge")
+    public Result<Boolean> updateCharge(@PathVariable("id") Long id,@PathVariable("charge") Integer charge,@PathVariable("price") Double price,@PathVariable("vipPrice") Double vipPrice) {
+        Boolean vo = userAlbumService.updateCharge(getUserId(),id,charge,price,vipPrice);
         return Result.success(vo);
     }
 
-    @GetMapping(value = "/updatePrice")
-    public Result<Boolean> updatePrice(@PathVariable("id") Long id,@PathVariable("price") Double price) {
-        Boolean vo = userAlbumService.updatePrice(getUserId(),id,price);
-        return Result.success(vo);
-    }
 
     @GetMapping(value = "/updateStatus")
     public Result<Boolean> updateStatus(@PathVariable("id") Long id,@PathVariable("status") Integer status) {
@@ -132,11 +119,11 @@ public class AdminUserAlbumController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/select")
-    public Result<Page<UserAlbumVo>> select(@RequestBody UserAlbumDto findDto) {
+    @GetMapping("/list")
+    public Result<List<UserAlbumVo>> select( UserAlbumDto findDto) {
         findDto.setUserId(getUserId());
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
-        return Result.success(vo);
+        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }
 
 

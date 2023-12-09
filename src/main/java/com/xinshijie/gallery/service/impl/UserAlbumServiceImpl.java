@@ -6,11 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
+import com.xinshijie.gallery.domain.UserBuyAlbum;
 import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.UserAlbumDto;
+import com.xinshijie.gallery.enmus.AlbumChargeEnum;
 import com.xinshijie.gallery.mapper.UserAlbumMapper;
 import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.IUserAlbumService;
+import com.xinshijie.gallery.service.IUserBuyAlbumService;
 import com.xinshijie.gallery.service.IUserVipService;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +45,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
 
     @Autowired
     private IUserVipService userVipService;
-
+    @Autowired
+    private IUserBuyAlbumService userBuyAlbumService;
     @Autowired
     private IFileService fileService;
 
@@ -66,8 +70,15 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     @Override
     public Page<UserAlbumVo> selectPageUserAlbum(UserAlbumDto dto) {
         Page<UserAlbumVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+
         return mapper.selectPageUserAlbum(page, dto);
     }
 
@@ -77,8 +88,15 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     @Override
     public Page<UserAlbumVo> getPageUserAlbum(UserAlbumDto dto) {
         Page<UserAlbumVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+
         QueryWrapper<UserAlbumVo> qw = new QueryWrapper<>();
         return mapper.getPageUserAlbum(page, qw);
     }
@@ -91,6 +109,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         UserAlbum value = new UserAlbum();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
+        setPrice(value,value.getCharge(), value.getPrice(), value.getVipPrice());
         mapper.insert(value);
         return value;
     }
@@ -123,14 +142,14 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         if(userId == userAlbum.getUserId()){
             return userAlbum;
         }else {
-            //不是自己访问  1 所有人免费  2，vip 免费，其他收费 3所有人收费
+            //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
             //判断是否需要付费
-            if(userAlbum.getIsFree()==2){
+            if(AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())){
                 return userAlbum;
             }
 
             //判断是否vip免费
-            if(userAlbum.getIsVip() ==1){
+            if(AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())){
                 //判断用户是否是VIP
                 UserVip userVip=userVipService.getInfo(userAlbum.getUserId(),userId);
                 if(userVip!= null ){
@@ -138,26 +157,25 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
                 }
             }
             //判断是否是否已经购买
-//            if(){
-//
-//            }
-
-            //是的话判断是否已付款
-            //判断是否VIP
-            //判断已购买VIP
-            //TODO 判断是否免费
-            return null;
+           UserBuyAlbum userBuyAlbum= userBuyAlbumService.getInfo(userId,userAlbum.getId());
+           if(userBuyAlbum!=null){
+               return userAlbum;
+           }else {
+               throw new ServiceException(ResultCodeEnum.INSUFFICIENT_PERMISSIONS);
+           }
         }
     }
 
+
     @Override
-    public Boolean updateVip(Integer userId, Long id, Integer isVip) {
+    public Boolean updateCharge(Integer userId,Long id,Integer charge,Double price,Double vipPrice){
+        UserAlbum userAlbum=new UserAlbum();
+
+        setPrice(userAlbum,charge,price,vipPrice);
         QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
         qw.eq("user_id",userId);
         qw.eq("id",id);
 
-        UserAlbum userAlbum=new UserAlbum();
-        userAlbum.setIsVip(isVip);
         int i=mapper.update(userAlbum,qw);
         if(i==1) {
             return true;
@@ -166,47 +184,57 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         }
     }
 
-    @Override
-    public Boolean updateFree(Integer userId, Long id, Integer isFree, Double price) {
-        QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
-        qw.eq("user_id",userId);
-        qw.eq("id",id);
-        UserAlbum userAlbum=new UserAlbum();
-        if(isFree==2){
-            if(price==null || price <=0){
-                throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
-            }
-            userAlbum.setPrice(price);
-        }else {
-            userAlbum.setPrice(price);
-        }
-        userAlbum.setIsFree(isFree);
-        int i=mapper.update(userAlbum,qw);
-        if(i==1) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
-    public Boolean updatePrice(Integer userId, Long id, Double price) {
-        if(price==null || price <=0){
+    /**
+     * 设置价格
+     * @param userAlbum
+     * @param charge
+     * @param price
+     * @param vipPrice
+     */
+    public void setPrice(UserAlbum userAlbum,Integer charge,Double price,Double vipPrice){
+        if(charge==null){
             throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
         }
-        QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
-        qw.eq("user_id",userId);
-        qw.eq("id",id);
-
-        UserAlbum userAlbum=new UserAlbum();
-        userAlbum.setPrice(price);
-        int i=mapper.update(userAlbum,qw);
-        if(i==1) {
-
-            return true;
-        }else {
-            return false;
+        if(AlbumChargeEnum.FREE.getCode().equals(charge)) {
+            userAlbum.setPrice(0.0);
+            userAlbum.setVipPrice(0.0);
         }
+        if(AlbumChargeEnum.VIP_FREE.getCode().equals(charge)) {
+            if(price !=null && price>0.5 && price<1000) {
+                userAlbum.setPrice(0.0);
+            }else {
+                throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
+            }
+        }
+        if(AlbumChargeEnum.VIP_DISCOUNT.getCode().equals(charge)) {
+            if(price !=null && price>0.5 && price<1000) {
+                userAlbum.setPrice(price);
+            }else {
+                throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
+            }
+            if(vipPrice !=null && vipPrice>0.5 && vipPrice<1000) {
+                userAlbum.setVipPrice(vipPrice);
+            }else {
+                throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
+            }
+        }
+        if(AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(charge)) {
+            if(vipPrice !=null && vipPrice>0.5 && vipPrice<1000) {
+                userAlbum.setPrice(null);
+                userAlbum.setVipPrice(vipPrice);
+            }else {
+                throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
+            }
+        }
+        if(AlbumChargeEnum.UNIFICATION.getCode().equals(charge)) {
+            if(price !=null && price>0.5 && price<1000) {
+                userAlbum.setPrice(price);
+                userAlbum.setVipPrice(price);
+            }else {
+                throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
+            }
+        }
+        userAlbum.setCharge(charge);
     }
 
     @Override

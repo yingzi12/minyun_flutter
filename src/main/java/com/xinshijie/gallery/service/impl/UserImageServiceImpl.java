@@ -44,8 +44,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     @Override
     public Page<UserImageVo> selectPageUserImage(UserImageDto dto) {
         Page<UserImageVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         return mapper.selectPageUserImage(page, dto);
     }
 
@@ -55,8 +61,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     @Override
     public Page<UserImageVo> getPageUserImage(UserImageDto dto) {
         Page<UserImageVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         QueryWrapper<UserImageVo> qw = new QueryWrapper<>();
         return mapper.getPageUserImage(page, qw);
     }
@@ -78,8 +90,8 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
      * 根据id修改数据
      */
     @Override
-    public Integer edit(UserImageDto dto) {
-        return mapper.edit(dto);
+    public Integer edit(UserImage dto) {
+        return mapper.updateById(dto);
     }
 
     /**

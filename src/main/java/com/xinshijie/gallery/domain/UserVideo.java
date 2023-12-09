@@ -20,22 +20,22 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("user_vedio")
+@TableName("user_video")
 @Schema(description = " ")
-public class UserVedio implements Serializable {
+public class UserVideo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String url;
     /**
-     * 是否vip
-     */
-    private Integer isVip;
-    /**
      * 是否免费
      */
     private Integer isFree;
     private LocalDateTime createTime;
     private Long aid;
+    private String md5;
+
+    private Integer createUserid;
+
 }

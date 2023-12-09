@@ -3,11 +3,11 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.domain.UserVedio;
-import com.xinshijie.gallery.dto.UserVedioDto;
+import com.xinshijie.gallery.domain.UserVideo;
+import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.mapper.UserVedioMapper;
 import com.xinshijie.gallery.service.IUserVedioService;
-import com.xinshijie.gallery.vo.UserVedioVo;
+import com.xinshijie.gallery.vo.UserVideoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio> implements IUserVedioService {
+public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVideo> implements IUserVedioService {
 
     @Autowired
     private UserVedioMapper mapper;
@@ -34,7 +34,7 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
      * 查询图片信息表
      */
     @Override
-    public List<UserVedioVo> selectUserVedioList(UserVedioDto dto) {
+    public List<UserVideoVo> selectUserVedioList(UserVideoDto dto) {
         return mapper.selectListUserVedio(dto);
     }
 
@@ -42,10 +42,16 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserVedioVo> selectPageUserVedio(UserVedioDto dto) {
-        Page<UserVedioVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+    public Page<UserVideoVo> selectPageUserVedio(UserVideoDto dto) {
+        Page<UserVideoVo> page = new Page<>();
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         return mapper.selectPageUserVedio(page, dto);
     }
 
@@ -53,11 +59,17 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserVedioVo> getPageUserVedio(UserVedioDto dto) {
-        Page<UserVedioVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+    public Page<UserVideoVo> getPageUserVedio(UserVideoDto dto) {
+        Page<UserVideoVo> page = new Page<>();
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
-        QueryWrapper<UserVedioVo> qw = new QueryWrapper<>();
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        QueryWrapper<UserVideoVo> qw = new QueryWrapper<>();
         return mapper.getPageUserVedio(page, qw);
     }
 
@@ -65,8 +77,8 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
      * 新增数据
      */
     @Override
-    public UserVedio add(UserVedioDto dto) {
-        UserVedio value = new UserVedio();
+    public UserVideo add(UserVideoDto dto) {
+        UserVideo value = new UserVideo();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
         mapper.insert(value);
@@ -77,8 +89,8 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
      * 根据id修改数据
      */
     @Override
-    public Integer edit(UserVedioDto dto) {
-        return mapper.edit(dto);
+    public Integer edit(UserVideo dto) {
+        return mapper.updateById(dto);
     }
 
     /**
@@ -93,7 +105,7 @@ public class UserVedioServiceImpl extends ServiceImpl<UserVedioMapper, UserVedio
      * 根据id数据
      */
     @Override
-    public UserVedioVo getInfo(Long id) {
+    public UserVideoVo getInfo(Long id) {
         return mapper.getInfo(id);
     }
 

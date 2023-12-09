@@ -71,7 +71,7 @@ public class AdminUserImageController extends BaseController {
      */
 
     @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserImageDto dto) {
+    public Result<Integer> edit(@RequestBody UserImage dto) {
         Integer vo = userImageService.edit(dto);
         return Result.success(vo);
     }
@@ -104,7 +104,7 @@ public class AdminUserImageController extends BaseController {
 
 
     @PostMapping("/uploadImages")
-    public List<ResuImageVo> uploadEditFiles(@RequestParam("uploads") MultipartFile[] files) {
+    public List<ResuImageVo> uploadEditFiles(@RequestParam("file") MultipartFile[] files) {
         List<ResuImageVo> uploadedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
@@ -125,6 +125,7 @@ public class AdminUserImageController extends BaseController {
 
     @PostMapping("/upload")
     public void handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile) throws IOException {
+        log.info("upload");
         saveUploadedFiles(uploadfile);
     }
 

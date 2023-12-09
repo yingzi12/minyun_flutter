@@ -29,10 +29,6 @@ public class UserImage implements Serializable {
     private Long id;
     private String url;
     /**
-     * 是否vip
-     */
-    private Integer isVip;
-    /**
      * 是否免费
      */
     private Integer isFree;
@@ -40,4 +36,7 @@ public class UserImage implements Serializable {
     private Long aid;
 
     private String md5;
+
+    private Integer createUserid;
+
 }

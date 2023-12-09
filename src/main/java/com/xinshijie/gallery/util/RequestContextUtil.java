@@ -39,9 +39,9 @@ public class RequestContextUtil {
      */
     public static String getUserName() {
         HttpServletRequest request = getCurrentRequest();
-        if(request == null || request.getAttribute("username")==null ){
+        if(request == null || request.getAttribute("userName")==null ){
             throw new ServiceException(ResultCodeEnum.EXPIRED);
         }
-        return request.getAttribute("username").toString() ;
+        return request.getAttribute("userName").toString() ;
     }
 }

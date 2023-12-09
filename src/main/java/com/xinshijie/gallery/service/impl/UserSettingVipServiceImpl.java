@@ -44,8 +44,14 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     @Override
     public Page<UserSettingVipVo> selectPageUserSettingVip(UserSettingVipDto dto) {
         Page<UserSettingVipVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         return mapper.selectPageUserSettingVip(page, dto);
     }
 
@@ -55,8 +61,14 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     @Override
     public Page<UserSettingVipVo> getPageUserSettingVip(UserSettingVipDto dto) {
         Page<UserSettingVipVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         QueryWrapper<UserSettingVipVo> qw = new QueryWrapper<>();
         return mapper.getPageUserSettingVip(page, qw);
     }

@@ -3,11 +3,11 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.domain.UserVedio;
-import com.xinshijie.gallery.dto.UserVedioDto;
+import com.xinshijie.gallery.domain.UserVideo;
+import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.service.IUserVedioService;
 import com.xinshijie.gallery.vo.ResuImageVo;
-import com.xinshijie.gallery.vo.UserVedioVo;
+import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +29,11 @@ import java.util.List;
 @Slf4j
 @Tag(name = " AdminUserVedioController", description = "后台- ")
 @RestController
-@RequestMapping("/admin/userVedio")
-public class AdminUserVedioController extends BaseController {
+@RequestMapping("/admin/userVideo")
+public class AdminUserVideoController extends BaseController {
 
     @Autowired
-    private IUserVedioService userVedioService;
+    private IUserVedioService userVideoService;
 
     /**
      *  添加
@@ -42,8 +42,8 @@ public class AdminUserVedioController extends BaseController {
      */
 
     @PostMapping("/add")
-    public Result<UserVedio> add(@RequestBody UserVedioDto dto) {
-        UserVedio vo = userVedioService.add(dto);
+    public Result<UserVideo> add(@RequestBody UserVideoDto dto) {
+        UserVideo vo = userVideoService.add(dto);
         return Result.success(vo);
     }
 
@@ -55,7 +55,7 @@ public class AdminUserVedioController extends BaseController {
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userVedioService.delById(id);
+        Integer vo = userVideoService.delById(id);
         return Result.success(vo);
     }
 
@@ -67,8 +67,8 @@ public class AdminUserVedioController extends BaseController {
      */
 
     @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserVedioDto dto) {
-        Integer vo = userVedioService.edit(dto);
+    public Result<Integer> edit(@RequestBody UserVideo dto) {
+        Integer vo = userVideoService.edit(dto);
         return Result.success(vo);
     }
 
@@ -80,8 +80,8 @@ public class AdminUserVedioController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserVedioVo> getInfo(@PathVariable("id") Long id) {
-        UserVedioVo vo = userVedioService.getInfo(id);
+    public Result<UserVideoVo> getInfo(@PathVariable("id") Long id) {
+        UserVideoVo vo = userVideoService.getInfo(id);
         return Result.success(vo);
     }
 
@@ -92,8 +92,8 @@ public class AdminUserVedioController extends BaseController {
      * @return
      */
     @PostMapping("/select")
-    public Result<Page<UserVedioVo>> select(@RequestBody UserVedioDto findDto) {
-        Page<UserVedioVo> vo = userVedioService.selectPageUserVedio(findDto);
+    public Result<Page<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
+        Page<UserVideoVo> vo = userVideoService.selectPageUserVedio(findDto);
         return Result.success(vo);
     }
 

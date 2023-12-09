@@ -56,14 +56,11 @@ public interface IUserAlbumService extends IService<UserAlbum> {
      */
     UserAlbum getInfo(Integer userId,Long id);
 
-    Boolean updateVip(Integer userId,Long id,Integer isVip);
 
-    Boolean updateFree(Integer userId,Long id,Integer isFree,Double price);
+    Boolean updateCharge(Integer userId,Long id,Integer charge,Double price,Double vipPrice);
 
-    Boolean updatePrice(Integer userId,Long id,Double price);
 
     Boolean updateStatus(Integer userId,Long id, Integer status);
-
 
     String saveUploadedFiles(Integer userId, MultipartFile file);
 

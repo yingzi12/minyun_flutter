@@ -45,8 +45,14 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     @Override
     public Page<UserBuyAlbumVo> selectPageUserBuyAlbum(UserBuyAlbumDto dto) {
         Page<UserBuyAlbumVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         return mapper.selectPageUserBuyAlbum(page, dto);
     }
 
@@ -56,8 +62,14 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     @Override
     public Page<UserBuyAlbumVo> getPageUserBuyAlbum(UserBuyAlbumDto dto) {
         Page<UserBuyAlbumVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         QueryWrapper<UserBuyAlbumVo> qw = new QueryWrapper<>();
         return mapper.getPageUserBuyAlbum(page, qw);
     }
@@ -93,7 +105,7 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
 
 
     @Override
-    public UserBuyAlbum getInfo(Integer userId, Long aid) {
+    public UserBuyAlbum getInfo(Integer userId, Integer aid) {
         QueryWrapper<UserBuyAlbum> qw=new QueryWrapper<>();
         qw.eq("user_id",userId);
         qw.eq("aid",aid);

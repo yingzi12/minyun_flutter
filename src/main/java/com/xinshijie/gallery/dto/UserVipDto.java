@@ -63,6 +63,7 @@ public class UserVipDto implements Serializable {
     @Size(max = 100, message = " 超出最大长度 100")
     private String title;
 
+
     private Long pageNum;
 
     private Long pageSize;

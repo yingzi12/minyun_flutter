@@ -56,17 +56,22 @@ public class UserAlbum implements Serializable {
      */
     private String tags;
     /**
-     * 是否vip
+
+     /**
+     * '1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
      */
-    private Integer isVip;
-    /**
-     * 是否免费 1.是，2不是
-     */
-    private Integer isFree;
+    private Integer charge;
+
+
     /**
      * 价格
      */
+    @Schema(description = "价格 ")
     private Double price;
+
+    private Double vipPrice;
+
+
     /**
      * 折扣
      */

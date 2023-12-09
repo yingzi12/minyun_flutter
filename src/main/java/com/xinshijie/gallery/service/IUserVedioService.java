@@ -2,9 +2,9 @@ package com.xinshijie.gallery.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xinshijie.gallery.domain.UserVedio;
-import com.xinshijie.gallery.dto.UserVedioDto;
-import com.xinshijie.gallery.vo.UserVedioVo;
+import com.xinshijie.gallery.domain.UserVideo;
+import com.xinshijie.gallery.dto.UserVideoDto;
+import com.xinshijie.gallery.vo.UserVideoVo;
 
 import java.util.List;
 
@@ -16,34 +16,34 @@ import java.util.List;
  * @author 作者
  * @since 2023-12-03
  */
-public interface IUserVedioService extends IService<UserVedio> {
+public interface IUserVedioService extends IService<UserVideo> {
 
 
     /**
      * 查询信息表
      */
-    List<UserVedioVo> selectUserVedioList(UserVedioDto dto);
+    List<UserVideoVo> selectUserVedioList(UserVideoDto dto);
 
     /**
      * 分页查询。普通方法
      * 查询图片信息表
      */
-    Page<UserVedioVo> selectPageUserVedio(UserVedioDto dto);
+    Page<UserVideoVo> selectPageUserVedio(UserVideoDto dto);
 
     /**
      * 分页查询信息表
      */
-    Page<UserVedioVo> getPageUserVedio(UserVedioDto dto);
+    Page<UserVideoVo> getPageUserVedio(UserVideoDto dto);
 
     /**
      * 新增数据
      */
-    UserVedio add(UserVedioDto id);
+    UserVideo add(UserVideoDto id);
 
     /**
      * 根据id修改数据
      */
-    Integer edit(UserVedioDto dto);
+    Integer edit(UserVideo dto);
 
     /**
      * 删除数据
@@ -53,5 +53,5 @@ public interface IUserVedioService extends IService<UserVedio> {
     /**
      * 根据id数据
      */
-    UserVedioVo getInfo(Long id);
+    UserVideoVo getInfo(Long id);
 }

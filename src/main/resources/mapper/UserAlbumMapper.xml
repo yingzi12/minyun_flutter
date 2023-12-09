@@ -12,8 +12,8 @@
                 user_name,
                 intro,
                 tags,
-                is_vip,
-                is_free,
+                vip_price,
+                charge,
                 price,
                 discount,
                 gril,
@@ -39,8 +39,8 @@
                     <if test="userName !=null ">and user_name= #{userName}</if>
                     <if test="intro !=null ">and intro= #{intro}</if>
                     <if test="tags !=null ">and tags= #{tags}</if>
-                    <if test="isVip !=null ">and is_vip= #{isVip}</if>
-                    <if test="isFree !=null ">and is_free= #{isFree}</if>
+                    <if test="vipPrice !=null ">and vip_price= #{vipPrice}</if>
+                    <if test="charge !=null ">and charge= #{charge}</if>
                     <if test="price !=null ">and price= #{price}</if>
                     <if test="discount !=null ">and discount= #{discount}</if>
                     <if test="gril !=null ">and gril= #{gril}</if>
@@ -66,8 +66,8 @@
                     <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
                     <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
                     <if test="dto.tags !=null ">and tags= #{dto.tags}</if>
-                    <if test="dto.isVip !=null ">and is_vip= #{dto.isVip}</if>
-                    <if test="dto.isFree !=null ">and is_free= #{dto.isFree}</if>
+                    <if test="dto.vipPrice !=null ">and vip_price= #{dto.vipPrice}</if>
+                    <if test="dto.charge !=null ">and charge= #{dto.charge}</if>
                     <if test="dto.price !=null ">and price= #{dto.price}</if>
                     <if test="dto.discount !=null ">and discount= #{dto.discount}</if>
                     <if test="dto.gril !=null ">and gril= #{dto.gril}</if>
@@ -96,8 +96,8 @@
                 user_name,
                 intro,
                 tags,
-                is_vip,
-                is_free,
+                vip_price,
+                charge,
                 price,
                 discount,
                 gril,
@@ -120,8 +120,8 @@
                     #{ userName },
                     #{ intro },
                     #{ tags },
-                    #{ isVip },
-                    #{ isFree },
+                    #{ vipPrice },
+                    #{ charge },
                     #{ price },
                     #{ discount },
                     #{ gril },
@@ -147,8 +147,8 @@
                     <if test="userName !=null ">  user_name= #{userName},</if>
                     <if test="intro !=null ">  intro= #{intro},</if>
                     <if test="tags !=null ">  tags= #{tags},</if>
-                    <if test="isVip !=null ">  is_vip= #{isVip},</if>
-                    <if test="isFree !=null ">  is_free= #{isFree},</if>
+                    <if test="vipPrice !=null ">  vip_price= #{vipPrice},</if>
+                    <if test="charge !=null ">  charge= #{charge},</if>
                     <if test="price !=null ">  price= #{price},</if>
                     <if test="discount !=null ">  discount= #{discount},</if>
                     <if test="gril !=null ">  gril= #{gril},</if>

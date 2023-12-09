@@ -27,11 +27,6 @@ public class UserImageDto implements Serializable {
     @Size(max = 100, message = " 超出最大长度 100")
     private String url;
 
-    /**
-     * 是否vip
-     */
-    @Schema(description = "是否vip ")
-    private Integer isVip;
 
     /**
      * 是否免费
@@ -46,4 +41,10 @@ public class UserImageDto implements Serializable {
     private Long pageNum;
 
     private Long pageSize;
+
+
+    private String md5;
+
+    private Integer createUserid;
+
 }

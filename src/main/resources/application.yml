@@ -33,9 +33,9 @@ server:
 mybatis-plus:
   typeAliasesPackage: com.xinshijie.**.domain
   mapperLocations: classpath*:mapper/**/*Mapper.xml
-#  configuration:
-#    ## 开启打印sql配置
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    ## 开启打印sql配置
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 reptile:
   url: https://admin.aiavr.com
 image:

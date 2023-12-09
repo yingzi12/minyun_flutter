@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+
 
 /**
  * <p>
@@ -75,8 +77,8 @@ public class AdminUserVipController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserVipVo> getInfo(@PathVariable("id") Long id) {
-        UserVipVo vo = userVipService.getInfo(id);
+    public Result<UserVip> getInfo(@PathVariable("id") Integer userId) {
+        UserVip vo = userVipService.getInfo(getUserId(),userId);
         return Result.success(vo);
     }
 

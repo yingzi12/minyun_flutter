@@ -72,22 +72,19 @@ public class UserAlbumDto implements Serializable {
     private String tags;
 
     /**
-     * 是否vip
+     * '1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
      */
-    @Schema(description = "是否vip ")
-    private Integer isVip;
+   private Integer charge;
 
-    /**
-     * 是否免费
-     */
-    @Schema(description = "是否免费 ")
-    private Integer isFree;
 
     /**
      * 价格
      */
     @Schema(description = "价格 ")
-    private Double amount;
+    private Double price;
+
+    private Double vipPrice;
+
 
     /**
      * 折扣

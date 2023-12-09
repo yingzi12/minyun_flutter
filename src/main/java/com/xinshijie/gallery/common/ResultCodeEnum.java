@@ -122,7 +122,7 @@ public enum ResultCodeEnum {
     ALBUM_IMGURL_NULL(999008116, "Album图片不存在"),
     ALBUM_IMGURL_UPLOAD_ERROR(999008116, "Album图片上传错误"),
 
-    ALBUM_FREE_STATUS(999008117, "收费金额不能为0"),
+    ALBUM_FREE_STATUS(999008117, "价格错误"),
     ;
 
 

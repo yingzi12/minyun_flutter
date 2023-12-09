@@ -44,8 +44,14 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     @Override
     public Page<UserAttentionVo> selectPageUserAttention(UserAttentionDto dto) {
         Page<UserAttentionVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         return mapper.selectPageUserAttention(page, dto);
     }
 
@@ -55,8 +61,14 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     @Override
     public Page<UserAttentionVo> getPageUserAttention(UserAttentionDto dto) {
         Page<UserAttentionVo> page = new Page<>();
-        page.setCurrent(dto.getPageNum());
+        if(dto.getPageNum()==null){
+            dto.setPageNum(20L);
+        }
+        if(dto.getPageSize()==null){
+            dto.setPageSize(20L);
+        }
         page.setSize(dto.getPageSize());
+        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
         QueryWrapper<UserAttentionVo> qw = new QueryWrapper<>();
         return mapper.getPageUserAttention(page, qw);
     }

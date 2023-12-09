@@ -61,18 +61,6 @@
        )
     </insert>
 
-    <update id="edit"  >
-        update  user_image
-        <trim prefix="SET" suffixOverrides=",">
-                    <if test="id !=null ">  id= #{id},</if>
-                    <if test="url !=null ">  url= #{url},</if>
-                    <if test="isVip !=null ">  is_vip= #{isVip},</if>
-                    <if test="isFree !=null ">  is_free= #{isFree},</if>
-                    <if test="createTime !=null ">  create_time= #{createTime},</if>
-                    <if test="aid !=null ">  aid= #{aid},</if>
-        </trim>
-        where   id=#{id}
-    </update>
 
     <delete id="delById"  >
         delete FROM  user_image where  id = #{id}

@@ -43,7 +43,7 @@ public interface IUserImageService extends IService<UserImage> {
     /**
      * 根据id修改数据
      */
-    Integer edit(UserImageDto dto);
+    Integer edit(UserImage dto);
 
     /**
      * 删除数据

@@ -1,12 +1,13 @@
-package com.xinshijie.gallery.dto;
+package com.xinshijie.gallery.vo;
 
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -17,21 +18,16 @@ import java.time.LocalDateTime;
  * @since 2023-12-03
  */
 @Data
-@Schema(name = "UserVedioDto", description = " ")
-public class UserVedioDto implements Serializable {
+@Schema(name = "UserVedioVo", description = " ")
+public class UserVideoVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
-    @Size(max = 100, message = " 超出最大长度 100")
     private String url;
 
-    /**
-     * 是否vip
-     */
-    @Schema(description = "是否vip ")
-    private Integer isVip;
 
     /**
      * 是否免费
@@ -41,9 +37,12 @@ public class UserVedioDto implements Serializable {
 
     private LocalDateTime createTime;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long aid;
 
-    private Long pageNum;
 
-    private Long pageSize;
+    private String md5;
+
+    private Integer createUserid;
+
 }

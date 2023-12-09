@@ -4,16 +4,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
-import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.domain.UserVedio;
-import com.xinshijie.gallery.dto.UserVedioDto;
+import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.service.IUserVedioService;
-import com.xinshijie.gallery.vo.ResuImageVo;
-import com.xinshijie.gallery.vo.UserVedioVo;
+import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,8 +22,6 @@ import java.nio.file.StandardOpenOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -41,11 +35,11 @@ import java.util.List;
 @Slf4j
 @Tag(name = " UserVedioController", description = "后台- ")
 @RestController
-@RequestMapping("/userVedio")
+@RequestMapping("/userVideo")
 public class UserVedioController extends BaseController {
 
     @Autowired
-    private IUserVedioService userVedioService;
+    private IUserVedioService userVideoService;
 
     private final  static String UPLOAD_DIR="./data/";
 
@@ -56,8 +50,8 @@ public class UserVedioController extends BaseController {
      */
 
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserVedioVo> getInfo(@PathVariable("id") Long id) {
-        UserVedioVo vo = userVedioService.getInfo(id);
+    public Result<UserVideoVo> getInfo(@PathVariable("id") Long id) {
+        UserVideoVo vo = userVideoService.getInfo(id);
         return Result.success(vo);
     }
 
@@ -68,8 +62,8 @@ public class UserVedioController extends BaseController {
      * @return
      */
     @PostMapping("/select")
-    public Result<Page<UserVedioVo>> select(@RequestBody UserVedioDto findDto) {
-        Page<UserVedioVo> vo = userVedioService.selectPageUserVedio(findDto);
+    public Result<Page<UserVideoVo>> select(@RequestBody UserVideoDto findDto) {
+        Page<UserVideoVo> vo = userVideoService.selectPageUserVedio(findDto);
         return Result.success(vo);
     }
 

@@ -30,13 +30,6 @@ public class UserImageVo implements Serializable {
 
 
     /**
-     * 是否vip
-     */
-    @Schema(description = "是否vip ")
-    private Integer isVip;
-
-
-    /**
      * 是否免费
      */
     @Schema(description = "是否免费 ")
@@ -46,6 +39,10 @@ public class UserImageVo implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long aid;
+
+    private String md5;
+
+    private Integer createUserid;
 
 
 }

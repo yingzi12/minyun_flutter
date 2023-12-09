@@ -40,10 +40,6 @@ public interface UserImageMapper extends BaseMapper<UserImage> {
      */
     Page<UserImageVo> getPageUserImage(Page<UserImageVo> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
-    /**
-     * 根据id修改数据
-     */
-    Integer edit(UserImageDto dto);
 
     /**
      * 删除数据

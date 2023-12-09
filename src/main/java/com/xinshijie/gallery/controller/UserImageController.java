@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+
 
 /**
  * <p>
@@ -56,6 +58,7 @@ public class UserImageController extends BaseController {
 
     @PostMapping("/select")
     public Result<Page<UserImageVo>> select(@RequestBody UserImageDto findDto) {
+        findDto.setCreateUserid(getUserId());
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
         return Result.success(vo);
     }
