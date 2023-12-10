@@ -36,6 +36,10 @@ public class AllVideo implements Serializable {
      */
     private String url;
     private Integer status;
+    /**
+     * 视频时长 ,单位：毫秒
+     */
+    private Long duration;
 
 
 }
