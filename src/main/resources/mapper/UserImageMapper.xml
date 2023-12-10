@@ -19,7 +19,7 @@
                     <if test="url !=null ">and url= #{url}</if>
                     <if test="isFree !=null ">and is_free= #{isFree}</if>
                     <if test="createTime !=null ">and create_time= #{createTime}</if>
-            <if test="createUserid !=null ">and create_userid= #{createUserid}</if>
+            <if test="userId !=null ">and userId= #{userId}</if>
             <if test="aid !=null ">and aid= #{aid}</if>
         </where>
     </select>
@@ -31,7 +31,7 @@
                     <if test="dto.url !=null ">and url= #{dto.url}</if>
                     <if test="dto.isFree !=null ">and is_free= #{isFree}</if>
                     <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-            <if test="dto.createUserid !=null ">and create_userid= #{dto.createUserid}</if>
+            <if test="dto.userId !=null ">and userId= #{dto.userId}</if>
             <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
         </where>
     </select>

@@ -122,7 +122,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public Integer delById(Integer userId,Long id) {
         QueryWrapper<UserImage> qw=new QueryWrapper<>();
         qw.eq("id",id);
-        qw.eq("create_userid",userId);
+        qw.eq("userId",userId);
         return mapper.delete(qw);
     }
 
@@ -130,7 +130,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public Integer updateIsFree(Integer userId, Long id, Integer isFree) {
         QueryWrapper<UserImage> qw=new QueryWrapper<>();
         qw.eq("id",id);
-        qw.eq("create_userid",userId);
+        qw.eq("userId",userId);
         UserImage userImage=new UserImage();
         userImage.setIsFree(isFree);
         return mapper.update(userImage,qw);
@@ -164,7 +164,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     return value.getUrl();
                 }else {
                     UserImage userImage=new UserImage();
-                    userImage.setCreateUserid(userId);
+                    userImage.setUserId(userId);
                     userImage.setCreateTime(LocalDateTime.now());
                     userImage.setAid(aid);
                     userImage.setUrl(allImage.getSource_url());
@@ -185,7 +185,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
                 }
                 UserImage userImage=new UserImage();
-                userImage.setCreateUserid(userId);
+                userImage.setUserId(userId);
                 userImage.setCreateTime(LocalDateTime.now());
                 userImage.setAid(aid);
                 userImage.setUrl(imgUrl);

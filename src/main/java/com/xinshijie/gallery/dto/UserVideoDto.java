@@ -45,7 +45,7 @@ public class UserVideoDto implements Serializable {
 
     private String md5;
 
-    private Integer createUserid;
+    private Integer userId;
 
 
 }

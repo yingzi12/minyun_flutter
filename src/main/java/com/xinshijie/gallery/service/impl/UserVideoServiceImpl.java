@@ -115,7 +115,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public Integer delById(Integer userId,Long id) {
         QueryWrapper<UserVideo> qw=new QueryWrapper<>();
         qw.eq("id",id);
-        qw.eq("create_userid",userId);
+        qw.eq("userId",userId);
         return mapper.delete(qw);
     }
 
@@ -123,7 +123,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public Integer updateIsFree(Integer userId, Long id, Integer isFree) {
         QueryWrapper<UserVideo> qw=new QueryWrapper<>();
         qw.eq("id",id);
-        qw.eq("create_userid",userId);
+        qw.eq("userId",userId);
         UserVideo video=new UserVideo();
         video.setIsFree(isFree);
         return mapper.update(video,qw);
@@ -158,7 +158,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                     return value.getUrl();
                 }else {
                     UserVideo userVideo=new UserVideo();
-                    userVideo.setCreateUserid(userId);
+                    userVideo.setUserId(userId);
                     userVideo.setCreateTime(LocalDateTime.now());
                     userVideo.setAid(aid);
                     userVideo.setUrl(allVideo.getSource_url());
@@ -179,7 +179,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                     throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
                 }
                 UserVideo userVideo=new UserVideo();
-                userVideo.setCreateUserid(userId);
+                userVideo.setUserId(userId);
                 userVideo.setCreateTime(LocalDateTime.now());
                 userVideo.setAid(aid);
                 userVideo.setUrl(imgUrl);
@@ -214,7 +214,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                     return value.getUrl();
                 }else {
                     UserVideo userVideo=new UserVideo();
-                    userVideo.setCreateUserid(userId);
+                    userVideo.setUserId(userId);
                     userVideo.setCreateTime(LocalDateTime.now());
                     userVideo.setAid(aid);
                     userVideo.setUrl(allVideo.getSource_url());
@@ -235,7 +235,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                     throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
                 }
                 UserVideo userVideo=new UserVideo();
-                userVideo.setCreateUserid(userId);
+                userVideo.setUserId(userId);
                 userVideo.setCreateTime(LocalDateTime.now());
                 userVideo.setAid(aid);
                 userVideo.setUrl(imgUrl);

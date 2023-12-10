@@ -37,6 +37,6 @@ public class UserImage implements Serializable {
 
     private String md5;
 
-    private Integer createUserid;
+    private Integer userId;
 
 }

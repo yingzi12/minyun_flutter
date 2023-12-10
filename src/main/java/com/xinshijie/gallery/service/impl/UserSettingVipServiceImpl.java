@@ -57,6 +57,21 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
         return mapper.selectPageUserSettingVip(page, dto);
     }
 
+    @Override
+    public Boolean updateStatus(Integer userId, Long id, Integer status) {
+        QueryWrapper<UserSettingVip> qw=new QueryWrapper<>();
+        qw.eq("user_id",userId);
+        qw.eq("id",id);
+
+        UserSettingVip vip=new UserSettingVip();
+        vip.setStatus(status);
+        int i=mapper.update(vip,qw);
+        if(i==1) {
+            return true;
+        }else {
+            return false;
+        }
+    }
     /**
      * 分页查询图片信息表
      */

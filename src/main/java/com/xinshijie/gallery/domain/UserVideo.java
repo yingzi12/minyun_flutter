@@ -36,6 +36,6 @@ public class UserVideo implements Serializable {
     private Integer aid;
     private String md5;
 
-    private Integer createUserid;
+    private Integer userId;
 
 }

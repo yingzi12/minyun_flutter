@@ -92,7 +92,7 @@ public class AdminUserImageController extends BaseController {
 
     @GetMapping("/list")
     public Result<List<UserImageVo>> select( UserImageDto findDto) {
-        findDto.setCreateUserid(getUserId());
+        findDto.setUserId(getUserId());
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

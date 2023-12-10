@@ -30,6 +30,9 @@ public interface IUserSettingVipService extends IService<UserSettingVip> {
      */
     Page<UserSettingVipVo> selectPageUserSettingVip(UserSettingVipDto dto);
 
+    Boolean updateStatus(Integer userId,Long id, Integer status);
+
+
     /**
      * 分页查询信息表
      */

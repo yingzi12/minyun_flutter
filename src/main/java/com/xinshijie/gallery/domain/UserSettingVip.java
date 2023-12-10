@@ -69,4 +69,6 @@ public class UserSettingVip implements Serializable {
      * 标题
      */
     private String title;
+
+    private Integer status;
 }

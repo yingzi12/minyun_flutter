@@ -58,7 +58,7 @@ public class AdminUserVideoController extends BaseController {
 
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserVideo dto) {
-        dto.setCreateUserid(getUserId());
+        dto.setUserId(getUserId());
         Integer vo = userVideoService.edit(dto);
         return Result.success(vo);
     }
@@ -101,7 +101,7 @@ public class AdminUserVideoController extends BaseController {
      */
     @GetMapping("/list")
     public Result<List<UserVideoVo>> select( UserVideoDto findDto) {
-        findDto.setCreateUserid(getUserId());
+        findDto.setUserId(getUserId());
         Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
         return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
     }

@@ -99,5 +99,7 @@ public class UserSettingVipVo implements Serializable {
     @Schema(description = "标题 ")
     private String title;
 
+    private Integer status;
+
 
 }
