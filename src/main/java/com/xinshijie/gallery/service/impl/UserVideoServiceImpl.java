@@ -109,7 +109,14 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
      */
     @Override
     public UserVideo add(UserVideo dto) {
-        UserVideo value = new UserVideo();
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("md5", dto.getMd5());
+        qw.eq("aid", dto.getAid());
+        UserVideo value = mapper.selectOne(qw);
+        if(value!=null){
+            throw  new ServiceException(ResultCodeEnum.VEDIO_IS_EXICT);
+        }
+        value = new UserVideo();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
         mapper.insert(value);

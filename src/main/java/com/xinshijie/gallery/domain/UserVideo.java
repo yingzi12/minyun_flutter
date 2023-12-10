@@ -39,5 +39,6 @@ public class UserVideo implements Serializable {
     private Integer userId;
     private Integer status;
 
+    private String imgUrl;
 
 }

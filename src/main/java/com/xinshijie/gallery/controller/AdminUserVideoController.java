@@ -116,7 +116,11 @@ public class AdminUserVideoController extends BaseController {
     public Result<AllVideo> checkAllMd5(String md5) {
 //        findDto.setUserId(getUserId());
         AllVideo vo = userVideoService.checkAllMd5(md5);
-        return Result.success(vo);
+        if(vo==null){
+            return Result.error(ResultCodeEnum.DATA_NOT_FOUND);
+        }else {
+            return Result.success(vo);
+        }
     }
     @PostMapping("/upload")
     public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {

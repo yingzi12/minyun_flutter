@@ -41,5 +41,5 @@ public class AllVideo implements Serializable {
      */
     private Long duration;
 
-
+    private String imgUrl;
 }

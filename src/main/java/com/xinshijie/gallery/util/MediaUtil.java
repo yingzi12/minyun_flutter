@@ -45,10 +45,10 @@ public class MediaUtil {
     public final static String[] AUDIO_TYPE = {"AAC"};
 
     /**
-     * 视频帧抽取时的默认时间点，第10s（秒）
+     * 视频帧抽取时的默认时间点，第3s（秒）
      * （Time类构造参数的单位:ms）
      */
-    private static final Time DEFAULT_TIME = new Time(0, 0, 10);
+    private static final Time DEFAULT_TIME = new Time(0, 0, 3);
     /**
      * 视频帧抽取的默认宽度值，单位：px
      */
@@ -272,7 +272,7 @@ public class MediaUtil {
      * 默认抽取第10秒的帧画面
      * 抽取的帧图片默认宽度为300px
      * <p>
-     * 转换后的文件路径以.gif结尾时，默认截取从第10s开始，后10s以内的帧画面来生成gif
+     * 转换后的文件路径以.gif结尾时，默认截取从第3s开始，后3s以内的帧画面来生成gif
      *
      * @param videoFile  源视频路径
      * @param fileOutPut 转换后的文件路径
@@ -285,7 +285,7 @@ public class MediaUtil {
      * 视频帧抽取（抽取指定时间点的帧画面）
      * 抽取的视频帧图片宽度默认为320px
      * <p>
-     * 转换后的文件路径以.gif结尾时，默认截取从指定时间点开始，后10s以内的帧画面来生成gif
+     * 转换后的文件路径以.gif结尾时，默认截取从指定时间点开始，后3s以内的帧画面来生成gif
      *
      * @param videoFile  源视频路径
      * @param fileOutPut 转换后的文件路径
@@ -299,7 +299,7 @@ public class MediaUtil {
      * 视频帧抽取（抽取指定时间点、指定宽度值的帧画面）
      * 只需指定视频帧的宽度，高度随宽度自动计算
      * <p>
-     * 转换后的文件路径以.gif结尾时，默认截取从指定时间点开始，后10s以内的帧画面来生成gif
+     * 转换后的文件路径以.gif结尾时，默认截取从指定时间点开始，后3s以内的帧画面来生成gif
      *
      * @param videoFile  源视频路径
      * @param fileOutPut 转换后的文件路径
@@ -325,7 +325,7 @@ public class MediaUtil {
     /**
      * 视频帧抽取（抽取指定时间点、指定宽度值、指定高度值的帧画面）
      * <p>
-     * 转换后的文件路径以.gif结尾时，默认截取从指定时间点开始，后10s以内的帧画面来生成gif
+     * 转换后的文件路径以.gif结尾时，默认截取从指定时间点开始，后3s以内的帧画面来生成gif
      *
      * @param videoFile  源视频路径
      * @param fileOutPut 转换后的文件路径
@@ -391,7 +391,7 @@ public class MediaUtil {
      * @param timeLength  截取的视频帧的时长（从time开始算，单位:s，需小于源视频的最大时长）
      * @param isContinuty false - 静态图（只截取time时间点的那一帧图片），true - 动态图（截取从time时间点开始,timelength这段时间内的多张帧图）
      */
-    private static void cutVideoFrame(File videoFile, String path, Time time, int width, int height, int timeLength, boolean isContinuty) {
+    public static void cutVideoFrame(File videoFile, String path, Time time, int width, int height, int timeLength, boolean isContinuty) {
         if (videoFile == null || !videoFile.exists()) {
             throw new RuntimeException("源视频文件不存在，源视频路径： ");
         }

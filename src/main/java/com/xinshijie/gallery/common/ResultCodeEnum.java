@@ -128,6 +128,8 @@ public enum ResultCodeEnum {
 
     VEDIO_UPLOAD_MAX(999008119, "超过最大许可上传限制"),
 
+    VEDIO_IS_EXICT(999008120, "视频已经存在"),
+
     ;
 
 

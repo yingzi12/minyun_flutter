@@ -13,9 +13,15 @@ import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.util.MediaUtil;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Time;
 
 @Component
 public class MessageConsumer {
@@ -31,6 +37,8 @@ public class MessageConsumer {
     @Autowired
     private IFileService fileService;
 
+    @Value("${image.path}")
+    private String savePath;
 //    private String videoHcPath;
     /**
      * 接受消息
@@ -46,7 +54,7 @@ public class MessageConsumer {
         if(video==null){
             return;
         }
-        update(video,md5,"", VedioStatuEnum.NORMAL.getCode());
+        update(video,md5,"", "",VedioStatuEnum.NORMAL.getCode());
         //获取视频信息
         VideoMetaInfo videoMetaInfo=MediaUtil.getVideoMetaInfo(new File(Constants.videoHcPath+video.getUrl()));
         if(videoMetaInfo==null){
@@ -54,16 +62,32 @@ public class MessageConsumer {
         }
         video.setSize(videoMetaInfo.getSize());
         video.setDuration(video.getDuration());
+
         //转换视频为ts
         String url= fileService.chargeVideoThreadFile(Constants.videoHcPath, video.getTitle(), video.getUrl());
-        update( video,md5,url,VedioStatuEnum.LOCK.getCode());
+        //生成预览图
+        String imagUrl = url.replaceAll("m3u8", "gif");
+        if(video.getDuration()> 13000) {
+            MediaUtil.cutVideoFrame(new File(Constants.videoHcPath + video.getUrl()), new File(savePath + imagUrl));
+        }else {
+            jietu(Constants.videoHcPath + video.getUrl(),imagUrl);
+        }
+        try {
+            Path path = Paths.get(Constants.videoHcPath + video.getUrl());
+            Files.delete(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        update( video,md5,url,imagUrl,VedioStatuEnum.LOCK.getCode());
     }
 
-    public  void update( AllVideo video,String md5,String url,Integer status){
+    public  void update( AllVideo video,String md5,String url,String imgUrl,Integer status){
         QueryWrapper<UserVideo> qw=new QueryWrapper<>();
         qw.eq("md5",md5);
         UserVideo userVideo=new UserVideo();
         userVideo.setUrl(url);
+        userVideo.setImgUrl(imgUrl);
+
         userVideo.setStatus(status);
         userVideoService.update(userVideo,qw);
 
@@ -71,6 +95,21 @@ public class MessageConsumer {
 //        allVideo.setId(video.getId());
         video.setSourceUrl(url);
         video.setStatus(status);
+        video.setImgUrl(imgUrl);
+
         allVideoService.updateById(video);
+    }
+
+    public  void jietu(String vedioUrl,String imaUrl){
+        File videoFile = new File(vedioUrl); // 源视频文件路径
+        String outputFolderPath = imaUrl; // 转换后的文件输出文件夹路径
+        int startTimeInSeconds = 1; // 开始截取视频帧的时间点（单位：s）
+        int width = 300; // 截取的视频帧图片的宽度（单位：px）
+        int height = 300; // 截取的视频帧图片的高度（单位：px）
+        int timeLengthInSeconds = 1; // 截取的视频帧的时长（从time开始算，单位:s）
+        boolean isContinuous = false; // false - 静态图，true - 动态图
+
+        Time time = new Time(startTimeInSeconds);
+        MediaUtil.cutVideoFrame(videoFile, outputFolderPath, time, width, height, timeLengthInSeconds, isContinuous);
     }
 }
