@@ -42,23 +42,10 @@ public class AdminUserImageController extends BaseController {
     private IUserImageService userImageService;
 
     /**
-     *  添加
-     *
-     * @return
-     */
-
-    @PostMapping("/add")
-    public Result<UserImage> add(@RequestBody UserImageDto dto) {
-        UserImage vo = userImageService.add(dto);
-        return Result.success(vo);
-    }
-
-    /**
      *  删除
      *
      * @return
      */
-
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
         Integer vo = userImageService.delById(getUserId(),id);

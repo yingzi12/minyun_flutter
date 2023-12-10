@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
                     if (systemUserVo != null) {
                         if (redisTemplate.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
-                            redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 1, TimeUnit.HOURS);
+                            redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
                             String oldToken = redisTemplate.opsForValue().get(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
                             if (oldToken.equals(token)) {
                                 httpServletRequest.setAttribute("userId", systemUserVo.getId());

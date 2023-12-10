@@ -8,4 +8,8 @@ public interface IFileService {
     String saveUploadedFilesWatermark(String headPath,String title, MultipartFile file);
 
     String getMD5(InputStream is);
+
+    Boolean moveFile(String headPath,String title,String sourcePath);
+
+    String chargeVideoFile(String headPath,String title,String sourcePath);
 }

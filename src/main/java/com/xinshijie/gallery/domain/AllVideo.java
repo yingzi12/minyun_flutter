@@ -30,6 +30,7 @@ public class AllVideo implements Serializable {
     private String source_url;
     private String md5;
     private Long size;
+    private String title;
 
 
 }

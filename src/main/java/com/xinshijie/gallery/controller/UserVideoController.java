@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.controller;
 
+import cn.hutool.core.util.HashUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
@@ -22,6 +23,7 @@ import java.nio.file.StandardOpenOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -74,10 +76,19 @@ public class UserVideoController extends BaseController {
                                             @RequestParam("totalChunks") int totalChunks,
                                             @RequestParam("identifier") String identifier) {
         try {
-            log.info("upload  chunkNumber:{}  totalChunks:{} identifier:{} ",chunkNumber,totalChunks,identifier);
-            String chunkFileName = identifier + "-" + chunkNumber;
-            Path chunkFile = Paths.get(UPLOAD_DIR + chunkFileName);
+            String[] nameArr = identifier.split("\\.");
+            String hz=nameArr[nameArr.length-1];
+            String idHash= HashUtil.hfHash(identifier)+"."+hz;
+            log.info("upload  chunkNumber:{}  totalChunks:{} identifier:{},idHash:{} filename:{}",chunkNumber,totalChunks,identifier,idHash,file.getOriginalFilename());
+            String chunkFileName = idHash + "-" + chunkNumber;
+            Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ chunkFileName);
 
+            File destinationFile = new File(UPLOAD_DIR +LocalDate.now()+"/"+ chunkFileName);
+            File parentDir = destinationFile.getParentFile();
+            // 如果父目录不存在，尝试创建它
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
             try (OutputStream outputStream = new BufferedOutputStream(Files.newOutputStream(chunkFile, StandardOpenOption.CREATE))) {
                 outputStream.write(file.getBytes());
             }
@@ -86,9 +97,9 @@ public class UserVideoController extends BaseController {
             Files.move(chunkFile, chunkFile.resolveSibling("uploaded_" + chunkFileName));
 
             // Check if all chunks have been uploaded
-            if (allChunksUploaded(identifier, totalChunks)) {
-                log.info("All chunks uploaded, starting to merge file: " + identifier);
-                mergeFile(identifier, totalChunks);
+            if (allChunksUploaded(idHash, totalChunks)) {
+                log.info("All chunks uploaded, starting to merge file: " + idHash);
+                mergeFile(idHash, totalChunks);
             }
         } catch (Exception ex) {
             log.error("Error in file upload: " + identifier, ex);
@@ -97,9 +108,9 @@ public class UserVideoController extends BaseController {
         return Result.success(true);
     }
 
-    private boolean allChunksUploaded(String identifier, int totalChunks) {
+    private boolean allChunksUploaded(String idHash, int totalChunks) {
         for (int i = 0; i < totalChunks; i++) {
-            Path chunkFile = Paths.get(UPLOAD_DIR + "uploaded_" + identifier + "-" + i);
+            Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ "uploaded_" + idHash + "-" + i);
             if (!Files.exists(chunkFile)) {
                 log.info("Missing chunk: " + chunkFile.toString());
                 return false;
@@ -108,22 +119,10 @@ public class UserVideoController extends BaseController {
         return true;
     }
 
-//    private void mergeFile(String identifier, int totalChunks) throws IOException {
-//        Path fileOutput = Paths.get(UPLOAD_DIR + identifier);
-//        try (OutputStream mergeFile = new BufferedOutputStream(Files.newOutputStream(fileOutput, StandardOpenOption.CREATE))) {
-//            for (int i = 0; i < totalChunks; i++) {
-//                Path chunkFile = Paths.get(UPLOAD_DIR + "uploaded_" + identifier + "-" + i);
-//                Files.copy(chunkFile, mergeFile);
-//                Files.delete(chunkFile); // 删除分块文件
-//            }
-//        }
-//        log.info("File merged successfully: {}", fileOutput);
-//    }
-
     @GetMapping("/check")
     public Result<String> checkChunkExists(@RequestParam("identifier") String identifier,
                                             @RequestParam("chunkNumber") int chunkNumber) {
-        Path chunkFile = Paths.get(UPLOAD_DIR + "uploaded_" + identifier + "-" + chunkNumber);
+        Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ "uploaded_" + identifier + "-" + chunkNumber);
         if (Files.exists(chunkFile)) {
             return Result.success(ResultCodeEnum.SUCCESS);
         } else {
@@ -147,14 +146,14 @@ public class UserVideoController extends BaseController {
     }
 
     //合并文件，同时返回文件的hash值
-    private String mergeFile(String identifier, int totalChunks) throws IOException, NoSuchAlgorithmException {
-        Path fileOutput = Paths.get(UPLOAD_DIR + identifier);
+    private String mergeFile(String idHash, int totalChunks) throws IOException, NoSuchAlgorithmException {
+        Path fileOutput = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ idHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         long fileSize = 0;
 
         try (OutputStream mergeFile = new BufferedOutputStream(Files.newOutputStream(fileOutput, StandardOpenOption.CREATE))) {
             for (int i = 0; i < totalChunks; i++) {
-                Path chunkFile = Paths.get(UPLOAD_DIR + "uploaded_" + identifier + "-" + i);
+                Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ "uploaded_" + idHash + "-" + i);
                 byte[] buffer = new byte[4096];
                 int len;
                 try (InputStream is = Files.newInputStream(chunkFile)) {

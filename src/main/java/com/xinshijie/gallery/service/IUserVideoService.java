@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.vo.UserVideoVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,13 +46,20 @@ public interface IUserVideoService extends IService<UserVideo> {
      */
     Integer edit(UserVideo dto);
 
+
     /**
      * 删除数据
      */
-    Integer delById(Long id);
+    Integer  delById(Integer userId,Long id);
+
+    Integer  updateIsFree(Integer userId,Long id,Integer isFree);
 
     /**
      * 根据id数据
      */
     UserVideoVo getInfo(Long id);
+
+    String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file);
+
+    String updateUploadedFiles(Integer userId, Integer aid, Integer isFree,Long size,String md5,String sourcePath);
 }

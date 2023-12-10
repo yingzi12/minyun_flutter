@@ -33,7 +33,7 @@ public class UserVideo implements Serializable {
      */
     private Integer isFree;
     private LocalDateTime createTime;
-    private Long aid;
+    private Integer aid;
     private String md5;
 
     private Integer createUserid;
