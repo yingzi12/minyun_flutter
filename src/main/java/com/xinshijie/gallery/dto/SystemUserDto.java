@@ -4,15 +4,15 @@ package com.xinshijie.gallery.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 作者
@@ -55,11 +55,11 @@ public class SystemUserDto implements Serializable {
     @Size(max = 100, message = " 超出最大长度 100")
     private String directions;
 
-    private Integer  countLike;
-    private Integer       countSee;
-    private Integer       countAttention;
+    private Integer countLike;
+    private Integer countSee;
+    private Integer countAttention;
 
-private Long pageNum;
+    private Long pageNum;
 
-private Long pageSize;
+    private Long pageSize;
 }

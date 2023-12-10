@@ -36,7 +36,7 @@ public class AdminUserSettingVipController extends BaseController {
     private IUserSettingVipService userSettingVipService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
@@ -50,20 +50,20 @@ public class AdminUserSettingVipController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userSettingVipService.delById(getUserId(),id);
+        Integer vo = userSettingVipService.delById(getUserId(), id);
         return Result.success(vo);
     }
 
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -77,34 +77,34 @@ public class AdminUserSettingVipController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
 
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserSettingVip> getInfo(@PathVariable("id") Long id) {
-        UserSettingVip vo = userSettingVipService.getInfo(getUserId(),id);
+        UserSettingVip vo = userSettingVipService.getInfo(getUserId(), id);
         return Result.success(vo);
     }
 
     @GetMapping(value = "/updateStatus")
-    public Result<Boolean> updateStatus(@PathVariable("id") Long id,@PathVariable("status") Integer status) {
-        Boolean vo = userSettingVipService.updateStatus(getUserId(),id,status);
+    public Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
+        Boolean vo = userSettingVipService.updateStatus(getUserId(), id, status);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
 
     @GetMapping("/list")
-    public Result<List<UserSettingVipVo>> select( UserSettingVipDto findDto) {
+    public Result<List<UserSettingVipVo>> select(UserSettingVipDto findDto) {
         findDto.setUserId(getUserId());
         Page<UserSettingVipVo> vo = userSettingVipService.selectPageUserSettingVip(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 }

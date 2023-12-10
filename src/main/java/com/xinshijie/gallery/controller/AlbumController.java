@@ -1,16 +1,14 @@
 package com.xinshijie.gallery.controller;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.service.AlbumService;
-import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;
 import com.xinshijie.gallery.vo.AlbumVo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class AlbumController {
             dto.setTitle(null);
         }
         dto.setPageSize(30);
-        dto.setOffset(dto.getPageSize()*(dto.getPageNum()-1));
+        dto.setOffset(dto.getPageSize() * (dto.getPageNum() - 1));
         Integer total = albumService.count(dto);
         List<Album> list = albumService.list(dto);
 
@@ -41,12 +39,12 @@ public class AlbumController {
     }
 
     @GetMapping("/random")
-    public Result<List<Album>> random(@RequestParam(value = "pageSize",required = false)Integer pageSize) {
-        if(pageSize==null){
-            pageSize=8;
+    public Result<List<Album>> random(@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (pageSize == null) {
+            pageSize = 8;
         }
-        if(pageSize<10){
-            pageSize=9;
+        if (pageSize < 10) {
+            pageSize = 9;
         }
         List<Album> list = albumService.findRandomStories(pageSize);
 
@@ -63,7 +61,7 @@ public class AlbumController {
         }
         dto.setOrder("count_see");
         dto.setPageSize(30);
-        dto.setOffset(dto.getPageSize()*(dto.getPageNum()-1));
+        dto.setOffset(dto.getPageSize() * (dto.getPageNum() - 1));
         Integer total = albumService.count(dto);
         List<Album> list = albumService.list(dto);
 

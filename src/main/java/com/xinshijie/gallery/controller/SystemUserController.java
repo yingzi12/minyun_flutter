@@ -8,14 +8,11 @@ import cn.hutool.extra.mail.MailUtil;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.LoginDto;
-import com.xinshijie.gallery.dto.LogoutDto;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.dto.UserPasswordDto;
 import com.xinshijie.gallery.service.ISystemUserService;
-import com.xinshijie.gallery.util.RequestContextUtil;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
-import com.xinshijie.gallery.vo.SystemUserVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -33,7 +29,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
 /**
  * <p>
- *   前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 作者
@@ -43,7 +39,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 @Tag(name = " SystemUserController", description = "后台- ")
 @RestController
 @RequestMapping("/systemUser")
-public class  SystemUserController  extends BaseController {
+public class SystemUserController extends BaseController {
 
     @Autowired
     private ISystemUserService systemUserService;
@@ -76,8 +72,8 @@ public class  SystemUserController  extends BaseController {
 
     @PostMapping("/regis")
     public Result<Boolean> regis(@RequestBody SystemUserDto userDto) {
-        if(StringUtils.isEmpty(userDto.getPassword()) || userDto.getPassword().length() <6){
-            throw  new ServiceException(ResultCodeEnum.PASSWORD_NULL);
+        if (StringUtils.isEmpty(userDto.getPassword()) || userDto.getPassword().length() < 6) {
+            throw new ServiceException(ResultCodeEnum.PASSWORD_NULL);
         }
         // 生成令牌
         systemUserService.add(userDto);
@@ -86,11 +82,11 @@ public class  SystemUserController  extends BaseController {
 
     @PostMapping("/updatePassworld")
     public Result<Boolean> updatePassworld(@RequestBody UserPasswordDto passwordDto) {
-        if(StringUtils.isEmpty(passwordDto.getNewPassword()) || passwordDto.getNewPassword().length() <6){
-            throw  new ServiceException(ResultCodeEnum.PASSWORD_NULL);
+        if (StringUtils.isEmpty(passwordDto.getNewPassword()) || passwordDto.getNewPassword().length() < 6) {
+            throw new ServiceException(ResultCodeEnum.PASSWORD_NULL);
         }
         // 生成令牌
-        systemUserService.updatePwd(getUserId(),passwordDto.getNewPassword(),passwordDto.getOldPassword());
+        systemUserService.updatePwd(getUserId(), passwordDto.getNewPassword(), passwordDto.getOldPassword());
         return Result.success(true);
     }
 
@@ -110,7 +106,7 @@ public class  SystemUserController  extends BaseController {
         // 5393554e94bf0eb6436f240a4fd71282
         String digestHex = digester.digestHex("安全邮箱绑定" + email);
         if (md5.equals(digestHex)) {
-            systemUserService.updateEmail(Integer.getInteger(id),email);
+            systemUserService.updateEmail(Integer.getInteger(id), email);
             redisCache.deleteObject(CacheConstants.EMAIL + key);
         } else {
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
@@ -125,7 +121,7 @@ public class  SystemUserController  extends BaseController {
         if (StringUtils.isNotEmpty(email) && isEmail) {
             SystemUser info = systemUserService.selectByEmail(email);
             if (info == null || info.getIsEmail() == 0) {
-                throw new ServiceException(ResultCodeEnum.THE_EMAIL_DOES_NOT_EXIST_OR_IS_NOT_VERIFIED );
+                throw new ServiceException(ResultCodeEnum.THE_EMAIL_DOES_NOT_EXIST_OR_IS_NOT_VERIFIED);
             }
             String simpleUUID = IdUtil.simpleUUID();
             Digester md5 = new Digester(DigestAlgorithm.MD5);
@@ -189,7 +185,7 @@ public class  SystemUserController  extends BaseController {
             userDto.setUpdateTime(LocalDateTime.now());
             systemUserService.updateById(userDto);
             redisCache.deleteObject(CacheConstants.PASSWORD + dto.getKey());
-            redisCache.setCacheInteger(systemUserService.getCacheKey(userVo.getName()), 0, 60*15, TimeUnit.MINUTES);
+            redisCache.setCacheInteger(systemUserService.getCacheKey(userVo.getName()), 0, 60 * 15, TimeUnit.MINUTES);
         }
         return Result.success("重置成功");
     }

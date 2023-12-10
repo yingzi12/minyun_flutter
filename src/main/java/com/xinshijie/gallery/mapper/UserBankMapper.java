@@ -1,19 +1,20 @@
 package com.xinshijie.gallery.mapper;
 
-import com.xinshijie.gallery.dto.UserBankDto;
-import com.xinshijie.gallery.vo.UserBankVo;
-import com.xinshijie.gallery.domain.UserBank;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xinshijie.gallery.domain.UserBank;
+import com.xinshijie.gallery.dto.UserBankDto;
+import com.xinshijie.gallery.vo.UserBankVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author 作者
@@ -24,8 +25,8 @@ import java.util.List;
 public interface UserBankMapper extends BaseMapper<UserBank> {
 
     /**
-    * 查询讨论主题表
-    */
+     * 查询讨论主题表
+     */
     List<UserBankVo> selectListUserBank(UserBankDto dto);
 
     /**

@@ -35,7 +35,7 @@ public class AdminUserVipController extends BaseController {
     private IUserVipService userVipService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
@@ -47,7 +47,7 @@ public class AdminUserVipController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
@@ -60,7 +60,7 @@ public class AdminUserVipController extends BaseController {
 
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -73,27 +73,27 @@ public class AdminUserVipController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
 
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserVip> getInfo(@PathVariable("id") Integer userId) {
-        UserVip vo = userVipService.getInfo(getUserId(),userId);
+        UserVip vo = userVipService.getInfo(getUserId(), userId);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserVipVo>> select( UserVipDto findDto) {
+    public Result<List<UserVipVo>> select(UserVipDto findDto) {
         Page<UserVipVo> vo = userVipService.selectPageUserVip(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 }

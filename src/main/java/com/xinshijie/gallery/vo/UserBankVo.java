@@ -1,7 +1,5 @@
 package com.xinshijie.gallery.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 作者
@@ -19,21 +17,21 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(name = "UserBankVo", description = " ")
-public class UserBankVo implements Serializable{
+public class UserBankVo implements Serializable {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-        private Integer id;
+    private Integer id;
 
-        private String bankName;
+    private String bankName;
 
-        private String bankCard;
+    private String bankCard;
 
-        private String bankUser;
+    private String bankUser;
 
-        private LocalDateTime createTime;
+    private LocalDateTime createTime;
 
-        private LocalDateTime updateTime;
+    private LocalDateTime updateTime;
 
 
 }

@@ -35,7 +35,7 @@ public class AdminUserBuyAlbumController extends BaseController {
     private IUserBuyAlbumService userBuyAlbumService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
@@ -47,7 +47,7 @@ public class AdminUserBuyAlbumController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
@@ -60,7 +60,7 @@ public class AdminUserBuyAlbumController extends BaseController {
 
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -73,27 +73,27 @@ public class AdminUserBuyAlbumController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
 
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserBuyAlbum> getInfo(@PathVariable("aid") Integer aid) {
-        UserBuyAlbum vo = userBuyAlbumService.getInfo(getUserId(),aid);
+        UserBuyAlbum vo = userBuyAlbumService.getInfo(getUserId(), aid);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserBuyAlbumVo>> select( UserBuyAlbumDto findDto) {
+    public Result<List<UserBuyAlbumVo>> select(UserBuyAlbumDto findDto) {
         Page<UserBuyAlbumVo> vo = userBuyAlbumService.selectPageUserBuyAlbum(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 }

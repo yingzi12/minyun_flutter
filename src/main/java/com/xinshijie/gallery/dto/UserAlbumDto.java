@@ -74,7 +74,7 @@ public class UserAlbumDto implements Serializable {
     /**
      * '1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
      */
-   private Integer charge;
+    private Integer charge;
 
 
     /**

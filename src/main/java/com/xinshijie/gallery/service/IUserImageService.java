@@ -49,9 +49,9 @@ public interface IUserImageService extends IService<UserImage> {
     /**
      * 删除数据
      */
-    Integer  delById(Integer userId,Long id);
+    Integer delById(Integer userId, Long id);
 
-    Integer  updateIsFree(Integer userId,Long id,Integer isFree);
+    Integer updateIsFree(Integer userId, Long id, Integer isFree);
 
 
     /**
@@ -59,5 +59,5 @@ public interface IUserImageService extends IService<UserImage> {
      */
     UserImageVo getInfo(Long id);
 
-    String saveUploadedFiles(Integer userId, Integer aid, Integer isFree,MultipartFile file);
+    String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file);
 }

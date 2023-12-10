@@ -3,18 +3,17 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.service.IUserImageService;
-import com.xinshijie.gallery.vo.ResuImageVo;
 import com.xinshijie.gallery.vo.UserImageVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -38,7 +37,7 @@ public class UserImageController extends BaseController {
     private IUserImageService userImageService;
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -51,15 +50,15 @@ public class UserImageController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
 
     @GetMapping("/list")
-    public Result<List<UserImageVo>> select( UserImageDto findDto) {
+    public Result<List<UserImageVo>> select(UserImageDto findDto) {
         findDto.setUserId(getUserId());
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 }

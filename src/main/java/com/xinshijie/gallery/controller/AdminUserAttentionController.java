@@ -10,7 +10,10 @@ import com.xinshijie.gallery.vo.UserAttentionVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -41,58 +44,58 @@ public class AdminUserAttentionController extends BaseController {
      * @return
      */
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
     @GetMapping("/add")
     public Result<UserAttention> add(@PathVariable("userId") Long userId, @PathVariable("userName") String userName) {
-        UserAttentionDto userAttention=new UserAttentionDto();
-        userAttention.setUserId(getUserId()+0L);
+        UserAttentionDto userAttention = new UserAttentionDto();
+        userAttention.setUserId(getUserId() + 0L);
         userAttention.setUserName(getUserName());
         userAttention.setAttUserId(userId);
         userAttention.setAttUserName(userName);
         UserAttention vo = userAttentionService.add(userAttention);
         return Result.success(vo);
     }
+
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
 
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userAttentionService.delById(getUserId(),id);
+        Integer vo = userAttentionService.delById(getUserId(), id);
         return Result.success(vo);
     }
 
 
-
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
 
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserAttention> getInfo(@PathVariable("id") Long id) {
-        UserAttention vo = userAttentionService.getInfo(getUserId(),id);
+        UserAttention vo = userAttentionService.getInfo(getUserId(), id);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
 
     @GetMapping("/list")
-    public Result<List<UserAttentionVo>> select( UserAttentionDto findDto) {
-        findDto.setUserId(getUserId()+0l);
+    public Result<List<UserAttentionVo>> select(UserAttentionDto findDto) {
+        findDto.setUserId(getUserId() + 0l);
         Page<UserAttentionVo> vo = userAttentionService.selectPageUserAttention(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 

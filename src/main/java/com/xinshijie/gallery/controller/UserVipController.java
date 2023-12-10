@@ -10,7 +10,10 @@ import com.xinshijie.gallery.vo.UserVipVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
@@ -33,25 +36,25 @@ public class UserVipController extends BaseController {
     private IUserVipService userVipService;
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
 
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserVip> getInfo(@PathVariable("id") Integer userId) {
-        UserVip vo = userVipService.getInfo(userId,getUserId());
+        UserVip vo = userVipService.getInfo(userId, getUserId());
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<Page<UserVipVo>> select( UserVipDto findDto) {
+    public Result<Page<UserVipVo>> select(UserVipDto findDto) {
         Page<UserVipVo> vo = userVipService.selectPageUserVip(findDto);
         return Result.success(vo);
     }

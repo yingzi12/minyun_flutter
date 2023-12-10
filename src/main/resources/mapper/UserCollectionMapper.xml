@@ -3,83 +3,82 @@
 <mapper namespace="com.xinshijie.gallery.mapper.UserCollectionMapper">
 
     <sql id="selectUserCollection">
-        select
-                  id,
-                user_id,
-                user_name,
-                create_time,
-                title,
-                aid
+        select id,
+               user_id,
+               user_name,
+               create_time,
+               title,
+               aid
         from user_collection
     </sql>
 
-    <select id="selectListUserCollection" parameterType="com.xinshijie.gallery.dto.UserCollectionDto" resultType="com.xinshijie.gallery.vo.UserCollectionVo">
+    <select id="selectListUserCollection" parameterType="com.xinshijie.gallery.dto.UserCollectionDto"
+            resultType="com.xinshijie.gallery.vo.UserCollectionVo">
         <include refid="selectUserCollection"/>
         <where>
-                    <if test="id !=null ">and id= #{id}</if>
-                    <if test="userId !=null ">and user_id= #{userId}</if>
-                    <if test="userName !=null ">and user_name= #{userName}</if>
-                    <if test="createTime !=null ">and create_time= #{createTime}</if>
-                    <if test="title !=null ">and title= #{title}</if>
-                    <if test="aid !=null ">and aid= #{aid}</if>
+            <if test="id !=null ">and id= #{id}</if>
+            <if test="userId !=null ">and user_id= #{userId}</if>
+            <if test="userName !=null ">and user_name= #{userName}</if>
+            <if test="createTime !=null ">and create_time= #{createTime}</if>
+            <if test="title !=null ">and title= #{title}</if>
+            <if test="aid !=null ">and aid= #{aid}</if>
         </where>
     </select>
 
-    <select id="selectPageUserCollection"  resultType="com.xinshijie.gallery.vo.UserCollectionVo">
+    <select id="selectPageUserCollection" resultType="com.xinshijie.gallery.vo.UserCollectionVo">
         <include refid="selectUserCollection"/>
         <where>
-                    <if test="dto.id !=null ">and id= #{dto.id}</if>
-                    <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
-                    <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
-                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-                    <if test="dto.title !=null ">and title= #{dto.title}</if>
-                    <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
+            <if test="dto.id !=null ">and id= #{dto.id}</if>
+            <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
+            <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
+            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+            <if test="dto.title !=null ">and title= #{dto.title}</if>
+            <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
         </where>
     </select>
 
-    <select id="getPageUserCollection"  resultType="com.xinshijie.gallery.vo.UserCollectionVo">
-        <include refid="selectUserCollection"/> ${ew.customSqlSegment}
+    <select id="getPageUserCollection" resultType="com.xinshijie.gallery.vo.UserCollectionVo">
+        <include refid="selectUserCollection"/>
+        ${ew.customSqlSegment}
     </select>
 
-    <insert id="add"  >
-        insert into user_collection (
-                id,
-                user_id,
-                user_name,
-                create_time,
-                title,
-                aid
-          )
-        values
-            (
-                    #{ id },
-                    #{ userId },
-                    #{ userName },
-                    #{ createTime },
-                    #{ title },
-                    #{ aid }
-       )
+    <insert id="add">
+        insert into user_collection (id,
+                                     user_id,
+                                     user_name,
+                                     create_time,
+                                     title,
+                                     aid)
+        values (#{ id },
+                #{ userId },
+                #{ userName },
+                #{ createTime },
+                #{ title },
+                #{ aid })
     </insert>
 
-    <update id="edit"  >
-        update  user_collection
+    <update id="edit">
+        update user_collection
         <trim prefix="SET" suffixOverrides=",">
-                    <if test="id !=null ">  id= #{id},</if>
-                    <if test="userId !=null ">  user_id= #{userId},</if>
-                    <if test="userName !=null ">  user_name= #{userName},</if>
-                    <if test="createTime !=null ">  create_time= #{createTime},</if>
-                    <if test="title !=null ">  title= #{title},</if>
-                    <if test="aid !=null ">  aid= #{aid},</if>
+            <if test="id !=null ">id= #{id},</if>
+            <if test="userId !=null ">user_id= #{userId},</if>
+            <if test="userName !=null ">user_name= #{userName},</if>
+            <if test="createTime !=null ">create_time= #{createTime},</if>
+            <if test="title !=null ">title= #{title},</if>
+            <if test="aid !=null ">aid= #{aid},</if>
         </trim>
-        where   id=#{id}
+        where id=#{id}
     </update>
 
-    <delete id="delById"  >
-        delete FROM  user_collection where  id = #{id}
+    <delete id="delById">
+        delete
+        FROM user_collection
+        where id = #{id}
     </delete>
 
-    <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserCollectionVo">
-        <include refid="selectUserCollection"/> where  id = #{id}
+    <select id="getInfo" resultType="com.xinshijie.gallery.vo.UserCollectionVo">
+        <include refid="selectUserCollection"/>
+        where id = #{id}
     </select>
 
 </mapper>

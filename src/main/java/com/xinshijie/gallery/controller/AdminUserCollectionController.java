@@ -36,14 +36,14 @@ public class AdminUserCollectionController extends BaseController {
     private IUserCollectionService userCollectionService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
     @GetMapping("/add")
-    public Result<UserCollection> add(@RequestParam("aid") Long aid,@RequestParam("title") String title,@RequestParam("ctype") Integer ctype) {
-        UserCollectionDto dto=new UserCollectionDto();
-        dto.setUserId(getUserId()+0l);
+    public Result<UserCollection> add(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
+        UserCollectionDto dto = new UserCollectionDto();
+        dto.setUserId(getUserId() + 0l);
         dto.setUserName(getUserName());
         dto.setAid(aid);
         dto.setTitle(title);
@@ -53,13 +53,13 @@ public class AdminUserCollectionController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
     @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id,@RequestParam("ctype") Integer ctype) {
-        Integer vo = userCollectionService.delById(getUserId(),id,ctype);
+    public Result<Integer> del(@PathVariable("id") Long id, @RequestParam("ctype") Integer ctype) {
+        Integer vo = userCollectionService.delById(getUserId(), id, ctype);
         return Result.success(vo);
     }
 
@@ -69,23 +69,23 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/get/{id}")
-    public Result<UserCollection> getInfo(@PathVariable("id") Long id,@RequestParam("ctype") Integer ctype) {
-        UserCollection vo = userCollectionService.getInfo(getUserId(),id,ctype);
+    public Result<UserCollection> getInfo(@PathVariable("id") Long id, @RequestParam("ctype") Integer ctype) {
+        UserCollection vo = userCollectionService.getInfo(getUserId(), id, ctype);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
 
     @GetMapping("/list")
-    public Result<List<UserCollectionVo>> select( UserCollectionDto findDto) {
-        findDto.setUserId(getUserId()+0l);
+    public Result<List<UserCollectionVo>> select(UserCollectionDto findDto) {
+        findDto.setUserId(getUserId() + 0l);
         Page<UserCollectionVo> vo = userCollectionService.selectPageUserCollection(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 }

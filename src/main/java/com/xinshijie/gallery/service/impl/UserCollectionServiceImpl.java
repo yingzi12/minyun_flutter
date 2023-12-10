@@ -3,7 +3,6 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.domain.UserAttention;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserCollectionDto;
 import com.xinshijie.gallery.mapper.UserCollectionMapper;
@@ -45,14 +44,14 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
     @Override
     public Page<UserCollectionVo> selectPageUserCollection(UserCollectionDto dto) {
         Page<UserCollectionVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserCollection(page, dto);
     }
 
@@ -62,14 +61,14 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
     @Override
     public Page<UserCollectionVo> getPageUserCollection(UserCollectionDto dto) {
         Page<UserCollectionVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserCollectionVo> qw = new QueryWrapper<>();
         return mapper.getPageUserCollection(page, qw);
     }
@@ -91,11 +90,11 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId,Long id,Integer ctype) {
-        QueryWrapper<UserCollection> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("user_id",userId);
-        queryWrapper.eq("id",id);
-        queryWrapper.eq("ctype",ctype);
+    public Integer delById(Integer userId, Long id, Integer ctype) {
+        QueryWrapper<UserCollection> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("id", id);
+        queryWrapper.eq("ctype", ctype);
 
         return mapper.delete(queryWrapper);
     }
@@ -104,11 +103,11 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
      * 根据id数据
      */
     @Override
-    public UserCollection getInfo(Integer userId,Long id,Integer ctype) {
-        QueryWrapper<UserCollection> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("user_id",userId);
-        queryWrapper.eq("id",id);
-        queryWrapper.eq("ctype",ctype);
+    public UserCollection getInfo(Integer userId, Long id, Integer ctype) {
+        QueryWrapper<UserCollection> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("id", id);
+        queryWrapper.eq("ctype", ctype);
 
         return mapper.selectOne(queryWrapper);
     }

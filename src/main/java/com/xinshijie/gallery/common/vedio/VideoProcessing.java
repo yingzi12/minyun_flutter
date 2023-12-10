@@ -31,6 +31,7 @@ public class VideoProcessing {
         process.waitFor();
         return 0;
     }
+
     private String generateRandomTimestamp(long videoDuration) {
         Random random = new Random();
         long randomSeconds = (long) (random.nextDouble() * videoDuration);
@@ -41,6 +42,7 @@ public class VideoProcessing {
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
+
     public static void main(String[] args) {
         VideoProcessing videoProcessing = new VideoProcessing();
         try {

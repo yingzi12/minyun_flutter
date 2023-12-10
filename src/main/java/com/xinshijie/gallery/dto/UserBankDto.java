@@ -2,15 +2,15 @@ package com.xinshijie.gallery.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 作者
@@ -37,7 +37,7 @@ public class UserBankDto implements Serializable {
 
     private LocalDateTime updateTime;
 
-private Long pageNum;
+    private Long pageNum;
 
-private Long pageSize;
+    private Long pageSize;
 }

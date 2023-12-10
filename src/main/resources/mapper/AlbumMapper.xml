@@ -5,61 +5,72 @@
 <mapper namespace="com.xinshijie.gallery.mapper.AlbumMapper">
 
     <resultMap id="BaseResultMap" type="com.xinshijie.gallery.dao.Album">
-            <id property="id" column="id" jdbcType="OTHER"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
-            <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="sourceWeb" column="source_web" jdbcType="VARCHAR"/>
-            <result property="hash" column="hash" jdbcType="OTHER"/>
-            <result property="countSee" column="count_see" jdbcType="OTHER"/>
+        <id property="id" column="id" jdbcType="OTHER"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="sourceWeb" column="source_web" jdbcType="VARCHAR"/>
+        <result property="hash" column="hash" jdbcType="OTHER"/>
+        <result property="countSee" column="count_see" jdbcType="OTHER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,url,title,source_web,
         `hash`,count_see
     </sql>
-    <select id="list"  resultType="com.xinshijie.gallery.dao.Album">
+    <select id="list" resultType="com.xinshijie.gallery.dao.Album">
         select * from album
         <where>
-            <if test="id != null "> and id = #{id}</if>
-            <if test="title != null "> and title LIKE CONCAT('%', #{title}, '%')</if>
-            <if test="notSource != null "> and source_web !=  #{notSource}</if>
+            <if test="id != null ">and id = #{id}</if>
+            <if test="title != null ">and title LIKE CONCAT('%', #{title}, '%')</if>
+            <if test="notSource != null ">and source_web != #{notSource}</if>
             and count_error &lt; 100
         </where>
-        <if test="order == null "> order by  create_time  desc ,count_see  desc </if>
-        <if test="order != null "> order by  count_see  desc </if>
+        <if test="order == null ">order by create_time desc ,count_see desc</if>
+        <if test="order != null ">order by count_see desc</if>
         LIMIT #{offset},#{pageSize}
     </select>
-    <select id="count"  resultType="Integer">
+    <select id="count" resultType="Integer">
         select count(1) from album
         <where>
-            <if test="id != null "> and id = #{id}</if>
-            <if test="title != null "> and title LIKE CONCAT('%', #{title}, '%')</if>
-            <if test="notSource != null "> and source_web !=  #{notSource}</if>
+            <if test="id != null ">and id = #{id}</if>
+            <if test="title != null ">and title LIKE CONCAT('%', #{title}, '%')</if>
+            <if test="notSource != null ">and source_web != #{notSource}</if>
         </where>
     </select>
 
-    <select id="getInfo"  resultType="com.xinshijie.gallery.dao.Album">
-        select * from album where id= #{id}
+    <select id="getInfo" resultType="com.xinshijie.gallery.dao.Album">
+        select *
+        from album
+        where id = #{id}
     </select>
 
-    <select id="getInfoByTitle"  resultType="com.xinshijie.gallery.dao.Album">
-        select * from album where title= #{title}
+    <select id="getInfoByTitle" resultType="com.xinshijie.gallery.dao.Album">
+        select *
+        from album
+        where title = #{title}
     </select>
-    <insert id="add"  parameterType="com.xinshijie.gallery.dao.Album">
-        INSERT INTO album (url,title,source_web, `hash`, count_see, gril, create_time,update_time, img_url, count_error, source_url ,number_photos)
-        VALUES
-        (#{dto.url}, #{dto.title},#{dto.sourceWeb},#{dto.hash}, #{dto.countSee}, #{dto.gril}, #{dto.createTime},#{dto.updateTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl}, #{dto.numberPhotos} )
+    <insert id="add" parameterType="com.xinshijie.gallery.dao.Album">
+        INSERT INTO album (url, title, source_web, `hash`, count_see, gril, create_time, update_time, img_url,
+                           count_error, source_url, number_photos)
+        VALUES (#{dto.url}, #{dto.title}, #{dto.sourceWeb}, #{dto.hash}, #{dto.countSee}, #{dto.gril},
+                #{dto.createTime}, #{dto.updateTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl},
+                #{dto.numberPhotos})
     </insert>
     <update id="updateError">
-        update  album set count_error=count_error+1  where id= #{id}
+        update album
+        set count_error=count_error + 1
+        where id = #{id}
     </update>
     <update id="updateCountSee">
-        update  album set count_see=count_see+1,update_time= #{updateTime} where id= #{id}
+        update album
+        set count_see=count_see + 1,
+            update_time= #{updateTime}
+        where id = #{id}
     </update>
     <select id="previousChapter" resultType="com.xinshijie.gallery.dao.Album">
         SELECT *
         FROM album a
-        WHERE   a.id &lt; #{id}
+        WHERE a.id &lt; #{id}
         ORDER BY id desc
         LIMIT 1
     </select>
@@ -72,19 +83,25 @@
     </select>
 
     <select id="findRandomStories" resultType="com.xinshijie.gallery.dao.Album">
-        SELECT * FROM album s WHERE s.id >= #{randomId}
+        SELECT *
+        FROM album s
+        WHERE s.id >= #{randomId}
         ORDER BY s.id ASC
         limit #{pageSize}
     </select>
     <select id="findMaxId" resultType="Integer">
-        SELECT max(id) FROM album s
+        SELECT max(id)
+        FROM album s
     </select>
     <select id="findMinId" resultType="Integer">
-        SELECT min(id) FROM album s
+        SELECT min(id)
+        FROM album s
     </select>
 
     <insert id="updateSourceUrl">
-        update album set source_url = #{dto.sourceUrl} where id=#{dto.id}
+        update album
+        set source_url = #{dto.sourceUrl}
+        where id = #{dto.id}
     </insert>
 
 </mapper>

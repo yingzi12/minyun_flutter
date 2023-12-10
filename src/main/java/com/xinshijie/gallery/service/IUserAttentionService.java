@@ -43,10 +43,10 @@ public interface IUserAttentionService extends IService<UserAttention> {
     /**
      * 删除数据
      */
-    Integer delById(Integer userId,Long id);
+    Integer delById(Integer userId, Long id);
 
     /**
      * 根据id数据
      */
-    UserAttention getInfo(Integer userId,Long id);
+    UserAttention getInfo(Integer userId, Long id);
 }

@@ -27,7 +27,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -98,6 +97,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             log.warn("上一个ayacDataThread操作尚未完成，本次调用将被忽略");
         }
     }
+
     static {
         init();
     }
@@ -213,29 +213,29 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             for (int i = pageStart; i <= pageVo.getPageTotal(); i++) {
                 String url = pageVo.getPageUrl();
                 if (pageVo.getPageSize() > 0) {
-                    if(pageVo.getPageUrl().lastIndexOf("&lt;地址&gt;")>0) {
+                    if (pageVo.getPageUrl().lastIndexOf("&lt;地址&gt;") > 0) {
                         url = pageVo.getPageUrl().replaceAll("&lt;地址&gt;", String.valueOf((i - 1) * 20));
-                    }else{
+                    } else {
                         url = pageVo.getPageUrl().replaceAll("<地址>", String.valueOf((i - 1) * 20));
                     }
                 } else {
-                    if(pageVo.getPageUrl().lastIndexOf("&lt;地址&gt;")>0) {
+                    if (pageVo.getPageUrl().lastIndexOf("&lt;地址&gt;") > 0) {
                         url = pageVo.getPageUrl().replaceAll("&lt;地址&gt;", String.valueOf(i));
-                    }else{
+                    } else {
                         url = pageVo.getPageUrl().replaceAll("<地址>", String.valueOf(i));
                     }
                 }
                 try {
                     Document doc = requestUrl(url, reptileRule, 0);
-                    if(doc==null){
-                        log.error("读取url失败：{}",url);
+                    if (doc == null) {
+                        log.error("读取url失败：{}", url);
                         break;
                     }
                     Element body = doc.body();
                     Element cont = body.select(reptileRule.getStoryPageRule()).first();
                     Elements storyList = cont.select(reptileRule.getStoryPageGroupRule());
                     if (storyList != null) {
-                        threadElment(storyList,reptileRule);
+                        threadElment(storyList, reptileRule);
                     }
                     if (i % 10 == 0) {
                         log.info("---------------++++++++++++++++++++++--------------------------");
@@ -252,13 +252,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         reptileRule.setEndTime(LocalDateTime.now());
     }
 
-    public void threadElment( Elements elementList,ReptileRule reptileRule){
+    public void threadElment(Elements elementList, ReptileRule reptileRule) {
         try {
             CountDownLatch latch = new CountDownLatch(elementList.size());
             for (Element storyElement : elementList) {
                 executorService.submit(() -> {
                     try {
-                            parseDatil(storyElement, reptileRule);
+                        parseDatil(storyElement, reptileRule);
                     } finally {
                         albumLocal.remove();
                         latch.countDown();
@@ -266,12 +266,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 });
             }
             latch.await(1, TimeUnit.HOURS); // 等待批次的所有故事处理完成
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public  void parseDatil(Element element,ReptileRule  reptileRule){
+    public void parseDatil(Element element, ReptileRule reptileRule) {
         Element hrefElement = element.select(reptileRule.getStoryPageHrefRule()).first();
         if (hrefElement != null) {
             String detailUrl = hrefElement.attr("href");
@@ -285,6 +285,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             detail(detailUrl, imgUrl, reptileRule);
         }
     }
+
     @Async
     @Override
     public void singleLocalData() {
@@ -339,10 +340,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         String detailUrl = url;
         try {
             if (StringUtils.isNotEmpty(reptileRule.getStoryUrl())) {
-                if(reptileRule.getStoryUrl().lastIndexOf("&lt;地址&gt;")>0) {
-                    detailUrl=  reptileRule.getStoryUrl().replaceAll("&lt;地址&gt;", url);
-                }else{
-                    detailUrl=  reptileRule.getStoryUrl().replaceAll("<地址>", url);
+                if (reptileRule.getStoryUrl().lastIndexOf("&lt;地址&gt;") > 0) {
+                    detailUrl = reptileRule.getStoryUrl().replaceAll("&lt;地址&gt;", url);
+                } else {
+                    detailUrl = reptileRule.getStoryUrl().replaceAll("<地址>", url);
                 }
             } else {
                 if (reptileRule.getStoryUrlType() != null) {
@@ -350,8 +351,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
             }
             Document doc = requestUrl(detailUrl, reptileRule, 0);
-            if(doc==null){
-                log.error("打开网页url失败：{}",detailUrl);
+            if (doc == null) {
+                log.error("打开网页url失败：{}", detailUrl);
                 return;
             }
             String title = extractContent(doc, reptileRule.getTitleRule());
@@ -360,7 +361,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
             Long hash = generate12DigitHash(detailUrl, title);
             Album album = albumService.getInfoBytitle(title);
-            log.info("开始导入 name:{},",title);
+            log.info("开始导入 name:{},", title);
 
             String sourceWeb = "";
             if (StringUtils.isNotEmpty(imgUrl) && imgUrl.startsWith("http")) {
@@ -398,7 +399,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 albumService.add(album);
                 album = albumService.getInfoBytitle(title);
             } else {
-                boolean ok=isImageUrlValid(album.getSourceWeb()+album.getSourceUrl(),0);
+                boolean ok = isImageUrlValid(album.getSourceWeb() + album.getSourceUrl(), 0);
                 //判断是否是同一组
                 if (!ok || !hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGril()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
                     album.setHash(hash);
@@ -433,10 +434,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
             }
 
-            Set<String> urlList=getList(album.getTitle(),album.getId());
-            int count=0;
+            Set<String> urlList = getList(album.getTitle(), album.getId());
+            int count = 0;
             if (StringUtils.isEmpty(reptileRule.getContentPageRule())) {
-                 count=count+addImageList(detailUrl, album, reptileRule,urlList);
+                count = count + addImageList(detailUrl, album, reptileRule, urlList);
             } else {
                 Element body = doc.body();
                 Element imagePageCoent = body.select(reptileRule.getContentPageRule()).first();
@@ -447,13 +448,13 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         if (StringUtils.isNotEmpty(reptileRule.getPageUrl())) {
                             pageUrl = reptileRule.getPageUrl() + pageUrl;
                         }
-                        count=count+addImageList(pageUrl, album, reptileRule,urlList);
+                        count = count + addImageList(pageUrl, album, reptileRule, urlList);
                     }
                 }
             }
             album.setNumberPhotos(count);
             albumService.updateById(album);
-            log.info("结束导入 id：{}，name:{},count:{}",album.getId(),title,count);
+            log.info("结束导入 id：{}，name:{},count:{}", album.getId(), title, count);
 
         } catch (Exception e) {
             addError(1, e.getMessage(), reptileRule.getId(), detailUrl);
@@ -463,7 +464,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     }
 
-    public int addImageList(String detailUrl, Album album, ReptileRule reptileRule,Set<String> urlList) {
+    public int addImageList(String detailUrl, Album album, ReptileRule reptileRule, Set<String> urlList) {
 
         Document doc = requestUrl(detailUrl, reptileRule, 0);
         if (doc == null) {
@@ -471,8 +472,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
         Element body = doc.body();
         Element chapterListContent = body.select(reptileRule.getChapterListRule()).first();
-        int errorCount=0;
-        int count=0;
+        int errorCount = 0;
+        int count = 0;
 
         if (chapterListContent != null) {
             Elements imageListElement = chapterListContent.select(reptileRule.getChapterGroupRule());
@@ -489,7 +490,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
                 if (StringUtils.isNotEmpty(imageUrlSource)) {
                     String imageName = imageUrlSource.substring(imageUrlSource.lastIndexOf('/') + 1);
-                    if(!urlList.contains(imageName) ) {
+                    if (!urlList.contains(imageName)) {
                         Image image = new Image();
                         image.setAid(album.getId());
                         image.setSourceUrl(imageUrlSource);
@@ -500,9 +501,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                             image.setSourceWeb(imageSourceWeb);
                             iamgeBatchInsertList.add(image);
                             count++;
-                        }else{
-                            errorCount=errorCount+1;
-                            if(errorCount>5){
+                        } else {
+                            errorCount = errorCount + 1;
+                            if (errorCount > 5) {
                                 albumService.removeById(album.getId());
                                 iamgeBatchInsertList.clear();
                                 return 0;
@@ -511,10 +512,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     }
                 }
             }
-            if(iamgeBatchInsertList.size()>0) {
+            if (iamgeBatchInsertList.size() > 0) {
                 imageService.addBatch(iamgeBatchInsertList);
-            }else {
-                count=0;
+            } else {
+                count = 0;
                 albumService.removeById(album.getId());
             }
             iamgeBatchInsertList.clear();
@@ -534,7 +535,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             if (StringUtils.isNotEmpty(reptileRule.getHost())) {
                 connection.header("Host", reptileRule.getHost());
             } else {
-                if(replyCount>1) {
+                if (replyCount > 1) {
                     URL urlPath = new URL(url);
                     // 使用getHost()方法获取主机部分
                     String host = urlPath.getHost();
@@ -546,7 +547,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         } catch (SocketTimeoutException e) {
             log.error("线程名-超时-地址：{}， url：{}", Thread.currentThread().getName(), url, e);
             requestUrl(url, reptileRule, replyCount + 1);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("线程名-地址：{}， url：{}", Thread.currentThread().getName(), url, e);
             requestUrl(url, reptileRule, replyCount + 1);
         }
@@ -678,9 +679,9 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 //            String imageLJ ="/image/"+ Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
             String path = "/image/" + Math.abs(HashUtil.apHash(name)) % 1000 + "/" + DigestUtil.md5Hex(name) + "/" + imageName;
 //            String extens = getFileExtensionFromURL(url);
-            if(imageName.split("\\.").length>1){
+            if (imageName.split("\\.").length > 1) {
                 return downloadImage(url, path, 0);
-            }else{
+            } else {
                 path = path + ".jpg";
                 return downloadImage(url, path, 0);
             }
@@ -707,7 +708,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             HttpGet request = new HttpGet(imageUrl);
             try (CloseableHttpResponse response = httpClient.execute(request)) {
                 int responseCode = response.getStatusLine().getStatusCode();
-                return responseCode == 200 ;
+                return responseCode == 200;
             }
         } catch (IOException e) {
             return isImageUrlValid(imageUrl, count + 1);
@@ -816,23 +817,23 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         return hexString.toString();
     }
 
-    public Set<String> getList(String title,Long aid){
+    public Set<String> getList(String title, Long aid) {
         List<Image> list = imageService.listAll(aid);
-        Set<String> urlist=new HashSet<>();
-        int errorCount=0;
-        int sucCount=0;
+        Set<String> urlist = new HashSet<>();
+        int errorCount = 0;
+        int sucCount = 0;
 
-        for(Image image:list){
-            if(image.getUrl().startsWith("/image")) {
+        for (Image image : list) {
+            if (image.getUrl().startsWith("/image")) {
                 String imageName = image.getSourceUrl().substring(image.getSourceUrl().lastIndexOf('/') + 1);
 //                boolean ok = ;
-                if(sucCount>6 || isImageUrlValid(image.getSourceWeb()+image.getSourceUrl(),0)) {
+                if (sucCount > 6 || isImageUrlValid(image.getSourceWeb() + image.getSourceUrl(), 0)) {
                     sucCount++;
                     urlist.add(imageName);
-                }else {
-                    errorCount=errorCount+1;
+                } else {
+                    errorCount = errorCount + 1;
                 }
-            }else{
+            } else {
                 String imageName = image.getUrl().substring(image.getUrl().lastIndexOf('/') + 1);
                 String sourceUrl = getImageUrl(title, HashUtil.apHash(image.getUrl()), image.getSourceWeb() + image.getUrl());
                 if (StringUtils.isNotEmpty(sourceUrl)) {
@@ -843,12 +844,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     urlist.add(imageName);
                     sucCount++;
 
-                }else {
-                    errorCount=errorCount+1;
+                } else {
+                    errorCount = errorCount + 1;
 
                 }
             }
-            if(errorCount>5){
+            if (errorCount > 5) {
                 imageService.delAlum(aid);
                 urlist.clear();
                 list.clear();
@@ -857,6 +858,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
         }
         list.clear();
-        return  urlist;
+        return urlist;
     }
 }

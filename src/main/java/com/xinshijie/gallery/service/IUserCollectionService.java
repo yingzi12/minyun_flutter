@@ -44,10 +44,10 @@ public interface IUserCollectionService extends IService<UserCollection> {
     /**
      * 删除数据
      */
-    Integer delById(Integer userId,Long id,Integer ctype);
+    Integer delById(Integer userId, Long id, Integer ctype);
 
     /**
      * 根据id数据
      */
-    UserCollection getInfo(Integer userId,Long id,Integer ctype);
+    UserCollection getInfo(Integer userId, Long id, Integer ctype);
 }

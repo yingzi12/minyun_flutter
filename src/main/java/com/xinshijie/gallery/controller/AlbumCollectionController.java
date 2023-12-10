@@ -33,7 +33,7 @@ public class AlbumCollectionController extends BaseController {
     private IAlbumCollectionService albumCollectionService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
@@ -44,7 +44,7 @@ public class AlbumCollectionController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
@@ -56,7 +56,7 @@ public class AlbumCollectionController extends BaseController {
 
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -68,7 +68,7 @@ public class AlbumCollectionController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -80,14 +80,14 @@ public class AlbumCollectionController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<AlbumCollectionVo>> select( AlbumCollectionDto findDto) {
+    public Result<List<AlbumCollectionVo>> select(AlbumCollectionDto findDto) {
         Page<AlbumCollectionVo> vo = albumCollectionService.selectPageAlbumCollection(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 

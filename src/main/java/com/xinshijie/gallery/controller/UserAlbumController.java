@@ -11,13 +11,11 @@ import com.xinshijie.gallery.vo.UserAlbumVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -41,27 +39,27 @@ public class UserAlbumController extends BaseController {
     private IUserAlbumService userAlbumService;
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserAlbum> getInfo(@PathVariable("id") Long id) {
-        UserAlbum vo = userAlbumService.getInfo(getUserId(),id);
+        UserAlbum vo = userAlbumService.getInfo(getUserId(), id);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserAlbumVo>> select( UserAlbumDto findDto) {
+    public Result<List<UserAlbumVo>> select(UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
         Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 }

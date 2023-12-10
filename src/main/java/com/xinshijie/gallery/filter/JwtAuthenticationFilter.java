@@ -3,7 +3,10 @@ package com.xinshijie.gallery.filter;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTHeader;
 import com.alibaba.fastjson2.JSONObject;
-import com.xinshijie.gallery.common.*;
+import com.xinshijie.gallery.common.CacheConstants;
+import com.xinshijie.gallery.common.Constants;
+import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,13 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Slf4j
 public class JwtAuthenticationFilter extends GenericFilterBean {
@@ -76,7 +73,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                             } else {
                                 sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                             }
-                        }else {
+                        } else {
                             sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                         }
                     } else {
@@ -84,7 +81,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log.error("错误，出现异常，",e);
+                    log.error("错误，出现异常，", e);
                     sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                 }
             } else {

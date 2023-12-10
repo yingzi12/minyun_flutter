@@ -3,7 +3,6 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.UserVipDto;
 import com.xinshijie.gallery.mapper.UserVipMapper;
@@ -45,14 +44,14 @@ public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVip> impl
     @Override
     public Page<UserVipVo> selectPageUserVip(UserVipDto dto) {
         Page<UserVipVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserVip(page, dto);
     }
 
@@ -62,14 +61,14 @@ public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVip> impl
     @Override
     public Page<UserVipVo> getPageUserVip(UserVipDto dto) {
         Page<UserVipVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserVipVo> qw = new QueryWrapper<>();
         return mapper.getPageUserVip(page, qw);
     }
@@ -104,9 +103,9 @@ public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVip> impl
 
     @Override
     public UserVip getInfo(Integer userId, Integer vipUserId) {
-        QueryWrapper<UserVip> qw=new QueryWrapper<>();
-        qw.eq("user_id",userId);
-        qw.eq("vip_user_id",vipUserId);
+        QueryWrapper<UserVip> qw = new QueryWrapper<>();
+        qw.eq("user_id", userId);
+        qw.eq("vip_user_id", vipUserId);
         return mapper.selectOne(qw);
     }
 

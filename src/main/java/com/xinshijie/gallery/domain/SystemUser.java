@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -24,8 +23,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @TableName("system_user")
 @Schema(description = " ")
-public class SystemUser implements Serializable{
-    private static final long serialVersionUID=1L;
+public class SystemUser implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -40,7 +39,7 @@ public class SystemUser implements Serializable{
     private String intro;
     private String directions;
     private String imgUrl;
-    private Integer  countLike;
-    private Integer       countSee;
-    private Integer       countAttention;
+    private Integer countLike;
+    private Integer countSee;
+    private Integer countAttention;
 }

@@ -3,6 +3,12 @@ package com.xinshijie.gallery.service.impl;
 import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.dao.Image;
+import com.xinshijie.gallery.dto.AlbumDto;
+import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.ILocalImageService;
+import com.xinshijie.gallery.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -19,12 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import com.xinshijie.gallery.dao.Album;
-import com.xinshijie.gallery.dao.Image;
-import com.xinshijie.gallery.dto.AlbumDto;
-import com.xinshijie.gallery.service.AlbumService;
-import com.xinshijie.gallery.service.ILocalImageService;
-import com.xinshijie.gallery.service.ImageService;
 
 import javax.imageio.ImageIO;
 import javax.net.ssl.SSLHandshakeException;
@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 @Service
@@ -59,7 +58,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
     @Autowired
     private ImageService imageService;
 
-//    private String sourceWeb="https://image.51x.uk/xinshijie";
+    //    private String sourceWeb="https://image.51x.uk/xinshijie";
 //
 //    private String sourcePaht="/data/e2";
     @Value("${image.sourceWeb}")
@@ -69,11 +68,11 @@ public class LocalImageServiceImpl implements ILocalImageService {
     private String sourcePaht;
     private ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个固定大小的线程池
 
-    private Map<String,Integer> notHostnameMap=new ConcurrentHashMap<>();
+    private Map<String, Integer> notHostnameMap = new ConcurrentHashMap<>();
 
 
     @Async
-    public void updateThread()  {
+    public void updateThread() {
         AlbumDto dto = new AlbumDto();
         dto.setPageNum(1);
         dto.setPageSize(100);
@@ -87,7 +86,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
             List<Future<?>> futures = new ArrayList<>();
 
             for (Album album : list) {
-                System.out.println("i:"+i+"  aid:"+album.getId());
+                System.out.println("i:" + i + "  aid:" + album.getId());
                 // 提交任务到线程池
                 Future<?> future = executorService.submit(() -> saveAlbum(album));
                 futures.add(future);
@@ -105,6 +104,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
         System.out.println("所有任务已完成");
     }
+
     private void waitForFutures(List<Future<?>> futures) {
         for (Future<?> future : futures) {
             try {
@@ -122,9 +122,9 @@ public class LocalImageServiceImpl implements ILocalImageService {
         if (currentAlbumIds.add(albumId)) { // Add returns true if the set did not already contain the specified element
             try {
                 semaphore.acquire();
-                log.info("下载图片到本地：{}",albumId);
+                log.info("下载图片到本地：{}", albumId);
                 saveAlbum(album);
-                log.info("下载图片到本地完成：{}",albumId);
+                log.info("下载图片到本地完成：{}", albumId);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 // Handle thread interruption
@@ -135,64 +135,64 @@ public class LocalImageServiceImpl implements ILocalImageService {
         }
     }
 
-    public  void saveAlbum(Album albumVo)  {
+    public void saveAlbum(Album albumVo) {
 
-        List<Image>  values=  imageService.listAll(albumVo.getId());
+        List<Image> values = imageService.listAll(albumVo.getId());
         albumVo.setNumberPhotos(values.size());
         updateAlbum(albumVo);
         imageService.delCfAid(albumVo.getId());
-        int count=0;
-        int error=0;
-        for(Image image:values){
+        int count = 0;
+        int error = 0;
+        for (Image image : values) {
             try {
-                if(image.getSourceUrl() ==null || !image.getSourceUrl().startsWith("/image")) {
+                if (image.getSourceUrl() == null || !image.getSourceUrl().startsWith("/image")) {
                     Path path = Paths.get(image.getUrl());
                     Path imageName = path.getFileName(); // 这将获取路径的最后一部分
-                    if(image.getUrl().startsWith("/image")) {
+                    if (image.getUrl().startsWith("/image")) {
                         updateImage(image.getId(), image.getAid(), image.getUrl());
                         count = count + 1;
-                    }else {
+                    } else {
                         String imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
-                        String destinationPath = sourcePaht  + imageLJ;
-                        String imgUrl=image.getSourceWeb() + image.getUrl();
-                        if(StringUtils.isNotEmpty(image.getSourceUrl())){
-                            imgUrl=image.getSourceUrl();
+                        String destinationPath = sourcePaht + imageLJ;
+                        String imgUrl = image.getSourceWeb() + image.getUrl();
+                        if (StringUtils.isNotEmpty(image.getSourceUrl())) {
+                            imgUrl = image.getSourceUrl();
                         }
                         boolean ok = downloadImage(imgUrl, destinationPath, 0);
                         if (ok) {
                             updateImage(image.getId(), image.getAid(), imageLJ);
                             count = count + 1;
                         } else {
-                            error=error+1;
-                            if(error>5){
-                                count=0;
+                            error = error + 1;
+                            if (error > 5) {
+                                count = 0;
                                 break;
                             }
                             //                            imageService.removeById(image.getId());
                         }
                     }
-                }else{
-                    if(!sourceWeb.equals(image.getSourceWeb())) {
+                } else {
+                    if (!sourceWeb.equals(image.getSourceWeb())) {
                         updateImage(image.getId(), image.getAid(), image.getSourceUrl());
                     }
-                    if(count<6 && !isImageUrlValid(image.getSourceWeb()+image.getSourceUrl(),0)){
-                        if(error>5){
-                            count=0;
+                    if (count < 6 && !isImageUrlValid(image.getSourceWeb() + image.getSourceUrl(), 0)) {
+                        if (error > 5) {
+                            count = 0;
                             break;
                         }
-                    }else {
+                    } else {
                         count++;
                     }
                 }
-            }catch (Exception e ){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if(count==0){
+        if (count == 0) {
             imageService.delAlum(albumVo.getId());
             albumService.removeById(albumVo.getId());
-        }else {
-            if(StringUtils.isEmpty(albumVo.getSourceUrl())){
+        } else {
+            if (StringUtils.isEmpty(albumVo.getSourceUrl())) {
                 albumVo.setSourceUrl(values.get(0).getSourceUrl());
                 albumService.updateById(albumVo);
             }
@@ -201,8 +201,8 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
     }
 
-    public  Image addImage(Long aid,String path){
-        Image image=new Image();
+    public Image addImage(Long aid, String path) {
+        Image image = new Image();
         image.setAid(aid);
         image.setUrl(path);
         image.setSourceWeb(sourceWeb);
@@ -210,8 +210,8 @@ public class LocalImageServiceImpl implements ILocalImageService {
         return image;
     }
 
-    public void updateImage(Long id,Long aid,String path){
-        Image image=new Image();
+    public void updateImage(Long id, Long aid, String path) {
+        Image image = new Image();
         image.setId(id);
         image.setAid(aid);
         image.setUrl(path);
@@ -220,20 +220,20 @@ public class LocalImageServiceImpl implements ILocalImageService {
         imageService.updateById(image);
     }
 
-    public void updateAlbum(Album albumVo){
+    public void updateAlbum(Album albumVo) {
         try {
             if (albumVo.getSourceUrl() == null || !albumVo.getSourceUrl().startsWith("/image")) {
-                if (albumVo.getSourceWeb() !=null &&  albumVo.getImgUrl()!=null) {
-                    Path imagePath=Paths.get(albumVo.getImgUrl());
-                    String imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/"+imagePath.getFileName().toString() ;
+                if (albumVo.getSourceWeb() != null && albumVo.getImgUrl() != null) {
+                    Path imagePath = Paths.get(albumVo.getImgUrl());
+                    String imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imagePath.getFileName().toString();
                     String destinationPath = sourcePaht + "" + imageLJ;
                     boolean ok = downloadImage(albumVo.getSourceWeb() + albumVo.getImgUrl(), destinationPath, 0);
                     if (ok) {
                         albumVo.setSourceUrl(imageLJ);
                         albumVo.setSourceWeb(sourceWeb);
                         albumService.updateById(albumVo);
-                    }else{
-                        if(StringUtils.isNotEmpty(albumVo.getSourceUrl()) && albumVo.getSourceUrl().startsWith("http")) {
+                    } else {
+                        if (StringUtils.isNotEmpty(albumVo.getSourceUrl()) && albumVo.getSourceUrl().startsWith("http")) {
                             Document doc = requestUrl(albumVo.getSourceUrl(), 0);
                             if (doc == null) {
                                 albumVo.setSourceWeb(sourceWeb);
@@ -265,30 +265,31 @@ public class LocalImageServiceImpl implements ILocalImageService {
                         }
                     }
                 }
-            }else{
-                if(albumVo.getSourceUrl().startsWith("/image") || !sourceWeb.equals(albumVo.getSourceWeb())) {
+            } else {
+                if (albumVo.getSourceUrl().startsWith("/image") || !sourceWeb.equals(albumVo.getSourceWeb())) {
                     albumVo.setSourceWeb(sourceWeb);
                     albumService.updateById(albumVo);
                 }
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    public  boolean downloadImage(String url, String destinationFile,int count) {
-        if(count>3){
-            log.error("同步url 下载图片，url:{}",url);
+
+    public boolean downloadImage(String url, String destinationFile, int count) {
+        if (count > 3) {
+            log.error("同步url 下载图片，url:{}", url);
             return false;
         }
-        if(StringUtils.isEmpty(url)){
+        if (StringUtils.isEmpty(url)) {
             return false;
         }
-        CloseableHttpClient httpClient =null;
-        HttpGet request=null;
+        CloseableHttpClient httpClient = null;
+        HttpGet request = null;
         try {
             httpClient = HttpClients.createDefault();
             request = new HttpGet(url);
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return false;
         }
         try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -322,13 +323,13 @@ public class LocalImageServiceImpl implements ILocalImageService {
                 }
             }
         } catch (IOException e) {
-            downloadImage(url,destinationFile,count+1);
+            downloadImage(url, destinationFile, count + 1);
         }
         return false;
     }
 
-    public void addAlum(String title,List<Path> files) throws IOException {
-        Album album=new Album();
+    public void addAlum(String title, List<Path> files) throws IOException {
+        Album album = new Album();
         album.setSourceWeb(sourceWeb);
         album.setTitle(title);
         album.setHash(HashUtil.hfHash(album.getTitle()));
@@ -336,25 +337,25 @@ public class LocalImageServiceImpl implements ILocalImageService {
         album.setCreateTime(LocalDate.now().toString());
         album.setUpdateTime(LocalDate.now().toString());
 
-        String albumImageUrl = "/image/"+Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + files.get(0).getFileName().toString();
+        String albumImageUrl = "/image/" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + files.get(0).getFileName().toString();
         album.setSourceUrl(albumImageUrl);
         album.setCountSee(RandomUtil.randomLong(0, 100));
         albumService.add(album);
         Album albumVo = albumService.getInfoBytitle(title);
-        addImageList(albumVo,files);
+        addImageList(albumVo, files);
     }
 
-    public void addImageList(Album album,List<Path> files) throws IOException {
+    public void addImageList(Album album, List<Path> files) throws IOException {
         List<Image> imageList = new ArrayList<>();
         for (Path imagePath : files) {
             String imageName = imagePath.getFileName().toString();
-            Path destinationPathFile = Paths.get(sourcePaht+"\\image\\" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "\\" + DigestUtil.md5Hex(album.getTitle()));
+            Path destinationPathFile = Paths.get(sourcePaht + "\\image\\" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "\\" + DigestUtil.md5Hex(album.getTitle()));
             if (destinationPathFile != null && !Files.exists(destinationPathFile)) {
                 // 如果目标目录不存在，则创建它
                 Files.createDirectories(destinationPathFile);
             }
-            String imageLJ = "/image/" +Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + imageName;
-            Path destinationPath = Paths.get(sourcePaht+"" + imageLJ);
+            String imageLJ = "/image/" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + imageName;
+            Path destinationPath = Paths.get(sourcePaht + "" + imageLJ);
             try {
                 // 移动文件，如果目标文件存在则替换它
                 Files.move(imagePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
@@ -368,7 +369,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
         imageService.addBatch(imageList);
     }
 
-    public Document requestUrl(String url,  int count) {
+    public Document requestUrl(String url, int count) {
         if (count > 3) {
             return null;
         }
@@ -385,21 +386,22 @@ public class LocalImageServiceImpl implements ILocalImageService {
             }
 
             return connection.get();
-        }  catch (SSLHandshakeException e) {
+        } catch (SSLHandshakeException e) {
             log.error("线程名-地址：{}， url：{} count:{}", Thread.currentThread().getName(), url, count, e);
             count = count + 1;
-            if(count<3)
+            if (count < 3)
                 requestUrl(url, count);
         } catch (Exception e) {
             log.error("线程名-地址：{}， url：{} count:{}", Thread.currentThread().getName(), url, count, e);
             count = count + 1;
-            if(count<3)
+            if (count < 3)
                 requestUrl(url, count);
 
         }
         return null;
     }
-    public String getString(Document doc,String name){
+
+    public String getString(Document doc, String name) {
         Element element = doc.selectFirst(name);
         if (element != null) {
             String content = element.attr("content");

@@ -1,9 +1,6 @@
 package com.xinshijie.gallery.common;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static com.xinshijie.gallery.common.ResultCodeEnum.SYSTEM_INNER_ERROR;
 

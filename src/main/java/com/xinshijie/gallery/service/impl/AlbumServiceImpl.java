@@ -42,7 +42,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         Album pre = albumMapper.previousChapter(id);
         Album next = albumMapper.nextChapter(id);
         Album album = albumMapper.getInfo(id);
-        if(album==null){
+        if (album == null) {
             throw new ServiceException("图集不存在！");
         }
         BeanUtils.copyProperties(album, albumVo);

@@ -16,8 +16,8 @@ import static com.google.code.kaptcha.Constants.*;
  */
 @Configuration
 public class CaptchaConfig {
-    @Bean(name = "captchaProducer")
-    public DefaultKaptcha getKaptchaBean() {
+    @Bean
+    public DefaultKaptcha captchaProducer() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
         // 是否有边框 默认为true 我们可以自己设置yes，no
@@ -43,8 +43,8 @@ public class CaptchaConfig {
         return defaultKaptcha;
     }
 
-    @Bean(name = "captchaProducerMath")
-    public DefaultKaptcha getKaptchaBeanMath() {
+    @Bean
+    public DefaultKaptcha captchaProducerMath() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
         // 是否有边框 默认为true 我们可以自己设置yes，no

@@ -1,22 +1,7 @@
 package com.xinshijie.gallery.util;
 
-import cn.hutool.core.util.IdUtil;
-
 import com.xinshijie.gallery.config.XinshijieConfig;
 import lombok.extern.slf4j.Slf4j;
-import net.coobird.thumbnailator.Thumbnails;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.Objects;
 
 /**
  * 文件上传工具类

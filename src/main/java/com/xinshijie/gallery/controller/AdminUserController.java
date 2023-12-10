@@ -28,7 +28,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 @Tag(name = " AdminUserController", description = "后台- ")
 @RestController
 @RequestMapping("/admin/systemUser")
-public class  AdminUserController  extends BaseController {
+public class AdminUserController extends BaseController {
 
     @Autowired
     private ISystemUserService systemUserService;
@@ -65,11 +65,11 @@ public class  AdminUserController  extends BaseController {
     public Result<SystemUser> edit(@RequestBody SystemUserDto userDto) {
         userDto.setId(getUserId());
         // 生成令牌
-        SystemUser systemUser= systemUserService.edit(userDto);
+        SystemUser systemUser = systemUserService.edit(userDto);
         return Result.success(systemUser);
     }
 
-//    @Log(title = "发送邮箱验证链接", businessType = BusinessType.UPDATE)
+    //    @Log(title = "发送邮箱验证链接", businessType = BusinessType.UPDATE)
     @GetMapping("/sendCheckEmail")
     public Result<String> sendCheckEmail() {
         SystemUserVo userVo = systemUserService.info(getUserId());
@@ -96,7 +96,7 @@ public class  AdminUserController  extends BaseController {
         return Result.success("成功");
     }
 
-//    @Log(title = "发送邮箱验证链接", businessType = BusinessType.UPDATE)
+    //    @Log(title = "发送邮箱验证链接", businessType = BusinessType.UPDATE)
     @GetMapping("/sendUpdateCheckEmail")
     public Result<String> sendUpdateCheckEmail(@RequestParam("email") String email) {
         boolean isEmail = Validator.isEmail(email);
@@ -113,7 +113,7 @@ public class  AdminUserController  extends BaseController {
             Digester md5 = new Digester(DigestAlgorithm.MD5);
             // 5393554e94bf0eb6436f240a4fd71282
             String digestHex = md5.digestHex("安全邮箱绑定" + email);
-            redisCache.setCacheString(CacheConstants.EMAIL + simpleUUID, email + ":" + digestHex +":" + getUserId(), Constants.EMAIL_EXPIRATION, TimeUnit.MINUTES);
+            redisCache.setCacheString(CacheConstants.EMAIL + simpleUUID, email + ":" + digestHex + ":" + getUserId(), Constants.EMAIL_EXPIRATION, TimeUnit.MINUTES);
             redisCache.setCacheString(CacheConstants.EMAIL + email, simpleUUID, Constants.EMAIL_EXPIRATION, TimeUnit.MINUTES);
 
             String content = "<h1>尊敬的" + getUserName() + ":<h1>\n" +
@@ -130,7 +130,7 @@ public class  AdminUserController  extends BaseController {
     @PostMapping("/upload")
     public Result<Boolean> handleFileUpload(@RequestParam("file") MultipartFile file) {
         log.info("system update");
-        Boolean ok = systemUserService.saveUploadedFiles(getUserId(),file);
+        Boolean ok = systemUserService.saveUploadedFiles(getUserId(), file);
         return Result.success(ok);
     }
 }

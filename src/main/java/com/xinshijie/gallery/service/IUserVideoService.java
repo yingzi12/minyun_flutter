@@ -50,9 +50,9 @@ public interface IUserVideoService extends IService<UserVideo> {
     /**
      * 删除数据
      */
-    Integer  delById(Integer userId,Long id);
+    Integer delById(Integer userId, Long id);
 
-    Integer  updateIsFree(Integer userId,Long id,Integer isFree);
+    Integer updateIsFree(Integer userId, Long id, Integer isFree);
 
     /**
      * 根据id数据
@@ -61,5 +61,5 @@ public interface IUserVideoService extends IService<UserVideo> {
 
     String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file);
 
-    String updateUploadedFiles(Integer userId, Integer aid, Integer isFree,Long size,String md5,String sourcePath);
+    String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath,String fileName);
 }

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.UserBuyAlbum;
-import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.UserBuyAlbumDto;
 import com.xinshijie.gallery.mapper.UserBuyAlbumMapper;
 import com.xinshijie.gallery.service.IUserBuyAlbumService;
@@ -45,14 +44,14 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     @Override
     public Page<UserBuyAlbumVo> selectPageUserBuyAlbum(UserBuyAlbumDto dto) {
         Page<UserBuyAlbumVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserBuyAlbum(page, dto);
     }
 
@@ -62,14 +61,14 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     @Override
     public Page<UserBuyAlbumVo> getPageUserBuyAlbum(UserBuyAlbumDto dto) {
         Page<UserBuyAlbumVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserBuyAlbumVo> qw = new QueryWrapper<>();
         return mapper.getPageUserBuyAlbum(page, qw);
     }
@@ -106,9 +105,9 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
 
     @Override
     public UserBuyAlbum getInfo(Integer userId, Integer aid) {
-        QueryWrapper<UserBuyAlbum> qw=new QueryWrapper<>();
-        qw.eq("user_id",userId);
-        qw.eq("aid",aid);
+        QueryWrapper<UserBuyAlbum> qw = new QueryWrapper<>();
+        qw.eq("user_id", userId);
+        qw.eq("aid", aid);
         return mapper.selectOne(qw);
     }
 }

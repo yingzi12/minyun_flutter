@@ -44,14 +44,14 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     @Override
     public Page<UserAttentionVo> selectPageUserAttention(UserAttentionDto dto) {
         Page<UserAttentionVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserAttention(page, dto);
     }
 
@@ -61,14 +61,14 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     @Override
     public Page<UserAttentionVo> getPageUserAttention(UserAttentionDto dto) {
         Page<UserAttentionVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserAttentionVo> qw = new QueryWrapper<>();
         return mapper.getPageUserAttention(page, qw);
     }
@@ -89,10 +89,10 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId,Long id) {
-        QueryWrapper<UserAttention> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("user_id",userId);
-        queryWrapper.eq("id",id);
+    public Integer delById(Integer userId, Long id) {
+        QueryWrapper<UserAttention> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("id", id);
 
         return mapper.delete(queryWrapper);
     }
@@ -101,10 +101,10 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
      * 根据id数据
      */
     @Override
-    public UserAttention getInfo(Integer userId,Long id) {
-        QueryWrapper<UserAttention> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("user_id",userId);
-        queryWrapper.eq("id",id);
+    public UserAttention getInfo(Integer userId, Long id) {
+        QueryWrapper<UserAttention> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("id", id);
 
         return mapper.selectOne(queryWrapper);
     }

@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.UserBank;
+import com.xinshijie.gallery.dto.UserBankDto;
 import com.xinshijie.gallery.mapper.UserBankMapper;
 import com.xinshijie.gallery.service.IUserBankService;
-import com.xinshijie.gallery.dto.UserBankDto;
 import com.xinshijie.gallery.vo.UserBankVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- *   服务实现类
+ * 服务实现类
  * </p>
  *
  * @author zx
@@ -44,14 +44,14 @@ public class UserBankServiceImpl extends ServiceImpl<UserBankMapper, UserBank> i
     @Override
     public Page<UserBankVo> selectPageUserBank(UserBankDto dto) {
         Page<UserBankVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserBank(page, dto);
     }
 
@@ -61,14 +61,14 @@ public class UserBankServiceImpl extends ServiceImpl<UserBankMapper, UserBank> i
     @Override
     public Page<UserBankVo> getPageUserBank(UserBankDto dto) {
         Page<UserBankVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserBankVo> qw = new QueryWrapper<>();
         return mapper.getPageUserBank(page, qw);
     }

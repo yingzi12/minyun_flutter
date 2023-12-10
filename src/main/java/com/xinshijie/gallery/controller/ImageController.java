@@ -4,13 +4,12 @@ import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.dao.Image;
 import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.service.ImageService;
-import com.xinshijie.gallery.vo.ResuImageVo;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -26,7 +25,7 @@ public class ImageController {
             dto.setPageNum(1);
         }
         dto.setPageSize(6);
-        dto.setOffset(dto.getPageSize()*(dto.getPageNum()-1));
+        dto.setOffset(dto.getPageSize() * (dto.getPageNum() - 1));
         Integer total = imageService.count(dto);
 
         List<Image> list = imageService.list(dto);

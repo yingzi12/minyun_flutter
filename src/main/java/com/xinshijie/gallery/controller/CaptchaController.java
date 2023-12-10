@@ -6,7 +6,6 @@ import com.google.code.kaptcha.Producer;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.vo.CaptchaVo;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
@@ -38,13 +37,13 @@ public class CaptchaController {
      * 生成验证码
      */
     @GetMapping("/captchaImage")
-    public CaptchaVo getCode()  {
+    public CaptchaVo getCode() {
         CaptchaVo ajax = new CaptchaVo();
         // 保存验证码信息
         String uuid = IdUtil.fastUUID();
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
 
-        String  code = captchaProducer.createText();
+        String code = captchaProducer.createText();
         BufferedImage image = captchaProducer.createImage(code);
         redisCache.setCacheString(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         // 转换流信息写出

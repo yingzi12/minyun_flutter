@@ -26,11 +26,16 @@ public class AllVideo implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private String source_web;
-    private String source_url;
+    private String sourceWeb;
+    private String sourceUrl;
     private String md5;
     private Long size;
     private String title;
+    /**
+     * 缓存地址
+     */
+    private String url;
+    private Integer status;
 
 
 }

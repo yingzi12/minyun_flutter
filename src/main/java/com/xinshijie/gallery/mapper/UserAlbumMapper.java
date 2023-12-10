@@ -48,12 +48,12 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
     /**
      * 删除数据
      */
-    Integer delById(Integer userId,Long id);
+    Integer delById(Integer userId, Long id);
 
     /**
      * 根据id数据
      */
-    UserAlbumVo getInfo(Integer userId,Long id);
+    UserAlbumVo getInfo(Integer userId, Long id);
 
     Integer updateCountImage(Integer id);
 

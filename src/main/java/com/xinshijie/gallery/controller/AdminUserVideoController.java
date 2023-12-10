@@ -3,12 +3,13 @@ package com.xinshijie.gallery.controller;
 import cn.hutool.core.util.HashUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
+import com.xinshijie.gallery.common.Constants;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
+import com.xinshijie.gallery.mq.MessageProducer;
 import com.xinshijie.gallery.service.IUserVideoService;
-import com.xinshijie.gallery.vo.ResuImageVo;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,6 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -49,9 +49,13 @@ public class AdminUserVideoController extends BaseController {
     @Autowired
     private IUserVideoService userVideoService;
 
-    private String videoPath;
+    //视频转换前的缓存目录
+//    private String videoHcPath;
+
+
+
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -64,25 +68,25 @@ public class AdminUserVideoController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userVideoService.delById(getUserId(),id);
+        Integer vo = userVideoService.delById(getUserId(), id);
         return Result.success(vo);
     }
 
     @GetMapping(value = "/updateIsFree")
-    public Result<Integer> updateIsFree(@RequestParam("id") Long id,@RequestParam("isFree") Integer isFree) {
-        Integer vo = userVideoService.updateIsFree(getUserId(),id,isFree);
+    public Result<Integer> updateIsFree(@RequestParam("id") Long id, @RequestParam("isFree") Integer isFree) {
+        Integer vo = userVideoService.updateIsFree(getUserId(), id, isFree);
         return Result.success(vo);
     }
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -95,26 +99,27 @@ public class AdminUserVideoController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserVideoVo>> select( UserVideoDto findDto) {
+    public Result<List<UserVideoVo>> select(UserVideoDto findDto) {
         findDto.setUserId(getUserId());
         Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
     @PostMapping("/upload")
-    public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile,@RequestParam("aid")Integer aid,@RequestParam("isFree")Integer isFree) {
-        log.info("upload aid:"+aid);
-        String url = userVideoService.saveUploadedFiles(getUserId(),aid,isFree,uploadfile);
+    public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        log.info("upload aid:" + aid);
+        String url = userVideoService.saveUploadedFiles(getUserId(), aid, isFree, uploadfile);
         return Result.success(url);
     }
 
     /**
      * 分段上传
+     *
      * @param file
      * @param chunkNumber
      * @param totalChunks
@@ -124,19 +129,22 @@ public class AdminUserVideoController extends BaseController {
      */
     @PostMapping("/uploadSection")
     public Result<Boolean> handleFileSectionUpload(@RequestParam("file") MultipartFile file,
-                                            @RequestParam("chunkNumber") int chunkNumber,
-                                            @RequestParam("totalChunks") int totalChunks,
-                                            @RequestParam("identifier") String identifier,
-                                                   @RequestParam("aid") Integer aid) {
+                                                   @RequestParam("chunkNumber") int chunkNumber,
+                                                   @RequestParam("totalChunks") int totalChunks,
+                                                   @RequestParam("identifier") String identifier,
+                                                   @RequestParam("aid") Integer aid,
+                                                   @RequestParam("day") String day) {
         try {
             String[] nameArr = identifier.split("\\.");
-            String hz=nameArr[nameArr.length-1];
-            String idHash= HashUtil.hfHash(identifier)+"."+hz;
-            log.info("upload  chunkNumber:{}  totalChunks:{} identifier:{},idHash:{} filename:{}",chunkNumber,totalChunks,identifier,idHash,file.getOriginalFilename());
-            String chunkFileName = idHash + "-" + chunkNumber;
-            Path chunkFile = Paths.get(videoPath + LocalDate.now()+"/"+ chunkFileName);
+            String hz = nameArr[nameArr.length - 1];
+            String hashFileName = HashUtil.hfHash(identifier) + "." + hz;
+            //本地缓存地址
+            String soruceSavePath = day;
+            log.info("upload  chunkNumber:{}  totalChunks:{} identifier:{},idHash:{} filename:{}", chunkNumber, totalChunks, identifier, hashFileName, file.getOriginalFilename());
+            String chunkFileName = hashFileName + "-" + chunkNumber;
+            Path chunkFile = Paths.get(Constants.videoHcPath + soruceSavePath + "/" + chunkFileName);
 
-            File destinationFile = new File(videoPath +LocalDate.now()+"/"+ chunkFileName);
+            File destinationFile = new File(Constants.videoHcPath + soruceSavePath + "/" + chunkFileName);
             File parentDir = destinationFile.getParentFile();
             // 如果父目录不存在，尝试创建它
             if (parentDir != null && !parentDir.exists()) {
@@ -150,12 +158,12 @@ public class AdminUserVideoController extends BaseController {
             Files.move(chunkFile, chunkFile.resolveSibling("uploaded_" + chunkFileName));
 
             // Check if all chunks have been uploaded
-            if (allChunksUploaded(idHash, totalChunks)) {
-                log.info("All chunks uploaded, starting to merge file: " + idHash);
-                String md5= mergeFile(idHash, totalChunks);
-                //
-                String soruceSavePath="";
-                userVideoService.updateUploadedFiles(getUserId(),aid,1,0L,md5,soruceSavePath);
+            if (allChunksUploaded(day,hashFileName, totalChunks)) {
+                log.info("All chunks uploaded, starting to merge file: " + hashFileName);
+
+                String md5 = mergeFile(soruceSavePath,hashFileName, totalChunks);
+
+                userVideoService.updateUploadedFiles(getUserId(), aid, 1, 0L, md5, soruceSavePath, hashFileName);
             }
         } catch (Exception ex) {
             log.error("Error in file upload: " + identifier, ex);
@@ -164,9 +172,9 @@ public class AdminUserVideoController extends BaseController {
         return Result.success(true);
     }
 
-    private boolean allChunksUploaded(String idHash, int totalChunks) {
+    private boolean allChunksUploaded(String day,String idHash, int totalChunks) {
         for (int i = 0; i < totalChunks; i++) {
-            Path chunkFile = Paths.get(videoPath +LocalDate.now()+"/"+ "uploaded_" + idHash + "-" + i);
+            Path chunkFile = Paths.get(Constants.videoHcPath + day + "/" + "uploaded_" + idHash + "-" + i);
             if (!Files.exists(chunkFile)) {
                 log.info("Missing chunk: " + chunkFile.toString());
                 return false;
@@ -177,8 +185,10 @@ public class AdminUserVideoController extends BaseController {
 
     @GetMapping("/check")
     public Result<String> checkChunkExists(@RequestParam("identifier") String identifier,
-                                           @RequestParam("chunkNumber") int chunkNumber) {
-        Path chunkFile = Paths.get(videoPath +LocalDate.now()+"/"+ "uploaded_" + identifier + "-" + chunkNumber);
+                                           @RequestParam("chunkNumber") int chunkNumber,
+                                           @RequestParam("day") String day
+                                           ) {
+        Path chunkFile = Paths.get(Constants.videoHcPath +day+ "/" + "uploaded_" + identifier + "-" + chunkNumber);
         if (Files.exists(chunkFile)) {
             return Result.success(ResultCodeEnum.SUCCESS);
         } else {
@@ -202,14 +212,14 @@ public class AdminUserVideoController extends BaseController {
     }
 
     //合并文件，同时返回文件的hash值
-    private String mergeFile(String idHash, int totalChunks) throws IOException, NoSuchAlgorithmException {
-        Path fileOutput = Paths.get(videoPath +LocalDate.now()+"/"+ idHash);
+    private String mergeFile(String soruceSavePath,String hashFileName, int totalChunks) throws IOException, NoSuchAlgorithmException {
+        Path fileOutput = Paths.get(Constants.videoHcPath + soruceSavePath + "/" + hashFileName);
         MessageDigest md = MessageDigest.getInstance("MD5");
         long fileSize = 0;
 
         try (OutputStream mergeFile = new BufferedOutputStream(Files.newOutputStream(fileOutput, StandardOpenOption.CREATE))) {
             for (int i = 0; i < totalChunks; i++) {
-                Path chunkFile = Paths.get(videoPath +LocalDate.now()+"/"+ "uploaded_" + idHash + "-" + i);
+                Path chunkFile = Paths.get(Constants.videoHcPath +soruceSavePath + "/" + "uploaded_" + hashFileName + "-" + i);
                 byte[] buffer = new byte[4096];
                 int len;
                 try (InputStream is = Files.newInputStream(chunkFile)) {
@@ -224,10 +234,10 @@ public class AdminUserVideoController extends BaseController {
 
         // 计算简化的哈希
         try (RandomAccessFile file = new RandomAccessFile(fileOutput.toFile(), "r")) {
-            long[] samplePoints = new long[] { 0, fileSize / 2, fileSize - Math.min(fileSize, 4096) };
+            long[] samplePoints = new long[]{0, fileSize / 2, fileSize - Math.min(fileSize, 4096)};
             for (long point : samplePoints) {
                 file.seek(point);
-                byte[] bytes = new byte[Math.min((int)(fileSize - point), 4096)];
+                byte[] bytes = new byte[Math.min((int) (fileSize - point), 4096)];
                 int readSize = file.read(bytes);
                 md.update(bytes, 0, readSize);
             }

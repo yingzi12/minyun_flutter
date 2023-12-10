@@ -3,125 +3,124 @@
 <mapper namespace="com.xinshijie.gallery.mapper.UserSettingVipMapper">
 
     <sql id="selectUserSettingVip">
-        select
-                  id,
-                user_id,
-                user_name,
-                create_time,
-                rank,
-                update_time,
-                price,
-                intro,
-                time_long,
-                time_type,
-                count_buy,
-                introduce,
-                title
+        select id,
+               user_id,
+               user_name,
+               create_time,
+               rank,
+               update_time,
+               price,
+               intro,
+               time_long,
+               time_type,
+               count_buy,
+               introduce,
+               title
         from user_setting_vip
     </sql>
 
-    <select id="selectListUserSettingVip" parameterType="com.xinshijie.gallery.dto.UserSettingVipDto" resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
+    <select id="selectListUserSettingVip" parameterType="com.xinshijie.gallery.dto.UserSettingVipDto"
+            resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
         <include refid="selectUserSettingVip"/>
         <where>
-                    <if test="id !=null ">and id= #{id}</if>
-                    <if test="userId !=null ">and user_id= #{userId}</if>
-                    <if test="userName !=null ">and user_name= #{userName}</if>
-                    <if test="createTime !=null ">and create_time= #{createTime}</if>
-                    <if test="rank !=null ">and rank= #{rank}</if>
-                    <if test="updateTime !=null ">and update_time= #{updateTime}</if>
-                    <if test="price !=null ">and price= #{price}</if>
-                    <if test="intro !=null ">and intro= #{intro}</if>
-                    <if test="timeLong !=null ">and time_long= #{timeLong}</if>
-                    <if test="timeType !=null ">and time_type= #{timeType}</if>
-                    <if test="countBuy !=null ">and count_buy= #{countBuy}</if>
-                    <if test="introduce !=null ">and introduce= #{introduce}</if>
-                    <if test="title !=null ">and title= #{title}</if>
+            <if test="id !=null ">and id= #{id}</if>
+            <if test="userId !=null ">and user_id= #{userId}</if>
+            <if test="userName !=null ">and user_name= #{userName}</if>
+            <if test="createTime !=null ">and create_time= #{createTime}</if>
+            <if test="rank !=null ">and rank= #{rank}</if>
+            <if test="updateTime !=null ">and update_time= #{updateTime}</if>
+            <if test="price !=null ">and price= #{price}</if>
+            <if test="intro !=null ">and intro= #{intro}</if>
+            <if test="timeLong !=null ">and time_long= #{timeLong}</if>
+            <if test="timeType !=null ">and time_type= #{timeType}</if>
+            <if test="countBuy !=null ">and count_buy= #{countBuy}</if>
+            <if test="introduce !=null ">and introduce= #{introduce}</if>
+            <if test="title !=null ">and title= #{title}</if>
         </where>
     </select>
 
-    <select id="selectPageUserSettingVip"  resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
+    <select id="selectPageUserSettingVip" resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
         <include refid="selectUserSettingVip"/>
         <where>
-                    <if test="dto.id !=null ">and id= #{dto.id}</if>
-                    <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
-                    <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
-                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-                    <if test="dto.rank !=null ">and rank= #{dto.rank}</if>
-                    <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
-                    <if test="dto.price !=null ">and price= #{dto.price}</if>
-                    <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
-                    <if test="dto.timeLong !=null ">and time_long= #{dto.timeLong}</if>
-                    <if test="dto.timeType !=null ">and time_type= #{dto.timeType}</if>
-                    <if test="dto.countBuy !=null ">and count_buy= #{dto.countBuy}</if>
-                    <if test="dto.introduce !=null ">and introduce= #{dto.introduce}</if>
-                    <if test="dto.title !=null ">and title= #{dto.title}</if>
+            <if test="dto.id !=null ">and id= #{dto.id}</if>
+            <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
+            <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
+            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+            <if test="dto.rank !=null ">and rank= #{dto.rank}</if>
+            <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
+            <if test="dto.price !=null ">and price= #{dto.price}</if>
+            <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
+            <if test="dto.timeLong !=null ">and time_long= #{dto.timeLong}</if>
+            <if test="dto.timeType !=null ">and time_type= #{dto.timeType}</if>
+            <if test="dto.countBuy !=null ">and count_buy= #{dto.countBuy}</if>
+            <if test="dto.introduce !=null ">and introduce= #{dto.introduce}</if>
+            <if test="dto.title !=null ">and title= #{dto.title}</if>
         </where>
     </select>
 
-    <select id="getPageUserSettingVip"  resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
-        <include refid="selectUserSettingVip"/> ${ew.customSqlSegment}
+    <select id="getPageUserSettingVip" resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
+        <include refid="selectUserSettingVip"/>
+        ${ew.customSqlSegment}
     </select>
 
-    <insert id="add"  >
-        insert into user_setting_vip (
-                id,
-                user_id,
-                user_name,
-                create_time,
-                rank,
-                update_time,
-                price,
-                intro,
-                time_long,
-                time_type,
-                count_buy,
-                introduce,
-                title
-          )
-        values
-            (
-                    #{ id },
-                    #{ userId },
-                    #{ userName },
-                    #{ createTime },
-                    #{ rank },
-                    #{ updateTime },
-                    #{ price },
-                    #{ intro },
-                    #{ timeLong },
-                    #{ timeType },
-                    #{ countBuy },
-                    #{ introduce },
-                    #{ title }
-       )
+    <insert id="add">
+        insert into user_setting_vip (id,
+                                      user_id,
+                                      user_name,
+                                      create_time,
+                                      rank,
+                                      update_time,
+                                      price,
+                                      intro,
+                                      time_long,
+                                      time_type,
+                                      count_buy,
+                                      introduce,
+                                      title)
+        values (#{ id },
+                #{ userId },
+                #{ userName },
+                #{ createTime },
+                #{ rank },
+                #{ updateTime },
+                #{ price },
+                #{ intro },
+                #{ timeLong },
+                #{ timeType },
+                #{ countBuy },
+                #{ introduce },
+                #{ title })
     </insert>
 
-    <update id="edit"  >
-        update  user_setting_vip
+    <update id="edit">
+        update user_setting_vip
         <trim prefix="SET" suffixOverrides=",">
-                    <if test="id !=null ">  id= #{id},</if>
-                    <if test="userId !=null ">  user_id= #{userId},</if>
-                    <if test="userName !=null ">  user_name= #{userName},</if>
-                    <if test="createTime !=null ">  create_time= #{createTime},</if>
-                    <if test="rank !=null ">  rank= #{rank},</if>
-                    <if test="updateTime !=null ">  update_time= #{updateTime},</if>
-                    <if test="price !=null ">  price= #{price},</if>
-                    <if test="intro !=null ">  intro= #{intro},</if>
-                    <if test="timeLong !=null ">  time_long= #{timeLong},</if>
-                    <if test="timeType !=null ">  time_type= #{timeType},</if>
-                    <if test="countBuy !=null ">  count_buy= #{countBuy},</if>
-                    <if test="introduce !=null ">  introduce= #{introduce},</if>
-                    <if test="title !=null ">  title= #{title},</if>
+            <if test="id !=null ">id= #{id},</if>
+            <if test="userId !=null ">user_id= #{userId},</if>
+            <if test="userName !=null ">user_name= #{userName},</if>
+            <if test="createTime !=null ">create_time= #{createTime},</if>
+            <if test="rank !=null ">rank= #{rank},</if>
+            <if test="updateTime !=null ">update_time= #{updateTime},</if>
+            <if test="price !=null ">price= #{price},</if>
+            <if test="intro !=null ">intro= #{intro},</if>
+            <if test="timeLong !=null ">time_long= #{timeLong},</if>
+            <if test="timeType !=null ">time_type= #{timeType},</if>
+            <if test="countBuy !=null ">count_buy= #{countBuy},</if>
+            <if test="introduce !=null ">introduce= #{introduce},</if>
+            <if test="title !=null ">title= #{title},</if>
         </trim>
-        where   id=#{id}
+        where id=#{id}
     </update>
 
-    <delete id="delById"  >
-        delete FROM  user_setting_vip where  id = #{id}
+    <delete id="delById">
+        delete
+        FROM user_setting_vip
+        where id = #{id}
     </delete>
 
-    <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
-        <include refid="selectUserSettingVip"/> where  id = #{id}
+    <select id="getInfo" resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
+        <include refid="selectUserSettingVip"/>
+        where id = #{id}
     </select>
 
 </mapper>

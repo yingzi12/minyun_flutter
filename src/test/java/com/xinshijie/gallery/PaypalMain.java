@@ -12,7 +12,10 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Scanner;
 
 class PaypalMain {
 
@@ -21,36 +24,37 @@ class PaypalMain {
     private static final String PAYPAL_API_BASE = "https://api-m.sandbox.paypal.com";
 
     public static void main(String[] args) throws IOException {
-        String token="";
+        String token = "";
         try {
             String accessToken = generateAccessToken();
             System.out.println("Access Token: " + accessToken);
-            JSONObject jsonObject=JSONObject.parseObject(accessToken);
+            JSONObject jsonObject = JSONObject.parseObject(accessToken);
             System.out.println("Access Token: " + jsonObject.get("access_token"));
-            token=jsonObject.get("access_token").toString();
+            token = jsonObject.get("access_token").toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        PayOrderDto dto=new PayOrderDto();
+        PayOrderDto dto = new PayOrderDto();
         dto.setIntent("CAPTURE");
         AmountDto amount = new AmountDto();
-        amount.setValue(0.3+"");
+        amount.setValue(0.3 + "");
         PurchaseUnitDto purchaseUnit = new PurchaseUnitDto();
         purchaseUnit.setAmount(amount);
         purchaseUnit.setReferenceId(IdUtil.fastUUID());
         purchaseUnit.setCustomId("user_id");
         purchaseUnit.setDescription("这是一个说明");
-        List<PurchaseUnitDto> list=new ArrayList<>();
+        List<PurchaseUnitDto> list = new ArrayList<>();
         list.add(purchaseUnit);
         dto.setPurchase_units(list);
 //        String requstId= IdUtil.getSnowflakeNextId()+"";
-        String requstId="1JG72609XE641194A";
-        createOrder(requstId,token,dto);
+        String requstId = "1JG72609XE641194A";
+        createOrder(requstId, token, dto);
     }
 
     /**
      * 获取token
+     *
      * @return
      * @throws Exception
      */
@@ -79,16 +83,17 @@ class PaypalMain {
 
     /**
      * 确认订单
+     *
      * @param token
      * @param orderId
      * @throws IOException
      */
-    public static void confirmOrder(String token,String orderId) throws IOException {
-        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/"+orderId+"/confirm-payment-source");
+    public static void confirmOrder(String token, String orderId) throws IOException {
+        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/confirm-payment-source");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
 
-        httpConn.setRequestProperty("Authorization", "Bearer "+token);
+        httpConn.setRequestProperty("Authorization", "Bearer " + token);
 
         httpConn.setDoOutput(true);
         OutputStreamWriter writer = new OutputStreamWriter(httpConn.getOutputStream());
@@ -107,10 +112,11 @@ class PaypalMain {
 
     /**
      * 创建订单
+     *
      * @param token
      * @throws IOException
      */
-    public static void createOrder(String requstId,String token,PayOrderDto orderDto) throws IOException {
+    public static void createOrder(String requstId, String token, PayOrderDto orderDto) throws IOException {
         //请求id,唯一
         URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
@@ -118,7 +124,7 @@ class PaypalMain {
 
         httpConn.setRequestProperty("Content-Type", "application/json");
         httpConn.setRequestProperty("PayPal-Request-Id", requstId);
-        httpConn.setRequestProperty("Authorization", "Bearer "+token);
+        httpConn.setRequestProperty("Authorization", "Bearer " + token);
 
         httpConn.setDoOutput(true);
         OutputStreamWriter writer = new OutputStreamWriter(httpConn.getOutputStream());
@@ -133,23 +139,24 @@ class PaypalMain {
         Scanner s = new Scanner(responseStream).useDelimiter("\\A");
         String response = s.hasNext() ? s.next() : "";
         System.out.println(response);
-        PayOrderVo payOrderVo=JSONObject.parseObject(response,PayOrderVo.class);
+        PayOrderVo payOrderVo = JSONObject.parseObject(response, PayOrderVo.class);
         System.out.println(JSONObject.toJSONString(payOrderVo));
     }
 
     /**
      * 授权订单付款
+     *
      * @param token
      * @param orderId
      * @throws IOException
      */
-    public static void checkoutOrdersAuthorize(String token,String orderId) throws IOException {
-        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/"+orderId+"/authorize");
+    public static void checkoutOrdersAuthorize(String token, String orderId) throws IOException {
+        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/authorize");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
 
         httpConn.setRequestProperty("PayPal-Request-Id", "7b92603e-77ed-4896-8e78-5dea2050476a");
-        httpConn.setRequestProperty("Authorization", "Bearer "+token);
+        httpConn.setRequestProperty("Authorization", "Bearer " + token);
 
         InputStream responseStream = httpConn.getResponseCode() / 100 == 2
                 ? httpConn.getInputStream()
@@ -159,13 +166,13 @@ class PaypalMain {
         System.out.println(response);
     }
 
-    public static void checkoutOrdersCapture(String token,String orderId) throws IOException {
-        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/"+orderId+"/capture");
+    public static void checkoutOrdersCapture(String token, String orderId) throws IOException {
+        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/capture");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
 
         httpConn.setRequestProperty("PayPal-Request-Id", "7b92603e-77ed-4896-8e78-5dea2050476a");
-        httpConn.setRequestProperty("Authorization", "Bearer "+token);
+        httpConn.setRequestProperty("Authorization", "Bearer " + token);
 
         InputStream responseStream = httpConn.getResponseCode() / 100 == 2
                 ? httpConn.getInputStream()
@@ -177,16 +184,17 @@ class PaypalMain {
 
     /**
      * 获取订单详细
+     *
      * @param token
      * @param orderId
      * @throws IOException
      */
-    public static void getDetail(String token,String orderId) throws IOException {
-        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/"+orderId);
+    public static void getDetail(String token, String orderId) throws IOException {
+        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("GET");
 
-        httpConn.setRequestProperty("Authorization", "Bearer "+token);
+        httpConn.setRequestProperty("Authorization", "Bearer " + token);
 
         InputStream responseStream = httpConn.getResponseCode() / 100 == 2
                 ? httpConn.getInputStream()

@@ -26,31 +26,32 @@ public class GlobalExceptionHandler {
     public Result handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                                       HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',不支持'{}'请求", requestURI,  e.getMessage(),e);
+        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMessage(), e);
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
     }
 
     @ExceptionHandler(NumberFormatException.class)
     public Result handNumberFormatException(NumberFormatException e,
-                                                      HttpServletRequest request) {
+                                            HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',参数错误'{}'请求", requestURI,  e.getMessage(),e);
+        log.error("请求地址'{}',参数错误'{}'请求", requestURI, e.getMessage(), e);
         return Result.error(ResultCodeEnum.PARAMS_IS_INVALID);
     }
 
     @ExceptionHandler(UncategorizedSQLException.class)
     public Result handSQLSyntaxErrorException(UncategorizedSQLException e,
-                                            HttpServletRequest request) {
+                                              HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',系统内部错误'{}'请求", requestURI, e.getMessage(),e);
+        log.error("请求地址'{}',系统内部错误'{}'请求", requestURI, e.getMessage(), e);
         return Result.error(ResultCodeEnum.INTERFACE_INNER_INVOKE_ERROR);
     }
+
     /**
      * 业务异常
      */
     @ExceptionHandler(ServiceException.class)
     public Result handleServiceException(ServiceException e, HttpServletRequest request) {
-        log.error(" 业务异常,系统内部错误'{}'请求", e.getMessage(),e);
+        log.error(" 业务异常,系统内部错误'{}'请求", e.getMessage(), e);
         Integer code = e.getCode();
         return code != null ? Result.error(code, e.getMessage()) : Result.error(e.getCode(), e.getMessage());
     }
@@ -61,23 +62,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public Result handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}', {}发生未知异常.", requestURI,  e.getMessage(),e);
+        log.error("请求地址'{}', {}发生未知异常.", requestURI, e.getMessage(), e);
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public Result handleException(NullPointerException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',{} 发生系统异常.", requestURI,  e.getMessage(),e);
+        log.error("请求地址'{}',{} 发生系统异常.", requestURI, e.getMessage(), e);
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
     }
+
     /**
      * 系统异常
      */
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("系统异常 请求地址'{}',{}发生系统异常.", requestURI,  e.getMessage(),e);
+        log.error("系统异常 请求地址'{}',{}发生系统异常.", requestURI, e.getMessage(), e);
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
     }
 
@@ -88,7 +90,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public Result handleBindException(BindException e) {
         String message = e.getAllErrors().get(0).getDefaultMessage();
-        log.error("自定义验证异常'{}',发生系统异常.",  message,e);
+        log.error("自定义验证异常'{}',发生系统异常.", message, e);
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
     }
 
@@ -99,7 +101,7 @@ public class GlobalExceptionHandler {
     public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 //        log.error(e.getMessage(), e);
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        log.error("自定义验证异常'{}',发生系统异常.",message,e);
+        log.error("自定义验证异常'{}',发生系统异常.", message, e);
         return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
     }
 

@@ -14,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,24 +38,24 @@ public class AdminUserImageController extends BaseController {
     private IUserImageService userImageService;
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
-        Integer vo = userImageService.delById(getUserId(),id);
+        Integer vo = userImageService.delById(getUserId(), id);
         return Result.success(vo);
     }
 
     @GetMapping(value = "/updateIsFree")
-    public Result<Integer> updateIsFree(@RequestParam("id") Long id,@RequestParam("isFree") Integer isFree) {
-        Integer vo = userImageService.updateIsFree(getUserId(),id,isFree);
+    public Result<Integer> updateIsFree(@RequestParam("id") Long id, @RequestParam("isFree") Integer isFree) {
+        Integer vo = userImageService.updateIsFree(getUserId(), id, isFree);
         return Result.success(vo);
     }
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -72,7 +68,7 @@ public class AdminUserImageController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -85,16 +81,16 @@ public class AdminUserImageController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
 
     @GetMapping("/list")
-    public Result<List<UserImageVo>> select( UserImageDto findDto) {
+    public Result<List<UserImageVo>> select(UserImageDto findDto) {
         findDto.setUserId(getUserId());
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 
@@ -119,9 +115,9 @@ public class AdminUserImageController extends BaseController {
     }
 
     @PostMapping("/upload")
-    public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile,@RequestParam("aid")Integer aid,@RequestParam("isFree")Integer isFree) {
-        log.info("upload aid:"+aid);
-        String url = userImageService.saveUploadedFiles(getUserId(),aid,isFree,uploadfile);
+    public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        log.info("upload aid:" + aid);
+        String url = userImageService.saveUploadedFiles(getUserId(), aid, isFree, uploadfile);
         return Result.success(url);
     }
 

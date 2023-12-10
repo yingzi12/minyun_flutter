@@ -18,7 +18,9 @@ public interface IReptileImageService {
     void singleDataThread();
 
     void orderBySingle(ReptileRule reptileRule, List<ReptilePage> pageList);
+
     void threadElment(Elements elementList, ReptileRule reptileRule);
+
     void singleLocalData();
 
     boolean isImageUrlValid(String imageUrl, int count);

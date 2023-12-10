@@ -15,6 +15,6 @@ public class PayOrderDto {
     /**
      * 支付意图，例如："CAPTURE"（立即捕获支付）或 "AUTHORIZE"（授权后支付）。
      */
-    private String intent="CAPTURE";
+    private String intent = "CAPTURE";
 
 }

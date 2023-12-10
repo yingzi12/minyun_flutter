@@ -5,11 +5,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserBank;
 import com.xinshijie.gallery.dto.UserBankDto;
 import com.xinshijie.gallery.vo.UserBankVo;
+
 import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 作者
@@ -19,8 +20,8 @@ public interface IUserBankService extends IService<UserBank> {
 
 
     /**
-  * 查询信息表
-  */
+     * 查询信息表
+     */
     List<UserBankVo> selectUserBankList(UserBankDto dto);
 
     /**

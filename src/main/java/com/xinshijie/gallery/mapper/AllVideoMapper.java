@@ -1,7 +1,6 @@
 package com.xinshijie.gallery.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinshijie.gallery.domain.AllImage;
 import com.xinshijie.gallery.domain.AllVideo;
 import org.apache.ibatis.annotations.Mapper;
 

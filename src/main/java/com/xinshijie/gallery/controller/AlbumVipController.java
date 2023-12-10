@@ -33,7 +33,7 @@ public class AlbumVipController extends BaseController {
     private IAlbumVipService albumVipService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
@@ -44,7 +44,7 @@ public class AlbumVipController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
@@ -56,7 +56,7 @@ public class AlbumVipController extends BaseController {
 
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -68,7 +68,7 @@ public class AlbumVipController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -80,14 +80,14 @@ public class AlbumVipController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<AlbumVipVo>> select( AlbumVipDto findDto) {
+    public Result<List<AlbumVipVo>> select(AlbumVipDto findDto) {
         Page<AlbumVipVo> vo = albumVipService.selectPageAlbumVip(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 

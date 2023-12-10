@@ -1,6 +1,5 @@
 package com.xinshijie.gallery.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.SystemUserDto;
@@ -8,11 +7,9 @@ import com.xinshijie.gallery.vo.LoginUserVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 作者
@@ -24,7 +21,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     LoginUserVo loginModile(String username, String password);
 
-    Integer updatePwd(Integer userId,String newPassword,String oldPassword);
+    Integer updatePwd(Integer userId, String newPassword, String oldPassword);
 
     Boolean checkUserNameUnique(String username);
 
@@ -38,7 +35,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     SystemUser edit(SystemUserDto userDto);
 
-    Integer updateEmail(Integer userId,String email);
+    Integer updateEmail(Integer userId, String email);
 
     SystemUser selectByEmail(String email);
 

@@ -53,5 +53,5 @@ public interface IUserVipService extends IService<UserVip> {
     /**
      * 根据id数据
      */
-    UserVip getInfo(Integer userId,Integer vipUserId);
+    UserVip getInfo(Integer userId, Integer vipUserId);
 }

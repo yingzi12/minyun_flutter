@@ -9,7 +9,6 @@ import com.xinshijie.gallery.domain.AllImage;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.UserImageDto;
-import com.xinshijie.gallery.mapper.AllImageMapper;
 import com.xinshijie.gallery.mapper.UserImageMapper;
 import com.xinshijie.gallery.service.IAllImageService;
 import com.xinshijie.gallery.service.IFileService;
@@ -47,10 +46,11 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     private IAllImageService allImageService;
     @Autowired
     private IUserAlbumService userAlbumService;
-//    @Value("${image.path}")
-    private String headPath="/user/album/";
+    //    @Value("${image.path}")
+    private String headPath = "/user/album/";
     @Value("${image.sourceWeb}")
     private String sourceWeb;
+
     /**
      * 查询图片信息表
      */
@@ -65,14 +65,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     @Override
     public Page<UserImageVo> selectPageUserImage(UserImageDto dto) {
         Page<UserImageVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserImage(page, dto);
     }
 
@@ -82,14 +82,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     @Override
     public Page<UserImageVo> getPageUserImage(UserImageDto dto) {
         Page<UserImageVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserImageVo> qw = new QueryWrapper<>();
         return mapper.getPageUserImage(page, qw);
     }
@@ -119,21 +119,21 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId,Long id) {
-        QueryWrapper<UserImage> qw=new QueryWrapper<>();
-        qw.eq("id",id);
-        qw.eq("userId",userId);
+    public Integer delById(Integer userId, Long id) {
+        QueryWrapper<UserImage> qw = new QueryWrapper<>();
+        qw.eq("id", id);
+        qw.eq("userId", userId);
         return mapper.delete(qw);
     }
 
     @Override
     public Integer updateIsFree(Integer userId, Long id, Integer isFree) {
-        QueryWrapper<UserImage> qw=new QueryWrapper<>();
-        qw.eq("id",id);
-        qw.eq("userId",userId);
-        UserImage userImage=new UserImage();
+        QueryWrapper<UserImage> qw = new QueryWrapper<>();
+        qw.eq("id", id);
+        qw.eq("userId", userId);
+        UserImage userImage = new UserImage();
         userImage.setIsFree(isFree);
-        return mapper.update(userImage,qw);
+        return mapper.update(userImage, qw);
     }
 
     /**
@@ -145,25 +145,25 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     }
 
     @Override
-    public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree,MultipartFile file) {
-        UserAlbum userAlbum=userAlbumService.getInfo(userId,aid+0L);
-        if (userAlbum==null){
+    public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file) {
+        UserAlbum userAlbum = userAlbumService.getInfo(userId, aid + 0L);
+        if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
-        String url="";
+        String url = "";
         try {
-            String md5=fileService.getMD5(file.getInputStream());
+            String md5 = fileService.getMD5(file.getInputStream());
 
-            AllImage allImage=allImageService.getMD5(md5);
-            if(allImage !=null) {
-                QueryWrapper<UserImage> qw=new QueryWrapper<>();
-                qw.eq("md5",md5);
-                qw.eq("aid",aid);
-                UserImage value=mapper.selectOne(qw);
-                if(value !=null) {
+            AllImage allImage = allImageService.getMD5(md5);
+            if (allImage != null) {
+                QueryWrapper<UserImage> qw = new QueryWrapper<>();
+                qw.eq("md5", md5);
+                qw.eq("aid", aid);
+                UserImage value = mapper.selectOne(qw);
+                if (value != null) {
                     return value.getUrl();
-                }else {
-                    UserImage userImage=new UserImage();
+                } else {
+                    UserImage userImage = new UserImage();
                     userImage.setUserId(userId);
                     userImage.setCreateTime(LocalDateTime.now());
                     userImage.setAid(aid);
@@ -174,17 +174,17 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     userAlbumService.updateCountImage(aid);
                     return userImage.getUrl();
                 }
-            }else{
+            } else {
                 allImage = new AllImage();
                 allImage.setMd5(md5);
                 allImage.setSize(file.getSize());
                 allImage.setTitle(userAlbum.getTitle());
                 //保存图片到本地
-                String imgUrl=saveImage(allImage,md5,file);
-                if(StringUtils.isEmpty(imgUrl)){
+                String imgUrl = saveImage(allImage, md5, file);
+                if (StringUtils.isEmpty(imgUrl)) {
                     throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
                 }
-                UserImage userImage=new UserImage();
+                UserImage userImage = new UserImage();
                 userImage.setUserId(userId);
                 userImage.setCreateTime(LocalDateTime.now());
                 userImage.setAid(aid);
@@ -195,21 +195,21 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                 userAlbumService.updateCountImage(aid);
                 return userImage.getUrl();
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
         }
     }
 
-    public String saveImage(AllImage allImage,String md5,MultipartFile file){
-        String url=fileService.saveUploadedFilesWatermark(headPath,allImage.getTitle(),file);
+    public String saveImage(AllImage allImage, String md5, MultipartFile file) {
+        String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), file);
         try {
             allImage.setSource_web(sourceWeb);
             allImage.setSource_url(url);
             allImageService.save(allImage);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             //保存出问题。要么是md5出现重复，要么就数据库异常。
-            allImage=allImageService.getMD5(md5);
+            allImage = allImageService.getMD5(md5);
             return allImage.getSource_url();
         }
         return url;

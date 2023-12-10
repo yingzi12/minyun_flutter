@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- *   前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 作者
@@ -33,41 +33,45 @@ public class AdminUserBankController extends BaseController {
     private IUserBankService userBankService;
 
     /**
-    * 世界年表 添加
-    * @return
-    */
+     * 世界年表 添加
+     *
+     * @return
+     */
     @PostMapping("/add")
-    public Result<UserBank> add(@RequestBody  UserBankDto dto){
+    public Result<UserBank> add(@RequestBody UserBankDto dto) {
         UserBank vo = userBankService.add(dto);
         return Result.success(vo);
     }
 
     /**
-    *  世界年表 删除
-    * @return
-    */
+     * 世界年表 删除
+     *
+     * @return
+     */
     @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id")  Long id){
-        Integer  vo = userBankService.delById(id);
+    public Result<Integer> del(@PathVariable("id") Long id) {
+        Integer vo = userBankService.delById(id);
         return Result.success(vo);
     }
 
 
     /**
-    * 世界年表 修改
-    * @return
-    */
+     * 世界年表 修改
+     *
+     * @return
+     */
     @PostMapping("/edit")
-    public Result<Integer> edit(@RequestBody UserBankDto dto){
-        Integer  vo = userBankService.edit(dto);
+    public Result<Integer> edit(@RequestBody UserBankDto dto) {
+        Integer vo = userBankService.edit(dto);
         return Result.success(vo);
     }
 
 
     /**
-    * 世界年表 查询详情
-    * @return
-    */
+     * 世界年表 查询详情
+     *
+     * @return
+     */
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserBankVo> getInfo(@PathVariable("id") Long id) {
         UserBankVo vo = userBankService.getInfo(id);
@@ -76,13 +80,14 @@ public class AdminUserBankController extends BaseController {
 
 
     /**
-    * 世界年表 查询
-    * @return
-    */
+     * 世界年表 查询
+     *
+     * @return
+     */
     @GetMapping("/list")
-    public Result<List<UserBankVo>> select( UserBankDto findDto){
+    public Result<List<UserBankVo>> select(UserBankDto findDto) {
         Page<UserBankVo> vo = userBankService.selectPageUserBank(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 

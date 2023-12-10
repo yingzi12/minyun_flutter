@@ -3,13 +3,20 @@ package com.xinshijie.gallery.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.common.Constants;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.domain.*;
+import com.xinshijie.gallery.domain.AllVideo;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
+import com.xinshijie.gallery.enmus.VedioStatuEnum;
 import com.xinshijie.gallery.mapper.UserVideoMapper;
-import com.xinshijie.gallery.service.*;
+import com.xinshijie.gallery.mq.MessageProducer;
+import com.xinshijie.gallery.service.IAllVideoService;
+import com.xinshijie.gallery.service.IFileService;
+import com.xinshijie.gallery.service.IUserAlbumService;
+import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -42,9 +49,13 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     @Autowired
     private IUserAlbumService userAlbumService;
     //    @Value("${image.path}")
-    private String headPath="/user/album/";
+//    private String headPath = "/user/album/";
     @Value("${image.sourceWeb}")
     private String sourceWeb;
+
+    @Autowired
+    private MessageProducer producer;
+
     /**
      * 查询图片信息表
      */
@@ -59,14 +70,14 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     @Override
     public Page<UserVideoVo> selectPageUserVideo(UserVideoDto dto) {
         Page<UserVideoVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserVideo(page, dto);
     }
 
@@ -76,14 +87,14 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     @Override
     public Page<UserVideoVo> getPageUserVideo(UserVideoDto dto) {
         Page<UserVideoVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserVideoVo> qw = new QueryWrapper<>();
         return mapper.getPageUserVideo(page, qw);
     }
@@ -112,21 +123,21 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId,Long id) {
-        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-        qw.eq("id",id);
-        qw.eq("userId",userId);
+    public Integer delById(Integer userId, Long id) {
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("id", id);
+        qw.eq("userId", userId);
         return mapper.delete(qw);
     }
 
     @Override
     public Integer updateIsFree(Integer userId, Long id, Integer isFree) {
-        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-        qw.eq("id",id);
-        qw.eq("userId",userId);
-        UserVideo video=new UserVideo();
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("id", id);
+        qw.eq("userId", userId);
+        UserVideo video = new UserVideo();
         video.setIsFree(isFree);
-        return mapper.update(video,qw);
+        return mapper.update(video, qw);
     }
 
     /**
@@ -140,142 +151,147 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
 
     @Override
     public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file) {
-        UserAlbum userAlbum=userAlbumService.getInfo(userId,aid+0L);
-        if (userAlbum==null){
+        UserAlbum userAlbum = userAlbumService.getInfo(userId, aid + 0L);
+        if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
-        String url="";
+        String url = "";
         try {
-            String md5=fileService.getMD5(file.getInputStream());
+            String md5 = fileService.getMD5(file.getInputStream());
 
-            AllVideo allVideo=allVideoService.getMD5(md5);
-            if(allVideo !=null) {
-                QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-                qw.eq("md5",md5);
-                qw.eq("aid",aid);
-                UserVideo value=mapper.selectOne(qw);
-                if(value !=null) {
+            AllVideo allVideo = allVideoService.getMD5(md5);
+            if (allVideo != null) {
+                QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+                qw.eq("md5", md5);
+                qw.eq("aid", aid);
+                UserVideo value = mapper.selectOne(qw);
+                if (value != null) {
                     return value.getUrl();
-                }else {
-                    UserVideo userVideo=new UserVideo();
+                } else {
+                    UserVideo userVideo = new UserVideo();
                     userVideo.setUserId(userId);
                     userVideo.setCreateTime(LocalDateTime.now());
                     userVideo.setAid(aid);
-                    userVideo.setUrl(allVideo.getSource_url());
+                    userVideo.setUrl(allVideo.getSourceUrl());
                     userVideo.setMd5(md5);
                     userVideo.setIsFree(isFree);
                     mapper.insert(userVideo);
                     userAlbumService.updateCountVideo(aid);
                     return userVideo.getUrl();
                 }
-            }else{
+            } else {
                 allVideo = new AllVideo();
                 allVideo.setMd5(md5);
                 allVideo.setSize(file.getSize());
                 allVideo.setTitle(userAlbum.getTitle());
-                //保存图片到本地
-                String imgUrl=saveFileVideo(allVideo,md5,file);
-                if(StringUtils.isEmpty(imgUrl)){
+                //保存视频到本地
+                String fileUrl = saveFileVideo(allVideo, md5, file);
+                if (StringUtils.isEmpty(fileUrl)) {
                     throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
                 }
-                UserVideo userVideo=new UserVideo();
+                UserVideo userVideo = new UserVideo();
                 userVideo.setUserId(userId);
                 userVideo.setCreateTime(LocalDateTime.now());
                 userVideo.setAid(aid);
-                userVideo.setUrl(imgUrl);
+                userVideo.setUrl(fileUrl);
                 userVideo.setMd5(md5);
                 userVideo.setIsFree(isFree);
                 mapper.insert(userVideo);
+                producer.sendMessage(aid,md5);
                 userAlbumService.updateCountVideo(aid);
                 return userVideo.getUrl();
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
         }
     }
 
-    public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree,Long size,String md5,String sourcePath) {
-        UserAlbum userAlbum=userAlbumService.getInfo(userId,aid+0L);
-        if (userAlbum==null){
+    public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath,String fileName) {
+        UserAlbum userAlbum = userAlbumService.getInfo(userId, aid + 0L);
+        if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
-        String url="";
+//        String url = "";
         try {
-//            String md5=fileService.getMD5(file.getInputStream());
-
-            AllVideo allVideo=allVideoService.getMD5(md5);
-            if(allVideo !=null) {
-                QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-                qw.eq("md5",md5);
-                qw.eq("aid",aid);
-                UserVideo value=mapper.selectOne(qw);
-                if(value !=null) {
+            AllVideo allVideo = allVideoService.getMD5(md5);
+            if (allVideo != null) {
+                QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+                qw.eq("md5", md5);
+                qw.eq("aid", aid);
+                UserVideo value = mapper.selectOne(qw);
+                if (value != null) {
                     return value.getUrl();
-                }else {
-                    UserVideo userVideo=new UserVideo();
+                } else {
+                    UserVideo userVideo = new UserVideo();
                     userVideo.setUserId(userId);
                     userVideo.setCreateTime(LocalDateTime.now());
                     userVideo.setAid(aid);
-                    userVideo.setUrl(allVideo.getSource_url());
+                    userVideo.setUrl(allVideo.getSourceUrl());
                     userVideo.setMd5(md5);
+                    userVideo.setStatus(allVideo.getStatus());
                     userVideo.setIsFree(isFree);
                     mapper.insert(userVideo);
                     userAlbumService.updateCountVideo(aid);
                     return userVideo.getUrl();
                 }
-            }else{
+            } else {
                 allVideo = new AllVideo();
                 allVideo.setMd5(md5);
                 allVideo.setSize(size);
+                allVideo.setStatus(VedioStatuEnum.WAIT.getCode());
                 allVideo.setTitle(userAlbum.getTitle());
-                //保存图片到本地
-                String imgUrl=saveUrlVideo(allVideo,md5,sourcePath);
-                if(StringUtils.isEmpty(imgUrl)){
-                    throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
-                }
-                UserVideo userVideo=new UserVideo();
+                allVideo.setUrl(sourcePath+fileName);
+                allVideoService.save(allVideo);
+
+                UserVideo userVideo = new UserVideo();
                 userVideo.setUserId(userId);
                 userVideo.setCreateTime(LocalDateTime.now());
                 userVideo.setAid(aid);
-                userVideo.setUrl(imgUrl);
+                userVideo.setStatus(VedioStatuEnum.WAIT.getCode());
+                userVideo.setUrl(sourcePath+fileName);
                 userVideo.setMd5(md5);
                 userVideo.setIsFree(isFree);
                 mapper.insert(userVideo);
+
+                producer.sendMessage(aid,md5);
                 userAlbumService.updateCountVideo(aid);
+
                 return userVideo.getUrl();
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
         }
     }
 
-    public String saveFileVideo(AllVideo allVideo,String md5,MultipartFile file){
-        String url=fileService.saveUploadedFilesWatermark(headPath,allVideo.getTitle(),file);
+    public String saveFileVideo(AllVideo allVideo, String md5, MultipartFile file) {
+        //保存到本地
+        String url = fileService.saveUploadedFilesDown(Constants.videoHcPath, allVideo.getTitle(), file);
+
         try {
-            allVideo.setSource_web(sourceWeb);
-            allVideo.setSource_url(url);
+            allVideo.setSourceWeb(sourceWeb);
+            allVideo.setUrl(url);
             allVideoService.save(allVideo);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             //保存出问题。要么是md5出现重复，要么就数据库异常。
-            allVideo=allVideoService.getMD5(md5);
-            return allVideo.getSource_url();
+            allVideo = allVideoService.getMD5(md5);
+            return allVideo.getSourceUrl();
         }
         return url;
     }
 
-    public String saveUrlVideo(AllVideo allVideo,String md5,String sourcePath){
-        String url=fileService.chargeVideoFile(headPath,allVideo.getTitle(),sourcePath);
-        try {
-            allVideo.setSource_web(sourceWeb);
-            allVideo.setSource_url(url);
-            allVideoService.save(allVideo);
-        }catch (Exception ex){
-            //保存出问题。要么是md5出现重复，要么就数据库异常。
-            allVideo=allVideoService.getMD5(md5);
-            return allVideo.getSource_url();
-        }
-        return url;
-    }
+//    public String saveUrlVideo(AllVideo allVideo, String md5, String sourcePath) {
+//        String url = fileService.chargeVideoFile(headPath, allVideo.getTitle(), sourcePath);
+//        try {
+//            allVideo.setSourceWeb(sourceWeb);
+//            allVideo.setSourceUrl(url);
+//            allVideoService.save(allVideo);
+//        } catch (Exception ex) {
+//            //保存出问题。要么是md5出现重复，要么就数据库异常。
+//            allVideo = allVideoService.getMD5(md5);
+//            return allVideo.getSourceUrl();
+//        }
+//        return url;
+//    }
 }

@@ -44,14 +44,14 @@ public class UserBuyVipServiceImpl extends ServiceImpl<UserBuyVipMapper, UserBuy
     @Override
     public Page<UserBuyVipVo> selectPageUserBuyVip(UserBuyVipDto dto) {
         Page<UserBuyVipVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserBuyVip(page, dto);
     }
 
@@ -61,14 +61,14 @@ public class UserBuyVipServiceImpl extends ServiceImpl<UserBuyVipMapper, UserBuy
     @Override
     public Page<UserBuyVipVo> getPageUserBuyVip(UserBuyVipDto dto) {
         Page<UserBuyVipVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<UserBuyVipVo> qw = new QueryWrapper<>();
         return mapper.getPageUserBuyVip(page, qw);
     }

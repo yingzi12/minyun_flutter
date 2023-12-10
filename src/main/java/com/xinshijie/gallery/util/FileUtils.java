@@ -1,8 +1,6 @@
 package com.xinshijie.gallery.util;
 
 
-import cn.hutool.core.util.IdUtil;
-import com.xinshijie.gallery.config.XinshijieConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
@@ -49,7 +47,6 @@ public class FileUtils {
             IOUtils.close(fis);
         }
     }
-
 
 
     /**

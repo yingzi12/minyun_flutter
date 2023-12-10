@@ -33,7 +33,7 @@ public class AdminUserBuyVipController extends BaseController {
     private IUserBuyVipService userBuyVipService;
 
     /**
-     *  添加
+     * 添加
      *
      * @return
      */
@@ -45,7 +45,7 @@ public class AdminUserBuyVipController extends BaseController {
     }
 
     /**
-     *  删除
+     * 删除
      *
      * @return
      */
@@ -58,7 +58,7 @@ public class AdminUserBuyVipController extends BaseController {
 
 
     /**
-     *  修改
+     * 修改
      *
      * @return
      */
@@ -71,7 +71,7 @@ public class AdminUserBuyVipController extends BaseController {
 
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -84,14 +84,14 @@ public class AdminUserBuyVipController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserBuyVipVo>> select( UserBuyVipDto findDto) {
+    public Result<List<UserBuyVipVo>> select(UserBuyVipDto findDto) {
         Page<UserBuyVipVo> vo = userBuyVipService.selectPageUserBuyVip(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
 

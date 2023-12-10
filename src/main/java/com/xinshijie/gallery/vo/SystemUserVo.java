@@ -1,7 +1,5 @@
 package com.xinshijie.gallery.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 作者
@@ -19,36 +17,36 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(name = "SystemUserVo", description = " ")
-public class SystemUserVo implements Serializable{
+public class SystemUserVo implements Serializable {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-        private Integer id;
+    private Integer id;
 
-        private String name;
+    private String name;
 
-        private String nickname;
+    private String nickname;
 
-        private String email;
+    private String email;
 
-        private Integer isEmail;
+    private Integer isEmail;
 
-        private String password;
+    private String password;
 
-        private String salt;
+    private String salt;
 
-        private LocalDateTime createTime;
+    private LocalDateTime createTime;
 
-        private LocalDateTime updateTime;
+    private LocalDateTime updateTime;
 
-        private String intro;
+    private String intro;
 
-        private String directions;
-        private String imgUrl;
+    private String directions;
+    private String imgUrl;
 
-        private Integer  countLike;
-        private Integer       countSee;
-        private Integer       countAttention;
+    private Integer countLike;
+    private Integer countSee;
+    private Integer countAttention;
 
 
 }

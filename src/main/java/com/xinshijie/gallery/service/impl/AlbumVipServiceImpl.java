@@ -43,14 +43,14 @@ public class AlbumVipServiceImpl extends ServiceImpl<AlbumVipMapper, AlbumVip> i
     @Override
     public Page<AlbumVipVo> selectPageAlbumVip(AlbumVipDto dto) {
         Page<AlbumVipVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageAlbumVip(page, dto);
     }
 
@@ -60,14 +60,14 @@ public class AlbumVipServiceImpl extends ServiceImpl<AlbumVipMapper, AlbumVip> i
     @Override
     public Page<AlbumVipVo> getPageAlbumVip(AlbumVipDto dto) {
         Page<AlbumVipVo> page = new Page<>();
-        if(dto.getPageNum()==null){
+        if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
-        if(dto.getPageSize()==null){
+        if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum()-1)* dto.getPageSize());
+        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         QueryWrapper<AlbumVipVo> qw = new QueryWrapper<>();
         return mapper.getPageAlbumVip(page, qw);
     }

@@ -44,10 +44,10 @@ public class UserVideoController extends BaseController {
     @Autowired
     private IUserVideoService userVideoService;
 
-    private final  static String UPLOAD_DIR="./data/";
+    private final static String UPLOAD_DIR = "./data/";
 
     /**
-     *  查询详情
+     * 查询详情
      *
      * @return
      */
@@ -60,14 +60,14 @@ public class UserVideoController extends BaseController {
 
 
     /**
-     *  查询
+     * 查询
      *
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserVideoVo>> select( UserVideoDto findDto) {
+    public Result<List<UserVideoVo>> select(UserVideoDto findDto) {
         Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
-        return Result.success(vo.getRecords(),Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
     @PostMapping("/upload")
@@ -77,13 +77,13 @@ public class UserVideoController extends BaseController {
                                             @RequestParam("identifier") String identifier) {
         try {
             String[] nameArr = identifier.split("\\.");
-            String hz=nameArr[nameArr.length-1];
-            String idHash= HashUtil.hfHash(identifier)+"."+hz;
-            log.info("upload  chunkNumber:{}  totalChunks:{} identifier:{},idHash:{} filename:{}",chunkNumber,totalChunks,identifier,idHash,file.getOriginalFilename());
+            String hz = nameArr[nameArr.length - 1];
+            String idHash = HashUtil.hfHash(identifier) + "." + hz;
+            log.info("upload  chunkNumber:{}  totalChunks:{} identifier:{},idHash:{} filename:{}", chunkNumber, totalChunks, identifier, idHash, file.getOriginalFilename());
             String chunkFileName = idHash + "-" + chunkNumber;
-            Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ chunkFileName);
+            Path chunkFile = Paths.get(UPLOAD_DIR + LocalDate.now() + "/" + chunkFileName);
 
-            File destinationFile = new File(UPLOAD_DIR +LocalDate.now()+"/"+ chunkFileName);
+            File destinationFile = new File(UPLOAD_DIR + LocalDate.now() + "/" + chunkFileName);
             File parentDir = destinationFile.getParentFile();
             // 如果父目录不存在，尝试创建它
             if (parentDir != null && !parentDir.exists()) {
@@ -110,7 +110,7 @@ public class UserVideoController extends BaseController {
 
     private boolean allChunksUploaded(String idHash, int totalChunks) {
         for (int i = 0; i < totalChunks; i++) {
-            Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ "uploaded_" + idHash + "-" + i);
+            Path chunkFile = Paths.get(UPLOAD_DIR + LocalDate.now() + "/" + "uploaded_" + idHash + "-" + i);
             if (!Files.exists(chunkFile)) {
                 log.info("Missing chunk: " + chunkFile.toString());
                 return false;
@@ -121,8 +121,8 @@ public class UserVideoController extends BaseController {
 
     @GetMapping("/check")
     public Result<String> checkChunkExists(@RequestParam("identifier") String identifier,
-                                            @RequestParam("chunkNumber") int chunkNumber) {
-        Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ "uploaded_" + identifier + "-" + chunkNumber);
+                                           @RequestParam("chunkNumber") int chunkNumber) {
+        Path chunkFile = Paths.get(UPLOAD_DIR + LocalDate.now() + "/" + "uploaded_" + identifier + "-" + chunkNumber);
         if (Files.exists(chunkFile)) {
             return Result.success(ResultCodeEnum.SUCCESS);
         } else {
@@ -147,13 +147,13 @@ public class UserVideoController extends BaseController {
 
     //合并文件，同时返回文件的hash值
     private String mergeFile(String idHash, int totalChunks) throws IOException, NoSuchAlgorithmException {
-        Path fileOutput = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ idHash);
+        Path fileOutput = Paths.get(UPLOAD_DIR + LocalDate.now() + "/" + idHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         long fileSize = 0;
 
         try (OutputStream mergeFile = new BufferedOutputStream(Files.newOutputStream(fileOutput, StandardOpenOption.CREATE))) {
             for (int i = 0; i < totalChunks; i++) {
-                Path chunkFile = Paths.get(UPLOAD_DIR +LocalDate.now()+"/"+ "uploaded_" + idHash + "-" + i);
+                Path chunkFile = Paths.get(UPLOAD_DIR + LocalDate.now() + "/" + "uploaded_" + idHash + "-" + i);
                 byte[] buffer = new byte[4096];
                 int len;
                 try (InputStream is = Files.newInputStream(chunkFile)) {
@@ -168,10 +168,10 @@ public class UserVideoController extends BaseController {
 
         // 计算简化的哈希
         try (RandomAccessFile file = new RandomAccessFile(fileOutput.toFile(), "r")) {
-            long[] samplePoints = new long[] { 0, fileSize / 2, fileSize - Math.min(fileSize, 4096) };
+            long[] samplePoints = new long[]{0, fileSize / 2, fileSize - Math.min(fileSize, 4096)};
             for (long point : samplePoints) {
                 file.seek(point);
-                byte[] bytes = new byte[Math.min((int)(fileSize - point), 4096)];
+                byte[] bytes = new byte[Math.min((int) (fileSize - point), 4096)];
                 int readSize = file.read(bytes);
                 md.update(bytes, 0, readSize);
             }

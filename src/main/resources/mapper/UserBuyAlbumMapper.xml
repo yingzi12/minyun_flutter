@@ -3,107 +3,106 @@
 <mapper namespace="com.xinshijie.gallery.mapper.UserBuyAlbumMapper">
 
     <sql id="selectUserBuyAlbum">
-        select
-                  id,
-                user_id,
-                user_name,
-                create_time,
-                aid,
-                update_time,
-                price,
-                buy_time,
-                status,
-                title
+        select id,
+               user_id,
+               user_name,
+               create_time,
+               aid,
+               update_time,
+               price,
+               buy_time,
+               status,
+               title
         from user_buy_album
     </sql>
 
-    <select id="selectListUserBuyAlbum" parameterType="com.xinshijie.gallery.dto.UserBuyAlbumDto" resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
+    <select id="selectListUserBuyAlbum" parameterType="com.xinshijie.gallery.dto.UserBuyAlbumDto"
+            resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
         <include refid="selectUserBuyAlbum"/>
         <where>
-                    <if test="id !=null ">and id= #{id}</if>
-                    <if test="userId !=null ">and user_id= #{userId}</if>
-                    <if test="userName !=null ">and user_name= #{userName}</if>
-                    <if test="createTime !=null ">and create_time= #{createTime}</if>
-                    <if test="aid !=null ">and aid= #{aid}</if>
-                    <if test="updateTime !=null ">and update_time= #{updateTime}</if>
-                    <if test="price !=null ">and price= #{price}</if>
-                    <if test="buyTime !=null ">and buy_time= #{buyTime}</if>
-                    <if test="status !=null ">and status= #{status}</if>
-                    <if test="title !=null ">and title= #{title}</if>
+            <if test="id !=null ">and id= #{id}</if>
+            <if test="userId !=null ">and user_id= #{userId}</if>
+            <if test="userName !=null ">and user_name= #{userName}</if>
+            <if test="createTime !=null ">and create_time= #{createTime}</if>
+            <if test="aid !=null ">and aid= #{aid}</if>
+            <if test="updateTime !=null ">and update_time= #{updateTime}</if>
+            <if test="price !=null ">and price= #{price}</if>
+            <if test="buyTime !=null ">and buy_time= #{buyTime}</if>
+            <if test="status !=null ">and status= #{status}</if>
+            <if test="title !=null ">and title= #{title}</if>
         </where>
     </select>
 
-    <select id="selectPageUserBuyAlbum"  resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
+    <select id="selectPageUserBuyAlbum" resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
         <include refid="selectUserBuyAlbum"/>
         <where>
-                    <if test="dto.id !=null ">and id= #{dto.id}</if>
-                    <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
-                    <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
-                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-                    <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
-                    <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
-                    <if test="dto.price !=null ">and price= #{dto.price}</if>
-                    <if test="dto.buyTime !=null ">and buy_time= #{dto.buyTime}</if>
-                    <if test="dto.status !=null ">and status= #{dto.status}</if>
-                    <if test="dto.title !=null ">and title= #{dto.title}</if>
+            <if test="dto.id !=null ">and id= #{dto.id}</if>
+            <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
+            <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
+            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+            <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
+            <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
+            <if test="dto.price !=null ">and price= #{dto.price}</if>
+            <if test="dto.buyTime !=null ">and buy_time= #{dto.buyTime}</if>
+            <if test="dto.status !=null ">and status= #{dto.status}</if>
+            <if test="dto.title !=null ">and title= #{dto.title}</if>
         </where>
     </select>
 
-    <select id="getPageUserBuyAlbum"  resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
-        <include refid="selectUserBuyAlbum"/> ${ew.customSqlSegment}
+    <select id="getPageUserBuyAlbum" resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
+        <include refid="selectUserBuyAlbum"/>
+        ${ew.customSqlSegment}
     </select>
 
-    <insert id="add"  >
-        insert into user_buy_album (
-                id,
-                user_id,
-                user_name,
-                create_time,
-                aid,
-                update_time,
-                price,
-                buy_time,
-                status,
-                title
-          )
-        values
-            (
-                    #{ id },
-                    #{ userId },
-                    #{ userName },
-                    #{ createTime },
-                    #{ aid },
-                    #{ updateTime },
-                    #{ price },
-                    #{ buyTime },
-                    #{ status },
-                    #{ title }
-       )
+    <insert id="add">
+        insert into user_buy_album (id,
+                                    user_id,
+                                    user_name,
+                                    create_time,
+                                    aid,
+                                    update_time,
+                                    price,
+                                    buy_time,
+                                    status,
+                                    title)
+        values (#{ id },
+                #{ userId },
+                #{ userName },
+                #{ createTime },
+                #{ aid },
+                #{ updateTime },
+                #{ price },
+                #{ buyTime },
+                #{ status },
+                #{ title })
     </insert>
 
-    <update id="edit"  >
-        update  user_buy_album
+    <update id="edit">
+        update user_buy_album
         <trim prefix="SET" suffixOverrides=",">
-                    <if test="id !=null ">  id= #{id},</if>
-                    <if test="userId !=null ">  user_id= #{userId},</if>
-                    <if test="userName !=null ">  user_name= #{userName},</if>
-                    <if test="createTime !=null ">  create_time= #{createTime},</if>
-                    <if test="aid !=null ">  aid= #{aid},</if>
-                    <if test="updateTime !=null ">  update_time= #{updateTime},</if>
-                    <if test="price !=null ">  price= #{price},</if>
-                    <if test="buyTime !=null ">  buy_time= #{buyTime},</if>
-                    <if test="status !=null ">  status= #{status},</if>
-                    <if test="title !=null ">  title= #{title},</if>
+            <if test="id !=null ">id= #{id},</if>
+            <if test="userId !=null ">user_id= #{userId},</if>
+            <if test="userName !=null ">user_name= #{userName},</if>
+            <if test="createTime !=null ">create_time= #{createTime},</if>
+            <if test="aid !=null ">aid= #{aid},</if>
+            <if test="updateTime !=null ">update_time= #{updateTime},</if>
+            <if test="price !=null ">price= #{price},</if>
+            <if test="buyTime !=null ">buy_time= #{buyTime},</if>
+            <if test="status !=null ">status= #{status},</if>
+            <if test="title !=null ">title= #{title},</if>
         </trim>
-        where   id=#{id}
+        where id=#{id}
     </update>
 
-    <delete id="delById"  >
-        delete FROM  user_buy_album where  id = #{id}
+    <delete id="delById">
+        delete
+        FROM user_buy_album
+        where id = #{id}
     </delete>
 
-    <select id="getInfo"  resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
-        <include refid="selectUserBuyAlbum"/> where  id = #{id}
+    <select id="getInfo" resultType="com.xinshijie.gallery.vo.UserBuyAlbumVo">
+        <include refid="selectUserBuyAlbum"/>
+        where id = #{id}
     </select>
 
 </mapper>

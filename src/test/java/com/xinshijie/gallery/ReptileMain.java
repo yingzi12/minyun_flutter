@@ -10,7 +10,7 @@ import com.xinshijie.gallery.service.AlbumService;
 import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;
 import com.xinshijie.gallery.vo.AlbumVo;
-import org.apache.commons.lang3.StringUtils;
+import com.xinshijie.gallery.vo.ReptileRule;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -18,11 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.xinshijie.gallery.vo.ReptilePage;
-import com.xinshijie.gallery.vo.ReptileRule;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @SpringBootTest(classes = GalleryApplication.class)
@@ -33,11 +28,12 @@ public class ReptileMain {
     private ILocalImageService localImageService;
     @Autowired
     private AlbumService albumService;
+
     @Test
-    public  void detail(){
+    public void detail() {
 
         //链式构建请求
-        String result = HttpRequest.get( "https://admin.aiavr.com/wiki/reptileRule/getInfo/10")
+        String result = HttpRequest.get("https://admin.aiavr.com/wiki/reptileRule/getInfo/10")
                 .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
 //                 .form(paramMap)//表单内容
                 .timeout(20000)//超时，毫秒
@@ -52,20 +48,20 @@ public class ReptileMain {
         Element cont = body.select(reptileRule.getStoryPageRule()).first();
         Elements elementList = cont.select(reptileRule.getStoryPageGroupRule());
         if (elementList != null) {
-            reptileService.threadElment(  elementList, reptileRule);
+            reptileService.threadElment(elementList, reptileRule);
         }
     }
 
     @Test
-    public  void test10(){
+    public void test10() {
         reptileService.ayacDataThread(10);
     }
 
     @Test
-    public  void info(){
+    public void info() {
         AlbumVo albumVo = albumService.getInfo(56597L);
-        Album album=new Album();
-        BeanUtils.copyProperties(albumVo,album);
+        Album album = new Album();
+        BeanUtils.copyProperties(albumVo, album);
         localImageService.saveAlbum(album);
     }
 }

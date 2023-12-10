@@ -143,5 +143,10 @@ public class Constants {
 
     public static byte[] TOKEN_KEY = "xinshijie".getBytes();
 
+    /**
+     * 视频缓存目录
+     */
+    public static String videoHcPath;
+
 
 }
