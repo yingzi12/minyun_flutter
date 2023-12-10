@@ -81,6 +81,11 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         return mapper.selectPageUserVideo(page, dto);
     }
 
+    @Override
+    public AllVideo checkAllMd5(String md5) {
+        return allVideoService.getMD5(md5);
+    }
+
     /**
      * 分页查询图片信息表
      */
@@ -103,7 +108,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
      * 新增数据
      */
     @Override
-    public UserVideo add(UserVideoDto dto) {
+    public UserVideo add(UserVideo dto) {
         UserVideo value = new UserVideo();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
@@ -148,6 +153,15 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         return mapper.getInfo(id);
     }
 
+
+    public Long getCount(Integer aid,Integer isFree) {
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("aid", aid);
+        if(isFree!=null) {
+            qw.eq("is_free", isFree);
+        }
+        return mapper.selectCount(qw);
+    }
 
     @Override
     public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file) {
@@ -208,6 +222,13 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     }
 
     public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath,String fileName) {
+        Long count= this.getCount(aid,isFree);
+        if(isFree==1 && count>3){
+            throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+        }
+        if(isFree==2 && count>10){
+            throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+        }
         UserAlbum userAlbum = userAlbumService.getInfo(userId, aid + 0L);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
@@ -241,7 +262,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                 allVideo.setSize(size);
                 allVideo.setStatus(VedioStatuEnum.WAIT.getCode());
                 allVideo.setTitle(userAlbum.getTitle());
-                allVideo.setUrl(sourcePath+fileName);
+                allVideo.setUrl(sourcePath+"/"+fileName);
                 allVideoService.save(allVideo);
 
                 UserVideo userVideo = new UserVideo();
@@ -249,7 +270,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                 userVideo.setCreateTime(LocalDateTime.now());
                 userVideo.setAid(aid);
                 userVideo.setStatus(VedioStatuEnum.WAIT.getCode());
-                userVideo.setUrl(sourcePath+fileName);
+                userVideo.setUrl(sourcePath+"/"+fileName);
                 userVideo.setMd5(md5);
                 userVideo.setIsFree(isFree);
                 mapper.insert(userVideo);

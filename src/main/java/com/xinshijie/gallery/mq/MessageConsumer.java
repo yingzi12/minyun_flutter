@@ -43,9 +43,15 @@ public class MessageConsumer {
         String aid = uploadArr[0];
         String md5 = uploadArr[1];
         AllVideo video = allVideoService.getMD5(md5);
+        if(video==null){
+            return;
+        }
         update(video,md5,"", VedioStatuEnum.NORMAL.getCode());
         //获取视频信息
         VideoMetaInfo videoMetaInfo=MediaUtil.getVideoMetaInfo(new File(Constants.videoHcPath+video.getUrl()));
+        if(videoMetaInfo==null){
+            return;
+        }
         video.setSize(videoMetaInfo.getSize());
         video.setDuration(video.getDuration());
         //转换视频为ts

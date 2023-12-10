@@ -2,10 +2,8 @@ package com.xinshijie.gallery.controller;
 
 import cn.hutool.core.util.HashUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.xinshijie.gallery.common.BaseController;
-import com.xinshijie.gallery.common.Constants;
-import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.*;
+import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.mq.MessageProducer;
@@ -49,10 +47,14 @@ public class AdminUserVideoController extends BaseController {
     @Autowired
     private IUserVideoService userVideoService;
 
-    //视频转换前的缓存目录
-//    private String videoHcPath;
 
 
+    @PostMapping("/add")
+    public Result<UserVideo> add(@RequestBody UserVideo dto) {
+        dto.setUserId(getUserId());
+        UserVideo vo = userVideoService.add(dto);
+        return Result.success(vo);
+    }
 
     /**
      * 修改
@@ -110,6 +112,12 @@ public class AdminUserVideoController extends BaseController {
         return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
+    @GetMapping("/checkAllMd5")
+    public Result<AllVideo> checkAllMd5(String md5) {
+//        findDto.setUserId(getUserId());
+        AllVideo vo = userVideoService.checkAllMd5(md5);
+        return Result.success(vo);
+    }
     @PostMapping("/upload")
     public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
         log.info("upload aid:" + aid);
@@ -133,8 +141,18 @@ public class AdminUserVideoController extends BaseController {
                                                    @RequestParam("totalChunks") int totalChunks,
                                                    @RequestParam("identifier") String identifier,
                                                    @RequestParam("aid") Integer aid,
-                                                   @RequestParam("day") String day) {
+                                                   @RequestParam("day") String day,
+                                                   @RequestParam("isFree") Integer isFree,
+                                                   @RequestParam("md5") String md5) {
         try {
+            Long count= userVideoService.getCount(aid,isFree);
+            if(isFree==1 && count>3){
+               throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+            }
+            if(isFree==2 && count>10){
+                throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+            }
+
             String[] nameArr = identifier.split("\\.");
             String hz = nameArr[nameArr.length - 1];
             String hashFileName = HashUtil.hfHash(identifier) + "." + hz;
@@ -161,9 +179,9 @@ public class AdminUserVideoController extends BaseController {
             if (allChunksUploaded(day,hashFileName, totalChunks)) {
                 log.info("All chunks uploaded, starting to merge file: " + hashFileName);
 
-                String md5 = mergeFile(soruceSavePath,hashFileName, totalChunks);
+                 mergeFile(soruceSavePath,hashFileName, totalChunks);
 
-                userVideoService.updateUploadedFiles(getUserId(), aid, 1, 0L, md5, soruceSavePath, hashFileName);
+                userVideoService.updateUploadedFiles(getUserId(), aid, isFree, 0L, md5, soruceSavePath, hashFileName);
             }
         } catch (Exception ex) {
             log.error("Error in file upload: " + identifier, ex);
@@ -232,23 +250,23 @@ public class AdminUserVideoController extends BaseController {
             }
         }
 
-        // 计算简化的哈希
-        try (RandomAccessFile file = new RandomAccessFile(fileOutput.toFile(), "r")) {
-            long[] samplePoints = new long[]{0, fileSize / 2, fileSize - Math.min(fileSize, 4096)};
-            for (long point : samplePoints) {
-                file.seek(point);
-                byte[] bytes = new byte[Math.min((int) (fileSize - point), 4096)];
-                int readSize = file.read(bytes);
-                md.update(bytes, 0, readSize);
-            }
-        }
+        // 计算简化的哈希.改成前段
+//        try (RandomAccessFile file = new RandomAccessFile(fileOutput.toFile(), "r")) {
+//            long[] samplePoints = new long[]{0, fileSize / 2, fileSize - Math.min(fileSize, 4096)};
+//            for (long point : samplePoints) {
+//                file.seek(point);
+//                byte[] bytes = new byte[Math.min((int) (fileSize - point), 4096)];
+//                int readSize = file.read(bytes);
+//                md.update(bytes, 0, readSize);
+//            }
+//        }
 
-        byte[] md5Bytes = md.digest();
-        BigInteger bi = new BigInteger(1, md5Bytes);
-        String md5 = String.format("%032x", bi);
+//        byte[] md5Bytes = md.digest();
+//        BigInteger bi = new BigInteger(1, md5Bytes);
+//        String md5 = String.format("%032x", bi);
 
-        log.info("File merged successfully: {}, MD5: {}", fileOutput, md5);
-        return md5;
+//        log.info("File merged successfully: {}, MD5: {}", fileOutput, md5);
+        return "";
     }
 
 }

@@ -146,7 +146,7 @@ public class Constants {
     /**
      * 视频缓存目录
      */
-    public static String videoHcPath;
+    public static String videoHcPath="./data/vedio/";
 
 
 }

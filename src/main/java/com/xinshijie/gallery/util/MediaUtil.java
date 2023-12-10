@@ -1054,4 +1054,55 @@ public class MediaUtil {
         }
     }
 
+    /**
+     * 将视频压缩并转换为 DASH 格式
+     *DASH (Dynamic Adaptive Streaming over HTTP) 文件组成主要包括两个核心部分：媒体呈现描述文件 (MPD, Media Presentation Description) 和一系列的媒体分段文件。
+     * 结构示例
+     * MPD 文件：video.mpd
+     * 视频分段：video_360p_001.m4s, video_360p_002.m4s, video_720p_001.m4s, video_720p_002.m4s 等。
+     * 音频分段：audio_eng_001.m4s, audio_eng_002.m4s 等。
+     * @param videoFile 源视频文件
+     * @param dashDirectory 存放 DASH 输出文件的目录
+     * @param outputFileName 输出文件的名称，不包括扩展名
+     * @throws IOException 当处理视频时发生 IO 异常
+     */
+    public static void convertVideoToDash(File videoFile, File dashDirectory, String outputFileName) throws IOException {
+        if (videoFile == null || !videoFile.exists()) {
+            throw new RuntimeException("源视频文件不存在");
+        }
+        if (dashDirectory == null || !dashDirectory.exists()) {
+            throw new RuntimeException("DASH文件目录不存在");
+        }
+        if (StringUtils.isBlank(outputFileName)) {
+            throw new RuntimeException("输出文件名不能为空");
+        }
+
+        try {
+            List<String> command = new ArrayList<>();
+            command.add("-i");
+            command.add(videoFile.getAbsolutePath());
+            command.add("-c:v");
+            command.add("libx264"); // 使用 H.264 视频编码器
+            command.add("-b:v");
+            command.add("800k"); // 设置视频比特率，例如800 kbps
+            command.add("-c:a");
+            command.add("aac"); // 使用 AAC 音频编码器
+            command.add("-b:a");
+            command.add("128k"); // 设置音频比特率，例如128 kbps
+            command.add("-f");
+            command.add("dash");
+            command.add("-use_template");
+            command.add("1");
+            command.add("-use_timeline");
+            command.add("1");
+            command.add(dashDirectory.getAbsolutePath() + "/" + outputFileName + ".mpd");
+
+            executeCommand(command);
+        } catch (Exception e) {
+            log.error("--- 转换视频到DASH格式过程中出现错误 ---", e);
+            throw e;
+        }
+    }
+
+
 }

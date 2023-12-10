@@ -135,7 +135,7 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
-    private static final Semaphore semaphore = new Semaphore(5);
+//    private static final Semaphore semaphore = new Semaphore(5);
 
     /**
      * 拆分视频，最多同步5个
@@ -146,32 +146,33 @@ public class FileServiceImpl implements IFileService {
      * @return
      */
     public String chargeVideoThreadFile(String headPath, String title, String sourcePathUrl) {
-        boolean acquired = false;
+//        boolean acquired = false;
         try {
             // 尝试获取许可，最多等待一定时间
-            acquired = semaphore.tryAcquire(1000, TimeUnit.MILLISECONDS);
-            if (!acquired) {
-                // 无法获得许可，可能是因为已达到最大并发数
-                throw new ServiceException("System is busy, please try again later.");
-            }
+//            acquired = semaphore.tryAcquire(1000, TimeUnit.MILLISECONDS);
+//            if (!acquired) {
+//                // 无法获得许可，可能是因为已达到最大并发数
+//                throw new ServiceException("System is busy, please try again later.");
+//            }
 
             // 你的方法逻辑
-            Path sourcePath = Paths.get(sourcePathUrl);
+            Path sourcePath = Paths.get(Constants.videoHcPath+sourcePathUrl);
+            String day=LocalDate.now().toString();
             String[] fileNameArr = sourcePath.getFileName().toString().split("\\.");
-            String vedioPath = "/" + LocalDate.now() + "/" + fileNameArr[0];
-            String m3u8Path = "/" + LocalDate.now() + "/" + fileNameArr[0] + "/" + fileNameArr[0] + ".m3u8";
-
-            MediaUtil.splitMp4ToTsSegmentsWithIndex(new File(sourcePathUrl), new File(vedioPath), new File(m3u8Path));
+            String vedioPath ="/video/" + day+ "/" + fileNameArr[0];
+            String m3u8Path = vedioPath+"/" + fileNameArr[0] + ".m3u8";
+            File destinationFile = new File(savePath + m3u8Path);
+            File parentDir = destinationFile.getParentFile();
+            // 如果父目录不存在，尝试创建它
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+            MediaUtil.splitMp4ToTsSegmentsWithIndex(new File(Constants.videoHcPath+sourcePathUrl), new File(savePath +vedioPath), new File(savePath +m3u8Path));
             return m3u8Path;
 
         } catch (Exception ex) {
             log.error("Error in file upload: " + title, ex);
             throw new ServiceException(ResultCodeEnum.SYSTEM_INNER_ERROR);
-        } finally {
-            if (acquired) {
-                // 确保在方法结束时释放许可
-                semaphore.release();
-            }
         }
     }
 

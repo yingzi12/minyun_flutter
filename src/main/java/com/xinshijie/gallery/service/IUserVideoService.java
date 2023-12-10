@@ -2,6 +2,7 @@ package com.xinshijie.gallery.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.vo.UserVideoVo;
@@ -31,6 +32,7 @@ public interface IUserVideoService extends IService<UserVideo> {
      */
     Page<UserVideoVo> selectPageUserVideo(UserVideoDto dto);
 
+    AllVideo checkAllMd5(String md5);
     /**
      * 分页查询信息表
      */
@@ -39,7 +41,7 @@ public interface IUserVideoService extends IService<UserVideo> {
     /**
      * 新增数据
      */
-    UserVideo add(UserVideoDto id);
+    UserVideo add(UserVideo id);
 
     /**
      * 根据id修改数据
@@ -58,6 +60,8 @@ public interface IUserVideoService extends IService<UserVideo> {
      * 根据id数据
      */
     UserVideoVo getInfo(Long id);
+
+    Long getCount(Integer aid,Integer isFree);
 
     String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file);
 

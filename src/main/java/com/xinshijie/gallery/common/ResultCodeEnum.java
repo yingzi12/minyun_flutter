@@ -126,6 +126,8 @@ public enum ResultCodeEnum {
 
     UPLOAD_IMAGE_ERROR(999008118, "上传图片错误"),
 
+    VEDIO_UPLOAD_MAX(999008119, "超过最大许可上传限制"),
+
     ;
 
 
