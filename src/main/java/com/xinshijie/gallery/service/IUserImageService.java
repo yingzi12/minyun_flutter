@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserImage;
@@ -31,7 +32,7 @@ public interface IUserImageService extends IService<UserImage> {
      * 分页查询。普通方法
      * 查询图片信息表
      */
-    Page<UserImageVo> selectPageUserImage(UserImageDto dto);
+    IPage<UserImageVo> selectPageUserImage(UserImageDto dto);
 
     Long selectCount(Integer aid,Integer userId,Integer isFree);
 

@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
@@ -74,11 +75,11 @@ public class UserImageController extends BaseController {
             findDto.setPageSize(6L);
         }
         if(findDto.getIsFree() ==null ||
-                (findDto.getIsFree()==2 && userAlbumService.isCheck(userId,findDto.getAid()))
+                (findDto.getIsFree()==2 && !userAlbumService.isCheck(findDto.getAid(),userId))
         ){
             throw new ServiceException(ResultCodeEnum.NOT_BUY);
         }
-        Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
+        IPage<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
         Long count = userImageService.selectCount(findDto.getAid(),getUserIdNoLogin(),findDto.getIsFree());
         return Result.success(vo.getRecords(), count.intValue());
     }

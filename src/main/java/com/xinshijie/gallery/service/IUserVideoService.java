@@ -39,7 +39,7 @@ public interface IUserVideoService extends IService<UserVideo> {
 
     AllVideo checkAllMd5(String md5);
 
-    Long selectCount(UserVideoDto dto);
+    Long selectCount(Integer aid,Integer userId,Integer isFree);
     /**
      * 分页查询信息表
      */

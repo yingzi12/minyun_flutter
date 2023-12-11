@@ -132,7 +132,7 @@ public class AdminUserVideoController extends BaseController {
         UserVideoDto videoDto=new UserVideoDto();
         BeanUtils.copyProperties(findDto,videoDto);
         List<UserVideoVo> vo = userVideoService.selectUserVideoList(videoDto);
-        Long count=userVideoService.selectCount(videoDto);
+        Long count=userVideoService.selectCount(videoDto.getAid(),videoDto.getUserId(),videoDto.getIsFree());
         return Result.success(vo, count.intValue());
     }
 

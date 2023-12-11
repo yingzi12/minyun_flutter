@@ -61,9 +61,13 @@ public class UserAlbumController extends BaseController {
         UserAlbum userAlbum = userAlbumService.getInfo(userId, id);
         List<UserImage> imageList=userImageService.selectAllAid(id,1);
         List<UserVideo> videoList=userVideoService.selectAllAid(id,1);
+        Long imageCount = userImageService.selectCount(id,userId,2);
+        Long videoCount = userVideoService.selectCount(id,userId,2);
 
         UserAlbumVo vo=new UserAlbumVo();
         BeanUtils.copyProperties(userAlbum,vo);
+        vo.setImageCount(imageCount.intValue());
+        vo.setVideoCount(videoCount.intValue());
         if(vo.getUserId() == userId){
             vo.setIsVip(1);
             vo.setIsSee(true);

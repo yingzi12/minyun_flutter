@@ -148,4 +148,7 @@ public class UserAlbumVo implements Serializable {
 
     private List<UserVideo> videoList;
 
+    private Integer imageCount;
+    private Integer videoCount;
+
 }

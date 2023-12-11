@@ -36,7 +36,7 @@ public class UserVideoDto implements Serializable {
 
     private LocalDateTime createTime;
 
-    private Long aid;
+    private Integer aid;
 
     private Long pageNum;
 

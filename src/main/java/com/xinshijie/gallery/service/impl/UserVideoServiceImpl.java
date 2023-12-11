@@ -70,7 +70,9 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public List<UserVideo> selectAllAid(Integer aid, Integer isFree) {
         QueryWrapper<UserVideo> qw=new QueryWrapper<>();
         qw.eq("aid",aid);
-        qw.eq("is_free",isFree);
+        if(isFree !=null) {
+            qw.eq("is_free", isFree);
+        }
         return mapper.selectList(qw);
     }
 
@@ -91,16 +93,15 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         return mapper.selectPageUserVideo(page, dto);
     }
     @Override
-    public Long selectCount(UserVideoDto dto) {
+    public Long selectCount(Integer aid,Integer userId,Integer isFree) {
         QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-        qw.eq("aid",dto.getAid());
-        if(dto.getUserId()!=null) {
-            qw.eq("user_id", dto.getUserId());
+        qw.eq("aid",aid);
+        if(userId != null) {
+            qw.eq("user_id", userId);
         }
-        if(dto.getIsFree() != null){
-            qw.eq("is_free",dto.getIsFree());
+        if(isFree != null){
+            qw.eq("is_free",isFree);
         }
-
         return mapper.selectCount(qw);
     }
     @Override

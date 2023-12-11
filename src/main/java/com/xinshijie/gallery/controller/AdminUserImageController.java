@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
@@ -108,7 +109,7 @@ public class AdminUserImageController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserImageVo>> select(UserImageDto findDto) {
         findDto.setUserId(getUserId());
-        Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
+        IPage<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
         Long count=userImageService.selectCount(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
         return Result.success(vo.getRecords(),count.intValue());
     }

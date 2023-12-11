@@ -2,6 +2,7 @@ package com.xinshijie.gallery.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.domain.UserImage;
@@ -32,7 +33,7 @@ public interface UserImageMapper extends BaseMapper<UserImage> {
      * 普通方法
      * 分页查询讨论主题表
      */
-    Page<UserImageVo> selectPageUserImage(Page<UserImageVo> page, @Param("dto") UserImageDto dto);
+    IPage<UserImageVo> selectPageUserImage(IPage<UserImage> page, @Param("dto") UserImageDto dto);
 
     /**
      * 分页查询讨论主题表

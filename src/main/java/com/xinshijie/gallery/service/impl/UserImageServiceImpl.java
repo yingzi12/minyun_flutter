@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
@@ -63,7 +64,9 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public List<UserImage> selectAllAid(Integer aid,Integer isFree) {
         QueryWrapper<UserImage> qw=new QueryWrapper<>();
         qw.eq("aid",aid);
-        qw.eq("is_free",isFree);
+        if(isFree !=null) {
+            qw.eq("is_free", isFree);
+        }
         return mapper.selectList(qw);
     }
 
@@ -71,8 +74,8 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserImageVo> selectPageUserImage(UserImageDto dto) {
-        Page<UserImageVo> page = new Page<>();
+    public IPage<UserImageVo> selectPageUserImage(UserImageDto dto) {
+        Page<UserImage> page = new Page<>();
         if (dto.getPageNum() == null) {
             dto.setPageNum(1L);
         }
@@ -80,8 +83,8 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
-        Page<UserImageVo> value = mapper.selectPageUserImage(page, dto);
+        page.setCurrent(dto.getPageNum());
+        IPage<UserImageVo> value = mapper.selectPageUserImage(page, dto);
         return value;
     }
 
