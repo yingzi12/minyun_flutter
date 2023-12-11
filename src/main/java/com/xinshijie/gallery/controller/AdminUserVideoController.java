@@ -4,10 +4,13 @@ import cn.hutool.core.util.HashUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.AllVideo;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.dto.UserVideoFindDto;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.mq.MessageProducer;
+import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,7 +52,8 @@ public class AdminUserVideoController extends BaseController {
     @Autowired
     private IUserVideoService userVideoService;
 
-
+    @Autowired
+    private IUserAlbumService userAlbumService;
 
     @PostMapping("/add")
     public Result<UserVideo> add(@RequestBody UserVideo dto) {
@@ -78,12 +82,26 @@ public class AdminUserVideoController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
+        UserAlbum userAlbum = userAlbumService.getById(id);
+        if(userAlbum==null){
+            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
+        }
+        if(userAlbum.getStatus()!= AlbumStatuEnum.NORMAL.getCode()){
+            throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
+        }
         Integer vo = userVideoService.delById(getUserId(), id);
         return Result.success(vo);
     }
 
     @GetMapping(value = "/updateIsFree")
     public Result<Integer> updateIsFree(@RequestParam("id") Long id, @RequestParam("isFree") Integer isFree) {
+        UserAlbum userAlbum = userAlbumService.getById(id);
+        if(userAlbum==null){
+            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
+        }
+        if(userAlbum.getStatus()!= AlbumStatuEnum.NORMAL.getCode()){
+            throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
+        }
         Integer vo = userVideoService.updateIsFree(getUserId(), id, isFree);
         return Result.success(vo);
     }

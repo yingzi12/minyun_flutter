@@ -3,8 +3,13 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.UserImageDto;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
+import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserImageService;
 import com.xinshijie.gallery.vo.ResuImageVo;
 import com.xinshijie.gallery.vo.UserImageVo;
@@ -36,7 +41,8 @@ public class AdminUserImageController extends BaseController {
 
     @Autowired
     private IUserImageService userImageService;
-
+    @Autowired
+    private IUserAlbumService userAlbumService;
     /**
      * 删除
      *
@@ -44,12 +50,26 @@ public class AdminUserImageController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
+        UserAlbum userAlbum = userAlbumService.getById(id);
+        if(userAlbum==null){
+            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
+        }
+        if(userAlbum.getStatus()!= AlbumStatuEnum.NORMAL.getCode()){
+            throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
+        }
         Integer vo = userImageService.delById(getUserId(), id);
         return Result.success(vo);
     }
 
     @GetMapping(value = "/updateIsFree")
     public Result<Integer> updateIsFree(@RequestParam("id") Long id, @RequestParam("isFree") Integer isFree) {
+        UserAlbum userAlbum = userAlbumService.getById(id);
+        if(userAlbum==null){
+            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
+        }
+        if(userAlbum.getStatus()!= AlbumStatuEnum.NORMAL.getCode()){
+            throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
+        }
         Integer vo = userImageService.updateIsFree(getUserId(), id, isFree);
         return Result.success(vo);
     }
@@ -65,7 +85,6 @@ public class AdminUserImageController extends BaseController {
         Integer vo = userImageService.edit(dto);
         return Result.success(vo);
     }
-
 
     /**
      * 查询详情
@@ -92,27 +111,6 @@ public class AdminUserImageController extends BaseController {
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
         Long count=userImageService.selectCount(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
         return Result.success(vo.getRecords(),count.intValue());
-    }
-
-
-    @PostMapping("/uploadImages")
-    public List<ResuImageVo> uploadEditFiles(@RequestParam("file") MultipartFile[] files) {
-        List<ResuImageVo> uploadedFiles = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            // You can still compute MD5 or perform other operations on each file
-            // String md5 = DigestUtils.md5Hex(file.getInputStream());
-
-            // Process each file and add the result to the uploadedFiles list
-            // For example, you can save each file and create a new ResuImageVo object for it
-            // ResuImageVo resuImage = saveFile(file);
-            // uploadedFiles.add(resuImage);
-
-            // For now, let's just add a placeholder result for each file
-//            uploadedFiles.add(new ResuImageVo(file.getOriginalFilename()));
-        }
-
-        return uploadedFiles;
     }
 
     @PostMapping("/upload")

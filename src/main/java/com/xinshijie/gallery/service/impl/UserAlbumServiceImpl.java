@@ -173,6 +173,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             userAlbum.setIsSee(false);
             return false;
         }
+        if(userAlbum.getUserId() == userId){
+            userAlbum.setIsSee(true);
+            return true;
+        }
         //判断用户是否是VIP
         UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
         if(userVip!=null){
@@ -208,6 +212,35 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         return false;
     }
 
+
+    public Boolean isCheck(Integer aid,Integer userId) {
+        UserAlbum userAlbum = mapper.selectById(aid);
+        //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
+        //判断是否需要付费
+        if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
+            return true;
+        }
+        if(userId == null){
+            return false;
+        }
+        if(userAlbum.getUserId() == userId){
+            return true;
+        }
+        //判断用户是否是VIP
+        UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
+        //判断是否vip免费
+        if (AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())) {
+            if (userVip != null) {
+                return true;
+            }
+        }
+        //判断是否是否已经购买
+        UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
+        if (userBuyAlbum != null) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public Boolean updateCharge(Integer userId, Long id, Integer charge, Double price, Double vipPrice) {

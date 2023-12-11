@@ -130,6 +130,10 @@ public enum ResultCodeEnum {
 
     VEDIO_IS_EXICT(999008120, "视频已经存在"),
 
+    NOT_BUY(999008121, "暂未购买"),
+
+    NOT_POST_STATUS(999008122, "只有发布状态才能修改"),
+
     ;
 
 

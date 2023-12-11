@@ -3,6 +3,8 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
@@ -64,13 +66,18 @@ public class UserImageController extends BaseController {
 
     @GetMapping("/list")
     public Result<List<UserImageVo>> select(UserImageDto findDto) {
+        Integer userId=getUserIdNoLogin();
         if(findDto.getPageNum()==null){
             findDto.setPageNum(1L);
         }
         if(findDto.getPageSize()==null){
             findDto.setPageSize(6L);
         }
-
+        if(findDto.getIsFree() ==null ||
+                (findDto.getIsFree()==2 && userAlbumService.isCheck(userId,findDto.getAid()))
+        ){
+            throw new ServiceException(ResultCodeEnum.NOT_BUY);
+        }
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
         Long count = userImageService.selectCount(findDto.getAid(),getUserIdNoLogin(),findDto.getIsFree());
         return Result.success(vo.getRecords(), count.intValue());

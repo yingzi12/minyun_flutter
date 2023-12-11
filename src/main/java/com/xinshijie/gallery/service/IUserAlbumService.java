@@ -58,6 +58,8 @@ public interface IUserAlbumService extends IService<UserAlbum> {
 
     Boolean isSee(UserAlbumVo userAlbum,Integer userId);
 
+    Boolean isCheck(Integer aid,Integer userId);
+
     Boolean updateCharge(Integer userId, Long id, Integer charge, Double price, Double vipPrice);
 
 
