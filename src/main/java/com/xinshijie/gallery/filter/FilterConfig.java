@@ -12,7 +12,7 @@ public class FilterConfig {
     public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilter(RedisTemplate<String, String> redisTemplate) {
         FilterRegistrationBean<JwtAuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtAuthenticationFilter(redisTemplate, "yourSecretKey"));
-        registrationBean.addUrlPatterns("/admin/*"); // Set the URL patterns for the filter
+        registrationBean.addUrlPatterns("/*"); // Set the URL patterns for the filter
         return registrationBean;
     }
 }

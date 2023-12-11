@@ -146,7 +146,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId, Long id) {
+    public Integer delById(Integer userId, Integer id) {
         return mapper.delById(userId, id);
     }
 
@@ -154,35 +154,58 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
      * 根据id数据
      */
     @Override
-    public UserAlbum getInfo(Integer userId, Long id) {
+    public UserAlbum getInfo(Integer userId, Integer id) {
         UserAlbum userAlbum = mapper.selectById(id);
+        if(userAlbum == null){
+            throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
+        }
+        return userAlbum;
+    }
 
-        //是自己访问
-        if (userId == userAlbum.getUserId()) {
-            return userAlbum;
-        } else {
-            //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
-            //判断是否需要付费
-            if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
-                return userAlbum;
-            }
-
-            //判断是否vip免费
-            if (AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())) {
-                //判断用户是否是VIP
-                UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
-                if (userVip != null) {
-                    return userAlbum;
-                }
-            }
-            //判断是否是否已经购买
-            UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
-            if (userBuyAlbum != null) {
-                return userAlbum;
-            } else {
-                throw new ServiceException(ResultCodeEnum.INSUFFICIENT_PERMISSIONS);
+    public Boolean isSee(UserAlbumVo userAlbum,Integer userId) {
+        //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
+        //判断是否需要付费
+        if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
+            userAlbum.setIsSee(true);
+            return true;
+        }
+        if(userId == null){
+            userAlbum.setIsSee(false);
+            return false;
+        }
+        //判断用户是否是VIP
+        UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
+        if(userVip!=null){
+            userAlbum.setIsVip(1);
+        }else {
+            userAlbum.setIsVip(0);
+        }
+        //判断是否vip免费
+        if (AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())) {
+            if (userVip != null) {
+                userAlbum.setIsSee(true);
+                return true;
             }
         }
+        //判断是否是否已经购买
+        UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
+        if (userBuyAlbum != null) {
+            userAlbum.setIsSee(true);
+            return true;
+        } else{
+            if (AlbumChargeEnum.VIP_DISCOUNT.getCode().equals(userAlbum.getCharge())) {
+                if (userVip != null) {
+                   userAlbum.setPrice(userAlbum.getVipPrice());
+                }
+            }
+            if (AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(userAlbum.getCharge())) {
+                if (userVip != null) {
+                    userAlbum.setPrice(userAlbum.getVipPrice());
+                }
+            }
+        }
+        userAlbum.setIsSee(false);
+        return false;
     }
 
 

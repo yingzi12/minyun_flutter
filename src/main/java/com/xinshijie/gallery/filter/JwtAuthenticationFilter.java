@@ -43,55 +43,92 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             httpServletResponse.setHeader("Access-Control-Max-Age", "3600"); // 预检请求的缓存时间，以秒为单位
             httpServletResponse.setStatus(HttpServletResponse.SC_OK); // HTTP 200 OK
         } else {
-            log.info("获取到token:" + authHeader);
-            log.info("获取到token url:" + httpServletRequest.getRequestURI());
+            if(!httpServletRequest.getRequestURI().startsWith("/admin/")){
+                getToken(httpServletRequest,authHeader);
+                filterChain.doFilter(servletRequest, servletResponse);
+            }else {
+                log.info("获取到token:" + authHeader);
+                log.info("获取到token url:" + httpServletRequest.getRequestURI());
 
-            if (authHeader != null && !authHeader.isEmpty()) {
-                try {
-                    String token = "";
-                    if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                        token = authHeader.substring("Bearer ".length());
-                    } else {
-                        sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
-                    }
-                    log.info("Token: " + token);
-                    boolean validate = JWT.of(token).setKey(Constants.TOKEN_KEY).verify();
+                if (authHeader != null && !authHeader.isEmpty()) {
+                    try {
+                        String token = "";
+                        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                            token = authHeader.substring("Bearer ".length());
+                        } else {
+                            sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
+                        }
+                        log.info("Token: " + token);
+                        boolean validate = JWT.of(token).setKey(Constants.TOKEN_KEY).verify();
 
-                    JWT jwt = JWT.of(token);
-                    jwt.getHeader(JWTHeader.TYPE);
-                    jwt.getHeader(JWTHeader.ALGORITHM);
-                    String userInfo = jwt.getPayload("user").toString();
-                    System.out.println("userInfo: " + userInfo);
-                    httpServletRequest.setAttribute("userInfo", userInfo); // Or use custom header
-                    SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
-                    if (systemUserVo != null) {
-                        if (redisTemplate.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
-                            redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
-                            String oldToken = redisTemplate.opsForValue().get(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
-                            if (oldToken.equals(token)) {
-                                httpServletRequest.setAttribute("userId", systemUserVo.getId());
-                                httpServletRequest.setAttribute("userName", systemUserVo.getName());
-                                filterChain.doFilter(servletRequest, servletResponse);
+                        JWT jwt = JWT.of(token);
+                        jwt.getHeader(JWTHeader.TYPE);
+                        jwt.getHeader(JWTHeader.ALGORITHM);
+                        String userInfo = jwt.getPayload("user").toString();
+                        System.out.println("userInfo: " + userInfo);
+                        httpServletRequest.setAttribute("userInfo", userInfo); // Or use custom header
+                        SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
+                        if (systemUserVo != null) {
+                            if (redisTemplate.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
+                                redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
+                                String oldToken = redisTemplate.opsForValue().get(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
+                                if (oldToken.equals(token)) {
+                                    httpServletRequest.setAttribute("userId", systemUserVo.getId());
+                                    httpServletRequest.setAttribute("userName", systemUserVo.getName());
+                                    filterChain.doFilter(servletRequest, servletResponse);
+                                } else {
+                                    sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
+                                }
                             } else {
                                 sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                             }
                         } else {
                             sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                         }
-                    } else {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.error("错误，出现异常，", e);
                         sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    log.error("错误，出现异常，", e);
+                } else {
                     sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                 }
-            } else {
-                sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
-
             }
         }
 
+    }
+
+    public String getToken(HttpServletRequest httpServletRequest ,String authHeader){
+        if (authHeader != null && !authHeader.isEmpty()) {
+            try {
+                String token = "";
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    token = authHeader.substring("Bearer ".length());
+                }else{
+                    return "";
+                }
+                boolean validate = JWT.of(token).setKey(Constants.TOKEN_KEY).verify();
+                JWT jwt = JWT.of(token);
+                jwt.getHeader(JWTHeader.TYPE);
+                jwt.getHeader(JWTHeader.ALGORITHM);
+                String userInfo = jwt.getPayload("user").toString();
+                httpServletRequest.setAttribute("userInfo", userInfo); // Or use custom header
+                SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
+                if (systemUserVo != null) {
+                    if (redisTemplate.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
+                        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
+                        String oldToken = redisTemplate.opsForValue().get(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
+                        if (oldToken.equals(token)) {
+                            httpServletRequest.setAttribute("userId", systemUserVo.getId());
+                            httpServletRequest.setAttribute("userName", systemUserVo.getName());
+                        }
+                    }
+                }
+            }catch (Exception ex){
+                return "";
+            }
+        }
+        return "";
     }
 
     private void sendErrorResponse(HttpServletResponse response, ResultCodeEnum resultCode) throws IOException {

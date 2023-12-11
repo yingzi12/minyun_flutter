@@ -3,6 +3,8 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
@@ -58,7 +60,7 @@ public class AdminUserAlbumController extends BaseController {
      */
 
     @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
+    public Result<Integer> del(@PathVariable("id") Integer id) {
         Integer vo = userAlbumService.delById(getUserId(), id);
         return Result.success(vo);
     }
@@ -84,8 +86,12 @@ public class AdminUserAlbumController extends BaseController {
      * @return
      */
     @GetMapping(value = "/getInfo/{id}")
-    public Result<UserAlbum> getInfo(@PathVariable("id") Long id) {
-        UserAlbum vo = userAlbumService.getInfo(getUserId(), id);
+    public Result<UserAlbum> getInfo(@PathVariable("id") Integer id) {
+        Integer userId=getUserId();
+        UserAlbum vo = userAlbumService.getInfo(userId, id);
+        if(vo.getUserId() != userId){
+            throw new ServiceException(ResultCodeEnum.INSUFFICIENT_PERMISSIONS);
+        }
         return Result.success(vo);
     }
 

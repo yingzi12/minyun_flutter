@@ -3,6 +3,7 @@ package com.xinshijie.gallery.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.AllVideo;
+import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.dto.UserVideoDto;
@@ -26,6 +27,9 @@ public interface IUserVideoService extends IService<UserVideo> {
      * 查询信息表
      */
     List<UserVideoVo> selectUserVideoList(UserVideoDto dto);
+
+    List<UserVideo> selectAllAid(Integer aid, Integer status);
+
 
     /**
      * 分页查询。普通方法

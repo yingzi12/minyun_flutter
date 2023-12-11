@@ -25,6 +25,8 @@ public interface IUserImageService extends IService<UserImage> {
      */
     List<UserImageVo> selectUserImageList(UserImageDto dto);
 
+    List<UserImage> selectAllAid(Integer aid,Integer isFee);
+
     /**
      * 分页查询。普通方法
      * 查询图片信息表

@@ -2,11 +2,14 @@ package com.xinshijie.gallery.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.xinshijie.gallery.domain.UserImage;
+import com.xinshijie.gallery.domain.UserVideo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -25,13 +28,11 @@ public class UserAlbumVo implements Serializable {
 
     private Integer id;
 
-
     /**
      * 标题
      */
     @Schema(description = "标题 ")
     private String title;
-
 
     /**
      * 创建时间
@@ -39,21 +40,18 @@ public class UserAlbumVo implements Serializable {
     @Schema(description = "创建时间 ")
     private LocalDateTime createTime;
 
-
     /**
      * 更新时间
      */
     @Schema(description = "更新时间 ")
     private LocalDateTime updateTime;
 
-
     /**
      * 用户id
      */
     @Schema(description = "用户id ")
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
-
+    private Integer userId;
 
     /**
      * 用户名称
@@ -61,13 +59,11 @@ public class UserAlbumVo implements Serializable {
     @Schema(description = "用户名称 ")
     private String userName;
 
-
     /**
      * 简介
      */
     @Schema(description = "简介 ")
     private String intro;
-
 
     /**
      * 标签
@@ -75,13 +71,11 @@ public class UserAlbumVo implements Serializable {
     @Schema(description = "标签 ")
     private String tags;
 
-
     /**
      * 折扣
      */
     @Schema(description = "折扣 ")
     private Double discount;
-
 
     /**
      * 模特
@@ -126,13 +120,11 @@ public class UserAlbumVo implements Serializable {
 
     private Double score;
 
-
     /**
      * 介绍
      */
     @Schema(description = "介绍 ")
     private String introduce;
-
 
     /**
      * 状态
@@ -147,4 +139,13 @@ public class UserAlbumVo implements Serializable {
 
     @Schema(description = " vip 价格 ")
     private Double vipPrice;
+
+    private Boolean isSee;
+
+    private Integer isVip;
+
+    private List<UserImage> imageList;
+
+    private List<UserVideo> videoList;
+
 }

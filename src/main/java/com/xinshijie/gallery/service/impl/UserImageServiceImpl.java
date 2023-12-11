@@ -59,6 +59,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         return mapper.selectListUserImage(dto);
     }
 
+    @Override
+    public List<UserImage> selectAllAid(Integer aid,Integer isFee) {
+        QueryWrapper<UserImage> qw=new QueryWrapper<>();
+        qw.eq("aid",aid);
+        qw.eq("isFee",1);
+        return mapper.selectList(qw);
+    }
+
     /**
      * 分页查询图片信息表
      */
@@ -157,11 +165,10 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
 
     @Override
     public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file) {
-        UserAlbum userAlbum = userAlbumService.getInfo(userId, aid + 0L);
+        UserAlbum userAlbum = userAlbumService.getInfo(userId, aid);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
-        String url = "";
         try {
             String md5 = fileService.getMD5(file.getInputStream());
 
