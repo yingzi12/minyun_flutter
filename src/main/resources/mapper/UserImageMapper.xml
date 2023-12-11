@@ -16,10 +16,7 @@
             resultType="com.xinshijie.gallery.vo.UserImageVo">
         <include refid="selectUserImage"/>
         <where>
-            <if test="id !=null ">and id= #{id}</if>
-            <if test="url !=null ">and url= #{url}</if>
             <if test="isFree !=null ">and is_free= #{isFree}</if>
-            <if test="createTime !=null ">and create_time= #{createTime}</if>
             <if test="userId !=null ">and user_id= #{userId}</if>
             <if test="aid !=null ">and aid= #{aid}</if>
         </where>
@@ -28,8 +25,7 @@
     <select id="selectPageUserImage" resultType="com.xinshijie.gallery.vo.UserImageVo">
         <include refid="selectUserImage"/>
         <where>
-            <if test="dto.isFree !=null ">and is_free= #{isFree}</if>
-            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+            <if test="dto.isFree !=null ">and is_free= #{dto.isFree}</if>
             <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
             <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
         </where>

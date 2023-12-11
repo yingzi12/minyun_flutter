@@ -93,7 +93,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
             qw.eq("user_id", userId);
         }
         if(isFree != null){
-            qw.eq("isFree",isFree);
+            qw.eq("is_free",isFree);
         }
         return mapper.selectCount(qw);
     }
@@ -105,7 +105,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public Page<UserImageVo> getPageUserImage(UserImageDto dto) {
         Page<UserImageVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

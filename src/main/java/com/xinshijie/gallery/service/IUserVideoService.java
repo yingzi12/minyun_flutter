@@ -28,7 +28,7 @@ public interface IUserVideoService extends IService<UserVideo> {
      */
     List<UserVideoVo> selectUserVideoList(UserVideoDto dto);
 
-    List<UserVideo> selectAllAid(Integer aid, Integer status);
+    List<UserVideo> selectAllAid(Integer aid, Integer isFree);
 
 
     /**
