@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserAlbum;
@@ -29,12 +30,12 @@ public interface IUserAlbumService extends IService<UserAlbum> {
      * 分页查询。普通方法
      * 查询图片信息表
      */
-    Page<UserAlbumVo> selectPageUserAlbum(UserAlbumDto dto);
+    IPage<UserAlbum> selectPageUserAlbum(UserAlbumDto dto);
 
     /**
      * 分页查询信息表
      */
-    Page<UserAlbumVo> getPageUserAlbum(UserAlbumDto dto);
+    IPage<UserAlbum> getPageUserAlbum(UserAlbumDto dto);
 
     /**
      * 新增数据

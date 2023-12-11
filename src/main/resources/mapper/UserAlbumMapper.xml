@@ -56,7 +56,7 @@
         </where>
     </select>
 
-    <select id="selectPageUserAlbum" resultType="com.xinshijie.gallery.vo.UserAlbumVo">
+    <select id="selectPageUserAlbum" resultType="com.xinshijie.gallery.domain.UserAlbum">
         <include refid="selectUserAlbum"/>
         <where>
             <if test="dto.id !=null ">and id= #{dto.id}</if>
@@ -83,7 +83,7 @@
         </where>
     </select>
 
-    <select id="getPageUserAlbum" resultType="com.xinshijie.gallery.vo.UserAlbumVo">
+    <select id="getPageUserAlbum" resultType="com.xinshijie.gallery.domain.UserAlbum">
         <include refid="selectUserAlbum"/>
         ${ew.customSqlSegment}
     </select>

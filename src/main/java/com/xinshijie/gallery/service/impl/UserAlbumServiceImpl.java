@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
@@ -68,10 +69,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserAlbumVo> selectPageUserAlbum(UserAlbumDto dto) {
-        Page<UserAlbumVo> page = new Page<>();
+    public IPage<UserAlbum> selectPageUserAlbum(UserAlbumDto dto) {
+        Page<UserAlbum> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -86,8 +87,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserAlbumVo> getPageUserAlbum(UserAlbumDto dto) {
-        Page<UserAlbumVo> page = new Page<>();
+    public IPage<UserAlbum> getPageUserAlbum(UserAlbumDto dto) {
+        Page<UserAlbum> page = new Page<>();
         if (dto.getPageNum() == null) {
             dto.setPageNum(20L);
         }
@@ -97,7 +98,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         page.setSize(dto.getPageSize());
         page.setCurrent(dto.getPageNum());
 
-        QueryWrapper<UserAlbumVo> qw = new QueryWrapper<>();
+        QueryWrapper<UserAlbum> qw = new QueryWrapper<>();
         return mapper.getPageUserAlbum(page, qw);
     }
 

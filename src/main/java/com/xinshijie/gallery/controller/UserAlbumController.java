@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
@@ -87,9 +88,9 @@ public class UserAlbumController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserAlbumVo>> select(UserAlbumDto findDto) {
+    public Result<List<UserAlbum>> select(UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
-        Page<UserAlbumVo> vo = userAlbumService.selectPageUserAlbum(findDto);
+        IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
     }
 
