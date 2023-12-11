@@ -89,7 +89,7 @@ public class AdminUserSettingVipController extends BaseController {
     }
 
     @GetMapping(value = "/updateStatus")
-    public Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
+    public Result<Boolean> updateStatus(@RequestParam("id") Long id, @RequestParam("status") Integer status) {
         Boolean vo = userSettingVipService.updateStatus(getUserId(), id, status);
         return Result.success(vo);
     }
@@ -102,9 +102,9 @@ public class AdminUserSettingVipController extends BaseController {
      */
 
     @GetMapping("/list")
-    public Result<List<UserSettingVipVo>> select(UserSettingVipDto findDto) {
+    public Result<List<UserSettingVip>> list(UserSettingVipDto findDto) {
         findDto.setUserId(getUserId());
-        Page<UserSettingVipVo> vo = userSettingVipService.selectPageUserSettingVip(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        List<UserSettingVip> vo = userSettingVipService.selectUserSettingVipList(findDto);
+        return Result.success(vo,vo.size());
     }
 }

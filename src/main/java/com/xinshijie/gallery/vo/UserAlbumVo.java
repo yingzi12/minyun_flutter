@@ -77,27 +77,6 @@ public class UserAlbumVo implements Serializable {
 
 
     /**
-     * 是否vip
-     */
-    @Schema(description = "是否vip ")
-    private Integer isVip;
-
-
-    /**
-     * 是否免费
-     */
-    @Schema(description = "是否免费 ")
-    private Integer isFree;
-
-
-    /**
-     * 价格
-     */
-    @Schema(description = "价格 ")
-    private Double amount;
-
-
-    /**
      * 折扣
      */
     @Schema(description = "折扣 ")
@@ -161,5 +140,11 @@ public class UserAlbumVo implements Serializable {
     @Schema(description = "状态 ")
     private Integer status;
 
+    private Integer charge;
 
+    @Schema(description = "价格 ")
+    private Double price;
+
+    @Schema(description = " vip 价格 ")
+    private Double vipPrice;
 }

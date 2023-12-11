@@ -22,7 +22,7 @@ public interface IUserSettingVipService extends IService<UserSettingVip> {
     /**
      * 查询信息表
      */
-    List<UserSettingVipVo> selectUserSettingVipList(UserSettingVipDto dto);
+    List<UserSettingVip> selectUserSettingVipList(UserSettingVipDto dto);
 
     /**
      * 分页查询。普通方法

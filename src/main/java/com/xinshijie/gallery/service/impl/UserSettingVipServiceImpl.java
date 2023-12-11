@@ -35,8 +35,13 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
      * 查询图片信息表
      */
     @Override
-    public List<UserSettingVipVo> selectUserSettingVipList(UserSettingVipDto dto) {
-        return mapper.selectListUserSettingVip(dto);
+    public List<UserSettingVip> selectUserSettingVipList(UserSettingVipDto dto) {
+        QueryWrapper<UserSettingVip> qw = new QueryWrapper<>();
+        qw.eq("user_id", dto.getUserId());
+        if(dto.getId()!=null) {
+            qw.eq("id", dto.getId());
+        }
+        return mapper.selectList(qw);
     }
 
     /**
@@ -64,6 +69,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
 
         UserSettingVip vip = new UserSettingVip();
         vip.setStatus(status);
+        vip.setUpdateTime(LocalDateTime.now());
         int i = mapper.update(vip, qw);
         if (i == 1) {
             return true;
@@ -111,7 +117,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
         qw.eq("user_id", dto.getUserId());
         qw.eq("id", dto.getId());
         UserSettingVip settingVip = new UserSettingVip();
-        BeanUtils.copyProperties(settingVip, dto);
+        BeanUtils.copyProperties(dto, settingVip);
         settingVip.setUpdateTime(LocalDateTime.now());
         return mapper.update(settingVip, qw);
     }

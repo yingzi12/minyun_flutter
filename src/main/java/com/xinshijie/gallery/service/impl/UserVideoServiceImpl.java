@@ -8,7 +8,9 @@ import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserAlbum;
+import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
+import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.enmus.VedioStatuEnum;
 import com.xinshijie.gallery.mapper.UserVideoMapper;
@@ -80,7 +82,15 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
         return mapper.selectPageUserVideo(page, dto);
     }
-
+    @Override
+    public Long selectCount(UserVideoDto dto) {
+        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
+        qw.eq("aid",dto.getAid());
+        if(dto.getUserId()!=null) {
+            qw.eq("user_id", dto.getUserId());
+        }
+        return mapper.selectCount(qw);
+    }
     @Override
     public AllVideo checkAllMd5(String md5) {
         return allVideoService.getMD5(md5);
@@ -120,6 +130,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
         mapper.insert(value);
+        userAlbumService.updateCountVideo(dto.getAid());
         return value;
     }
 

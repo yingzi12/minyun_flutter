@@ -17,10 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Time;
 
 @Component
@@ -65,19 +61,19 @@ public class MessageConsumer {
 
         //转换视频为ts
         String url= fileService.chargeVideoThreadFile(Constants.videoHcPath, video.getTitle(), video.getUrl());
+        String imagUrl = "";
+
         //生成预览图
-        String imagUrl = url.replaceAll("m3u8", "gif");
         if(video.getDuration()> 13000) {
+             imagUrl = url.replaceAll("m3u8", "gif");
             MediaUtil.cutVideoFrame(new File(Constants.videoHcPath + video.getUrl()), new File(savePath + imagUrl));
+//            jietu(Constants.videoHcPath + video.getUrl(),savePath + imagUrl,10,videoMetaInfo.getWidth(),videoMetaInfo.getHeight() );
         }else {
-            jietu(Constants.videoHcPath + video.getUrl(),imagUrl);
+             imagUrl = url.replaceAll("m3u8", "jpg");
+//            int height = videoMetaInfo.getHeight() / videoMetaInfo.getWidth(); // 根据宽度计算适合的高度，防止画面变形
+            jietu(Constants.videoHcPath + video.getUrl(),savePath + imagUrl,1,videoMetaInfo.getWidth(),videoMetaInfo.getHeight() );
         }
-        try {
-            Path path = Paths.get(Constants.videoHcPath + video.getUrl());
-            Files.delete(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
         update( video,md5,url,imagUrl,VedioStatuEnum.LOCK.getCode());
     }
 
@@ -100,16 +96,25 @@ public class MessageConsumer {
         allVideoService.updateById(video);
     }
 
-    public  void jietu(String vedioUrl,String imaUrl){
+    public  void jietu(String vedioUrl,String imaUrl,  int startTimeInSeconds ,int width,int height ){
         File videoFile = new File(vedioUrl); // 源视频文件路径
         String outputFolderPath = imaUrl; // 转换后的文件输出文件夹路径
-        int startTimeInSeconds = 1; // 开始截取视频帧的时间点（单位：s）
-        int width = 300; // 截取的视频帧图片的宽度（单位：px）
-        int height = 300; // 截取的视频帧图片的高度（单位：px）
+//        int startTimeInSeconds = 1; // 开始截取视频帧的时间点（单位：s）
+//        int width = 300; // 截取的视频帧图片的宽度（单位：px）
+//        int height = 300; // 截取的视频帧图片的高度（单位：px）
         int timeLengthInSeconds = 1; // 截取的视频帧的时长（从time开始算，单位:s）
         boolean isContinuous = false; // false - 静态图，true - 动态图
 
         Time time = new Time(startTimeInSeconds);
         MediaUtil.cutVideoFrame(videoFile, outputFolderPath, time, width, height, timeLengthInSeconds, isContinuous);
     }
+
+//    public void delFile(String strPath){
+//        try {
+//            Path path = Paths.get(Constants.videoHcPath + video.getUrl());
+////            Files.delete(path);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

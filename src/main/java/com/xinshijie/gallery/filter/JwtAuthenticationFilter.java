@@ -44,6 +44,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK); // HTTP 200 OK
         } else {
             log.info("获取到token:" + authHeader);
+            log.info("获取到token url:" + httpServletRequest.getRequestURI());
+
             if (authHeader != null && !authHeader.isEmpty()) {
                 try {
                     String token = "";

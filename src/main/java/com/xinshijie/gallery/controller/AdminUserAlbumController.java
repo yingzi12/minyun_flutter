@@ -95,13 +95,13 @@ public class AdminUserAlbumController extends BaseController {
      * @return
      */
     @GetMapping(value = "/updateCharge")
-    public Result<Boolean> updateCharge(@PathVariable("id") Long id, @PathVariable("charge") Integer charge, @PathVariable("price") Double price, @PathVariable("vipPrice") Double vipPrice) {
+    public Result<Boolean> updateCharge(@RequestParam("id") Long id, @RequestParam("charge") Integer charge, @RequestParam("price") Double price, @RequestParam("vipPrice") Double vipPrice) {
         Boolean vo = userAlbumService.updateCharge(getUserId(), id, charge, price, vipPrice);
         return Result.success(vo);
     }
 
     @GetMapping(value = "/updateStatus")
-    public Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
+    public Result<Boolean> updateStatus(@RequestParam("id") Long id, @RequestParam("status") Integer status) {
         Boolean vo = userAlbumService.updateStatus(getUserId(), id, status);
         return Result.success(vo);
     }

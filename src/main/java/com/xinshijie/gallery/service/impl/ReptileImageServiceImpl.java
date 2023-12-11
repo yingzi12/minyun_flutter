@@ -775,10 +775,10 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         return "";
     }
 
-    public static void main(String[] args) {
-        String str = "https://1117.plmn5.com/uploadfile/202311/24/B5165933146.jpg";
-        System.out.println(getContentHash("https://1117.plmn5.com/uploadfile/202311/3/3E111144727.jpg"));
-    }
+//    public static void main(String[] args) {
+//        String str = "https://1117.plmn5.com/uploadfile/202311/24/B5165933146.jpg";
+//        System.out.println(getContentHash("https://1117.plmn5.com/uploadfile/202311/3/3E111144727.jpg"));
+//    }
 
     public static String getContentHash(String content) {
         try {

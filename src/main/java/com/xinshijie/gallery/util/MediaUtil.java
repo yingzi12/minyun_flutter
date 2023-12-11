@@ -244,7 +244,14 @@ public class MediaUtil {
 
         List<String> commond = new ArrayList<String>();
         commond.add("-i");
-        commond.add(fileInput.getAbsolutePath());
+        String input="";
+        try {
+            input = fileInput.getCanonicalPath();
+        } catch (IOException e) {
+            throw new RuntimeException("路径异常");
+        }
+        commond.add(input);
+
         if (!withAudio) { // 设置是否保留音频
             commond.add("-an");  // 去掉音频
         }
@@ -261,7 +268,14 @@ public class MediaUtil {
         commond.add("-crf"); // 指定输出视频质量
         commond.add(crf.toString()); // 视频质量参数，值越小视频质量越高
         commond.add("-y"); // 当已存在输出文件时，不提示是否覆盖
-        commond.add(fileOutPut.getAbsolutePath());
+
+        String out=fileOutPut.getPath();
+        try {
+            out = fileOutPut.getCanonicalPath();
+        } catch (IOException e) {
+            out=fileOutPut.getPath();
+        }
+        commond.add(out);
 
         executeCommand(commond);
     }
@@ -344,7 +358,12 @@ public class MediaUtil {
         if (!isLegalFormat(format, IMAGE_TYPE)) {
             throw new RuntimeException("无法生成指定格式的帧图片：" + format);
         }
-        String fileOutPutPath = fileOutPut.getAbsolutePath();
+        String fileOutPutPath = fileOutPut.getPath();
+        try {
+            fileOutPutPath = fileOutPut.getCanonicalPath();
+        } catch (IOException e) {
+            throw new RuntimeException("路径异常");
+        }
         if (!"GIF".equals(StringUtils.upperCase(format))) {
             // 输出路径不是以.gif结尾，抽取并生成一张静态图
             cutVideoFrame(videoFile, fileOutPutPath, time, width, height, 1, false);
@@ -365,7 +384,7 @@ public class MediaUtil {
                 for (int i = 0; i < images.length; i++) {
                     images[i] = tempPath + File.separator + images[i];
                 }
-                createGifImage(images, fileOutPut.getAbsolutePath(), DEFAULT_GIF_PLAYTIME);
+                createGifImage(images, fileOutPut.getCanonicalPath(), DEFAULT_GIF_PLAYTIME);
             } catch (Exception e) {
                 log.error("--- 截取视频帧操作出错 --- 错误信息：" + e.getMessage());
             } finally {
@@ -409,6 +428,12 @@ public class MediaUtil {
             throw new RuntimeException("截取的视频帧图片的宽度或高度不合法，宽高值必须大于20");
         }
         try {
+            File parentDir = new File(videoFile.getCanonicalPath());
+
+            // 如果父目录不存在，尝试创建它
+            if (parentDir.getParentFile() != null && !parentDir.getParentFile().exists()) {
+                parentDir.getParentFile().mkdirs();
+            }
             List<String> commond = new ArrayList<String>();
             commond.add("-ss");
             commond.add(time.toString());
@@ -420,7 +445,7 @@ public class MediaUtil {
                 commond.add("1");
             }
             commond.add("-i");
-            commond.add(videoFile.getAbsolutePath());
+            commond.add(videoFile.getCanonicalPath());
             commond.add("-an");
             commond.add("-f");
             commond.add("image2");
@@ -429,8 +454,14 @@ public class MediaUtil {
                 commond.add("3");
             }
             commond.add("-s");
-            commond.add(width + "*" + height);
+            commond.add(width + "x" + height);
             if (isContinuty) {
+                File parentDir2 = new File(path + File.separator + "foo-%03d.jpeg");
+
+                // 如果父目录不存在，尝试创建它
+                if (parentDir2.getParentFile() != null && !parentDir2.getParentFile().exists()) {
+                    parentDir2.getParentFile().mkdirs();
+                }
                 commond.add(path + File.separator + "foo-%03d.jpeg");
             } else {
                 commond.add(path);
@@ -474,12 +505,12 @@ public class MediaUtil {
             commond.add("-t");
             commond.add("" + timeLength);
             commond.add("-i");
-            commond.add(videoFile.getAbsolutePath());
+            commond.add(videoFile.getCanonicalPath());
             commond.add("-vcodec");
             commond.add("copy");
             commond.add("-acodec");
             commond.add("copy");
-            commond.add(outputFile.getAbsolutePath());
+            commond.add(outputFile.getCanonicalPath());
             executeCommand(commond);
         } catch (IOException e) {
             log.error("--- 视频截取过程出错 ---");
@@ -511,12 +542,12 @@ public class MediaUtil {
 
             List<String> commond = new ArrayList<String>();
             commond.add("-i");
-            commond.add(videoFile.getAbsolutePath());
+            commond.add(videoFile.getCanonicalPath());
             commond.add("-vn"); // no video，去除视频信息
             commond.add("-y");
             commond.add("-acodec");
             commond.add("copy");
-            commond.add(audioFile.getAbsolutePath());
+            commond.add(audioFile.getCanonicalPath());
             executeCommand(commond);
         } catch (Exception e) {
             log.error("--- 抽取视频中的音频信息的过程出错 --- 错误信息： " + e.getMessage());
@@ -806,7 +837,14 @@ public class MediaUtil {
         }
         List<String> commond = new ArrayList<String>();
         commond.add("-i");
-        commond.add(inputFile.getAbsolutePath());
+        String input=inputFile.getPath();
+        try {
+            input = inputFile.getCanonicalPath();
+        } catch (IOException e) {
+            input=inputFile.getPath();
+        }
+        commond.add(input);
+
         String executeResult = MediaUtil.executeCommand(commond);
         return executeResult;
     }
@@ -953,12 +991,12 @@ public class MediaUtil {
 
             List<String> commond = new ArrayList<String>();
             commond.add("-i");
-            commond.add(videoFile.getAbsolutePath());
+            commond.add(videoFile.getCanonicalPath());
             commond.add("-vn"); // no video，去除视频信息
             commond.add("-y");
             commond.add("-acodec");
             commond.add("copy");
-            commond.add(audioFile.getAbsolutePath());
+            commond.add(audioFile.getCanonicalPath());
             executeCommand(commond);
         } catch (Exception e) {
             log.error("--- 抽取视频中的音频信息的过程出错 --- 错误信息： " + e.getMessage());
@@ -986,7 +1024,7 @@ public class MediaUtil {
         try {
             List<String> command = new ArrayList<>();
             command.add("-i");
-            command.add(mp4File.getAbsolutePath());
+            command.add(mp4File.getCanonicalPath());
             command.add("-c");
             command.add("copy");
             command.add("-map");
@@ -996,10 +1034,10 @@ public class MediaUtil {
             command.add("-segment_time");
             command.add("10"); // 每10秒分割一次
             command.add("-segment_list");
-            command.add(playlistFile.getAbsolutePath()); // 索引文件路径
+            command.add(playlistFile.getCanonicalPath()); // 索引文件路径
             command.add("-bsf:v");
             command.add("h264_mp4toannexb");
-            command.add(tsDirectory.getAbsolutePath() + "/output%03d.ts");
+            command.add(tsDirectory.getCanonicalPath() + "/"+tsDirectory.getName()+"%03d.ts");
 
             executeCommand(command);
         } catch (Exception e) {
@@ -1029,7 +1067,7 @@ public class MediaUtil {
             List<String> command = new ArrayList<>();
             command.add("ffmpeg"); // 确保添加 ffmpeg 命令
             command.add("-i");
-            command.add(videoFile.getAbsolutePath());
+            command.add(videoFile.getCanonicalPath());
             command.add("-c:v");
             command.add("libx264"); // 使用 H.264 视频编码器
             command.add("-b:v");
@@ -1043,10 +1081,10 @@ public class MediaUtil {
             command.add("-segment_time");
             command.add("10"); // 每10秒分割一次
             command.add("-segment_list");
-            command.add(playlistFile.getAbsolutePath()); // 索引文件路径
+            command.add(playlistFile.getCanonicalPath()); // 索引文件路径
             command.add("-bsf:v");
             command.add("h264_mp4toannexb");
-            command.add(tsDirectory.getAbsolutePath() + "/output%03d.ts");
+            command.add(tsDirectory.getCanonicalPath() + "/output%03d.ts");
 
             executeCommand(command);
         } catch (Exception e) {
@@ -1080,7 +1118,7 @@ public class MediaUtil {
         try {
             List<String> command = new ArrayList<>();
             command.add("-i");
-            command.add(videoFile.getAbsolutePath());
+            command.add(videoFile.getCanonicalPath());
             command.add("-c:v");
             command.add("libx264"); // 使用 H.264 视频编码器
             command.add("-b:v");
@@ -1095,7 +1133,7 @@ public class MediaUtil {
             command.add("1");
             command.add("-use_timeline");
             command.add("1");
-            command.add(dashDirectory.getAbsolutePath() + "/" + outputFileName + ".mpd");
+            command.add(dashDirectory.getCanonicalPath() + "/" + outputFileName + ".mpd");
 
             executeCommand(command);
         } catch (Exception e) {
@@ -1104,5 +1142,9 @@ public class MediaUtil {
         }
     }
 
+    public static void main(String args[]){
+        MediaUtil.cutVideoFrame(new File("./data/vedio/2023-12-10/1700641105954.mp4"), new File("./data/vedio/2023-12-10/1700641105954.gif"));
+
+    }
 
 }

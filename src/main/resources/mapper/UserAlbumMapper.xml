@@ -23,7 +23,8 @@
                count_buy,
                score,
                introduce,
-               status
+               status,
+                charge
         from user_album
     </sql>
 

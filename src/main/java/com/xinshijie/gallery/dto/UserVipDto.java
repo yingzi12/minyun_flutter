@@ -24,7 +24,7 @@ public class UserVipDto implements Serializable {
 
     private Integer id;
 
-    private Long userId;
+    private Integer userId;
 
     @Size(max = 100, message = " 超出最大长度 100")
     private String userName;

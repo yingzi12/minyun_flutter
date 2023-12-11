@@ -91,9 +91,10 @@ public class AdminUserVipController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserVipVo>> select(UserVipDto findDto) {
+    public Result<Page<UserVipVo>> list(UserVipDto findDto) {
+        findDto.setUserId(getUserId());
         Page<UserVipVo> vo = userVipService.selectPageUserVip(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo );
     }
 
 }

@@ -6,11 +6,13 @@ import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserVideoDto;
+import com.xinshijie.gallery.dto.UserVideoFindDto;
 import com.xinshijie.gallery.mq.MessageProducer;
 import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,10 +108,14 @@ public class AdminUserVideoController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserVideoVo>> select(UserVideoDto findDto) {
+    public Result<List<UserVideoVo>> list(UserVideoFindDto findDto) {
         findDto.setUserId(getUserId());
-        Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+
+        UserVideoDto videoDto=new UserVideoDto();
+        BeanUtils.copyProperties(findDto,videoDto);
+        List<UserVideoVo> vo = userVideoService.selectUserVideoList(videoDto);
+        Long count=userVideoService.selectCount(videoDto);
+        return Result.success(vo, count.intValue());
     }
 
     @GetMapping("/checkAllMd5")

@@ -8,11 +8,13 @@ import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.util.MediaUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.*;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,8 +25,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.time.LocalDate;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.Iterator;
+
 
 @Slf4j
 @Service
@@ -37,8 +40,6 @@ public class FileServiceImpl implements IFileService {
     /**
      * 视频上传缓存路径
      */
-
-
     @Override
     public String saveUploadedFilesWatermark(String headPath, String title, MultipartFile file) {
         try {
@@ -46,37 +47,41 @@ public class FileServiceImpl implements IFileService {
                 log.error("No image file provided");
                 return null;
             }
-            try {
-                String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".jpg";
-
-                // 假设我们将图片保存在服务器的某个位置
-                File destinationFile = new File(savePath + imgUrl);
-                File parentDir = destinationFile.getParentFile();
-                // 如果父目录不存在，尝试创建它
-                if (parentDir != null && !parentDir.exists()) {
-                    parentDir.mkdirs();
-                }
-                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
-                // 转换图片格式为JPG并添加水印
-                Thumbnails.of(file.getInputStream())
-                        .scale(1.0) // 保持原始大小
-                        .outputQuality(outputQuality) // 设置压缩质量
-                        .outputFormat("jpg")
-                        //.watermark(Positions.BOTTOM_RIGHT, watermarkImage, 0.5f) // 添加水印
-                        .toFile(new File(savePath + imgUrl)); // 保存到文件
-
-                return imgUrl;
-            } catch (IOException e) {
-                log.error("Error during image processing: " + e.getMessage());
-                return "";
+            log.info("file:"+file.getOriginalFilename());
+            String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".webp";
+            File destinationFile = new File(savePath + imgUrl);
+            File parentDir = destinationFile.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
             }
 
+            // 检查文件大小或格式
+            if (file.getSize() <= 600 * 1024 || isWebPFormat(file)) {
+                return saveImage(file,headPath,title);
+            } else {
+                // 转换为WebP格式
+                float outputQuality = 0.8f; // 可以根据需要设置压缩质量
+                ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+                BufferedImage image = ImageIO.read(file.getInputStream());
+                ImageWriteParam param = writer.getDefaultWriteParam();
+                param.setCompressionQuality(outputQuality);
 
-        } catch (Exception exception) {
-            log.error("Error during image processing: " + exception.getMessage());
-            // 处理异常
-            return "";
+                ImageOutputStream ios = ImageIO.createImageOutputStream(destinationFile);
+                writer.setOutput(ios);
+                writer.write(null, new IIOImage(image, null, null), param);
+                ios.close();
+                writer.dispose();
+            }
+            return imgUrl;
+        } catch (Exception e) {
+            log.error("Error during image processing: ", e);
+            return  saveImage(file,headPath,title);
         }
+    }
+
+    private boolean isWebPFormat(MultipartFile file) {
+        String contentType = file.getContentType();
+        return contentType != null && contentType.equals("image/webp");
     }
 
     public String getMD5(InputStream is) {
@@ -196,7 +201,7 @@ public class FileServiceImpl implements IFileService {
                     parentDir.mkdirs();
                 }
                 try (InputStream inputStream = file.getInputStream();
-                     FileOutputStream outputStream = new FileOutputStream(fileUrl)) {
+                     FileOutputStream outputStream = new FileOutputStream(Constants.videoHcPath + fileUrl)) {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -217,4 +222,39 @@ public class FileServiceImpl implements IFileService {
             return "";
         }
     }
+
+    public String saveImage(MultipartFile file,String headPath,String title){
+        String[] hzArr=file.getOriginalFilename().toString().split("\\.");
+        String hz=hzArr[hzArr.length-1];
+        String imgUrlPath=headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename())+"."+hz;
+        try (InputStream inputStream = file.getInputStream();
+             FileOutputStream outputStream = new FileOutputStream(savePath+ imgUrlPath)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return "";
+        }
+        return imgUrlPath;
+    }
+
+    public static void main(String[] args) {
+        String readFormats[] = ImageIO.getReaderFormatNames();
+        String writeFormats[] = ImageIO.getWriterFormatNames();
+        System.out.println("支持的Readers: " + Arrays.asList(readFormats));
+        System.out.println("支持的Writers: " + Arrays.asList(writeFormats));
+        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("WBMP");
+        while (readers.hasNext()) {
+            System.out.println("reader: " + readers.next());
+        }
+        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+
+            System.out.println("writers: " + writer);
+
+    }
+
+
 }

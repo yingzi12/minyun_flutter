@@ -31,6 +31,8 @@ public interface IUserImageService extends IService<UserImage> {
      */
     Page<UserImageVo> selectPageUserImage(UserImageDto dto);
 
+    Long selectCount(UserImageDto dto);
+
     /**
      * 分页查询信息表
      */

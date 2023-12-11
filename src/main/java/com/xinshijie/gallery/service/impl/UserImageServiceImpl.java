@@ -73,7 +73,18 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         }
         page.setSize(dto.getPageSize());
         page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
-        return mapper.selectPageUserImage(page, dto);
+        Page<UserImageVo> value = mapper.selectPageUserImage(page, dto);
+        return value;
+    }
+
+    @Override
+    public Long selectCount(UserImageDto dto) {
+        QueryWrapper<UserImage> qw=new QueryWrapper<>();
+        qw.eq("aid",dto.getAid());
+        if(dto.getUserId()!=null) {
+            qw.eq("user_id", dto.getUserId());
+        }
+        return mapper.selectCount(qw);
     }
 
     /**
@@ -204,9 +215,11 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public String saveImage(AllImage allImage, String md5, MultipartFile file) {
         String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), file);
         try {
-            allImage.setSource_web(sourceWeb);
-            allImage.setSource_url(url);
-            allImageService.save(allImage);
+            if(StringUtils.isNotEmpty(url)) {
+                allImage.setSource_web(sourceWeb);
+                allImage.setSource_url(url);
+                allImageService.save(allImage);
+            }
         } catch (Exception ex) {
             //保存出问题。要么是md5出现重复，要么就数据库异常。
             allImage = allImageService.getMD5(md5);

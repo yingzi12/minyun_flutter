@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,6 +37,7 @@ public class UserSettingVip implements Serializable {
     /**
      * 等级
      */
+    @TableField("`rank`")
     private Integer rank;
     /**
      * 更新时间

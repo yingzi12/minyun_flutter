@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserVideo;
+import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,8 @@ public interface IUserVideoService extends IService<UserVideo> {
     Page<UserVideoVo> selectPageUserVideo(UserVideoDto dto);
 
     AllVideo checkAllMd5(String md5);
+
+    Long selectCount(UserVideoDto dto);
     /**
      * 分页查询信息表
      */
