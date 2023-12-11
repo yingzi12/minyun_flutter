@@ -60,10 +60,10 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     }
 
     @Override
-    public List<UserImage> selectAllAid(Integer aid,Integer isFee) {
+    public List<UserImage> selectAllAid(Integer aid,Integer isFree) {
         QueryWrapper<UserImage> qw=new QueryWrapper<>();
         qw.eq("aid",aid);
-        qw.eq("isFee",1);
+        qw.eq("is_free",isFree);
         return mapper.selectList(qw);
     }
 
@@ -74,7 +74,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public Page<UserImageVo> selectPageUserImage(UserImageDto dto) {
         Page<UserImageVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -86,11 +86,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     }
 
     @Override
-    public Long selectCount(UserImageDto dto) {
+    public Long selectCount(Integer aid,Integer userId,Integer isFree) {
         QueryWrapper<UserImage> qw=new QueryWrapper<>();
-        qw.eq("aid",dto.getAid());
-        if(dto.getUserId()!=null) {
-            qw.eq("user_id", dto.getUserId());
+        qw.eq("aid",aid);
+        if(userId != null) {
+            qw.eq("user_id", userId);
+        }
+        if(isFree != null){
+            qw.eq("isFree",isFree);
         }
         return mapper.selectCount(qw);
     }
@@ -141,7 +144,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public Integer delById(Integer userId, Long id) {
         QueryWrapper<UserImage> qw = new QueryWrapper<>();
         qw.eq("id", id);
-        qw.eq("userId", userId);
+        qw.eq("user_id", userId);
         return mapper.delete(qw);
     }
 
@@ -149,7 +152,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public Integer updateIsFree(Integer userId, Long id, Integer isFree) {
         QueryWrapper<UserImage> qw = new QueryWrapper<>();
         qw.eq("id", id);
-        qw.eq("userId", userId);
+        qw.eq("user_id", userId);
         UserImage userImage = new UserImage();
         userImage.setIsFree(isFree);
         return mapper.update(userImage, qw);

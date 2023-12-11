@@ -33,7 +33,7 @@ public interface IUserImageService extends IService<UserImage> {
      */
     Page<UserImageVo> selectPageUserImage(UserImageDto dto);
 
-    Long selectCount(UserImageDto dto);
+    Long selectCount(Integer aid,Integer userId,Integer isFree);
 
     /**
      * 分页查询信息表

@@ -64,7 +64,15 @@ public class UserImageController extends BaseController {
 
     @GetMapping("/list")
     public Result<List<UserImageVo>> select(UserImageDto findDto) {
+        if(findDto.getPageNum()==null){
+            findDto.setPageNum(1L);
+        }
+        if(findDto.getPageSize()==null){
+            findDto.setPageSize(6L);
+        }
+
         Page<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        Long count = userImageService.selectCount(findDto.getAid(),getUserIdNoLogin(),findDto.getIsFree());
+        return Result.success(vo.getRecords(), count.intValue());
     }
 }

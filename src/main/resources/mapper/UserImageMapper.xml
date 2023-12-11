@@ -28,14 +28,13 @@
     <select id="selectPageUserImage" resultType="com.xinshijie.gallery.vo.UserImageVo">
         <include refid="selectUserImage"/>
         <where>
-            <if test="dto.id !=null ">and id= #{dto.id}</if>
-            <if test="dto.url !=null ">and url= #{dto.url}</if>
             <if test="dto.isFree !=null ">and is_free= #{isFree}</if>
             <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
             <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
             <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
         </where>
     </select>
+
 
     <select id="getPageUserImage" resultType="com.xinshijie.gallery.vo.UserImageVo">
         <include refid="selectUserImage"/>
