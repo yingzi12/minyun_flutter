@@ -80,7 +80,7 @@ public class UserImageController extends BaseController {
             throw new ServiceException(ResultCodeEnum.NOT_BUY);
         }
         IPage<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-        Long count = userImageService.selectCount(findDto.getAid(),getUserIdNoLogin(),findDto.getIsFree());
-        return Result.success(vo.getRecords(), count.intValue());
+//        Long count = userImageService.selectCount(findDto.getAid(),getUserIdNoLogin(),findDto.getIsFree());
+        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal()+""));
     }
 }

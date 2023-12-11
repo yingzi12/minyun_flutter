@@ -51,7 +51,7 @@ public class UserBankServiceImpl extends ServiceImpl<UserBankMapper, UserBank> i
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageUserBank(page, dto);
     }
 
@@ -68,7 +68,7 @@ public class UserBankServiceImpl extends ServiceImpl<UserBankMapper, UserBank> i
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<UserBankVo> qw = new QueryWrapper<>();
         return mapper.getPageUserBank(page, qw);
     }

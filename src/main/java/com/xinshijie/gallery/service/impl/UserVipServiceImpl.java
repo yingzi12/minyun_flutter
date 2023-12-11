@@ -51,7 +51,7 @@ public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVip> impl
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageUserVip(page, dto);
     }
 
@@ -68,7 +68,7 @@ public class UserVipServiceImpl extends ServiceImpl<UserVipMapper, UserVip> impl
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<UserVipVo> qw = new QueryWrapper<>();
         return mapper.getPageUserVip(page, qw);
     }

@@ -50,7 +50,7 @@ public class AlbumCollectionServiceImpl extends ServiceImpl<AlbumCollectionMappe
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageAlbumCollection(page, dto);
     }
 
@@ -67,7 +67,7 @@ public class AlbumCollectionServiceImpl extends ServiceImpl<AlbumCollectionMappe
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<AlbumCollectionVo> qw = new QueryWrapper<>();
         return mapper.getPageAlbumCollection(page, qw);
     }

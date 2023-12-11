@@ -50,7 +50,7 @@ public class AlbumVipServiceImpl extends ServiceImpl<AlbumVipMapper, AlbumVip> i
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageAlbumVip(page, dto);
     }
 
@@ -67,7 +67,7 @@ public class AlbumVipServiceImpl extends ServiceImpl<AlbumVipMapper, AlbumVip> i
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<AlbumVipVo> qw = new QueryWrapper<>();
         return mapper.getPageAlbumVip(page, qw);
     }

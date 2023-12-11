@@ -51,7 +51,7 @@ public class UserBuyVipServiceImpl extends ServiceImpl<UserBuyVipMapper, UserBuy
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageUserBuyVip(page, dto);
     }
 
@@ -68,7 +68,7 @@ public class UserBuyVipServiceImpl extends ServiceImpl<UserBuyVipMapper, UserBuy
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<UserBuyVipVo> qw = new QueryWrapper<>();
         return mapper.getPageUserBuyVip(page, qw);
     }

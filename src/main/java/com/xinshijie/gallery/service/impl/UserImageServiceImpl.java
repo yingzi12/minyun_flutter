@@ -114,7 +114,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<UserImageVo> qw = new QueryWrapper<>();
         return mapper.getPageUserImage(page, qw);
     }

@@ -51,7 +51,7 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageUserCollection(page, dto);
     }
 
@@ -68,7 +68,7 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<UserCollectionVo> qw = new QueryWrapper<>();
         return mapper.getPageUserCollection(page, qw);
     }

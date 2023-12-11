@@ -89,7 +89,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         return mapper.selectPageUserVideo(page, dto);
     }
     @Override
@@ -122,7 +122,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
             dto.setPageSize(20L);
         }
         page.setSize(dto.getPageSize());
-        page.setCurrent((dto.getPageNum() - 1) * dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
         QueryWrapper<UserVideoVo> qw = new QueryWrapper<>();
         return mapper.getPageUserVideo(page, qw);
     }
