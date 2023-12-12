@@ -126,13 +126,11 @@ public class AdminUserVideoController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    public Result<List<UserVideoVo>> list(UserVideoFindDto findDto) {
+    public Result<List<UserVideo>> list(UserVideoFindDto findDto) {
         findDto.setUserId(getUserId());
 
-        UserVideoDto videoDto=new UserVideoDto();
-        BeanUtils.copyProperties(findDto,videoDto);
-        List<UserVideoVo> vo = userVideoService.selectUserVideoList(videoDto);
-        Long count=userVideoService.selectCount(videoDto.getAid(),videoDto.getUserId(),videoDto.getIsFree());
+        List<UserVideo> vo = userVideoService.selectUserVideoList(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
+        Long count=userVideoService.selectCount(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
         return Result.success(vo, count.intValue());
     }
 

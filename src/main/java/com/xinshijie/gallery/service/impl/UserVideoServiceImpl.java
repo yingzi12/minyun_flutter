@@ -62,8 +62,16 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
      * 查询图片信息表
      */
     @Override
-    public List<UserVideoVo> selectUserVideoList(UserVideoDto dto) {
-        return mapper.selectListUserVideo(dto);
+    public List<UserVideo> selectUserVideoList(Integer aid,Integer userId,Integer isFree) {
+        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
+        qw.eq("aid",aid);
+        if(userId != null) {
+            qw.eq("user_id", userId);
+        }
+        if(isFree != null){
+            qw.eq("is_free",isFree);
+        }
+        return mapper.selectList(qw);
     }
 
     @Override

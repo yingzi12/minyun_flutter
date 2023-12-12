@@ -26,7 +26,7 @@ public interface IUserVideoService extends IService<UserVideo> {
     /**
      * 查询信息表
      */
-    List<UserVideoVo> selectUserVideoList(UserVideoDto dto);
+    List<UserVideo> selectUserVideoList(Integer aid,Integer userId,Integer isFree);
 
     List<UserVideo> selectAllAid(Integer aid, Integer isFree);
 

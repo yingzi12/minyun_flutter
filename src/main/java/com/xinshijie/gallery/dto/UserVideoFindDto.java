@@ -31,7 +31,7 @@ public class UserVideoFindDto implements Serializable {
     private Integer isFree;
 
     @NotNull
-    private Long aid;
+    private Integer aid;
 
     private Long pageNum;
 
