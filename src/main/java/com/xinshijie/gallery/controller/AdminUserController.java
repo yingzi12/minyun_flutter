@@ -54,11 +54,11 @@ public class AdminUserController extends BaseController {
      * @return 用户信息
      */
     @GetMapping("getInfo")
-    public SystemUserVo getInfo() {
+    public Result<SystemUser> getInfo() {
         Integer userId = getUserId();
         String userName = RequestContextUtil.getUserName();
-        SystemUserVo systemUserVo = systemUserService.info(userId);
-        return systemUserVo;
+        SystemUser systemUserVo = systemUserService.info(userId);
+        return Result.success(systemUserVo);
     }
 
     @PostMapping("/edit")
@@ -72,7 +72,7 @@ public class AdminUserController extends BaseController {
     //    @Log(title = "发送邮箱验证链接", businessType = BusinessType.UPDATE)
     @GetMapping("/sendCheckEmail")
     public Result<String> sendCheckEmail() {
-        SystemUserVo userVo = systemUserService.info(getUserId());
+        SystemUser userVo = systemUserService.info(getUserId());
         boolean isEmail = Validator.isEmail(userVo.getEmail());
         if (StringUtils.isNotEmpty(userVo.getEmail()) && isEmail) {
             if (redisCache.hasKey(CacheConstants.EMAIL + userVo.getEmail())) {

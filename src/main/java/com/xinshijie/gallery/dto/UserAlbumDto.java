@@ -97,7 +97,7 @@ public class UserAlbumDto implements Serializable {
      */
     @Schema(description = "模特 ")
     @Size(max = 100, message = "模特 超出最大长度 100")
-    private String gril;
+    private String girl;
 
     /**
      * 查看数

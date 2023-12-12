@@ -33,7 +33,7 @@ public class FindImage implements Serializable {
      *
      */
 //    @Size(max = 200,min = 1)
-    private String gril;
+    private String girl;
 
     /**
      *

@@ -65,7 +65,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                         jwt.getHeader(JWTHeader.TYPE);
                         jwt.getHeader(JWTHeader.ALGORITHM);
                         String userInfo = jwt.getPayload("user").toString();
-                        System.out.println("userInfo: " + userInfo);
                         httpServletRequest.setAttribute("userInfo", userInfo); // Or use custom header
                         SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
                         if (systemUserVo != null) {

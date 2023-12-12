@@ -50,9 +50,9 @@
         where title = #{title}
     </select>
     <insert id="add" parameterType="com.xinshijie.gallery.dao.Album">
-        INSERT INTO album (url, title, source_web, `hash`, count_see, gril, create_time, update_time, img_url,
+        INSERT INTO album (url, title, source_web, `hash`, count_see, girl, create_time, update_time, img_url,
                            count_error, source_url, number_photos)
-        VALUES (#{dto.url}, #{dto.title}, #{dto.sourceWeb}, #{dto.hash}, #{dto.countSee}, #{dto.gril},
+        VALUES (#{dto.url}, #{dto.title}, #{dto.sourceWeb}, #{dto.hash}, #{dto.countSee}, #{dto.girl},
                 #{dto.createTime}, #{dto.updateTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl},
                 #{dto.numberPhotos})
     </insert>

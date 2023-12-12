@@ -45,7 +45,7 @@ public class Album implements Serializable {
      */
     private Long countSee;
 
-    private String gril;
+    private String girl;
 
     private String tags;
 

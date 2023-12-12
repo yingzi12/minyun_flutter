@@ -11,6 +11,7 @@ import com.xinshijie.gallery.domain.UserBuyAlbum;
 import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.enmus.AlbumChargeEnum;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.mapper.UserAlbumMapper;
 import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.IUserAlbumService;
@@ -110,6 +111,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         UserAlbum value = new UserAlbum();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
+        value.setStatus(AlbumStatuEnum.NORMAL.getCode());
         setPrice(value, value.getCharge(), value.getPrice(), value.getVipPrice());
         mapper.insert(value);
         return value;
@@ -125,7 +127,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         userAlbum.setIntro(dto.getIntro());
         userAlbum.setIntroduce(dto.getIntroduce());
         userAlbum.setTitle(dto.getTitle());
-        userAlbum.setGril(dto.getGril());
+        userAlbum.setGirl(dto.getGirl());
         userAlbum.setTags(dto.getTags());
         userAlbum.setPrice(dto.getPrice());
         userAlbum.setVipPrice(dto.getVipPrice());

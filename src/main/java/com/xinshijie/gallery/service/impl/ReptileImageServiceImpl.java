@@ -356,7 +356,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 return;
             }
             String title = extractContent(doc, reptileRule.getTitleRule());
-            String gril = extractContent(doc, reptileRule.getAuthorRule());
+            String girl = extractContent(doc, reptileRule.getAuthorRule());
             String desc = extractContent(doc, reptileRule.getDescRule());
 
             Long hash = generate12DigitHash(detailUrl, title);
@@ -386,7 +386,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setCountSee(RandomUtil.randomLong(10, 100));
                 album.setCreateTime(LocalDate.now().toString());
                 album.setUpdateTime(LocalDate.now().toString());
-                album.setGril(gril);
+                album.setGirl(girl);
                 album.setIntro(desc);
                 album.setHash(hash);
                 album.setTitle(title);
@@ -401,7 +401,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             } else {
                 boolean ok = isImageUrlValid(album.getSourceWeb() + album.getSourceUrl(), 0);
                 //判断是否是同一组
-                if (!ok || !hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGril()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
+                if (!ok || !hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGirl()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
                     album.setHash(hash);
                     album.setSourceUrl(imgUrl);
                     if (StringUtils.isNotEmpty(desc)) {
@@ -416,8 +416,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     if (StringUtils.isNotEmpty(detailUrl)) {
                         album.setUrl(detailUrl);
                     }
-                    if (StringUtils.isNotEmpty(gril)) {
-                        album.setGril(gril);
+                    if (StringUtils.isNotEmpty(girl)) {
+                        album.setGirl(girl);
                     }
                     if (StringUtils.isNotEmpty(desc)) {
                         album.setIntro(desc);

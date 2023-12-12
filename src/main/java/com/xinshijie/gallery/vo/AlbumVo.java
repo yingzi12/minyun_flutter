@@ -32,7 +32,7 @@ public class AlbumVo {
      */
     private Long countSee;
 
-    private String gril;
+    private String girl;
 
     private String tags;
 

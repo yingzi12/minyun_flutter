@@ -81,7 +81,7 @@ public class UserAlbumVo implements Serializable {
      * 模特
      */
     @Schema(description = "模特 ")
-    private String gril;
+    private String girl;
 
 
     /**

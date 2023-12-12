@@ -40,8 +40,8 @@ public class AdminUserCollectionController extends BaseController {
      *
      * @return
      */
-    @GetMapping("/add")
-    public Result<UserCollection> add(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
+    @GetMapping("/on")
+    public Result<UserCollection> on(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
         UserCollectionDto dto = new UserCollectionDto();
         dto.setUserId(getUserId() + 0l);
         dto.setUserName(getUserName());
@@ -49,6 +49,17 @@ public class AdminUserCollectionController extends BaseController {
         dto.setTitle(title);
         dto.setCtype(ctype);
         UserCollection vo = userCollectionService.add(dto);
+        return Result.success(vo);
+    }
+
+    /**
+     * 添加
+     *
+     * @return
+     */
+    @GetMapping("/close")
+    public Result<Integer> close(@RequestParam("aid") Long aid,  @RequestParam("ctype") Integer ctype) {
+        Integer vo = userCollectionService.delById(getUserId(),aid,ctype);
         return Result.success(vo);
     }
 

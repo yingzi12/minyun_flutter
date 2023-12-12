@@ -90,12 +90,11 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId, Long id, Integer ctype) {
+    public Integer delById(Integer userId, Long aid, Integer ctype) {
         QueryWrapper<UserCollection> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
-        queryWrapper.eq("id", id);
+        queryWrapper.eq("aid", aid);
         queryWrapper.eq("ctype", ctype);
-
         return mapper.delete(queryWrapper);
     }
 
@@ -108,7 +107,6 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("id", id);
         queryWrapper.eq("ctype", ctype);
-
         return mapper.selectOne(queryWrapper);
     }
 

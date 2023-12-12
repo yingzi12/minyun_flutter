@@ -7,14 +7,14 @@
     <resultMap id="BaseResultMap" type="com.xinshijie.gallery.dao.FindImage">
         <id property="id" column="id" jdbcType="OTHER"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
-        <result property="gril" column="gril" jdbcType="VARCHAR"/>
+        <result property="girl" column="girl" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
         <result property="subTime" column="sub_time" jdbcType="VARCHAR"/>
         <result property="countFind" column="count_find" jdbcType="OTHER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,gril,
+        id,title,girl,
         create_time,sub_time,count_find
     </sql>
 

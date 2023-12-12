@@ -236,8 +236,8 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
     @Override
-    public SystemUserVo info(Integer userId) {
-        SystemUserVo systemUserVo = mapper.getInfo(userId);
+    public SystemUser info(Integer userId) {
+        SystemUser systemUserVo = mapper.selectById(userId);
         systemUserVo.setPassword("");
         systemUserVo.setSalt("");
         return systemUserVo;

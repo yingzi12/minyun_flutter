@@ -29,7 +29,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     Integer resetUserPwd(Integer userId, String password);
 
-    SystemUserVo info(Integer userId);
+    SystemUser info(Integer userId);
 
     Boolean add(SystemUserDto userDto);
 

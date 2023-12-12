@@ -15,7 +15,7 @@
                charge,
                price,
                discount,
-               gril,
+               girl,
                count_see,
                number_photos,
                number_video,
@@ -44,7 +44,7 @@
             <if test="charge !=null ">and charge= #{charge}</if>
             <if test="price !=null ">and price= #{price}</if>
             <if test="discount !=null ">and discount= #{discount}</if>
-            <if test="gril !=null ">and gril= #{gril}</if>
+            <if test="girl !=null ">and girl= #{girl}</if>
             <if test="countSee !=null ">and count_see= #{countSee}</if>
             <if test="numberPhotos !=null ">and number_photos= #{numberPhotos}</if>
             <if test="numberVideo !=null ">and number_video= #{numberVideo}</if>
@@ -71,7 +71,7 @@
             <if test="dto.charge !=null ">and charge= #{dto.charge}</if>
             <if test="dto.price !=null ">and price= #{dto.price}</if>
             <if test="dto.discount !=null ">and discount= #{dto.discount}</if>
-            <if test="dto.gril !=null ">and gril= #{dto.gril}</if>
+            <if test="dto.girl !=null ">and girl= #{dto.girl}</if>
             <if test="dto.countSee !=null ">and count_see= #{dto.countSee}</if>
             <if test="dto.numberPhotos !=null ">and number_photos= #{dto.numberPhotos}</if>
             <if test="dto.numberVideo !=null ">and number_video= #{dto.numberVideo}</if>
@@ -101,7 +101,7 @@
                                 charge,
                                 price,
                                 discount,
-                                gril,
+                                girl,
                                 count_see,
                                 number_photos,
                                 number_video,
@@ -122,7 +122,7 @@
                 #{ charge },
                 #{ price },
                 #{ discount },
-                #{ gril },
+                #{ girl },
                 #{ countSee },
                 #{ numberPhotos },
                 #{ numberVideo },
@@ -148,7 +148,7 @@
             <if test="charge !=null ">charge= #{charge},</if>
             <if test="price !=null ">price= #{price},</if>
             <if test="discount !=null ">discount= #{discount},</if>
-            <if test="gril !=null ">gril= #{gril},</if>
+            <if test="girl !=null ">girl= #{girl},</if>
             <if test="countSee !=null ">count_see= #{countSee},</if>
             <if test="numberPhotos !=null ">number_photos= #{numberPhotos},</if>
             <if test="numberVideo !=null ">number_video= #{numberVideo},</if>

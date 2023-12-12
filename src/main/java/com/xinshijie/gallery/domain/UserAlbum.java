@@ -78,7 +78,7 @@ public class UserAlbum implements Serializable {
     /**
      * 模特
      */
-    private String gril;
+    private String girl;
     /**
      * 查看数
      */
