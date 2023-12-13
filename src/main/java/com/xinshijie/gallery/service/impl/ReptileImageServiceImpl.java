@@ -63,44 +63,27 @@ import java.util.concurrent.locks.ReentrantLock;
 @Service
 public class ReptileImageServiceImpl implements IReptileImageService {
 
-    @Autowired
-    private AlbumService albumService;
-
-    @Autowired
-    private ImageService imageService;
-
-    @Value("${reptile.url}")
-    private String reptileUrl;
-
-    @Value("${image.sourceWeb}")
-    private String imageSourceWeb;
-
-    @Value("${image.path}")
-    private String imagePath;
-    //防止被多次调用
-    private final ReentrantLock lock = new ReentrantLock();
-    private final ReentrantLock lockData = new ReentrantLock();
     // 类成员变量
     private static ExecutorService executorService;
-
     private static ThreadLocal<Album> albumLocal;
-
-    @Async
-    public void ayacDataThread(Integer id) {
-        if (lockData.tryLock()) {
-            try {
-                ayacData(id);
-            } finally {
-                lockData.unlock();
-            }
-        } else {
-            log.warn("上一个ayacDataThread操作尚未完成，本次调用将被忽略");
-        }
-    }
 
     static {
         init();
     }
+
+    //防止被多次调用
+    private final ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lockData = new ReentrantLock();
+    @Autowired
+    private AlbumService albumService;
+    @Autowired
+    private ImageService imageService;
+    @Value("${reptile.url}")
+    private String reptileUrl;
+    @Value("${image.sourceWeb}")
+    private String imageSourceWeb;
+    @Value("${image.path}")
+    private String imagePath;
 
     private static void init() {
         if (executorService == null || executorService.isShutdown()) {
@@ -121,6 +104,56 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             } catch (InterruptedException e) {
                 executorService.shutdownNow();
             }
+        }
+    }
+
+    public static String getContentHash(String content) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(content.getBytes(StandardCharsets.UTF_8));
+            String utl = new java.math.BigInteger(1, hash).toString();
+            System.out.println(content + " " + utl);
+            return utl;
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static String getContentHash16(String content) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(content.getBytes(StandardCharsets.UTF_8));
+            String titleHash = bytesToHex(hash);
+            String utl = new java.math.BigInteger(1, hash).toString();
+            System.out.println(content + " " + utl);
+            return utl;
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+
+    @Async
+    public void ayacDataThread(Integer id) {
+        if (lockData.tryLock()) {
+            try {
+                ayacData(id);
+            } finally {
+                lockData.unlock();
+            }
+        } else {
+            log.warn("上一个ayacDataThread操作尚未完成，本次调用将被忽略");
         }
     }
 
@@ -334,7 +367,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
 
     }
-
 
     public void detail(String url, String imgUrl, ReptileRule reptileRule) {
         String detailUrl = url;
@@ -692,6 +724,11 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
     }
 
+//    public static void main(String[] args) {
+//        String str = "https://1117.plmn5.com/uploadfile/202311/24/B5165933146.jpg";
+//        System.out.println(getContentHash("https://1117.plmn5.com/uploadfile/202311/3/3E111144727.jpg"));
+//    }
+
     /**
      * 判断url是否可以访问
      *
@@ -773,48 +810,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             downloadImage(url, destinationFile, count + 1);
         }
         return "";
-    }
-
-//    public static void main(String[] args) {
-//        String str = "https://1117.plmn5.com/uploadfile/202311/24/B5165933146.jpg";
-//        System.out.println(getContentHash("https://1117.plmn5.com/uploadfile/202311/3/3E111144727.jpg"));
-//    }
-
-    public static String getContentHash(String content) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(content.getBytes(StandardCharsets.UTF_8));
-            String utl = new java.math.BigInteger(1, hash).toString();
-            System.out.println(content + " " + utl);
-            return utl;
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static String getContentHash16(String content) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(content.getBytes(StandardCharsets.UTF_8));
-            String titleHash = bytesToHex(hash);
-            String utl = new java.math.BigInteger(1, hash).toString();
-            System.out.println(content + " " + utl);
-            return utl;
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private static String bytesToHex(byte[] hash) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
     }
 
     public Set<String> getList(String title, Long aid) {

@@ -1,20 +1,16 @@
 package com.xinshijie.gallery.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserImageService;
-import com.xinshijie.gallery.vo.UserAlbumVo;
 import com.xinshijie.gallery.vo.UserImageVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 
@@ -46,6 +41,7 @@ public class UserImageController extends BaseController {
 
     @Autowired
     private IUserAlbumService userAlbumService;
+
     /**
      * 查询详情
      *
@@ -67,20 +63,20 @@ public class UserImageController extends BaseController {
 
     @GetMapping("/list")
     public Result<List<UserImageVo>> select(UserImageDto findDto) {
-        Integer userId=getUserIdNoLogin();
-        if(findDto.getPageNum()==null){
+        Integer userId = getUserIdNoLogin();
+        if (findDto.getPageNum() == null) {
             findDto.setPageNum(1L);
         }
-        if(findDto.getPageSize()==null){
+        if (findDto.getPageSize() == null) {
             findDto.setPageSize(6L);
         }
-        if(findDto.getIsFree() ==null ||
-                (findDto.getIsFree()==2 && !userAlbumService.isCheck(findDto.getAid(),userId))
-        ){
+        if (findDto.getIsFree() == null ||
+                (findDto.getIsFree() == 2 && !userAlbumService.isCheck(findDto.getAid(), userId))
+        ) {
             throw new ServiceException(ResultCodeEnum.NOT_BUY);
         }
         IPage<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
 //        Long count = userImageService.selectCount(findDto.getAid(),getUserIdNoLogin(),findDto.getIsFree());
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal()+""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 }

@@ -38,7 +38,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     public List<UserSettingVip> selectUserSettingVipList(UserSettingVipDto dto) {
         QueryWrapper<UserSettingVip> qw = new QueryWrapper<>();
         qw.eq("user_id", dto.getUserId());
-        if(dto.getId()!=null) {
+        if (dto.getId() != null) {
             qw.eq("id", dto.getId());
         }
         return mapper.selectList(qw);
@@ -71,11 +71,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
         vip.setStatus(status);
         vip.setUpdateTime(LocalDateTime.now());
         int i = mapper.update(vip, qw);
-        if (i == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return i == 1;
     }
 
     /**

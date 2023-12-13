@@ -7,12 +7,6 @@ import java.io.OutputStream;
  * 多张静态图片合成动态gif图工具类
  */
 public class LZWEncoder {
-    private static final int EOF = -1;
-    private int imgW, imgH;
-    private byte[] pixAry;
-    private int initCodeSize;
-    private int remaining;
-    private int curPixel;
     // GIFCOMPR.C - GIF Image compression routines
     //
     // Lempel-Ziv compression based on 'compress'. GIF modifications by
@@ -20,6 +14,7 @@ public class LZWEncoder {
     // General DEFINEs
     static final int BITS = 12;
     static final int HSIZE = 5003; // 80% occupancy
+    private static final int EOF = -1;
     // GIF Image compression - modified 'compress'
     //
     // Based on: compress.c - File compression ala IEEE Computer, June 1984.
@@ -71,12 +66,18 @@ public class LZWEncoder {
     // code in turn. When the buffer fills up empty it and start over.
     int cur_accum = 0;
     int cur_bits = 0;
-    int masks[] = {0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF,
+    int[] masks = {0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF,
             0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF};
     // Number of characters so far in this 'packet'
     int a_count;
     // Define the storage for the packet accumulator
     byte[] accum = new byte[256];
+    private final int imgW;
+    private final int imgH;
+    private final byte[] pixAry;
+    private final int initCodeSize;
+    private int remaining;
+    private int curPixel;
 
     // ----------------------------------------------------------------------------
     LZWEncoder(int width, int height, byte[] pixels, int color_depth) {

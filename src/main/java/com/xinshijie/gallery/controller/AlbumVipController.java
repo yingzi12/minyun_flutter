@@ -87,7 +87,7 @@ public class AlbumVipController extends BaseController {
     @GetMapping("/list")
     public Result<List<AlbumVipVo>> select(AlbumVipDto findDto) {
         Page<AlbumVipVo> vo = albumVipService.selectPageAlbumVip(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 

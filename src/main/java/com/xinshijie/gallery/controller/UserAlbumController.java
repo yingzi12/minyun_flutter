@@ -1,11 +1,8 @@
 package com.xinshijie.gallery.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.common.ResultCodeEnum;
-import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
@@ -26,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 
@@ -58,23 +54,23 @@ public class UserAlbumController extends BaseController {
      */
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserAlbumVo> getInfo(@PathVariable("id") Integer id) {
-        Integer userId=getUserIdNoLogin();
+        Integer userId = getUserIdNoLogin();
         UserAlbum userAlbum = userAlbumService.getInfo(userId, id);
-        List<UserImage> imageList=userImageService.selectAllAid(id,1);
-        List<UserVideo> videoList=userVideoService.selectAllAid(id,1);
-        Long imageCount = userImageService.selectCount(id,userId,2);
-        Long videoCount = userVideoService.selectCount(id,userId,2);
+        List<UserImage> imageList = userImageService.selectAllAid(id, 1);
+        List<UserVideo> videoList = userVideoService.selectAllAid(id, 1);
+        Long imageCount = userImageService.selectCount(id, userId, 2);
+        Long videoCount = userVideoService.selectCount(id, userId, 2);
 
-        UserAlbumVo vo=new UserAlbumVo();
-        BeanUtils.copyProperties(userAlbum,vo);
+        UserAlbumVo vo = new UserAlbumVo();
+        BeanUtils.copyProperties(userAlbum, vo);
         vo.setImageCount(imageCount.intValue());
         vo.setVideoCount(videoCount.intValue());
-        if(vo.getUserId() == userId){
+        if (vo.getUserId() == userId) {
             vo.setIsVip(1);
             vo.setIsSee(true);
             return Result.success(vo);
-        }else {
-            userAlbumService.isSee(vo,userId);
+        } else {
+            userAlbumService.isSee(vo, userId);
         }
         vo.setImageList(imageList);
         vo.setVideoList(videoList);
@@ -91,7 +87,7 @@ public class UserAlbumController extends BaseController {
     public Result<List<UserAlbum>> select(UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 }

@@ -389,7 +389,7 @@ public class NeuQuant {
         int i, dist, a, biasdist, betafreq;
         int bestpos, bestbiaspos, bestd, bestbiasd;
         int[] n;
-        bestd = ~(((int) 1) << 31);
+        bestd = ~(1 << 31);
         bestbiasd = bestd;
         bestpos = -1;
         bestbiaspos = bestpos;

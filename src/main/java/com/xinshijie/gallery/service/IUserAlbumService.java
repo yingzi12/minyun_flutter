@@ -1,7 +1,6 @@
 package com.xinshijie.gallery.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
@@ -57,9 +56,11 @@ public interface IUserAlbumService extends IService<UserAlbum> {
      */
     UserAlbum getInfo(Integer userId, Integer id);
 
-    Boolean isSee(UserAlbumVo userAlbum,Integer userId);
+    Boolean isSee(UserAlbumVo userAlbum, Integer userId);
 
-    Boolean isCheck(Integer aid,Integer userId);
+    Double getAmount(Integer aid, Integer userId, Integer charge, Double price, Double vipPrice);
+
+    Boolean isCheck(Integer aid, Integer userId);
 
     Boolean updateCharge(Integer userId, Long id, Integer charge, Double price, Double vipPrice);
 

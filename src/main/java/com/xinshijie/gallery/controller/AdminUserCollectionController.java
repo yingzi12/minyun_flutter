@@ -43,7 +43,7 @@ public class AdminUserCollectionController extends BaseController {
     @GetMapping("/on")
     public Result<UserCollection> on(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
         UserCollectionDto dto = new UserCollectionDto();
-        dto.setUserId(getUserId() + 0l);
+        dto.setUserId((long) getUserId());
         dto.setUserName(getUserName());
         dto.setAid(aid);
         dto.setTitle(title);
@@ -58,8 +58,8 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/close")
-    public Result<Integer> close(@RequestParam("aid") Long aid,  @RequestParam("ctype") Integer ctype) {
-        Integer vo = userCollectionService.delById(getUserId(),aid,ctype);
+    public Result<Integer> close(@RequestParam("aid") Long aid, @RequestParam("ctype") Integer ctype) {
+        Integer vo = userCollectionService.delById(getUserId(), aid, ctype);
         return Result.success(vo);
     }
 
@@ -94,9 +94,9 @@ public class AdminUserCollectionController extends BaseController {
 
     @GetMapping("/list")
     public Result<List<UserCollectionVo>> select(UserCollectionDto findDto) {
-        findDto.setUserId(getUserId() + 0l);
+        findDto.setUserId((long) getUserId());
         Page<UserCollectionVo> vo = userCollectionService.selectPageUserCollection(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 }

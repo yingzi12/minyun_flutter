@@ -48,7 +48,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     @Autowired
     private IUserAlbumService userAlbumService;
     //    @Value("${image.path}")
-    private String headPath = "/user/album/";
+    private final String headPath = "/user/album/";
     @Value("${image.sourceWeb}")
     private String sourceWeb;
 
@@ -61,10 +61,10 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     }
 
     @Override
-    public List<UserImage> selectAllAid(Integer aid,Integer isFree) {
-        QueryWrapper<UserImage> qw=new QueryWrapper<>();
-        qw.eq("aid",aid);
-        if(isFree !=null) {
+    public List<UserImage> selectAllAid(Integer aid, Integer isFree) {
+        QueryWrapper<UserImage> qw = new QueryWrapper<>();
+        qw.eq("aid", aid);
+        if (isFree != null) {
             qw.eq("is_free", isFree);
         }
         return mapper.selectList(qw);
@@ -89,14 +89,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     }
 
     @Override
-    public Long selectCount(Integer aid,Integer userId,Integer isFree) {
-        QueryWrapper<UserImage> qw=new QueryWrapper<>();
-        qw.eq("aid",aid);
-        if(userId != null) {
+    public Long selectCount(Integer aid, Integer userId, Integer isFree) {
+        QueryWrapper<UserImage> qw = new QueryWrapper<>();
+        qw.eq("aid", aid);
+        if (userId != null) {
             qw.eq("user_id", userId);
         }
-        if(isFree != null){
-            qw.eq("is_free",isFree);
+        if (isFree != null) {
+            qw.eq("is_free", isFree);
         }
         return mapper.selectCount(qw);
     }
@@ -228,7 +228,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     public String saveImage(AllImage allImage, String md5, MultipartFile file) {
         String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), file);
         try {
-            if(StringUtils.isNotEmpty(url)) {
+            if (StringUtils.isNotEmpty(url)) {
                 allImage.setSource_web(sourceWeb);
                 allImage.setSource_url(url);
                 allImageService.save(allImage);

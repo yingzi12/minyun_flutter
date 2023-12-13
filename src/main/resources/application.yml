@@ -48,3 +48,10 @@ image:
   sourceWeb: https://image.51x.uk/xinshijie
 ffm:
   path: /Users/luhuang/Documents/git/SubtitleGenerated/src/main/resources/ffmpeg
+paypal:
+  client:
+    id: AWwAGKZhvPE3xSgDh-gRH9sXwNMKDQSzr65ZwaUHp-U7CTbUk-FTnRRjlF0zTpz5LaeDz5rHgcaaekVm
+    secret: ECmBhtDZKC-HCsF_4jeWuZk3uiuaicf0k0IU38O8ivuZJFgvgs_5lfS14DvPdtme5FIXyodxj4jclVWe
+  api:
+    base:
+      url: https://api-m.sandbox.paypal.com

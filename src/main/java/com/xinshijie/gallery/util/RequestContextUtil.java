@@ -42,6 +42,7 @@ public class RequestContextUtil {
         }
         return Integer.parseInt(request.getAttribute("userId").toString());
     }
+
     /**
      * 从当前请求的头部获取 userName。
      *

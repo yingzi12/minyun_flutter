@@ -51,7 +51,7 @@ public class AdminUserAttentionController extends BaseController {
     @GetMapping("/add")
     public Result<UserAttention> add(@PathVariable("userId") Long userId, @PathVariable("userName") String userName) {
         UserAttentionDto userAttention = new UserAttentionDto();
-        userAttention.setUserId(getUserId() + 0L);
+        userAttention.setUserId(getUserId());
         userAttention.setUserName(getUserName());
         userAttention.setAttUserId(userId);
         userAttention.setAttUserName(userName);
@@ -93,9 +93,9 @@ public class AdminUserAttentionController extends BaseController {
 
     @GetMapping("/list")
     public Result<List<UserAttentionVo>> select(UserAttentionDto findDto) {
-        findDto.setUserId(getUserId() + 0l);
+        findDto.setUserId(getUserId());
         Page<UserAttentionVo> vo = userAttentionService.selectPageUserAttention(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 

@@ -16,41 +16,35 @@ import java.io.Serializable;
 @TableName(value = "find_image")
 @Data
 public class FindImage implements Serializable {
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
     /**
      *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
-
     /**
      *
      */
     @NotNull
     @Size(max = 200, min = 1)
     private String title;
-
     /**
      *
      */
 //    @Size(max = 200,min = 1)
     private String girl;
-
     /**
      *
      */
 //    @Size(max = 200,min = 1)
     private String createTime;
-
     /**
      *
      */
     private String subTime;
-
     /**
      *
      */
     private Integer countFind;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

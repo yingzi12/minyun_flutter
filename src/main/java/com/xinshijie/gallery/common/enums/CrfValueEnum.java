@@ -14,8 +14,6 @@ public enum CrfValueEnum {
     MEDIUM_QUALITY("中等质量", 26),
     HIGH_QUALITY("高质量", 23);
 
-    private String name;
-    private Integer code;
     private static Set<Integer> TYPE_CODE_SET = new HashSet<Integer>();
 
     static {
@@ -27,16 +25,16 @@ public enum CrfValueEnum {
         }
     }
 
+    private String name;
+    private Integer code;
+
     CrfValueEnum(String typeName, Integer typeCode) {
         this.name = typeName;
         this.code = typeCode;
     }
 
     public static boolean isValid(Integer typeCode) {
-        if (TYPE_CODE_SET.contains(typeCode)) {
-            return true;
-        }
-        return false;
+        return TYPE_CODE_SET.contains(typeCode);
     }
 
     public static CrfValueEnum convertoEnum(Integer typeCode) {
@@ -49,6 +47,14 @@ public enum CrfValueEnum {
             }
         }
         return null;
+    }
+
+    public static Set<Integer> getTypeCodeSet() {
+        return TYPE_CODE_SET;
+    }
+
+    public static void setTypeCodeSet(Set<Integer> typeCodeSet) {
+        TYPE_CODE_SET = typeCodeSet;
     }
 
     public boolean isEqual(Integer typeCode) {
@@ -72,13 +78,5 @@ public enum CrfValueEnum {
 
     public void setCode(Integer code) {
         this.code = code;
-    }
-
-    public static Set<Integer> getTypeCodeSet() {
-        return TYPE_CODE_SET;
-    }
-
-    public static void setTypeCodeSet(Set<Integer> typeCodeSet) {
-        TYPE_CODE_SET = typeCodeSet;
     }
 }

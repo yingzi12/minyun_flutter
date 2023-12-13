@@ -1,7 +1,6 @@
 package com.xinshijie.gallery.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
@@ -9,7 +8,6 @@ import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
-import com.xinshijie.gallery.vo.UserAlbumVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,9 +86,9 @@ public class AdminUserAlbumController extends BaseController {
      */
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserAlbum> getInfo(@PathVariable("id") Integer id) {
-        Integer userId=getUserId();
+        Integer userId = getUserId();
         UserAlbum vo = userAlbumService.getInfo(userId, id);
-        if(vo.getUserId() != userId){
+        if (vo.getUserId() != userId) {
             throw new ServiceException(ResultCodeEnum.INSUFFICIENT_PERMISSIONS);
         }
         return Result.success(vo);
@@ -123,7 +121,7 @@ public class AdminUserAlbumController extends BaseController {
     public Result<List<UserAlbum>> select(UserAlbumDto findDto) {
         findDto.setUserId(getUserId());
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 

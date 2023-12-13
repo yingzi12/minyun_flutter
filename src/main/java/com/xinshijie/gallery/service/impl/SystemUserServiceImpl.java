@@ -16,7 +16,6 @@ import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
-import com.xinshijie.gallery.vo.SystemUserVo;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.BeanUtils;
@@ -188,10 +187,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         QueryWrapper<SystemUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", email);
         Long count = mapper.selectCount(queryWrapper);
-        if (count > 0) {
-            return false;
-        }
-        return true;
+        return count <= 0;
     }
 
 
@@ -258,7 +254,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         systemUser.setPassword(SecurityUtils.encryptPassword(userDto.getPassword()));
         systemUser.setIsEmail(2);
         systemUser.setNickname(userDto.getName());
-        systemUser.setSalt(RandomUtil.randomNumbers(10) + "");
+        systemUser.setSalt(RandomUtil.randomNumbers(10));
         systemUser.setCreateTime(LocalDateTime.now());
 
         mapper.insert(systemUser);

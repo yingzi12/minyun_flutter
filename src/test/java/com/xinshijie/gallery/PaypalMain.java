@@ -2,6 +2,9 @@ package com.xinshijie.gallery;
 
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson2.JSONObject;
+import com.xinshijie.gallery.dto.AmountDto;
+import com.xinshijie.gallery.dto.PayOrderDto;
+import com.xinshijie.gallery.dto.PurchaseUnitDto;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,15 +44,18 @@ class PaypalMain {
         amount.setValue(0.3 + "");
         PurchaseUnitDto purchaseUnit = new PurchaseUnitDto();
         purchaseUnit.setAmount(amount);
-        purchaseUnit.setReferenceId(IdUtil.fastUUID());
-        purchaseUnit.setCustomId("user_id");
+        purchaseUnit.setReference_id(IdUtil.fastUUID());
+        purchaseUnit.setCustom_id("user_id");
         purchaseUnit.setDescription("这是一个说明");
         List<PurchaseUnitDto> list = new ArrayList<>();
         list.add(purchaseUnit);
         dto.setPurchase_units(list);
 //        String requstId= IdUtil.getSnowflakeNextId()+"";
         String requstId = "1JG72609XE641194A";
-        createOrder(requstId, token, dto);
+//        createOrder(requstId, token, dto);
+        //"0XP707945N772224R"
+        getDetail(token,"7LH93536HU642170T");
+        checkoutOrdersCapture(token,"7LH93536HU642170T");
     }
 
     /**
@@ -90,6 +96,7 @@ class PaypalMain {
      */
     public static void confirmOrder(String token, String orderId) throws IOException {
         URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/confirm-payment-source");
+                                //https://api.sandbox.paypal.com/v2/checkout/orders/7LH93536HU642170T/capture
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
 
@@ -166,12 +173,13 @@ class PaypalMain {
         System.out.println(response);
     }
 
-    public static void checkoutOrdersCapture(String token, String orderId) throws IOException {
-        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/capture");
+    public static void checkoutOrdersCapture(String token,String orderId) throws IOException {
+        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/"+orderId+"/capture");
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        httpConn.setRequestProperty("Content-Type", "application/json");
         httpConn.setRequestMethod("POST");
 
-        httpConn.setRequestProperty("PayPal-Request-Id", "7b92603e-77ed-4896-8e78-5dea2050476a");
+        httpConn.setRequestProperty("PayPal-Request-Id", "111111111");
         httpConn.setRequestProperty("Authorization", "Bearer " + token);
 
         InputStream responseStream = httpConn.getResponseCode() / 100 == 2
@@ -203,4 +211,30 @@ class PaypalMain {
         String response = s.hasNext() ? s.next() : "";
         System.out.println(response);
     }
+
+//    public static void main(String[] args) throws IOException {
+//        String token = "";
+//        try {
+//            String accessToken = generateAccessToken();
+//            System.out.println("Access Token: " + accessToken);
+//            JSONObject jsonObject = JSONObject.parseObject(accessToken);
+//            System.out.println("Access Token: " + jsonObject.get("access_token"));
+//            token = jsonObject.get("access_token").toString();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/7LH93536HU642170T/capture");
+//        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+//        httpConn.setRequestMethod("POST");
+//
+//        httpConn.setRequestProperty("PayPal-Request-Id", "7b92603e-77ed-4896-8e78-5dea2050476a");
+//        httpConn.setRequestProperty("Authorization", "Bearer "+token);
+//
+//        InputStream responseStream = httpConn.getResponseCode() / 100 == 2
+//                ? httpConn.getInputStream()
+//                : httpConn.getErrorStream();
+//        Scanner s = new Scanner(responseStream).useDelimiter("\\A");
+//        String response = s.hasNext() ? s.next() : "";
+//        System.out.println(response);
+//    }
 }

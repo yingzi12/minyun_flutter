@@ -1,21 +1,17 @@
 package com.xinshijie.gallery.controller;
 
 import cn.hutool.core.util.HashUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVideo;
-import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.dto.UserVideoFindDto;
 import com.xinshijie.gallery.enmus.AlbumStatuEnum;
-import com.xinshijie.gallery.mq.MessageProducer;
 import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +25,6 @@ import java.nio.file.StandardOpenOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -83,10 +78,10 @@ public class AdminUserVideoController extends BaseController {
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
         UserAlbum userAlbum = userAlbumService.getById(id);
-        if(userAlbum==null){
+        if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
-        if(userAlbum.getStatus()!= AlbumStatuEnum.NORMAL.getCode()){
+        if (userAlbum.getStatus() != AlbumStatuEnum.NORMAL.getCode()) {
             throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
         }
         Integer vo = userVideoService.delById(getUserId(), id);
@@ -96,10 +91,10 @@ public class AdminUserVideoController extends BaseController {
     @GetMapping(value = "/updateIsFree")
     public Result<Integer> updateIsFree(@RequestParam("id") Long id, @RequestParam("isFree") Integer isFree) {
         UserAlbum userAlbum = userAlbumService.getById(id);
-        if(userAlbum==null){
+        if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
-        if(userAlbum.getStatus()!= AlbumStatuEnum.NORMAL.getCode()){
+        if (userAlbum.getStatus() != AlbumStatuEnum.NORMAL.getCode()) {
             throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
         }
         Integer vo = userVideoService.updateIsFree(getUserId(), id, isFree);
@@ -129,8 +124,8 @@ public class AdminUserVideoController extends BaseController {
     public Result<List<UserVideo>> list(UserVideoFindDto findDto) {
         findDto.setUserId(getUserId());
 
-        List<UserVideo> vo = userVideoService.selectUserVideoList(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
-        Long count=userVideoService.selectCount(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
+        List<UserVideo> vo = userVideoService.selectUserVideoList(findDto.getAid(), findDto.getUserId(), findDto.getIsFree());
+        Long count = userVideoService.selectCount(findDto.getAid(), findDto.getUserId(), findDto.getIsFree());
         return Result.success(vo, count.intValue());
     }
 
@@ -138,12 +133,13 @@ public class AdminUserVideoController extends BaseController {
     public Result<AllVideo> checkAllMd5(String md5) {
 //        findDto.setUserId(getUserId());
         AllVideo vo = userVideoService.checkAllMd5(md5);
-        if(vo==null){
+        if (vo == null) {
             return Result.error(ResultCodeEnum.DATA_NOT_FOUND);
-        }else {
+        } else {
             return Result.success(vo);
         }
     }
+
     @PostMapping("/upload")
     public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
         log.info("upload aid:" + aid);
@@ -171,11 +167,11 @@ public class AdminUserVideoController extends BaseController {
                                                    @RequestParam("isFree") Integer isFree,
                                                    @RequestParam("md5") String md5) {
         try {
-            Long count= userVideoService.getCount(aid,isFree);
-            if(isFree==1 && count>3){
-               throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+            Long count = userVideoService.getCount(aid, isFree);
+            if (isFree == 1 && count > 3) {
+                throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
             }
-            if(isFree==2 && count>10){
+            if (isFree == 2 && count > 10) {
                 throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
             }
 
@@ -202,10 +198,10 @@ public class AdminUserVideoController extends BaseController {
             Files.move(chunkFile, chunkFile.resolveSibling("uploaded_" + chunkFileName));
 
             // Check if all chunks have been uploaded
-            if (allChunksUploaded(day,hashFileName, totalChunks)) {
+            if (allChunksUploaded(day, hashFileName, totalChunks)) {
                 log.info("All chunks uploaded, starting to merge file: " + hashFileName);
 
-                 mergeFile(soruceSavePath,hashFileName, totalChunks);
+                mergeFile(soruceSavePath, hashFileName, totalChunks);
 
                 userVideoService.updateUploadedFiles(getUserId(), aid, isFree, 0L, md5, soruceSavePath, hashFileName);
             }
@@ -216,11 +212,11 @@ public class AdminUserVideoController extends BaseController {
         return Result.success(true);
     }
 
-    private boolean allChunksUploaded(String day,String idHash, int totalChunks) {
+    private boolean allChunksUploaded(String day, String idHash, int totalChunks) {
         for (int i = 0; i < totalChunks; i++) {
             Path chunkFile = Paths.get(Constants.videoHcPath + day + "/" + "uploaded_" + idHash + "-" + i);
             if (!Files.exists(chunkFile)) {
-                log.info("Missing chunk: " + chunkFile.toString());
+                log.info("Missing chunk: " + chunkFile);
                 return false;
             }
         }
@@ -231,8 +227,8 @@ public class AdminUserVideoController extends BaseController {
     public Result<String> checkChunkExists(@RequestParam("identifier") String identifier,
                                            @RequestParam("chunkNumber") int chunkNumber,
                                            @RequestParam("day") String day
-                                           ) {
-        Path chunkFile = Paths.get(Constants.videoHcPath +day+ "/" + "uploaded_" + identifier + "-" + chunkNumber);
+    ) {
+        Path chunkFile = Paths.get(Constants.videoHcPath + day + "/" + "uploaded_" + identifier + "-" + chunkNumber);
         if (Files.exists(chunkFile)) {
             return Result.success(ResultCodeEnum.SUCCESS);
         } else {
@@ -256,14 +252,14 @@ public class AdminUserVideoController extends BaseController {
     }
 
     //合并文件，同时返回文件的hash值
-    private String mergeFile(String soruceSavePath,String hashFileName, int totalChunks) throws IOException, NoSuchAlgorithmException {
+    private String mergeFile(String soruceSavePath, String hashFileName, int totalChunks) throws IOException, NoSuchAlgorithmException {
         Path fileOutput = Paths.get(Constants.videoHcPath + soruceSavePath + "/" + hashFileName);
         MessageDigest md = MessageDigest.getInstance("MD5");
         long fileSize = 0;
 
         try (OutputStream mergeFile = new BufferedOutputStream(Files.newOutputStream(fileOutput, StandardOpenOption.CREATE))) {
             for (int i = 0; i < totalChunks; i++) {
-                Path chunkFile = Paths.get(Constants.videoHcPath +soruceSavePath + "/" + "uploaded_" + hashFileName + "-" + i);
+                Path chunkFile = Paths.get(Constants.videoHcPath + soruceSavePath + "/" + "uploaded_" + hashFileName + "-" + i);
                 byte[] buffer = new byte[4096];
                 int len;
                 try (InputStream is = Files.newInputStream(chunkFile)) {

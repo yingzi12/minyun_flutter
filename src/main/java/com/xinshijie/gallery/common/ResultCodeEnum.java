@@ -134,6 +134,9 @@ public enum ResultCodeEnum {
 
     NOT_POST_STATUS(999008122, "只有发布状态才能修改"),
 
+    PRICE_ERROR(999008123, "价格错误"),
+
+
     ;
 
 

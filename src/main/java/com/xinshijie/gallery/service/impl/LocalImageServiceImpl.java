@@ -49,12 +49,10 @@ import java.util.concurrent.*;
 @Service
 public class LocalImageServiceImpl implements ILocalImageService {
 
-    @Autowired
-    private AlbumService albumService;
     private final Semaphore semaphore = new Semaphore(30); // Adjust the number of permits as needed
     private final Set<Long> currentAlbumIds = ConcurrentHashMap.newKeySet();
-
-
+    @Autowired
+    private AlbumService albumService;
     @Autowired
     private ImageService imageService;
 
@@ -66,9 +64,9 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
     @Value("${image.path}")
     private String sourcePaht;
-    private ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个固定大小的线程池
+    private final ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个固定大小的线程池
 
-    private Map<String, Integer> notHostnameMap = new ConcurrentHashMap<>();
+    private final Map<String, Integer> notHostnameMap = new ConcurrentHashMap<>();
 
 
     @Async
@@ -226,7 +224,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                 if (albumVo.getSourceWeb() != null && albumVo.getImgUrl() != null) {
                     Path imagePath = Paths.get(albumVo.getImgUrl());
                     String imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imagePath.getFileName().toString();
-                    String destinationPath = sourcePaht + "" + imageLJ;
+                    String destinationPath = sourcePaht + imageLJ;
                     boolean ok = downloadImage(albumVo.getSourceWeb() + albumVo.getImgUrl(), destinationPath, 0);
                     if (ok) {
                         albumVo.setSourceUrl(imageLJ);
@@ -251,7 +249,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                             String fileName = imgUlr.substring(imgUlr.lastIndexOf('/') + 1);
 
                             imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + fileName;
-                            destinationPath = sourcePaht + "" + imageLJ;
+                            destinationPath = sourcePaht + imageLJ;
                             ok = downloadImage(imgUlr, destinationPath, 0);
                             if (ok) {
                                 albumVo.setSourceUrl(imageLJ);
@@ -355,7 +353,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                 Files.createDirectories(destinationPathFile);
             }
             String imageLJ = "/image/" + Math.abs(HashUtil.apHash(album.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(album.getTitle()) + "/" + imageName;
-            Path destinationPath = Paths.get(sourcePaht + "" + imageLJ);
+            Path destinationPath = Paths.get(sourcePaht + imageLJ);
             try {
                 // 移动文件，如果目标文件存在则替换它
                 Files.move(imagePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);

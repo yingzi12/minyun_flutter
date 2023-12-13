@@ -26,7 +26,7 @@ public interface IUserImageService extends IService<UserImage> {
      */
     List<UserImageVo> selectUserImageList(UserImageDto dto);
 
-    List<UserImage> selectAllAid(Integer aid,Integer isFee);
+    List<UserImage> selectAllAid(Integer aid, Integer isFee);
 
     /**
      * 分页查询。普通方法
@@ -34,7 +34,7 @@ public interface IUserImageService extends IService<UserImage> {
      */
     IPage<UserImageVo> selectPageUserImage(UserImageDto dto);
 
-    Long selectCount(Integer aid,Integer userId,Integer isFree);
+    Long selectCount(Integer aid, Integer userId, Integer isFree);
 
     /**
      * 分页查询信息表

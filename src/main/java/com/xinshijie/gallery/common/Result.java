@@ -35,22 +35,6 @@ public class Result<T> {
 
     }
 
-    public T result() {
-        if (ResultCodeEnum.SUCCESS.getCode() != this.code) {
-            throw new ServiceException(this.code, this.msg);
-        } else {
-            return this.data;
-        }
-    }
-
-    public boolean isSucc() {
-        return this.code != null && ResultCodeEnum.SUCCESS.getCode() == this.code;
-    }
-
-    public boolean isFail() {
-        return !this.isSucc();
-    }
-
     private Result(T data) {
         this.code = ResultCodeEnum.SUCCESS.getCode();
         this.msg = ResultCodeEnum.SUCCESS.getMsg();
@@ -94,6 +78,22 @@ public class Result<T> {
 
     public static <T> Result<T> error(Integer code, String msg) {
         return new Result(code, msg);
+    }
+
+    public T result() {
+        if (ResultCodeEnum.SUCCESS.getCode() != this.code) {
+            throw new ServiceException(this.code, this.msg);
+        } else {
+            return this.data;
+        }
+    }
+
+    public boolean isSucc() {
+        return this.code != null && ResultCodeEnum.SUCCESS.getCode() == this.code;
+    }
+
+    public boolean isFail() {
+        return !this.isSucc();
     }
 
 

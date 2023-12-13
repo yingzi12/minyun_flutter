@@ -42,4 +42,8 @@ public class SystemUser implements Serializable {
     private Integer countLike;
     private Integer countSee;
     private Integer countAttention;
+    private Integer vip;
+    private Integer credit;
+    private LocalDateTime vipExpirationTime;
+
 }

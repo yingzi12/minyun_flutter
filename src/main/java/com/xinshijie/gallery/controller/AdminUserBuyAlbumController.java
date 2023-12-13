@@ -93,7 +93,7 @@ public class AdminUserBuyAlbumController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserBuyAlbumVo>> select(UserBuyAlbumDto findDto) {
         Page<UserBuyAlbumVo> vo = userBuyAlbumService.selectPageUserBuyAlbum(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 }

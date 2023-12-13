@@ -3,9 +3,7 @@ package com.xinshijie.gallery.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.AllVideo;
-import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
-import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.vo.UserVideoVo;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +24,7 @@ public interface IUserVideoService extends IService<UserVideo> {
     /**
      * 查询信息表
      */
-    List<UserVideo> selectUserVideoList(Integer aid,Integer userId,Integer isFree);
+    List<UserVideo> selectUserVideoList(Integer aid, Integer userId, Integer isFree);
 
     List<UserVideo> selectAllAid(Integer aid, Integer isFree);
 
@@ -39,7 +37,8 @@ public interface IUserVideoService extends IService<UserVideo> {
 
     AllVideo checkAllMd5(String md5);
 
-    Long selectCount(Integer aid,Integer userId,Integer isFree);
+    Long selectCount(Integer aid, Integer userId, Integer isFree);
+
     /**
      * 分页查询信息表
      */
@@ -68,9 +67,9 @@ public interface IUserVideoService extends IService<UserVideo> {
      */
     UserVideoVo getInfo(Long id);
 
-    Long getCount(Integer aid,Integer isFree);
+    Long getCount(Integer aid, Integer isFree);
 
     String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file);
 
-    String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath,String fileName);
+    String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath, String fileName);
 }

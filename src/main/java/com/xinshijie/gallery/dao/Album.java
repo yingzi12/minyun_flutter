@@ -14,44 +14,37 @@ import java.io.Serializable;
 @TableName(value = "album")
 @Data
 public class Album implements Serializable {
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
     /**
      *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
-
     /**
      *
      */
     private String url;
-
     /**
      *
      */
     private String title;
-
     /**
      *
      */
     private String sourceWeb;
-
     /**
      *
      */
     private Long hash;
-
     /**
      *
      */
     private Long countSee;
-
     private String girl;
-
     private String tags;
-
     private String createTime;
     private String updateTime;
-
     private String imgUrl;
     private String size;
     private Integer numberPhotos;
@@ -60,7 +53,4 @@ public class Album implements Serializable {
     //1 yes 0 No
     private Integer countError;
     private String sourceUrl;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

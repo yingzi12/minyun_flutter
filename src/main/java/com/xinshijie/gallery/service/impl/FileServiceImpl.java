@@ -37,6 +37,21 @@ public class FileServiceImpl implements IFileService {
     @Value("${image.path}")
     private String savePath;
 
+    public static void main(String[] args) {
+        String[] readFormats = ImageIO.getReaderFormatNames();
+        String[] writeFormats = ImageIO.getWriterFormatNames();
+        System.out.println("支持的Readers: " + Arrays.asList(readFormats));
+        System.out.println("支持的Writers: " + Arrays.asList(writeFormats));
+        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("WBMP");
+        while (readers.hasNext()) {
+            System.out.println("reader: " + readers.next());
+        }
+        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+
+        System.out.println("writers: " + writer);
+
+    }
+
     /**
      * 视频上传缓存路径
      */
@@ -47,7 +62,7 @@ public class FileServiceImpl implements IFileService {
                 log.error("No image file provided");
                 return null;
             }
-            log.info("file:"+file.getOriginalFilename());
+            log.info("file:" + file.getOriginalFilename());
             String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".webp";
             File destinationFile = new File(savePath + imgUrl);
             File parentDir = destinationFile.getParentFile();
@@ -57,7 +72,7 @@ public class FileServiceImpl implements IFileService {
 
             // 检查文件大小或格式
             if (file.getSize() <= 600 * 1024 || isWebPFormat(file)) {
-                return saveImage(file,headPath,title);
+                return saveImage(file, headPath, title);
             } else {
                 // 转换为WebP格式
                 float outputQuality = 0.8f; // 可以根据需要设置压缩质量
@@ -75,7 +90,7 @@ public class FileServiceImpl implements IFileService {
             return imgUrl;
         } catch (Exception e) {
             log.error("Error during image processing: ", e);
-            return  saveImage(file,headPath,title);
+            return saveImage(file, headPath, title);
         }
     }
 
@@ -102,7 +117,6 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
-
     public Boolean moveFile(String headPath, String title, String sourcePath) {
         try {
             Path chunkFile = Paths.get(headPath + LocalDate.now() + "/" + title);
@@ -124,12 +138,14 @@ public class FileServiceImpl implements IFileService {
         return true;
     }
 
+//    private static final Semaphore semaphore = new Semaphore(5);
+
     public String chargeVideoFile(String headPath, String title, String sourcePathUrl) {
         try {
             Path sourcePath = Paths.get(sourcePathUrl);
             String[] fileNameArr = sourcePath.getFileName().toString().split("\\.");
-            String vedioPath = "" + "/" + LocalDate.now() + "/" + fileNameArr[0];
-            String m3u8Path = "" + "/" + LocalDate.now() + "/" + fileNameArr[0] + "/" + fileNameArr[0] + ".m3u8";
+            String vedioPath = "/" + LocalDate.now() + "/" + fileNameArr[0];
+            String m3u8Path = "/" + LocalDate.now() + "/" + fileNameArr[0] + "/" + fileNameArr[0] + ".m3u8";
 
             MediaUtil.splitMp4ToTsSegmentsWithIndex(new File(sourcePathUrl)
                     , new File(vedioPath), new File(m3u8Path));
@@ -139,8 +155,6 @@ public class FileServiceImpl implements IFileService {
             throw new ServiceException(ResultCodeEnum.SYSTEM_INNER_ERROR);
         }
     }
-
-//    private static final Semaphore semaphore = new Semaphore(5);
 
     /**
      * 拆分视频，最多同步5个
@@ -161,18 +175,18 @@ public class FileServiceImpl implements IFileService {
 //            }
 
             // 你的方法逻辑
-            Path sourcePath = Paths.get(Constants.videoHcPath+sourcePathUrl);
-            String day=LocalDate.now().toString();
+            Path sourcePath = Paths.get(Constants.videoHcPath + sourcePathUrl);
+            String day = LocalDate.now().toString();
             String[] fileNameArr = sourcePath.getFileName().toString().split("\\.");
-            String vedioPath ="/video/" + day+ "/" + fileNameArr[0];
-            String m3u8Path = vedioPath+"/" + fileNameArr[0] + ".m3u8";
+            String vedioPath = "/video/" + day + "/" + fileNameArr[0];
+            String m3u8Path = vedioPath + "/" + fileNameArr[0] + ".m3u8";
             File destinationFile = new File(savePath + m3u8Path);
             File parentDir = destinationFile.getParentFile();
             // 如果父目录不存在，尝试创建它
             if (parentDir != null && !parentDir.exists()) {
                 parentDir.mkdirs();
             }
-            MediaUtil.splitMp4ToTsSegmentsWithIndex(new File(Constants.videoHcPath+sourcePathUrl), new File(savePath +vedioPath), new File(savePath +m3u8Path));
+            MediaUtil.splitMp4ToTsSegmentsWithIndex(new File(Constants.videoHcPath + sourcePathUrl), new File(savePath + vedioPath), new File(savePath + m3u8Path));
             return m3u8Path;
 
         } catch (Exception ex) {
@@ -190,7 +204,7 @@ public class FileServiceImpl implements IFileService {
             }
             try {
                 // 你的方法逻辑
-                String[] fileNameArr = file.getOriginalFilename().toString().split("\\.");
+                String[] fileNameArr = file.getOriginalFilename().split("\\.");
                 String fileUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + "." + fileNameArr[fileNameArr.length - 1];
 
                 // 假设我们将视频保存在服务器的某个位置
@@ -223,37 +237,22 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
-    public String saveImage(MultipartFile file,String headPath,String title){
-        String[] hzArr=file.getOriginalFilename().toString().split("\\.");
-        String hz=hzArr[hzArr.length-1];
-        String imgUrlPath=headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename())+"."+hz;
+    public String saveImage(MultipartFile file, String headPath, String title) {
+        String[] hzArr = file.getOriginalFilename().split("\\.");
+        String hz = hzArr[hzArr.length - 1];
+        String imgUrlPath = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + "." + hz;
         try (InputStream inputStream = file.getInputStream();
-             FileOutputStream outputStream = new FileOutputStream(savePath+ imgUrlPath)) {
+             FileOutputStream outputStream = new FileOutputStream(savePath + imgUrlPath)) {
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return "";
         }
         return imgUrlPath;
-    }
-
-    public static void main(String[] args) {
-        String readFormats[] = ImageIO.getReaderFormatNames();
-        String writeFormats[] = ImageIO.getWriterFormatNames();
-        System.out.println("支持的Readers: " + Arrays.asList(readFormats));
-        System.out.println("支持的Writers: " + Arrays.asList(writeFormats));
-        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("WBMP");
-        while (readers.hasNext()) {
-            System.out.println("reader: " + readers.next());
-        }
-        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
-
-            System.out.println("writers: " + writer);
-
     }
 
 

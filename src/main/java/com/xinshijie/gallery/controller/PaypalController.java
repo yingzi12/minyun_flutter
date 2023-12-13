@@ -23,17 +23,6 @@ import java.util.Map;
 public class PaypalController {
     public static final String WebhookId = "4JH86294D6297924G";
 
-    @PostMapping("/webhook")
-    public String validatePayPalWebhook(HttpServletRequest request) throws IOException {
-        System.out.println("webhook");
-//        APIContext apiContext = new APIContext("CLIENT_ID", "CLIENT_SECRET", "MODE");
-//        Boolean result = Event.validateReceivedEvent(apiContext, getHeadersInfo(request), getBody(request));
-        getHeadersInfo(request);
-        getBody(request);
-        // 处理验证结果
-        return "Webhook Validated: ";
-    }
-
     private static Map<String, String> getHeadersInfo(HttpServletRequest request) {
         Map<String, String> map = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -55,5 +44,16 @@ public class PaypalController {
             }
         }
         return stringBuilder.toString();
+    }
+
+    @PostMapping("/webhook")
+    public String validatePayPalWebhook(HttpServletRequest request) throws IOException {
+        System.out.println("webhook");
+//        APIContext apiContext = new APIContext("CLIENT_ID", "CLIENT_SECRET", "MODE");
+//        Boolean result = Event.validateReceivedEvent(apiContext, getHeadersInfo(request), getBody(request));
+        getHeadersInfo(request);
+        getBody(request);
+        // 处理验证结果
+        return "Webhook Validated: ";
     }
 }

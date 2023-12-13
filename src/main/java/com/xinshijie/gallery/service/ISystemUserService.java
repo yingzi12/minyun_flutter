@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.vo.LoginUserVo;
-import com.xinshijie.gallery.vo.SystemUserVo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

@@ -1,12 +1,10 @@
 package com.xinshijie.gallery.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserSettingVip;
 import com.xinshijie.gallery.dto.UserSettingVipDto;
 import com.xinshijie.gallery.service.IUserSettingVipService;
-import com.xinshijie.gallery.vo.UserSettingVipVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +103,6 @@ public class AdminUserSettingVipController extends BaseController {
     public Result<List<UserSettingVip>> list(UserSettingVipDto findDto) {
         findDto.setUserId(getUserId());
         List<UserSettingVip> vo = userSettingVipService.selectUserSettingVipList(findDto);
-        return Result.success(vo,vo.size());
+        return Result.success(vo, vo.size());
     }
 }

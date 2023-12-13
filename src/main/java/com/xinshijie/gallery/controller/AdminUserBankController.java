@@ -87,7 +87,7 @@ public class AdminUserBankController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserBankVo>> select(UserBankDto findDto) {
         Page<UserBankVo> vo = userBankService.selectPageUserBank(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 

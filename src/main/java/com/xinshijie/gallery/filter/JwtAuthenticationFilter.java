@@ -43,10 +43,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             httpServletResponse.setHeader("Access-Control-Max-Age", "3600"); // 预检请求的缓存时间，以秒为单位
             httpServletResponse.setStatus(HttpServletResponse.SC_OK); // HTTP 200 OK
         } else {
-            if(!httpServletRequest.getRequestURI().startsWith("/admin/")){
-                getToken(httpServletRequest,authHeader);
+            if (!httpServletRequest.getRequestURI().startsWith("/admin/")) {
+                getToken(httpServletRequest, authHeader);
                 filterChain.doFilter(servletRequest, servletResponse);
-            }else {
+            } else {
                 log.info("获取到token:" + authHeader);
                 log.info("获取到token url:" + httpServletRequest.getRequestURI());
 
@@ -97,13 +97,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     }
 
-    public String getToken(HttpServletRequest httpServletRequest ,String authHeader){
+    public String getToken(HttpServletRequest httpServletRequest, String authHeader) {
         if (authHeader != null && !authHeader.isEmpty()) {
             try {
                 String token = "";
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     token = authHeader.substring("Bearer ".length());
-                }else{
+                } else {
                     return "";
                 }
                 boolean validate = JWT.of(token).setKey(Constants.TOKEN_KEY).verify();
@@ -123,7 +123,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                         }
                     }
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 return "";
             }
         }

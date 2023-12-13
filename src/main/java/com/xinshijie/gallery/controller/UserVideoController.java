@@ -1,6 +1,5 @@
 package com.xinshijie.gallery.controller;
 
-import cn.hutool.core.util.HashUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
@@ -15,18 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
@@ -51,6 +39,7 @@ public class UserVideoController extends BaseController {
 
     @Autowired
     private IUserAlbumService userAlbumService;
+
     /**
      * 查询详情
      *
@@ -72,7 +61,7 @@ public class UserVideoController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserVideoVo>> select(UserVideoDto findDto) {
         Page<UserVideoVo> vo = userVideoService.selectPageUserVideo(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
     /**
@@ -81,8 +70,8 @@ public class UserVideoController extends BaseController {
      * @return
      */
     @GetMapping("/listAll")
-    public Result<List<UserVideo>> listAll(@RequestParam("aid") Integer aid,@RequestParam("isFree") Integer isFree) {
-        Integer userId=getUserIdNoLogin();
+    public Result<List<UserVideo>> listAll(@RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        Integer userId = getUserIdNoLogin();
 
         if (isFree == null ||
                 (isFree == 2 && userAlbumService.isCheck(userId, aid))

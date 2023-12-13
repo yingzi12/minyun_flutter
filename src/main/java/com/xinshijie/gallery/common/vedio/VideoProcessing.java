@@ -32,6 +32,18 @@ public class VideoProcessing {
         return 0;
     }
 
+    public static void main(String[] args) {
+        VideoProcessing videoProcessing = new VideoProcessing();
+        try {
+            String videoPath = "/path/to/video.mp4";
+            long duration = getVideoDuration(videoPath);
+            String timestamp = videoProcessing.generateRandomTimestamp(duration);
+            System.out.println("Random Timestamp: " + timestamp);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String generateRandomTimestamp(long videoDuration) {
         Random random = new Random();
         long randomSeconds = (long) (random.nextDouble() * videoDuration);
@@ -41,18 +53,6 @@ public class VideoProcessing {
         long seconds = TimeUnit.SECONDS.toSeconds(randomSeconds) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.MINUTES.toSeconds(minutes);
 
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
-
-    public static void main(String[] args) {
-        VideoProcessing videoProcessing = new VideoProcessing();
-        try {
-            String videoPath = "/path/to/video.mp4";
-            long duration = videoProcessing.getVideoDuration(videoPath);
-            String timestamp = videoProcessing.generateRandomTimestamp(duration);
-            System.out.println("Random Timestamp: " + timestamp);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
 

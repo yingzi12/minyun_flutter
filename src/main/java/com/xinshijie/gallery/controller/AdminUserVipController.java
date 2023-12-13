@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
 
@@ -94,7 +92,7 @@ public class AdminUserVipController extends BaseController {
     public Result<Page<UserVipVo>> list(UserVipDto findDto) {
         findDto.setUserId(getUserId());
         Page<UserVipVo> vo = userVipService.selectPageUserVip(findDto);
-        return Result.success(vo );
+        return Result.success(vo);
     }
 
 }

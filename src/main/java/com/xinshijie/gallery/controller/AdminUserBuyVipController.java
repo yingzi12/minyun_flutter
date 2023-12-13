@@ -91,7 +91,7 @@ public class AdminUserBuyVipController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserBuyVipVo>> select(UserBuyVipDto findDto) {
         Page<UserBuyVipVo> vo = userBuyVipService.selectPageUserBuyVip(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 

@@ -46,6 +46,35 @@ public class XssBodyHttpServletRequestWrapper extends HttpServletRequestWrapper 
         body = bodyStr.toString();
     }
 
+    /**
+     * 解析子集 ,多层对象嵌套与对象数组。
+     */
+    public static Object analysisSubset(Object val) {
+        if (val instanceof Map) {
+            Map<String, Object> map = (Map<String, Object>) val;
+            Map<String, Object> resultMap = new HashMap(map.size());
+            for (String key : map.keySet()) {
+                Object subset = map.get(key);
+                Object subsetValue = analysisSubset(subset);
+                resultMap.put(key, subsetValue);
+            }
+            return resultMap;
+        }
+        if (val instanceof JSONArray) {
+            List<Object> resultList = new ArrayList<>(((JSONArray) val).size());
+            for (int i = 0; i < ((JSONArray) val).size(); i++) {
+                Object subsetValue = analysisSubset(((JSONArray) val).get(i));
+                resultList.add(subsetValue);
+            }
+            return resultList;
+        }
+        if (val instanceof String) {
+            return JsoupUtil.clean(val.toString());
+        } else {
+            return val;
+        }
+    }
+
     @Override
     public String getParameter(String name) {
         String value = super.getParameter(name);
@@ -145,34 +174,5 @@ public class XssBodyHttpServletRequestWrapper extends HttpServletRequestWrapper 
             public void setReadListener(ReadListener listener) {
             }
         };
-    }
-
-    /**
-     * 解析子集 ,多层对象嵌套与对象数组。
-     */
-    public static Object analysisSubset(Object val) {
-        if (val instanceof Map) {
-            Map<String, Object> map = (Map<String, Object>) val;
-            Map<String, Object> resultMap = new HashMap(map.size());
-            for (String key : map.keySet()) {
-                Object subset = map.get(key);
-                Object subsetValue = analysisSubset(subset);
-                resultMap.put(key, subsetValue);
-            }
-            return resultMap;
-        }
-        if (val instanceof JSONArray) {
-            List<Object> resultList = new ArrayList<>(((JSONArray) val).size());
-            for (int i = 0; i < ((JSONArray) val).size(); i++) {
-                Object subsetValue = analysisSubset(((JSONArray) val).get(i));
-                resultList.add(subsetValue);
-            }
-            return resultList;
-        }
-        if (val instanceof String) {
-            return JsoupUtil.clean(val.toString());
-        } else {
-            return val;
-        }
     }
 }

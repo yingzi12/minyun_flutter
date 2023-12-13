@@ -1,20 +1,15 @@
 package com.xinshijie.gallery.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserCollection;
-import com.xinshijie.gallery.dto.UserCollectionDto;
 import com.xinshijie.gallery.service.IUserCollectionService;
-import com.xinshijie.gallery.vo.UserCollectionVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import static com.xinshijie.gallery.util.RequestContextUtil.*;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 
 /**
@@ -41,14 +36,14 @@ public class UserCollectionController extends BaseController {
      */
     @GetMapping("/getInfo")
     public Result<Boolean> getInfo(@PathVariable("aid") Long aid, @RequestParam("ctype") Integer ctype) {
-        Integer userId=getUserIdNoLogin();
-        boolean ok=true;
-        if(userId==null) {
-            ok=false;
-        }else {
+        Integer userId = getUserIdNoLogin();
+        boolean ok = true;
+        if (userId == null) {
+            ok = false;
+        } else {
             UserCollection vo = userCollectionService.getInfo(userId, aid, ctype);
-            if(vo==null){
-                ok=false;
+            if (vo == null) {
+                ok = false;
             }
         }
         return Result.success(ok);

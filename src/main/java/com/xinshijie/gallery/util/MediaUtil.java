@@ -52,15 +52,15 @@ public class MediaUtil {
     /**
      * 视频帧抽取的默认宽度值，单位：px
      */
-    private static int DEFAULT_WIDTH = 320;
+    private static final int DEFAULT_WIDTH = 320;
     /**
      * 视频帧抽取的默认时长，单位：s（秒）
      */
-    private static int DEFAULT_TIME_LENGTH = 10;
+    private static final int DEFAULT_TIME_LENGTH = 10;
     /**
      * 抽取多张视频帧以合成gif动图时，gif的播放速度
      */
-    private static int DEFAULT_GIF_PLAYTIME = 110;
+    private static final int DEFAULT_GIF_PLAYTIME = 110;
     /**
      * FFmpeg程序执行路径
      * 当前系统安装好ffmpeg程序并配置好相应的环境变量后，值为ffmpeg可执行程序文件在实际系统中的绝对路径
@@ -74,21 +74,20 @@ public class MediaUtil {
      * <p>
      * (.*?)表示：匹配任何除\r\n之外的任何0或多个字符，非贪婪模式
      */
-    private static String durationRegex = "Duration: (\\d*?):(\\d*?):(\\d*?)\\.(\\d*?), start: (.*?), bitrate: (\\d*) kb\\/s.*";
-    private static Pattern durationPattern;
+    private static final String durationRegex = "Duration: (\\d*?):(\\d*?):(\\d*?)\\.(\\d*?), start: (.*?), bitrate: (\\d*) kb\\/s.*";
+    private static final Pattern durationPattern;
     /**
      * 视频流信息正则匹配式
      * 用于解析视频详细信息时使用；
      */
-    private static String videoStreamRegex = "Stream #\\d:\\d[\\(]??\\S*[\\)]??: Video: (\\S*\\S$?)[^\\,]*, (.*?), (\\d*)x(\\d*)[^\\,]*, (\\d*) kb\\/s, (\\d*[\\.]??\\d*) fps";
-    private static Pattern videoStreamPattern;
+    private static final String videoStreamRegex = "Stream #\\d:\\d[\\(]??\\S*[\\)]??: Video: (\\S*\\S$?)[^\\,]*, (.*?), (\\d*)x(\\d*)[^\\,]*, (\\d*) kb\\/s, (\\d*[\\.]??\\d*) fps";
+    private static final Pattern videoStreamPattern;
     /**
      * 音频流信息正则匹配式
      * 用于解析音频详细信息时使用；
      */
-    private static String musicStreamRegex = "Stream #\\d:\\d[\\(]??\\S*[\\)]??: Audio: (\\S*\\S$?)(.*), (.*?) Hz, (.*?), (.*?), (\\d*) kb\\/s";
-    ;
-    private static Pattern musicStreamPattern;
+    private static final String musicStreamRegex = "Stream #\\d:\\d[\\(]??\\S*[\\)]??: Audio: (\\S*\\S$?)(.*), (.*?) Hz, (.*?), (.*?), (\\d*) kb\\/s";
+    private static final Pattern musicStreamPattern;
 
     /**
      * 静态初始化时先加载好用于音视频解析的正则匹配式
@@ -174,7 +173,7 @@ public class MediaUtil {
             ProcessBuilder builder = new ProcessBuilder();
             builder.command(ffmpegCmds);
             ffmpeg = builder.start();
-            log.info("--- 开始执行FFmpeg指令：--- 执行线程名：" + builder.toString());
+            log.info("--- 开始执行FFmpeg指令：--- 执行线程名：" + builder);
 
             // 取出输出流和错误流的信息
             // 注意：必须要取出ffmpeg在执行命令过程中产生的输出信息，如果不取的话当输出流信息填满jvm存储输出留信息的缓冲区时，线程就回阻塞住
@@ -244,7 +243,7 @@ public class MediaUtil {
 
         List<String> commond = new ArrayList<String>();
         commond.add("-i");
-        String input="";
+        String input = "";
         try {
             input = fileInput.getCanonicalPath();
         } catch (IOException e) {
@@ -257,7 +256,7 @@ public class MediaUtil {
         }
         if (null != width && width > 0 && null != height && height > 0) { // 设置分辨率
             commond.add("-s");
-            String resolution = width.toString() + "x" + height.toString();
+            String resolution = width + "x" + height;
             commond.add(resolution);
         }
 
@@ -269,11 +268,11 @@ public class MediaUtil {
         commond.add(crf.toString()); // 视频质量参数，值越小视频质量越高
         commond.add("-y"); // 当已存在输出文件时，不提示是否覆盖
 
-        String out=fileOutPut.getPath();
+        String out = fileOutPut.getPath();
         try {
             out = fileOutPut.getCanonicalPath();
         } catch (IOException e) {
-            out=fileOutPut.getPath();
+            out = fileOutPut.getPath();
         }
         commond.add(out);
 
@@ -380,7 +379,7 @@ public class MediaUtil {
             try {
                 cutVideoFrame(videoFile, tempPath, time, width, height, DEFAULT_TIME_LENGTH, true);
                 // 生成gif
-                String images[] = file.list();
+                String[] images = file.list();
                 for (int i = 0; i < images.length; i++) {
                     images[i] = tempPath + File.separator + images[i];
                 }
@@ -389,7 +388,7 @@ public class MediaUtil {
                 log.error("--- 截取视频帧操作出错 --- 错误信息：" + e.getMessage());
             } finally {
                 // 删除用于生成gif的临时文件
-                String images[] = file.list();
+                String[] images = file.list();
                 for (int i = 0; i < images.length; i++) {
                     File fileDelete = new File(tempPath + File.separator + images[i]);
                     fileDelete.delete();
@@ -422,7 +421,7 @@ public class MediaUtil {
             throw new RuntimeException("未解析到视频信息");
         }
         if (time.getTime() + timeLength > info.getDuration()) {
-            throw new RuntimeException("开始截取视频帧的时间点不合法：" + time.toString() + "，因为截取时间点晚于视频的最后时间点");
+            throw new RuntimeException("开始截取视频帧的时间点不合法：" + time + "，因为截取时间点晚于视频的最后时间点");
         }
         if (width <= 20 || height <= 20) {
             throw new RuntimeException("截取的视频帧图片的宽度或高度不合法，宽高值必须大于20");
@@ -439,7 +438,7 @@ public class MediaUtil {
             commond.add(time.toString());
             if (isContinuty) {
                 commond.add("-t");
-                commond.add(timeLength + "");
+                commond.add(String.valueOf(timeLength));
             } else {
                 commond.add("-vframes");
                 commond.add("1");
@@ -493,7 +492,7 @@ public class MediaUtil {
             throw new RuntimeException("未解析到视频信息");
         }
         if (startTime.getTime() + timeLength > info.getDuration()) {
-            throw new RuntimeException("截取时间不合法：" + startTime.toString() + "，因为截取时间大于视频的时长");
+            throw new RuntimeException("截取时间不合法：" + startTime + "，因为截取时间大于视频的时长");
         }
         try {
             if (!outputFile.exists()) {
@@ -503,7 +502,7 @@ public class MediaUtil {
             commond.add("-ss");
             commond.add(startTime.toString());
             commond.add("-t");
-            commond.add("" + timeLength);
+            commond.add(String.valueOf(timeLength));
             commond.add("-i");
             commond.add(videoFile.getCanonicalPath());
             commond.add("-vcodec");
@@ -602,10 +601,10 @@ public class MediaUtil {
         try {
             // 匹配视频播放时长等信息
             if (durationMacher.find()) {
-                long hours = (long) Integer.parseInt(durationMacher.group(1));
-                long minutes = (long) Integer.parseInt(durationMacher.group(2));
-                long seconds = (long) Integer.parseInt(durationMacher.group(3));
-                long dec = (long) Integer.parseInt(durationMacher.group(4));
+                long hours = Integer.parseInt(durationMacher.group(1));
+                long minutes = Integer.parseInt(durationMacher.group(2));
+                long seconds = Integer.parseInt(durationMacher.group(3));
+                long dec = Integer.parseInt(durationMacher.group(4));
                 duration = dec * 100L + seconds * 1000L + minutes * 60L * 1000L + hours * 60L * 60L * 1000L;
                 //String startTime = durationMacher.group(5) + "ms";
                 videoBitrate = Integer.parseInt(durationMacher.group(6));
@@ -703,10 +702,10 @@ public class MediaUtil {
         try {
             // 匹配音频播放时长等信息
             if (durationMacher.find()) {
-                long hours = (long) Integer.parseInt(durationMacher.group(1));
-                long minutes = (long) Integer.parseInt(durationMacher.group(2));
-                long seconds = (long) Integer.parseInt(durationMacher.group(3));
-                long dec = (long) Integer.parseInt(durationMacher.group(4));
+                long hours = Integer.parseInt(durationMacher.group(1));
+                long minutes = Integer.parseInt(durationMacher.group(2));
+                long seconds = Integer.parseInt(durationMacher.group(3));
+                long dec = Integer.parseInt(durationMacher.group(4));
                 duration = dec * 100L + seconds * 1000L + minutes * 60L * 1000L + hours * 60L * 60L * 1000L;
                 //String startTime = durationMacher.group(5) + "ms";
                 musicBitrate = Integer.parseInt(durationMacher.group(6));
@@ -837,11 +836,11 @@ public class MediaUtil {
         }
         List<String> commond = new ArrayList<String>();
         commond.add("-i");
-        String input=inputFile.getPath();
+        String input = inputFile.getPath();
         try {
             input = inputFile.getCanonicalPath();
         } catch (IOException e) {
-            input=inputFile.getPath();
+            input = inputFile.getPath();
         }
         commond.add(input);
 
@@ -856,7 +855,7 @@ public class MediaUtil {
      * @param formats
      * @return
      */
-    private static boolean isLegalFormat(String format, String formats[]) {
+    private static boolean isLegalFormat(String format, String[] formats) {
         for (String item : formats) {
             if (item.equals(StringUtils.upperCase(format))) {
                 return true;
@@ -872,7 +871,7 @@ public class MediaUtil {
      * @param outputPath 生成的gif文件名（包含路径）
      * @param playTime   播放的延迟时间，可调整gif的播放速度
      */
-    private static void createGifImage(String image[], String outputPath, int playTime) {
+    private static void createGifImage(String[] image, String outputPath, int playTime) {
         if (null == outputPath) {
             throw new RuntimeException("转换后的GIF路径为空，请检查转换后的GIF存放路径是否正确");
         }
@@ -880,7 +879,7 @@ public class MediaUtil {
             AnimatedGifEncoder encoder = new AnimatedGifEncoder();
             encoder.setRepeat(0);
             encoder.start(outputPath);
-            BufferedImage src[] = new BufferedImage[image.length];
+            BufferedImage[] src = new BufferedImage[image.length];
             for (int i = 0; i < src.length; i++) {
                 encoder.setDelay(playTime); // 设置播放的延迟时间
                 src[i] = ImageIO.read(new File(image[i])); // 读入需要播放的jpg文件
@@ -904,67 +903,6 @@ public class MediaUtil {
         String format = fileName.substring(fileName.indexOf(".") + 1);
         return format;
     }
-
-
-    /**
-     * 在程序退出前结束已有的FFmpeg进程
-     */
-    private static class ProcessKiller extends Thread {
-        private Process process;
-
-        public ProcessKiller(Process process) {
-            this.process = process;
-        }
-
-        @Override
-        public void run() {
-            this.process.destroy();
-            log.info("--- 已销毁FFmpeg进程 --- 进程名： " + process.toString());
-        }
-    }
-
-
-    /**
-     * 用于取出ffmpeg线程执行过程中产生的各种输出和错误流的信息
-     */
-    static class PrintStream extends Thread {
-        InputStream inputStream = null;
-        BufferedReader bufferedReader = null;
-        StringBuffer stringBuffer = new StringBuffer();
-
-        public PrintStream(InputStream inputStream) {
-            this.inputStream = inputStream;
-        }
-
-        @Override
-        public void run() {
-            try {
-                if (null == inputStream) {
-                    log.error("--- 读取输出流出错！因为当前输出流为空！---");
-                }
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = null;
-                while ((line = bufferedReader.readLine()) != null) {
-                    log.info(line);
-                    stringBuffer.append(line);
-                }
-            } catch (Exception e) {
-                log.error("--- 读取输入流出错了！--- 错误信息：" + e.getMessage());
-            } finally {
-                try {
-                    if (null != bufferedReader) {
-                        bufferedReader.close();
-                    }
-                    if (null != inputStream) {
-                        inputStream.close();
-                    }
-                } catch (IOException e) {
-                    log.error("--- 调用PrintStream读取输出流后，关闭流时出错！---");
-                }
-            }
-        }
-    }
-
 
     /**
      * 抽取视频里的音频信息
@@ -1037,7 +975,7 @@ public class MediaUtil {
             command.add(playlistFile.getCanonicalPath()); // 索引文件路径
             command.add("-bsf:v");
             command.add("h264_mp4toannexb");
-            command.add(tsDirectory.getCanonicalPath() + "/"+tsDirectory.getName()+"%03d.ts");
+            command.add(tsDirectory.getCanonicalPath() + "/" + tsDirectory.getName() + "%03d.ts");
 
             executeCommand(command);
         } catch (Exception e) {
@@ -1094,13 +1032,14 @@ public class MediaUtil {
 
     /**
      * 将视频压缩并转换为 DASH 格式
-     *DASH (Dynamic Adaptive Streaming over HTTP) 文件组成主要包括两个核心部分：媒体呈现描述文件 (MPD, Media Presentation Description) 和一系列的媒体分段文件。
+     * DASH (Dynamic Adaptive Streaming over HTTP) 文件组成主要包括两个核心部分：媒体呈现描述文件 (MPD, Media Presentation Description) 和一系列的媒体分段文件。
      * 结构示例
      * MPD 文件：video.mpd
      * 视频分段：video_360p_001.m4s, video_360p_002.m4s, video_720p_001.m4s, video_720p_002.m4s 等。
      * 音频分段：audio_eng_001.m4s, audio_eng_002.m4s 等。
-     * @param videoFile 源视频文件
-     * @param dashDirectory 存放 DASH 输出文件的目录
+     *
+     * @param videoFile      源视频文件
+     * @param dashDirectory  存放 DASH 输出文件的目录
      * @param outputFileName 输出文件的名称，不包括扩展名
      * @throws IOException 当处理视频时发生 IO 异常
      */
@@ -1142,9 +1081,67 @@ public class MediaUtil {
         }
     }
 
-    public static void main(String args[]){
+    public static void main(String[] args) {
         MediaUtil.cutVideoFrame(new File("./data/vedio/2023-12-10/1700641105954.mp4"), new File("./data/vedio/2023-12-10/1700641105954.gif"));
 
+    }
+
+    /**
+     * 在程序退出前结束已有的FFmpeg进程
+     */
+    private static class ProcessKiller extends Thread {
+        private final Process process;
+
+        public ProcessKiller(Process process) {
+            this.process = process;
+        }
+
+        @Override
+        public void run() {
+            this.process.destroy();
+            log.info("--- 已销毁FFmpeg进程 --- 进程名： " + process.toString());
+        }
+    }
+
+    /**
+     * 用于取出ffmpeg线程执行过程中产生的各种输出和错误流的信息
+     */
+    static class PrintStream extends Thread {
+        InputStream inputStream = null;
+        BufferedReader bufferedReader = null;
+        StringBuffer stringBuffer = new StringBuffer();
+
+        public PrintStream(InputStream inputStream) {
+            this.inputStream = inputStream;
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (null == inputStream) {
+                    log.error("--- 读取输出流出错！因为当前输出流为空！---");
+                }
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line = null;
+                while ((line = bufferedReader.readLine()) != null) {
+                    log.info(line);
+                    stringBuffer.append(line);
+                }
+            } catch (Exception e) {
+                log.error("--- 读取输入流出错了！--- 错误信息：" + e.getMessage());
+            } finally {
+                try {
+                    if (null != bufferedReader) {
+                        bufferedReader.close();
+                    }
+                    if (null != inputStream) {
+                        inputStream.close();
+                    }
+                } catch (IOException e) {
+                    log.error("--- 调用PrintStream读取输出流后，关闭流时出错！---");
+                }
+            }
+        }
     }
 
 }

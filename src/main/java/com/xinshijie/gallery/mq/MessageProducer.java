@@ -12,10 +12,11 @@ public class MessageProducer {
 
     /**
      * 发送信息
+     *
      * @param message
      */
-    public void sendMessage(Integer aid,String md5) {
-        String message=aid+":"+md5;
+    public void sendMessage(Integer aid, String md5) {
+        String message = aid + ":" + md5;
         rabbitTemplate.convertAndSend("com.gallery.upload.video", message);
     }
 }

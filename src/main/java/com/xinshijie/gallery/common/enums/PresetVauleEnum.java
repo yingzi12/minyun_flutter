@@ -16,8 +16,6 @@ public enum PresetVauleEnum {
     SLOW_ZIP_SPEED("低压缩速度", "slow"),
     SLOWER_ZIP_SPEED("最慢压缩速度", "slower");
 
-    private String presetName;
-    private String presetValue;
     private static Set<String> TYPE_VALUE_SET = new HashSet<String>();
 
     static {
@@ -29,16 +27,16 @@ public enum PresetVauleEnum {
         }
     }
 
+    private String presetName;
+    private String presetValue;
+
     PresetVauleEnum(String presetName, String presetValue) {
         this.presetName = presetName;
         this.presetValue = presetValue;
     }
 
     public static boolean isValid(String typeValue) {
-        if (TYPE_VALUE_SET.contains(typeValue)) {
-            return true;
-        }
-        return false;
+        return TYPE_VALUE_SET.contains(typeValue);
     }
 
     public static PresetVauleEnum convertoEnum(String typeValue) {
@@ -51,6 +49,14 @@ public enum PresetVauleEnum {
             }
         }
         return null;
+    }
+
+    public static Set<String> getTypeValueSet() {
+        return TYPE_VALUE_SET;
+    }
+
+    public static void setTypeValueSet(Set<String> typeValueSet) {
+        TYPE_VALUE_SET = typeValueSet;
     }
 
     public boolean isEqual(String typeValue) {
@@ -74,13 +80,5 @@ public enum PresetVauleEnum {
 
     public void setPresetValue(String presetValue) {
         this.presetValue = presetValue;
-    }
-
-    public static Set<String> getTypeValueSet() {
-        return TYPE_VALUE_SET;
-    }
-
-    public static void setTypeValueSet(Set<String> typeValueSet) {
-        TYPE_VALUE_SET = typeValueSet;
     }
 }

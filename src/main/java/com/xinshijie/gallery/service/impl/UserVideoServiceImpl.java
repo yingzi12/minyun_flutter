@@ -8,9 +8,7 @@ import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.AllVideo;
 import com.xinshijie.gallery.domain.UserAlbum;
-import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
-import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.dto.UserVideoDto;
 import com.xinshijie.gallery.enmus.VedioStatuEnum;
 import com.xinshijie.gallery.mapper.UserVideoMapper;
@@ -62,23 +60,23 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
      * 查询图片信息表
      */
     @Override
-    public List<UserVideo> selectUserVideoList(Integer aid,Integer userId,Integer isFree) {
-        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-        qw.eq("aid",aid);
-        if(userId != null) {
+    public List<UserVideo> selectUserVideoList(Integer aid, Integer userId, Integer isFree) {
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("aid", aid);
+        if (userId != null) {
             qw.eq("user_id", userId);
         }
-        if(isFree != null){
-            qw.eq("is_free",isFree);
+        if (isFree != null) {
+            qw.eq("is_free", isFree);
         }
         return mapper.selectList(qw);
     }
 
     @Override
     public List<UserVideo> selectAllAid(Integer aid, Integer isFree) {
-        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-        qw.eq("aid",aid);
-        if(isFree !=null) {
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("aid", aid);
+        if (isFree != null) {
             qw.eq("is_free", isFree);
         }
         return mapper.selectList(qw);
@@ -100,18 +98,20 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         page.setCurrent(dto.getPageNum());
         return mapper.selectPageUserVideo(page, dto);
     }
+
     @Override
-    public Long selectCount(Integer aid,Integer userId,Integer isFree) {
-        QueryWrapper<UserVideo> qw=new QueryWrapper<>();
-        qw.eq("aid",aid);
-        if(userId != null) {
+    public Long selectCount(Integer aid, Integer userId, Integer isFree) {
+        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
+        qw.eq("aid", aid);
+        if (userId != null) {
             qw.eq("user_id", userId);
         }
-        if(isFree != null){
-            qw.eq("is_free",isFree);
+        if (isFree != null) {
+            qw.eq("is_free", isFree);
         }
         return mapper.selectCount(qw);
     }
+
     @Override
     public AllVideo checkAllMd5(String md5) {
         return allVideoService.getMD5(md5);
@@ -144,8 +144,8 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         qw.eq("md5", dto.getMd5());
         qw.eq("aid", dto.getAid());
         UserVideo value = mapper.selectOne(qw);
-        if(value!=null){
-            throw  new ServiceException(ResultCodeEnum.VEDIO_IS_EXICT);
+        if (value != null) {
+            throw new ServiceException(ResultCodeEnum.VEDIO_IS_EXICT);
         }
         value = new UserVideo();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
@@ -193,10 +193,10 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     }
 
 
-    public Long getCount(Integer aid,Integer isFree) {
+    public Long getCount(Integer aid, Integer isFree) {
         QueryWrapper<UserVideo> qw = new QueryWrapper<>();
         qw.eq("aid", aid);
-        if(isFree!=null) {
+        if (isFree != null) {
             qw.eq("is_free", isFree);
         }
         return mapper.selectCount(qw);
@@ -250,7 +250,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                 userVideo.setMd5(md5);
                 userVideo.setIsFree(isFree);
                 mapper.insert(userVideo);
-                producer.sendMessage(aid,md5);
+                producer.sendMessage(aid, md5);
                 userAlbumService.updateCountVideo(aid);
                 return userVideo.getUrl();
             }
@@ -260,12 +260,12 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         }
     }
 
-    public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath,String fileName) {
-        Long count= this.getCount(aid,isFree);
-        if(isFree==1 && count>3){
+    public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath, String fileName) {
+        Long count = this.getCount(aid, isFree);
+        if (isFree == 1 && count > 3) {
             throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
         }
-        if(isFree==2 && count>10){
+        if (isFree == 2 && count > 10) {
             throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
         }
         UserAlbum userAlbum = userAlbumService.getInfo(userId, aid);
@@ -301,7 +301,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                 allVideo.setSize(size);
                 allVideo.setStatus(VedioStatuEnum.WAIT.getCode());
                 allVideo.setTitle(userAlbum.getTitle());
-                allVideo.setUrl(sourcePath+"/"+fileName);
+                allVideo.setUrl(sourcePath + "/" + fileName);
                 allVideoService.save(allVideo);
 
                 UserVideo userVideo = new UserVideo();
@@ -309,12 +309,12 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                 userVideo.setCreateTime(LocalDateTime.now());
                 userVideo.setAid(aid);
                 userVideo.setStatus(VedioStatuEnum.WAIT.getCode());
-                userVideo.setUrl(sourcePath+"/"+fileName);
+                userVideo.setUrl(sourcePath + "/" + fileName);
                 userVideo.setMd5(md5);
                 userVideo.setIsFree(isFree);
                 mapper.insert(userVideo);
 
-                producer.sendMessage(aid,md5);
+                producer.sendMessage(aid, md5);
                 userAlbumService.updateCountVideo(aid);
 
                 return userVideo.getUrl();

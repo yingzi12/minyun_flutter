@@ -138,11 +138,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         qw.eq("id", dto.getId());
 
         int i = mapper.update(userAlbum, qw);
-        if (i == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return i == 1;
     }
 
     /**
@@ -159,32 +155,32 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     @Override
     public UserAlbum getInfo(Integer userId, Integer id) {
         UserAlbum userAlbum = mapper.selectById(id);
-        if(userAlbum == null){
+        if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
         }
         return userAlbum;
     }
 
-    public Boolean isSee(UserAlbumVo userAlbum,Integer userId) {
+    public Boolean isSee(UserAlbumVo userAlbum, Integer userId) {
         //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
         //判断是否需要付费
         if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
             userAlbum.setIsSee(true);
             return true;
         }
-        if(userId == null){
+        if (userId == null) {
             userAlbum.setIsSee(false);
             return false;
         }
-        if(userAlbum.getUserId() == userId){
+        if (userAlbum.getUserId() == userId) {
             userAlbum.setIsSee(true);
             return true;
         }
         //判断用户是否是VIP
         UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
-        if(userVip!=null){
+        if (userVip != null) {
             userAlbum.setIsVip(1);
-        }else {
+        } else {
             userAlbum.setIsVip(0);
         }
         //判断是否vip免费
@@ -199,10 +195,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         if (userBuyAlbum != null) {
             userAlbum.setIsSee(true);
             return true;
-        } else{
+        } else {
             if (AlbumChargeEnum.VIP_DISCOUNT.getCode().equals(userAlbum.getCharge())) {
                 if (userVip != null) {
-                   userAlbum.setPrice(userAlbum.getVipPrice());
+                    userAlbum.setPrice(userAlbum.getVipPrice());
                 }
             }
             if (AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(userAlbum.getCharge())) {
@@ -216,17 +212,17 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     }
 
 
-    public Boolean isCheck(Integer aid,Integer userId) {
+    public Boolean isCheck(Integer aid, Integer userId) {
         UserAlbum userAlbum = mapper.selectById(aid);
         //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
         //判断是否需要付费
         if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
             return true;
         }
-        if(userId == null){
+        if (userId == null) {
             return false;
         }
-        if(userAlbum.getUserId() == userId){
+        if (userAlbum.getUserId() == userId) {
             return true;
         }
         //判断用户是否是VIP
@@ -239,10 +235,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         }
         //判断是否是否已经购买
         UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
-        if (userBuyAlbum != null) {
-            return true;
-        }
-        return false;
+        return userBuyAlbum != null;
     }
 
     @Override
@@ -255,11 +248,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         qw.eq("id", id);
 
         int i = mapper.update(userAlbum, qw);
-        if (i == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return i == 1;
     }
 
     /**
@@ -278,9 +267,11 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             userAlbum.setPrice(0.0);
             userAlbum.setVipPrice(0.0);
         }
+
         if (AlbumChargeEnum.VIP_FREE.getCode().equals(charge)) {
             if (price != null && price > 0.5 && price < 1000) {
-                userAlbum.setPrice(0.0);
+                userAlbum.setPrice(price);
+                userAlbum.setVipPrice(0.0);
             } else {
                 throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
             }
@@ -299,7 +290,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         }
         if (AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(charge)) {
             if (vipPrice != null && vipPrice > 0.5 && vipPrice < 1000) {
-                userAlbum.setPrice(null);
+                userAlbum.setPrice(0.0);
                 userAlbum.setVipPrice(vipPrice);
             } else {
                 throw new ServiceException(ResultCodeEnum.ALBUM_FREE_STATUS);
@@ -316,6 +307,46 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         userAlbum.setCharge(charge);
     }
 
+    public Double getAmount(Integer aid, Integer userId, Integer charge, Double price, Double vipPrice) {
+        UserAlbum userAlbum = mapper.selectById(aid);
+        //判断用户是否是VIP
+        UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
+        if (userAlbum.getCharge() == 1) {
+            return 0.0;
+        }
+        //判断是否是否已经购买
+        UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
+        if (userBuyAlbum != null) {
+            return 0.0;
+        }
+        //判断是否vip免费
+        if (AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())) {
+            if (userVip != null) {
+                return 0.0;
+            } else {
+                return userAlbum.getPrice();
+            }
+        }
+        if (AlbumChargeEnum.VIP_DISCOUNT.getCode().equals(userAlbum.getCharge())) {
+            if (userVip != null) {
+                return userAlbum.getVipPrice();
+            } else {
+                return userAlbum.getPrice();
+            }
+        }
+        if (AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(userAlbum.getCharge())) {
+            if (userVip != null) {
+                return userAlbum.getVipPrice();
+            } else {
+                return 0.0;
+            }
+        }
+        if (AlbumChargeEnum.UNIFICATION.getCode().equals(userAlbum.getCharge())) {
+            return userAlbum.getPrice();
+        }
+        return 0.0;
+    }
+
     @Override
     public Boolean updateStatus(Integer userId, Long id, Integer status) {
         QueryWrapper<UserAlbum> qw = new QueryWrapper<>();
@@ -325,11 +356,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         UserAlbum userAlbum = new UserAlbum();
         userAlbum.setStatus(status);
         int i = mapper.update(userAlbum, qw);
-        if (i == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return i == 1;
     }
 
     public String saveUploadedFiles(Integer userId, MultipartFile file) {

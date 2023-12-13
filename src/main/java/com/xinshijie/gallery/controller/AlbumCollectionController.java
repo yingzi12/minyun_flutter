@@ -87,7 +87,7 @@ public class AlbumCollectionController extends BaseController {
     @GetMapping("/list")
     public Result<List<AlbumCollectionVo>> select(AlbumCollectionDto findDto) {
         Page<AlbumCollectionVo> vo = albumCollectionService.selectPageAlbumCollection(findDto);
-        return Result.success(vo.getRecords(), Integer.parseInt(vo.getTotal() + ""));
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
 
