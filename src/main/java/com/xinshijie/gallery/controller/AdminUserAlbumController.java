@@ -42,13 +42,11 @@ public class AdminUserAlbumController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/add")
     public Result<UserAlbum> add(@RequestBody UserAlbumDto dto) {
         dto.setUserId(getUserId());
         dto.setUserName(getUserName());
         UserAlbum vo = userAlbumService.add(dto);
-
         return Result.success(vo);
     }
 
@@ -57,7 +55,6 @@ public class AdminUserAlbumController extends BaseController {
      *
      * @return
      */
-
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Integer id) {
         Integer vo = userAlbumService.delById(getUserId(), id);
@@ -70,7 +67,6 @@ public class AdminUserAlbumController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/edit")
     public Result<Boolean> edit(@RequestBody UserAlbumDto dto) {
         dto.setUserId(getUserId());

@@ -1,15 +1,18 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.PaymentOrder;
+import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.PaymentOrderDto;
 import com.xinshijie.gallery.enmus.PaymentStatuEnum;
 import com.xinshijie.gallery.enmus.VipPriceEnum;
 import com.xinshijie.gallery.mapper.PaymentOrderMapper;
 import com.xinshijie.gallery.service.IPaymentOrderService;
 import com.xinshijie.gallery.vo.PaymentOrderVo;
+import com.xinshijie.gallery.vo.UserImageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,5 +109,33 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
         qw.eq("product_id",productId);
         qw.le("status", PaymentStatuEnum.DONE.getCode());
         return mapper.selectOne(qw);
+    }
+
+    @Override
+    public IPage<PaymentOrder> getList(PaymentOrderDto findDto) {
+        Page<PaymentOrder> page = new Page<>();
+        if (findDto.getPageNum() == null) {
+            findDto.setPageNum(1L);
+        }
+        if (findDto.getPageSize() == null) {
+            findDto.setPageSize(20L);
+        }
+        page.setSize(findDto.getPageSize());
+        page.setCurrent(findDto.getPageNum());
+        QueryWrapper<PaymentOrder> qw=new QueryWrapper<>();
+        qw.eq("user_id",findDto.getUserId());
+        if(findDto.getKind() != null) {
+            qw.eq("kind", findDto.getKind());
+        }
+        if(findDto.getProductId() != null) {
+            qw.eq("product_id", findDto.getProductId());
+        }
+        if(findDto.getStatus() != null) {
+            qw.eq("status", findDto.getStatus());
+        }else{
+            qw.eq("status",PaymentStatuEnum.DONE.getCode());
+        }
+        IPage<PaymentOrder> value = mapper.selectPage(page, qw);
+        return value;
     }
 }

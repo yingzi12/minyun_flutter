@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.PaymentOrder;
@@ -50,4 +51,6 @@ public interface IPaymentOrderService extends IService<PaymentOrder> {
     PaymentOrder selectWaitPay(Integer userId, Integer kind, Integer productId);
 
     PaymentOrder selectByDonePay(Integer userId, Integer kind, Integer productId);
+
+    IPage<PaymentOrder> getList(PaymentOrderDto findDto);
 }

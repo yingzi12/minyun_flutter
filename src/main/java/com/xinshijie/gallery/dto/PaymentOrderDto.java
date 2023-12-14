@@ -1,9 +1,12 @@
 package com.xinshijie.gallery.dto;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -86,22 +89,22 @@ public class PaymentOrderDto implements Serializable {
      */
     @Schema(description = "物品类别 1 网站会员，2 用户会员 3网站消费 4.用户图集 ")
     private Integer kind;
-
-    /**
-     * 物品类别
-     */
-    @Schema(description = "物品类别 ")
-    private Integer productType;
-
     /**
      * 支付方式
      */
     @Schema(description = "支付方式 ")
     @Size(max = 100, message = "支付方式 超出最大长度 100")
     private String payType;
-    private Integer aid;
-    private Integer vid;
 
+    /**
+     * 物品类别
+     */
+    private Integer productId;
+
+
+    private LocalDateTime expiredTime;
+
+    private String requestId;
     private Long pageNum;
 
     private Long pageSize;

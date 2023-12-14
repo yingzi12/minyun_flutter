@@ -108,7 +108,6 @@ public class AdminUserImageController extends BaseController {
     public Result<List<UserImageVo>> select(UserImageDto findDto) {
         findDto.setUserId(getUserId());
         IPage<UserImageVo> vo = userImageService.selectPageUserImage(findDto);
-//        Long count=userImageService.selectCount(findDto.getAid(),findDto.getUserId(),findDto.getIsFree());
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 

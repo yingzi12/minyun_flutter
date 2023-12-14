@@ -37,7 +37,6 @@ public class AdminUserBuyVipController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/add")
     public Result<UserBuyVip> add(@RequestBody UserBuyVipDto dto) {
         UserBuyVip vo = userBuyVipService.add(dto);
@@ -49,7 +48,6 @@ public class AdminUserBuyVipController extends BaseController {
      *
      * @return
      */
-
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
         Integer vo = userBuyVipService.delById(id);
@@ -62,7 +60,6 @@ public class AdminUserBuyVipController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserBuyVipDto dto) {
         Integer vo = userBuyVipService.edit(dto);
@@ -75,7 +72,6 @@ public class AdminUserBuyVipController extends BaseController {
      *
      * @return
      */
-
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserBuyVipVo> getInfo(@PathVariable("id") Long id) {
         UserBuyVipVo vo = userBuyVipService.getInfo(id);
