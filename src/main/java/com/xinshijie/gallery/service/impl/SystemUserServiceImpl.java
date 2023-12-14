@@ -367,5 +367,10 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         }
     }
 
+    @Override
+    public void updatIncome(Integer userId, Double amount) {
+        mapper.updatIncome(userId,amount);
+    }
+
 
 }

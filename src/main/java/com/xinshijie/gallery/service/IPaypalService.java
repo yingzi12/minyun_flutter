@@ -18,4 +18,8 @@ public interface IPaypalService {
 
     void update(PaymentOrder paymentOrder);
 
+    /**
+     * 更新用户的收入
+     */
+    void updatIncome(Integer userId, Double amount);
 }

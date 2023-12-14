@@ -55,5 +55,7 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
      * 根据id数据
      */
     SystemUserVo getInfo(Integer id);
+
+    void updatIncome(@Param("userId") Integer userId,@Param("amount") Double amount);
 }
 

@@ -129,6 +129,8 @@ public class AdminPaymentController {
                 paymentOrder.setStatus(PaymentStatuEnum.DONE.getCode());
                 paymentOrder.setPayTime(LocalDateTime.now());
                 paymentOrderService.updateById(paymentOrder);
+                payPalService.updatIncome(paymentOrder.getIncomeUserId(),paymentOrder.getAmount());
+
             }
             return Result.success(transactionVo);
         }

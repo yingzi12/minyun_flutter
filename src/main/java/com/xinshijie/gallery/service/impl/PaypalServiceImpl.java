@@ -375,4 +375,9 @@ public class PaypalServiceImpl implements IPaypalService {
             userVip.setExpirationTime( LocalDateTimeUtil.offset(time, 99, ChronoUnit.YEARS));
         }
     }
+
+    @Override
+    public void updatIncome(Integer userId, Double amount) {
+         systemUserService.updatIncome(userId,amount);
+    }
 }

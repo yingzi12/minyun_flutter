@@ -120,4 +120,8 @@
         where id = #{id}
     </select>
 
+    <update id="updatIncome" >
+       update system_user set income=#{amount}
+        where id = #{userId}
+    </update>
 </mapper>
