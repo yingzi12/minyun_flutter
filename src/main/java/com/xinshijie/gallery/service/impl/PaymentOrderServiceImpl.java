@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.dto.PaymentOrderDto;
+import com.xinshijie.gallery.enmus.PaymentStatuEnum;
+import com.xinshijie.gallery.enmus.VipPriceEnum;
 import com.xinshijie.gallery.mapper.PaymentOrderMapper;
 import com.xinshijie.gallery.service.IPaymentOrderService;
 import com.xinshijie.gallery.vo.PaymentOrderVo;
@@ -87,13 +89,22 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
     }
 
     @Override
-    public PaymentOrder selectByUserIdKindProductId(Integer userId, Integer kind, Integer productId) {
+    public PaymentOrder selectWaitPay(Integer userId, Integer kind, Integer productId) {
         QueryWrapper<PaymentOrder> qw=new QueryWrapper<>();
         qw.eq("user_id",userId);
         qw.eq("kind",kind);
         qw.eq("product_id",productId);
         qw.le("expired_time", LocalDateTime.now());
+        qw.le("status", PaymentStatuEnum.WAIT.getCode());
         return mapper.selectOne(qw);
     }
-
+    @Override
+    public PaymentOrder selectByDonePay(Integer userId, Integer kind, Integer productId) {
+        QueryWrapper<PaymentOrder> qw=new QueryWrapper<>();
+        qw.eq("user_id",userId);
+        qw.eq("kind",kind);
+        qw.eq("product_id",productId);
+        qw.le("status", PaymentStatuEnum.DONE.getCode());
+        return mapper.selectOne(qw);
+    }
 }

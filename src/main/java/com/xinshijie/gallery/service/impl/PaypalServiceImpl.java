@@ -1,14 +1,14 @@
 package com.xinshijie.gallery.service.impl;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.domain.SystemUser;
-import com.xinshijie.gallery.domain.UserAlbum;
-import com.xinshijie.gallery.domain.UserSettingVip;
-import com.xinshijie.gallery.domain.UserVip;
+import com.xinshijie.gallery.domain.*;
 import com.xinshijie.gallery.dto.PayAlbumDto;
 import com.xinshijie.gallery.dto.PayOrderDto;
+import com.xinshijie.gallery.enmus.PaymentStatuEnum;
+import com.xinshijie.gallery.enmus.VipLongTypeEnum;
 import com.xinshijie.gallery.enmus.VipPriceEnum;
 import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.PayOrderVo;
@@ -29,10 +29,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Scanner;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 
 @Service
 public class PaypalServiceImpl implements IPaypalService {
@@ -279,4 +281,96 @@ public class PaypalServiceImpl implements IPaypalService {
         return result.doubleValue();
     }
 
+    public void update(PaymentOrder paymentOrder){
+        /**
+         * 物品类别 1 网站会员，2 用户会员 3 网站消费 4.用户图集
+         */
+        if(paymentOrder.getKind() == 1 ) {
+            SystemUser systemUser=systemUserService.getById(paymentOrder.getUserId());
+            systemUser.setId(paymentOrder.getProductId());
+            LocalDateTime now=LocalDateTime.now();
+            if(systemUser.getVipExpirationTime()==null ||now.isAfter(systemUser.getVipExpirationTime())) {
+                now=LocalDateTime.now();
+            }else{
+                now=systemUser.getVipExpirationTime();
+            }
+            if(VipPriceEnum.MONTH.getCode().equals(paymentOrder.getProductId())){
+                systemUser.setVip(VipPriceEnum.MONTH.getCode());
+                systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 1, ChronoUnit.MONTHS));
+            }
+            if(VipPriceEnum.QUARTER.getCode().equals(paymentOrder.getProductId())){
+                systemUser.setVip(VipPriceEnum.QUARTER.getCode());
+                systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 3, ChronoUnit.MONTHS));
+
+            }
+            if(VipPriceEnum.HALF_YEAR.getCode().equals(paymentOrder.getProductId())){
+                systemUser.setVip(VipPriceEnum.HALF_YEAR.getCode());
+                systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 6, ChronoUnit.MONTHS));
+
+            }
+            if(VipPriceEnum.YEAR.getCode().equals(paymentOrder.getProductId())){
+                systemUser.setVip(VipPriceEnum.YEAR.getCode());
+                systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 1, ChronoUnit.YEARS));
+
+            }
+            if(VipPriceEnum.FOREVER.getCode().equals(paymentOrder.getProductId())){
+                systemUser.setVip(VipPriceEnum.FOREVER.getCode());
+                systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 99, ChronoUnit.YEARS));
+            }
+            systemUserService.updateById(systemUser);
+        }
+        if(paymentOrder.getKind() == 2 ) {
+            UserSettingVip settingVip=settingVipService.getById(paymentOrder.getProductId());
+            UserVip userVip=userVipService.getInfo(paymentOrder.getUserId(),settingVip.getUserId());
+            userVip.setTitle(settingVip.getTitle());
+            userVip.setRank(settingVip.getRank());
+            userVip.setVid(paymentOrder.getProductId());
+            userVip.setUserId(getUserId());
+            userVip.setUserName(getUserName());
+            userVip.setVipUserId(settingVip.getUserId());
+            userVip.setVipUserName(settingVip.getUserName());
+            if(userVip==null){
+                LocalDateTime now=LocalDateTime.now();
+                userVip.setCreateTime(LocalDateTime.now());
+                setTime(now,userVip,settingVip);
+                userVipService.save(userVip);
+            }else {
+                LocalDateTime now=LocalDateTime.now();
+                userVip.setUpdateTime(LocalDateTime.now());
+
+                if(userVip.getExpirationTime()==null ||now.isAfter(userVip.getExpirationTime())) {
+                    now=LocalDateTime.now();
+                }else{
+                    now=userVip.getExpirationTime();
+                }
+                setTime(now,userVip,settingVip);
+                userVipService.updateById(userVip);
+            }
+        }
+        if(paymentOrder.getKind() == 3 ) {
+
+        }
+        if(paymentOrder.getKind() == 4 ) {
+            UserAlbum userAlbum=userAlbumService.getById(paymentOrder.getProductId());
+
+        }
+    }
+
+    public void setTime(LocalDateTime time,UserVip userVip,UserSettingVip settingVip){
+        if(VipLongTypeEnum.DAY.getCode().equals(settingVip.getTimeType())){
+            userVip.setExpirationTime( LocalDateTimeUtil.offset(time, settingVip.getTimeLong(), ChronoUnit.DAYS));
+        }
+        if(VipLongTypeEnum.WEEK.getCode().equals(settingVip.getTimeType())){
+            userVip.setExpirationTime( LocalDateTimeUtil.offset(time, settingVip.getTimeLong(), ChronoUnit.WEEKS));
+        }
+        if(VipLongTypeEnum.MONTH.getCode().equals(settingVip.getTimeType())){
+            userVip.setExpirationTime( LocalDateTimeUtil.offset(time, settingVip.getTimeLong(), ChronoUnit.MONTHS));
+        }
+        if(VipLongTypeEnum.YEAR.getCode().equals(settingVip.getTimeType())){
+            userVip.setExpirationTime( LocalDateTimeUtil.offset(time, settingVip.getTimeLong(), ChronoUnit.YEARS));
+        }
+        if(VipLongTypeEnum.FOREVER.getCode().equals(settingVip.getTimeType())){
+            userVip.setExpirationTime( LocalDateTimeUtil.offset(time, 99, ChronoUnit.YEARS));
+        }
+    }
 }

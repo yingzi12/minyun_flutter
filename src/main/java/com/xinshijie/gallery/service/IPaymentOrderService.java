@@ -47,6 +47,7 @@ public interface IPaymentOrderService extends IService<PaymentOrder> {
 
     PaymentOrder selectByPayId(String payId);
 
-    PaymentOrder selectByUserIdKindProductId(Integer userId,Integer kind,Integer productId);
+    PaymentOrder selectWaitPay(Integer userId, Integer kind, Integer productId);
 
+    PaymentOrder selectByDonePay(Integer userId, Integer kind, Integer productId);
 }

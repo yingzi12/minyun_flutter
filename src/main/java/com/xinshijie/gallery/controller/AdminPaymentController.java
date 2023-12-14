@@ -59,7 +59,7 @@ public class AdminPaymentController {
     @PostMapping("/create")
     public Result<PayOrderVo> createPayment(@Valid  @RequestBody PayAlbumDto albumDto) {
         log.info("-----createPayment----", JSONObject.toJSONString(albumDto));
-        PaymentOrder paymentOrderDto = paymentOrderService.selectByUserIdKindProductId(getUserId(),albumDto.getKind(),albumDto.getProductId());
+        PaymentOrder paymentOrderDto = paymentOrderService.selectWaitPay(getUserId(),albumDto.getKind(),albumDto.getProductId());
         Double amount=0.0;
         String requstId = IdUtil.fastSimpleUUID();
         if(paymentOrderDto==null){

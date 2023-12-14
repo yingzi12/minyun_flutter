@@ -41,6 +41,8 @@ public class UserVip implements Serializable {
      * 过期时间
      */
     private LocalDateTime expirationTime;
+    private LocalDateTime updateTime;
+
     /**
      * vip的用户id
      */
@@ -50,4 +52,6 @@ public class UserVip implements Serializable {
      */
     private String vipUserName;
     private String title;
+    private Integer vid;
+
 }

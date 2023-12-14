@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.service;
 
+import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.dto.PayAlbumDto;
 import com.xinshijie.gallery.dto.PayOrderDto;
 import com.xinshijie.gallery.vo.PayOrderVo;
@@ -14,4 +15,7 @@ public interface IPaypalService {
     PayPalTransactionVo checkoutOrdersCapture(String token, String orderId, String requestId);
 
     Double getAmount(PayAlbumDto albumDto);
+
+    void update(PaymentOrder paymentOrder);
+
 }

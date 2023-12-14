@@ -6,17 +6,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserBuyAlbum;
 import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.enmus.AlbumChargeEnum;
 import com.xinshijie.gallery.enmus.AlbumStatuEnum;
+import com.xinshijie.gallery.enmus.PaymentKindEnum;
 import com.xinshijie.gallery.mapper.UserAlbumMapper;
-import com.xinshijie.gallery.service.IFileService;
-import com.xinshijie.gallery.service.IUserAlbumService;
-import com.xinshijie.gallery.service.IUserBuyAlbumService;
-import com.xinshijie.gallery.service.IUserVipService;
+import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -48,7 +47,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     @Autowired
     private IUserVipService userVipService;
     @Autowired
-    private IUserBuyAlbumService userBuyAlbumService;
+    private IPaymentOrderService paymentOrderService;
     @Autowired
     private IFileService fileService;
 
@@ -191,8 +190,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             }
         }
         //判断是否是否已经购买
-        UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
-        if (userBuyAlbum != null) {
+        PaymentOrder paymentOrder = paymentOrderService.selectByDonePay(userId, PaymentKindEnum.USER_ALBUM.getCode(), userAlbum.getId());
+        if (paymentOrder != null) {
             userAlbum.setIsSee(true);
             return true;
         } else {
@@ -234,8 +233,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             }
         }
         //判断是否是否已经购买
-        UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
-        return userBuyAlbum != null;
+        PaymentOrder paymentOrder = paymentOrderService.selectByDonePay(userId, PaymentKindEnum.USER_ALBUM.getCode(), userAlbum.getId());
+        return paymentOrder != null;
     }
 
     @Override
@@ -315,8 +314,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             return 0.0;
         }
         //判断是否是否已经购买
-        UserBuyAlbum userBuyAlbum = userBuyAlbumService.getInfo(userId, userAlbum.getId());
-        if (userBuyAlbum != null) {
+        PaymentOrder paymentOrder = paymentOrderService.selectByDonePay(userId, PaymentKindEnum.USER_ALBUM.getCode(), userAlbum.getId());
+        if (paymentOrder != null) {
             return 0.0;
         }
         //判断是否vip免费
