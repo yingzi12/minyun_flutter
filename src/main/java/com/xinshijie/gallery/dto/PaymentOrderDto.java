@@ -99,6 +99,8 @@ public class PaymentOrderDto implements Serializable {
     @Schema(description = "支付方式 ")
     @Size(max = 100, message = "支付方式 超出最大长度 100")
     private String payType;
+    private Integer aid;
+    private Integer vid;
 
     private Long pageNum;
 

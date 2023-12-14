@@ -44,4 +44,9 @@ public interface IPaymentOrderService extends IService<PaymentOrder> {
      * 根据id数据
      */
     PaymentOrder getInfo(Long id);
+
+    PaymentOrder selectByPayId(String payId);
+
+    PaymentOrder selectByUserIdKindProductId(Integer userId,Integer kind,Integer productId);
+
 }

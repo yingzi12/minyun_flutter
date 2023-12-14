@@ -103,6 +103,7 @@ public class PaymentOrderVo implements Serializable {
      */
     @Schema(description = "支付方式 ")
     private String payType;
-
+    private Integer aid;
+    private Integer vid;
 
 }

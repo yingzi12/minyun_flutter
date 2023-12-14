@@ -69,9 +69,14 @@ public class PaymentOrder implements Serializable {
     /**
      * 物品类别
      */
-    private Integer productType;
+    private Integer productId;
     /**
      * 支付方式
      */
     private String payType;
+
+    private LocalDateTime expiredTime;
+
+    private String requestId;
+
 }

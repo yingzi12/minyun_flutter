@@ -1,28 +1,38 @@
 package com.xinshijie.gallery.controller;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.common.RedisCache;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.dto.AmountDto;
 import com.xinshijie.gallery.dto.PayAlbumDto;
 import com.xinshijie.gallery.dto.PayOrderDto;
 import com.xinshijie.gallery.dto.PurchaseUnitDto;
+import com.xinshijie.gallery.enmus.PaymentStatuEnum;
 import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.PayOrderVo;
 import com.xinshijie.gallery.vo.PayPalTransactionVo;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("/admin/payments")
 public class AdminPaymentController {
@@ -30,7 +40,8 @@ public class AdminPaymentController {
     public static final String WebhookId = "0LT105529A2930224";
     @Autowired
     private IPaypalService payPalService;
-
+    @Autowired
+    private IPaymentOrderService paymentOrderService;
     @Autowired
     private RedisCache redisCache;
 
@@ -46,12 +57,21 @@ public class AdminPaymentController {
     }
 
     @PostMapping("/create")
-    public Result<PayOrderVo> createPayment(@RequestBody PayAlbumDto albumDto) {
+    public Result<PayOrderVo> createPayment(@Valid  @RequestBody PayAlbumDto albumDto) {
         log.info("-----createPayment----", JSONObject.toJSONString(albumDto));
-        Double amount= payPalService.getAmount( albumDto);
-        if(amount<=0.0 || !albumDto.equals(amount)){
-            throw new ServiceException(ResultCodeEnum.PRICE_ERROR);
+        PaymentOrder paymentOrderDto = paymentOrderService.selectByUserIdKindProductId(getUserId(),albumDto.getKind(),albumDto.getProductId());
+        Double amount=0.0;
+        String requstId = IdUtil.fastSimpleUUID();
+        if(paymentOrderDto==null){
+            amount= payPalService.getAmount( albumDto);
+            if(amount<=0.0 || !albumDto.equals(amount)){
+                throw new ServiceException(ResultCodeEnum.PRICE_ERROR);
+            }
+        }else {
+            requstId=paymentOrderDto.getRequestId();
+            amount = paymentOrderDto.getAmount();
         }
+
         String token = payPalService.generateAccessToken();
 //        String requestId= IdUtil.fastSimpleUUID();
         PayOrderDto dto = new PayOrderDto();
@@ -61,19 +81,36 @@ public class AdminPaymentController {
         PurchaseUnitDto purchaseUnit = new PurchaseUnitDto();
         purchaseUnit.setAmount(amountDto);
         //物品id
-        purchaseUnit.setReference_id(IdUtil.fastUUID());
-        purchaseUnit.setCustom_id("user_id");
-        purchaseUnit.setDescription("这是关于订单的说明");
-        purchaseUnit.setSoft_descriptor("购买摄影");
+        purchaseUnit.setReference_id(getUserId()+"_"+albumDto.getKind()+"_"+albumDto.getProductId());
+        purchaseUnit.setCustom_id(getUserId()+"_"+albumDto.getKind()+"_"+albumDto.getProductId());
+        purchaseUnit.setDescription(albumDto.getDescription());
+        purchaseUnit.setSoft_descriptor(albumDto.getProductName());
         List<PurchaseUnitDto> list = new ArrayList<>();
         list.add(purchaseUnit);
         dto.setPurchase_units(list);
 //        String requstId= IdUtil.getSnowflakeNextId()+"";
         //请求，防止重复交易  6 hours.
-        String requstId = "1JG72609XE641194A001_" + albumDto.getAid();
         PayOrderVo payOrderVo = payPalService.createOrder(token, dto, requstId);
         if (payOrderVo.getId() != null) {
             redisCache.setCacheString("payment:alubm:" + payOrderVo.getId(), requstId, 1, TimeUnit.HOURS);
+            PaymentOrder paymentOrder = paymentOrderService.selectByPayId(payOrderVo.getId());
+            if(paymentOrder==null){
+                paymentOrder=new PaymentOrder();
+                paymentOrder.setAmount(amount);
+                paymentOrder.setCreateTime(LocalDateTime.now());
+                paymentOrder.setKind(albumDto.getKind());
+                paymentOrder.setCountry("USD");
+                paymentOrder.setPayId(payOrderVo.getId());
+                paymentOrder.setUserId(getUserId());
+                paymentOrder.setUsername(getUserName());
+                paymentOrder.setDescription(albumDto.getDescription());
+                paymentOrder.setStatus(PaymentStatuEnum.WAIT.getCode());
+                paymentOrder.setProductId(albumDto.getProductId());
+                paymentOrder.setProductName(albumDto.getProductName());
+                paymentOrder.setRequestId(requstId);
+                paymentOrder.setExpiredTime( LocalDateTimeUtil.offset(LocalDateTime.now(), 3, ChronoUnit.HOURS));
+                paymentOrderService.save(paymentOrder);
+            }
         }
         return Result.success(payOrderVo);
     }
@@ -86,6 +123,11 @@ public class AdminPaymentController {
             String requestId = IdUtil.fastSimpleUUID();
             String token = payPalService.generateAccessToken();
             PayPalTransactionVo transactionVo = payPalService.checkoutOrdersCapture(token, orderId, requestId);
+            PaymentOrder paymentOrder = paymentOrderService.selectByPayId(transactionVo.getId());
+            if(paymentOrder!=null){
+                paymentOrder.setStatus(PaymentStatuEnum.DONE.getCode());
+                paymentOrderService.updateById(paymentOrder);
+            }
             return Result.success(transactionVo);
         }
         return Result.success(null);

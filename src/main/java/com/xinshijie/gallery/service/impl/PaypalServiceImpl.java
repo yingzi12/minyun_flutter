@@ -192,7 +192,7 @@ public class PaypalServiceImpl implements IPaypalService {
          * 物品类别 1 网站会员，2 用户会员 3 网站消费 4.用户图集
          */
         if(albumDto.getKind() == 1 ) {
-            Double amount = VipPriceEnum.getPriceByCode(1);
+            Double amount = VipPriceEnum.getPriceByCode(albumDto.getProductId());
             return amount;
         }
         Double discount=1.0;
@@ -208,7 +208,7 @@ public class PaypalServiceImpl implements IPaypalService {
         //获取用户购买的用户vip信息
 
         if(albumDto.getKind() == 2 ) {
-            UserSettingVip userVip = settingVipService.getById(albumDto.getVid());
+            UserSettingVip userVip = settingVipService.getById(albumDto.getProductId());
             if (userVip ==null) {
                 throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
             }else{
@@ -222,8 +222,7 @@ public class PaypalServiceImpl implements IPaypalService {
         }
 
         if(albumDto.getKind() == 4 ) {
-
-            UserAlbum userAlbum = userAlbumService.getById(albumDto.getAid());
+            UserAlbum userAlbum = userAlbumService.getById(albumDto.getProductId());
             //获取VIP信息
             UserVip userVip=userVipService.getInfo(getUserId(),userAlbum.getUserId());
             if (userAlbum !=null) {

@@ -1,24 +1,33 @@
 package com.xinshijie.gallery.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class PayAlbumDto {
-    private Integer aid;
-
-    private Integer vid;
-
-
+    @NotNull
     private Double amount;
 
     /**
      * 物品类别 1 网站会员，2 用户会员 3网站消费 4.用户图集
      */
+    @NotNull
     private Integer kind;
 
     /**
-     * 物品类别 1 ,3,4,5
+     * 物品类别  kind 是1 会员编号  ,2 用户会员id, 4 会员图集id
+     *
      */
-    private Integer productType;
+    @NotNull
+    private Integer productId;
+
+    @Size(max = 100,min = 5)
+    @NotNull
+    private String productName;
+
+    @Size(max = 300,min = 10)
+    private String description;
+
 
 }

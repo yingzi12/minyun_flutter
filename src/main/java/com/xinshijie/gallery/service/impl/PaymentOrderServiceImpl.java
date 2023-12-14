@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -76,6 +77,23 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
     @Override
     public PaymentOrder getInfo(Long id) {
         return mapper.selectById(id);
+    }
+
+    @Override
+    public PaymentOrder selectByPayId(String payId) {
+        QueryWrapper<PaymentOrder> qw=new QueryWrapper<>();
+        qw.eq("pay_id",payId);
+        return mapper.selectOne(qw);
+    }
+
+    @Override
+    public PaymentOrder selectByUserIdKindProductId(Integer userId, Integer kind, Integer productId) {
+        QueryWrapper<PaymentOrder> qw=new QueryWrapper<>();
+        qw.eq("user_id",userId);
+        qw.eq("kind",kind);
+        qw.eq("product_id",productId);
+        qw.le("expired_time", LocalDateTime.now());
+        return mapper.selectOne(qw);
     }
 
 }
