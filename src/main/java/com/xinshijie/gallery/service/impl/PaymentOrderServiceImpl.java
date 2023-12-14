@@ -135,6 +135,9 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
         }else{
             qw.eq("status",PaymentStatuEnum.DONE.getCode());
         }
+        if(findDto.getIncomeUserId() != null) {
+            qw.eq("income_user_id", findDto.getIncomeUserId());
+        }
         IPage<PaymentOrder> value = mapper.selectPage(page, qw);
         return value;
     }

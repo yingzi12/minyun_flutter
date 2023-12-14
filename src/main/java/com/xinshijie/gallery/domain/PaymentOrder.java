@@ -79,4 +79,9 @@ public class PaymentOrder implements Serializable {
 
     private String requestId;
 
+    /**
+     * 被购买用户的用户id
+     */
+    private Integer incomeUserId;
+
 }

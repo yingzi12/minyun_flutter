@@ -108,6 +108,7 @@ public class AdminPaymentController {
                 paymentOrder.setProductId(albumDto.getProductId());
                 paymentOrder.setProductName(albumDto.getProductName());
                 paymentOrder.setRequestId(requstId);
+                paymentOrder.setIncomeUserId(albumDto.getIncomeUserId());
                 paymentOrder.setExpiredTime( LocalDateTimeUtil.offset(LocalDateTime.now(), 3, ChronoUnit.HOURS));
                 paymentOrderService.save(paymentOrder);
             }
@@ -126,6 +127,7 @@ public class AdminPaymentController {
             PaymentOrder paymentOrder = paymentOrderService.selectByPayId(transactionVo.getId());
             if(paymentOrder!=null){
                 paymentOrder.setStatus(PaymentStatuEnum.DONE.getCode());
+                paymentOrder.setPayTime(LocalDateTime.now());
                 paymentOrderService.updateById(paymentOrder);
             }
             return Result.success(transactionVo);

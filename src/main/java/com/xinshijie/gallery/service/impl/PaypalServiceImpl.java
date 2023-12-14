@@ -214,6 +214,7 @@ public class PaypalServiceImpl implements IPaypalService {
             if (userVip ==null) {
                 throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
             }else{
+                albumDto.setIncomeUserId(userVip.getUserId());
                 Double amount=getProduct(discount,userVip.getPrice());
                 return amount;
             }
@@ -227,9 +228,10 @@ public class PaypalServiceImpl implements IPaypalService {
             UserAlbum userAlbum = userAlbumService.getById(albumDto.getProductId());
             //获取VIP信息
             UserVip userVip=userVipService.getInfo(getUserId(),userAlbum.getUserId());
-            if (userAlbum !=null) {
+            if (userAlbum ==null) {
                 throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
             }else{
+                albumDto.setIncomeUserId(userAlbum.getUserId());
                 //VIP免费
                 if(userAlbum.getCharge()==2){
                     if(userVip==null) {

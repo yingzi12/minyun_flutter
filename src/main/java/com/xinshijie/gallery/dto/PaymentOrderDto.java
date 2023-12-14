@@ -102,6 +102,8 @@ public class PaymentOrderDto implements Serializable {
     private Integer productId;
 
 
+    private Integer  incomeUserId;
+
     private LocalDateTime expiredTime;
 
     private String requestId;

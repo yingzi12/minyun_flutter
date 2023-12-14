@@ -29,5 +29,6 @@ public class PayAlbumDto {
     @Size(max = 300,min = 10)
     private String description;
 
+    private Integer incomeUserId;
 
 }

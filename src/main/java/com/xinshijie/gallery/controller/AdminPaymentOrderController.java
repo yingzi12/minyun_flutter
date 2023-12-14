@@ -20,7 +20,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 @Validated
 @RestController
 @RequestMapping("/admin/paymentOrder")
-public class AdminPaymentOrder {
+public class AdminPaymentOrderController {
     @Autowired
     private IPaymentOrderService paymentOrderService;
 
