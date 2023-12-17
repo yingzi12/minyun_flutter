@@ -53,7 +53,7 @@ public interface IUserCollectionService extends IService<UserCollection> {
     /**
      * 根据id数据
      */
-    UserCollection getInfo(Integer userId, Long id, Integer ctype);
+    UserCollection getInfo(Integer userId, Integer id, Integer ctype);
 
     IPage<Album> listSystem(Long pageNum,Long pageSize,Integer userId);
 

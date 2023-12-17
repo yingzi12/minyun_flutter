@@ -154,4 +154,6 @@ public class UserAlbumVo implements Serializable {
 
     private Double amount;
 
+    private Integer isCollection;
+
 }

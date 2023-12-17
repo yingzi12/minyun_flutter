@@ -105,10 +105,10 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
      * 根据id数据
      */
     @Override
-    public UserCollection getInfo(Integer userId, Long id, Integer ctype) {
+    public UserCollection getInfo(Integer userId, Integer id, Integer ctype) {
         QueryWrapper<UserCollection> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
-        queryWrapper.eq("id", id);
+        queryWrapper.eq("aid", id);
         queryWrapper.eq("ctype", ctype);
         return mapper.selectOne(queryWrapper);
     }

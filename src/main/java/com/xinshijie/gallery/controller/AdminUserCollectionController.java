@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
@@ -46,7 +48,11 @@ public class AdminUserCollectionController extends BaseController {
     @GetMapping("/on")
     public Result<UserCollection> on(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
         UserCollectionDto dto = new UserCollectionDto();
-        dto.setUserId( getUserId());
+        Integer userId=getUserId();
+        if(userId==null){
+            throw new ServiceException(ResultCodeEnum.EXPIRED);
+        }
+        dto.setUserId(userId);
         dto.setUserName(getUserName());
         dto.setAid(aid);
         dto.setTitle(title);
@@ -83,7 +89,7 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/get/{id}")
-    public Result<UserCollection> getInfo(@PathVariable("id") Long id, @RequestParam("ctype") Integer ctype) {
+    public Result<UserCollection> getInfo(@PathVariable("id") Integer id, @RequestParam("ctype") Integer ctype) {
         UserCollection vo = userCollectionService.getInfo(getUserId(), id, ctype);
         return Result.success(vo);
     }

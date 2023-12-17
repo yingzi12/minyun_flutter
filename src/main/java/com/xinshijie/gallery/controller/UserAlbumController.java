@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.UserAlbum;
+import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.service.IUserAlbumService;
+import com.xinshijie.gallery.service.IUserCollectionService;
 import com.xinshijie.gallery.service.IUserImageService;
 import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.UserAlbumVo;
+import com.xinshijie.gallery.vo.UserCollectionVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +46,8 @@ public class UserAlbumController extends BaseController {
     @Autowired
     private IUserAlbumService userAlbumService;
     @Autowired
+    private IUserCollectionService userCollectionService;
+    @Autowired
     private IUserImageService userImageService;
     @Autowired
     private IUserVideoService userVideoService;
@@ -65,12 +70,23 @@ public class UserAlbumController extends BaseController {
         BeanUtils.copyProperties(userAlbum, vo);
         vo.setImageCount(imageCount.intValue());
         vo.setVideoCount(videoCount.intValue());
+        UserCollection userCollection= userCollectionService.getInfo(userId,userAlbum.getId(),2);
+
+        if(userCollection ==null){
+            vo.setIsCollection(2);
+        }else {
+            vo.setIsCollection(1);
+        }
         if (vo.getUserId() == userId) {
             vo.setIsVip(1);
             vo.setIsSee(true);
             return Result.success(vo);
         } else {
-            userAlbumService.isSee(vo, userId);
+            try {
+                userAlbumService.isSee(vo, userId);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
 
         vo.setImageList(imageList);

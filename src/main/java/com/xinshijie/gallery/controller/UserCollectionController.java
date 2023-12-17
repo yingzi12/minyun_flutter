@@ -35,7 +35,7 @@ public class UserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/getInfo")
-    public Result<Boolean> getInfo(@RequestParam("aid") Long aid, @RequestParam("ctype") Integer ctype) {
+    public Result<Boolean> getInfo(@RequestParam("aid") Integer aid, @RequestParam("ctype") Integer ctype) {
         Integer userId = getUserIdNoLogin();
         boolean ok = true;
         if (userId == null) {
