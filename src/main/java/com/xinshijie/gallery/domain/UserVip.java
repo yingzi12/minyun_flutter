@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,7 +37,7 @@ public class UserVip implements Serializable {
     /**
      * 等级
      */
-    private Integer rank;
+    private Integer ranks;
     /**
      * 过期时间
      */

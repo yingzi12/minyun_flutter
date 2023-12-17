@@ -45,7 +45,7 @@ public class UserBankServiceImpl extends ServiceImpl<UserBankMapper, UserBank> i
     public Page<UserBankVo> selectPageUserBank(UserBankDto dto) {
         Page<UserBankVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -62,7 +62,7 @@ public class UserBankServiceImpl extends ServiceImpl<UserBankMapper, UserBank> i
     public Page<UserBankVo> getPageUserBank(UserBankDto dto) {
         Page<UserBankVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

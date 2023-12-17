@@ -21,7 +21,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
  * @since 2023-09-07
  */
 @Slf4j
-@Tag(name = " AdminUserCollectionController", description = "后台- 用户收藏的album")
+@Tag(name = " UserCollectionController", description = "后台- 用户收藏的album")
 @RestController
 @RequestMapping("/userCollection")
 public class UserCollectionController extends BaseController {
@@ -35,7 +35,7 @@ public class UserCollectionController extends BaseController {
      * @return
      */
     @GetMapping("/getInfo")
-    public Result<Boolean> getInfo(@PathVariable("aid") Long aid, @RequestParam("ctype") Integer ctype) {
+    public Result<Boolean> getInfo(@RequestParam("aid") Long aid, @RequestParam("ctype") Integer ctype) {
         Integer userId = getUserIdNoLogin();
         boolean ok = true;
         if (userId == null) {

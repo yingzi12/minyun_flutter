@@ -45,7 +45,7 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     public Page<UserBuyAlbumVo> selectPageUserBuyAlbum(UserBuyAlbumDto dto) {
         Page<UserBuyAlbumVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -62,7 +62,7 @@ public class UserBuyAlbumServiceImpl extends ServiceImpl<UserBuyAlbumMapper, Use
     public Page<UserBuyAlbumVo> getPageUserBuyAlbum(UserBuyAlbumDto dto) {
         Page<UserBuyAlbumVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

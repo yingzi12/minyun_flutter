@@ -45,7 +45,7 @@ public class UserBuyVipServiceImpl extends ServiceImpl<UserBuyVipMapper, UserBuy
     public Page<UserBuyVipVo> selectPageUserBuyVip(UserBuyVipDto dto) {
         Page<UserBuyVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -62,7 +62,7 @@ public class UserBuyVipServiceImpl extends ServiceImpl<UserBuyVipMapper, UserBuy
     public Page<UserBuyVipVo> getPageUserBuyVip(UserBuyVipDto dto) {
         Page<UserBuyVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

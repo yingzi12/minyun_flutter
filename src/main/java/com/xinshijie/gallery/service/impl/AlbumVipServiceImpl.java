@@ -44,7 +44,7 @@ public class AlbumVipServiceImpl extends ServiceImpl<AlbumVipMapper, AlbumVip> i
     public Page<AlbumVipVo> selectPageAlbumVip(AlbumVipDto dto) {
         Page<AlbumVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -61,7 +61,7 @@ public class AlbumVipServiceImpl extends ServiceImpl<AlbumVipMapper, AlbumVip> i
     public Page<AlbumVipVo> getPageAlbumVip(AlbumVipDto dto) {
         Page<AlbumVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

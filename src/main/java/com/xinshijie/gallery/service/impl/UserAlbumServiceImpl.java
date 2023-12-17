@@ -90,7 +90,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     public IPage<UserAlbum> getPageUserAlbum(UserAlbumDto dto) {
         Page<UserAlbum> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -161,9 +161,11 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     }
 
     public Boolean isSee(UserAlbumVo userAlbum, Integer userId) {
+        userAlbum.setAmount(0.0);
         //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
         //判断是否需要付费
         if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
+            userAlbum.setAmount(0.0);
             userAlbum.setIsSee(true);
             return true;
         }
@@ -185,25 +187,33 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         //判断是否vip免费
         if (AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())) {
             if (userVip != null) {
+                userAlbum.setAmount(0.0);
                 userAlbum.setIsSee(true);
                 return true;
+            }else {
+                userAlbum.setAmount(userAlbum.getPrice());
             }
         }
         //判断是否是否已经购买
         PaymentOrder paymentOrder = paymentOrderService.selectByDonePay(userId, PaymentKindEnum.USER_ALBUM.getCode(), userAlbum.getId());
         if (paymentOrder != null) {
+            userAlbum.setAmount(0.0);
             userAlbum.setIsSee(true);
             return true;
         } else {
             if (AlbumChargeEnum.VIP_DISCOUNT.getCode().equals(userAlbum.getCharge())) {
                 if (userVip != null) {
+                    userAlbum.setAmount(userAlbum.getVipPrice());
                     userAlbum.setPrice(userAlbum.getVipPrice());
+                }else{
+                    userAlbum.setAmount(userAlbum.getPrice());
                 }
             }
             if (AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(userAlbum.getCharge())) {
                 if (userVip != null) {
                     userAlbum.setPrice(userAlbum.getVipPrice());
                 }
+                userAlbum.setAmount(userAlbum.getPrice());
             }
         }
         userAlbum.setIsSee(false);

@@ -72,6 +72,7 @@ public class UserAlbumController extends BaseController {
         } else {
             userAlbumService.isSee(vo, userId);
         }
+
         vo.setImageList(imageList);
         vo.setVideoList(videoList);
         return Result.success(vo);

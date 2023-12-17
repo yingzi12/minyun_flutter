@@ -3,7 +3,9 @@ package com.xinshijie.gallery.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.PaymentOrder;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.PaymentOrderDto;
 import com.xinshijie.gallery.vo.PaymentOrderVo;
 
@@ -54,5 +56,6 @@ public interface IPaymentOrderService extends IService<PaymentOrder> {
 
     IPage<PaymentOrder> getList(PaymentOrderDto findDto);
 
+    IPage<UserAlbum> listBuy(PaymentOrderDto findDto);
 
 }

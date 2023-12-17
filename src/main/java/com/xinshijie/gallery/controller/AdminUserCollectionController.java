@@ -1,8 +1,11 @@
 package com.xinshijie.gallery.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserCollectionDto;
 import com.xinshijie.gallery.service.IUserCollectionService;
@@ -43,7 +46,7 @@ public class AdminUserCollectionController extends BaseController {
     @GetMapping("/on")
     public Result<UserCollection> on(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
         UserCollectionDto dto = new UserCollectionDto();
-        dto.setUserId((long) getUserId());
+        dto.setUserId( getUserId());
         dto.setUserName(getUserName());
         dto.setAid(aid);
         dto.setTitle(title);
@@ -92,10 +95,17 @@ public class AdminUserCollectionController extends BaseController {
      * @return
      */
 
-    @GetMapping("/list")
-    public Result<List<UserCollectionVo>> select(UserCollectionDto findDto) {
-        findDto.setUserId((long) getUserId());
-        Page<UserCollectionVo> vo = userCollectionService.selectPageUserCollection(findDto);
+    @GetMapping("/listSystem")
+    public Result<List<Album>> listSystem(UserCollectionDto findDto) {
+        findDto.setUserId(getUserId());
+        IPage<Album> vo = userCollectionService.listSystem(findDto.getPageNum(), findDto.getPageSize(), findDto.getUserId());
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
+
+    @GetMapping("/listUser")
+    public Result<List<UserAlbum>> listUser(UserCollectionDto findDto) {
+        findDto.setUserId(getUserId());
+        IPage<UserAlbum> vo = userCollectionService.listUser(findDto.getPageNum(), findDto.getPageSize(), findDto.getUserId());
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 

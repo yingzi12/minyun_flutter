@@ -51,7 +51,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     public Page<UserSettingVipVo> selectPageUserSettingVip(UserSettingVipDto dto) {
         Page<UserSettingVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -81,7 +81,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     public Page<UserSettingVipVo> getPageUserSettingVip(UserSettingVipDto dto) {
         Page<UserSettingVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

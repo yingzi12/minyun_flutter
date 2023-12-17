@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -89,6 +90,9 @@ public class PaymentOrderDto implements Serializable {
      */
     @Schema(description = "物品类别 1 网站会员，2 用户会员 3网站消费 4.用户图集 ")
     private Integer kind;
+
+    private List<Integer> kinds;
+
     /**
      * 支付方式
      */

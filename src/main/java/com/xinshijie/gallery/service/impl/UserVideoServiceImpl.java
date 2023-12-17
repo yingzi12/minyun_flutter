@@ -89,7 +89,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public Page<UserVideoVo> selectPageUserVideo(UserVideoDto dto) {
         Page<UserVideoVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -124,7 +124,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public Page<UserVideoVo> getPageUserVideo(UserVideoDto dto) {
         Page<UserVideoVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

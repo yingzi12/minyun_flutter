@@ -44,7 +44,7 @@ public class AlbumCollectionServiceImpl extends ServiceImpl<AlbumCollectionMappe
     public Page<AlbumCollectionVo> selectPageAlbumCollection(AlbumCollectionDto dto) {
         Page<AlbumCollectionVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -61,7 +61,7 @@ public class AlbumCollectionServiceImpl extends ServiceImpl<AlbumCollectionMappe
     public Page<AlbumCollectionVo> getPageAlbumCollection(AlbumCollectionDto dto) {
         Page<AlbumCollectionVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

@@ -45,7 +45,7 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     public Page<UserAttentionVo> selectPageUserAttention(UserAttentionDto dto) {
         Page<UserAttentionVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -62,7 +62,7 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
     public Page<UserAttentionVo> getPageUserAttention(UserAttentionDto dto) {
         Page<UserAttentionVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);

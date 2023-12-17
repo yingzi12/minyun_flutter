@@ -111,4 +111,6 @@ public class UserAlbum implements Serializable {
 
     private String imgUrl;
 
+    private String payIntro;
+
 }

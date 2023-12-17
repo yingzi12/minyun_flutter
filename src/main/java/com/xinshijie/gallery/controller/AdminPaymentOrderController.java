@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.PaymentOrder;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.PaymentOrderDto;
 import com.xinshijie.gallery.enmus.PaymentStatuEnum;
 import com.xinshijie.gallery.service.IPaymentOrderService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -24,8 +26,22 @@ public class AdminPaymentOrderController {
     @Autowired
     private IPaymentOrderService paymentOrderService;
 
-    @PostMapping("list")
-    public Result<List<PaymentOrder>> getList(@RequestBody PaymentOrderDto findDto){
+    @GetMapping("listSell")
+    public Result<List<PaymentOrder>> listSell( PaymentOrderDto findDto){
+        findDto.setIncomeUserId(getUserId());
+        IPage<PaymentOrder> vo = paymentOrderService.getList(findDto);
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
+    @GetMapping("listBuy")
+    public Result<List<UserAlbum>> listBuy( PaymentOrderDto findDto){
+        findDto.setUserId(getUserId());
+        ArrayList kind=new ArrayList();
+        kind.add(4);
+        IPage<UserAlbum> vo = paymentOrderService.listBuy(findDto);
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
+    @GetMapping("listLog")
+    public Result<List<PaymentOrder>> listLog( PaymentOrderDto findDto){
         findDto.setUserId(getUserId());
         IPage<PaymentOrder> vo = paymentOrderService.getList(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));

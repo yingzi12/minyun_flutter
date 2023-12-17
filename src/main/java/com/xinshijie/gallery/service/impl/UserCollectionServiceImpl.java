@@ -1,8 +1,11 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserCollectionDto;
 import com.xinshijie.gallery.mapper.UserCollectionMapper;
@@ -45,7 +48,7 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
     public Page<UserCollectionVo> selectPageUserCollection(UserCollectionDto dto) {
         Page<UserCollectionVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -62,7 +65,7 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
     public Page<UserCollectionVo> getPageUserCollection(UserCollectionDto dto) {
         Page<UserCollectionVo> page = new Page<>();
         if (dto.getPageNum() == null) {
-            dto.setPageNum(20L);
+            dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
             dto.setPageSize(20L);
@@ -108,6 +111,34 @@ public class UserCollectionServiceImpl extends ServiceImpl<UserCollectionMapper,
         queryWrapper.eq("id", id);
         queryWrapper.eq("ctype", ctype);
         return mapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public IPage<Album> listSystem(Long pageNum,Long pageSize,Integer userId) {
+        Page<Album> page = new Page<>();
+        if (pageNum== null) {
+            pageNum=1L;
+        }
+        if (pageSize == null) {
+            pageSize=20L;
+        }
+        page.setSize(pageSize);
+        page.setCurrent(pageNum);
+        return mapper.listSystem(page,userId);
+    }
+
+    @Override
+    public IPage<UserAlbum> listUser(Long pageNum,Long pageSize,Integer userId) {
+        Page<UserAlbum> page = new Page<>();
+        if (pageNum== null) {
+            pageNum=1L;
+        }
+        if (pageSize == null) {
+            pageSize=20L;
+        }
+        page.setSize(pageSize);
+        page.setCurrent(pageNum);
+        return mapper.listUser(page,userId);
     }
 
 }

@@ -64,7 +64,7 @@ public class AdminPaymentController {
         String requstId = IdUtil.fastSimpleUUID();
         if(paymentOrderDto==null){
             amount= payPalService.getAmount( albumDto);
-            if(amount<=0.0 || !albumDto.equals(amount)){
+            if(amount<=0.0 || !albumDto.getAmount().equals(amount)){
                 throw new ServiceException(ResultCodeEnum.PRICE_ERROR);
             }
         }else {
@@ -129,12 +129,13 @@ public class AdminPaymentController {
                 paymentOrder.setStatus(PaymentStatuEnum.DONE.getCode());
                 paymentOrder.setPayTime(LocalDateTime.now());
                 paymentOrderService.updateById(paymentOrder);
-                payPalService.updatIncome(paymentOrder.getIncomeUserId(),paymentOrder.getAmount());
-
+                if(paymentOrder.getIncomeUserId()!=null) {
+                    payPalService.updatIncome(paymentOrder.getIncomeUserId(), paymentOrder.getAmount());
+                }
             }
             return Result.success(transactionVo);
         }
-        return Result.success(null);
+        return Result.error(ResultCodeEnum.EXPIRED);
     }
 
     @PostMapping("/webhook")
@@ -157,6 +158,10 @@ public class AdminPaymentController {
 
     @PostMapping("/getAmount")
     public Result<Double> getAmount(@RequestBody PayAlbumDto albumDto) {
+        PaymentOrder paymentOrderDto = paymentOrderService.selectWaitPay(getUserId(),albumDto.getKind(),albumDto.getProductId());
+        if(paymentOrderDto != null){
+            return Result.success(paymentOrderDto.getAmount());
+        }
         return Result.success(payPalService.getAmount(albumDto));
     }
 }

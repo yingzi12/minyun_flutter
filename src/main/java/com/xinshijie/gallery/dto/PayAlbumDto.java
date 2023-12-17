@@ -26,7 +26,7 @@ public class PayAlbumDto {
     @NotNull
     private String productName;
 
-    @Size(max = 300,min = 10)
+    @Size(max = 300,min = 5,message = "description 超出大小")
     private String description;
 
     private Integer incomeUserId;

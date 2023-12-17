@@ -54,8 +54,8 @@ class PaypalMain {
         String requstId = "1JG72609XE641194A";
 //        createOrder(requstId, token, dto);
         //"0XP707945N772224R"
-        getDetail(token,"7LH93536HU642170T");
-        checkoutOrdersCapture(token,"7LH93536HU642170T");
+        getDetail(token,"4S7935240W938531R");
+//        checkoutOrdersCapture(token,"7LH93536HU642170T");
     }
 
     /**

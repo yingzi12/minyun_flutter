@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.PaymentOrder;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.PaymentOrderDto;
+import com.xinshijie.gallery.enmus.PaymentKindEnum;
 import com.xinshijie.gallery.enmus.PaymentStatuEnum;
 import com.xinshijie.gallery.enmus.VipPriceEnum;
 import com.xinshijie.gallery.mapper.PaymentOrderMapper;
@@ -97,8 +100,8 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
         qw.eq("user_id",userId);
         qw.eq("kind",kind);
         qw.eq("product_id",productId);
-        qw.le("expired_time", LocalDateTime.now());
-        qw.le("status", PaymentStatuEnum.WAIT.getCode());
+        qw.ge("expired_time", LocalDateTime.now());
+        qw.eq("status", PaymentStatuEnum.WAIT.getCode());
         return mapper.selectOne(qw);
     }
     @Override
@@ -107,7 +110,7 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
         qw.eq("user_id",userId);
         qw.eq("kind",kind);
         qw.eq("product_id",productId);
-        qw.le("status", PaymentStatuEnum.DONE.getCode());
+        qw.eq("status", PaymentStatuEnum.DONE.getCode());
         return mapper.selectOne(qw);
     }
 
@@ -127,6 +130,9 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
         if(findDto.getKind() != null) {
             qw.eq("kind", findDto.getKind());
         }
+        if(findDto.getKinds() != null && findDto.getKinds().size()>0) {
+            qw.in("kind", findDto.getKinds());
+        }
         if(findDto.getProductId() != null) {
             qw.eq("product_id", findDto.getProductId());
         }
@@ -139,6 +145,21 @@ public class PaymentOrderServiceImpl extends ServiceImpl<PaymentOrderMapper, Pay
             qw.eq("income_user_id", findDto.getIncomeUserId());
         }
         IPage<PaymentOrder> value = mapper.selectPage(page, qw);
+        return value;
+    }
+
+    @Override
+    public IPage<UserAlbum> listBuy(PaymentOrderDto findDto) {
+        Page<UserAlbum> page = new Page<>();
+        if (findDto.getPageNum() == null) {
+            findDto.setPageNum(1L);
+        }
+        if (findDto.getPageSize() == null) {
+            findDto.setPageSize(20L);
+        }
+        page.setCurrent(findDto.getPageNum());
+        page.setSize(findDto.getPageSize());
+        IPage<UserAlbum> value = mapper.listBuy(page,findDto.getUserId(),PaymentStatuEnum.DONE.getCode(), PaymentKindEnum.USER_ALBUM.getCode());
         return value;
     }
 

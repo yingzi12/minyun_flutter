@@ -2,8 +2,11 @@ package com.xinshijie.gallery.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserCollectionDto;
 import com.xinshijie.gallery.vo.UserCollectionVo;
@@ -54,5 +57,10 @@ public interface UserCollectionMapper extends BaseMapper<UserCollection> {
      * 根据id数据
      */
     UserCollectionVo getInfo(Long id);
+
+    IPage<Album> listSystem(Page<Album> page,@Param("userId")Integer userId);
+
+    IPage<UserAlbum> listUser(Page<UserAlbum> page,@Param("userId")Integer userId);
+
 }
 

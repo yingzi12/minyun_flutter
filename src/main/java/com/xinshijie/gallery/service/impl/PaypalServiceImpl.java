@@ -7,12 +7,14 @@ import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.*;
 import com.xinshijie.gallery.dto.PayAlbumDto;
 import com.xinshijie.gallery.dto.PayOrderDto;
+import com.xinshijie.gallery.enmus.AlbumChargeEnum;
 import com.xinshijie.gallery.enmus.PaymentStatuEnum;
 import com.xinshijie.gallery.enmus.VipLongTypeEnum;
 import com.xinshijie.gallery.enmus.VipPriceEnum;
 import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.PayOrderVo;
 import com.xinshijie.gallery.vo.PayPalTransactionVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,7 @@ import java.util.Scanner;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 
+@Slf4j
 @Service
 public class PaypalServiceImpl implements IPaypalService {
 
@@ -158,7 +161,7 @@ public class PaypalServiceImpl implements IPaypalService {
             String response = s.hasNext() ? s.next() : "";
             System.out.println(response);
             PayPalTransactionVo transactionVo = JSONObject.parseObject(response, PayPalTransactionVo.class);
-            System.out.println(JSONObject.toJSONString(transactionVo));
+            log.info("确认扣款："+JSONObject.toJSONString(transactionVo));
             return transactionVo;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -233,7 +236,7 @@ public class PaypalServiceImpl implements IPaypalService {
             }else{
                 albumDto.setIncomeUserId(userAlbum.getUserId());
                 //VIP免费
-                if(userAlbum.getCharge()==2){
+                if(userAlbum.getCharge()== AlbumChargeEnum.VIP_FREE.getCode()){
                     if(userVip==null) {
                         Double amount = getProduct(discount, userAlbum.getPrice());
                         return amount;
@@ -242,7 +245,7 @@ public class PaypalServiceImpl implements IPaypalService {
                     }
                 }
 
-                if(userAlbum.getCharge()==3){
+                if(userAlbum.getCharge()==AlbumChargeEnum.VIP_DISCOUNT.getCode()){
                     if(userVip==null) {
                         Double amount = getProduct(discount, userAlbum.getPrice());
                         return amount;
@@ -251,7 +254,7 @@ public class PaypalServiceImpl implements IPaypalService {
                         return amount;
                     }
                 }
-                if(userAlbum.getCharge()==4){
+                if(userAlbum.getCharge()==AlbumChargeEnum.VIP_EXCLUSIVE.getCode()){
                     if(userVip==null) {
                         return 0.0;
                     }else{
@@ -259,7 +262,7 @@ public class PaypalServiceImpl implements IPaypalService {
                         return amount;
                     }
                 }
-                if(userAlbum.getCharge()==5){
+                if(userAlbum.getCharge()==AlbumChargeEnum.UNIFICATION.getCode()){
                     Double amount = getProduct(discount, userAlbum.getPrice());
                     return amount;
                 }
@@ -325,7 +328,7 @@ public class PaypalServiceImpl implements IPaypalService {
             UserSettingVip settingVip=settingVipService.getById(paymentOrder.getProductId());
             UserVip userVip=userVipService.getInfo(paymentOrder.getUserId(),settingVip.getUserId());
             userVip.setTitle(settingVip.getTitle());
-            userVip.setRank(settingVip.getRank());
+            userVip.setRanks(settingVip.getRank());
             userVip.setVid(paymentOrder.getProductId());
             userVip.setUserId(getUserId());
             userVip.setUserName(getUserName());

@@ -81,4 +81,15 @@
         where id = #{id}
     </select>
 
+    <select id="listUser" resultType="com.xinshijie.gallery.domain.UserAlbum">
+        select ua.* from user_album ua ,user_collection uc
+        where ua.id =uc.user_id
+          and uc.user_id =#{userId} and ctype =1
+    </select>
+
+    <select id="listSystem" resultType="com.xinshijie.gallery.dao.Album">
+        select a.* from album a   ,user_collection uc
+        where a.id =uc.user_id
+          and uc.user_id  =#{userId}  and ctype =1
+    </select>
 </mapper>
