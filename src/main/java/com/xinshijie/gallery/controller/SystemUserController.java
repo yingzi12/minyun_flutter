@@ -11,8 +11,10 @@ import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.*;
 import com.xinshijie.gallery.service.ISystemUserService;
+import com.xinshijie.gallery.util.RequestContextUtil;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -186,9 +188,14 @@ public class SystemUserController extends BaseController {
     }
 
     @GetMapping("/list")
-    public Result<List<SystemUserVo>> list(FindSystemUserDto findDto) {
-        IPage<SystemUserVo> vo = systemUserService.selectPage(findDto);
+    public Result<List<SystemUserIntroVo>> list(FindSystemUserDto findDto) {
+        IPage<SystemUserIntroVo> vo = systemUserService.selectPage(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
+    @GetMapping("info")
+    public Result<SystemUser> getInfo(@RequestParam("userId")Integer userId) {
+        SystemUser systemUserVo = systemUserService.info(userId);
+        return Result.success(systemUserVo);
+    }
 }

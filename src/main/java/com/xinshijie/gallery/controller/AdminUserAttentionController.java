@@ -70,8 +70,8 @@ public class AdminUserAttentionController extends BaseController {
      * @return
      */
     @GetMapping("/close")
-    public Result<Integer> close(@RequestParam("aid") Integer aid) {
-        Integer vo = userAttentionService.delById(getUserId(), aid);
+    public Result<Integer> close(@RequestParam("attUserId") Integer attUserId) {
+        Integer vo = userAttentionService.delById(getUserId(), attUserId);
         return Result.success(vo);
     }
 

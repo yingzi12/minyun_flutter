@@ -40,7 +40,7 @@
         </where>
     </select>
 
-    <select id="selectPageSystemUser" resultType="com.xinshijie.gallery.vo.SystemUserVo">
+    <select id="selectPageSystemUser" resultType="com.xinshijie.gallery.vo.SystemUserIntroVo">
         select id,
         `name`,
         nickname,

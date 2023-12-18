@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.FindSystemUserDto;
 import com.xinshijie.gallery.dto.SystemUserDto;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,7 +35,7 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
      * 普通方法
      * 分页查询讨论主题表
      */
-    Page<SystemUserVo> selectPageSystemUser(Page<SystemUserVo> page, @Param("dto") FindSystemUserDto dto);
+    Page<SystemUserIntroVo> selectPageSystemUser(Page<SystemUserVo> page, @Param("dto") FindSystemUserDto dto);
 
     /**
      * 分页查询讨论主题表

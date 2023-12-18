@@ -20,6 +20,7 @@ import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.AlbumCollectionVo;
 import com.xinshijie.gallery.vo.LoginUserVo;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -378,7 +379,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
     @Override
-    public IPage<SystemUserVo> selectPage(FindSystemUserDto findDto) {
+    public IPage<SystemUserIntroVo> selectPage(FindSystemUserDto findDto) {
 
         Page<SystemUserVo> page = new Page<>();
         if (findDto.getPageNum() == null) {
