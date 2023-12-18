@@ -44,6 +44,8 @@ public class SystemUser implements Serializable {
     private Integer countAttention;
     private Integer vip;
     private Integer credit;
+    private Double income;
+    private Double withdraw;
     private LocalDateTime vipExpirationTime;
 
 }

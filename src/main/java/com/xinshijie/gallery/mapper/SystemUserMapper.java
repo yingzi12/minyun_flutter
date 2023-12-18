@@ -44,11 +44,6 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
     Page<SystemUserVo> getPageSystemUser(Page<SystemUserVo> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
     /**
-     * 根据id修改数据
-     */
-    Integer edit(SystemUserDto dto);
-
-    /**
      * 删除数据
      */
     Integer delById(Integer id);
@@ -58,6 +53,9 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
      */
     SystemUserVo getInfo(Integer id);
 
-    void updatIncome(@Param("userId") Integer userId,@Param("amount") Double amount);
+    Integer updateIncome(@Param("userId") Integer userId,@Param("amount") Double amount);
+
+    Integer updateWithdraw(@Param("userId") Integer userId,@Param("withdraw") Double withdraw);
+
 }
 

@@ -4,17 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserWithdraw;
+import com.xinshijie.gallery.enmus.WithdrawStatuEnum;
+import com.xinshijie.gallery.enmus.WithdrawTypeEnum;
 import com.xinshijie.gallery.mapper.UserWithdrawMapper;
+import com.xinshijie.gallery.service.IPaypalService;
+import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.service.IUserWithdrawService;
 import com.xinshijie.gallery.dto.UserWithdrawDto;
-import com.xinshijie.gallery.vo.AlbumVipVo;
-import com.xinshijie.gallery.vo.UserWithdrawVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * <p>
@@ -30,7 +34,10 @@ public class UserWithdrawServiceImpl extends ServiceImpl<UserWithdrawMapper, Use
 
     @Autowired
     private UserWithdrawMapper mapper;
-
+    @Autowired
+    private ISystemUserService systemUserService;
+    @Autowired
+    private IPaypalService paypalService;
 
     /**
      * 分页查询图片信息表
@@ -56,9 +63,21 @@ public class UserWithdrawServiceImpl extends ServiceImpl<UserWithdrawMapper, Use
      */
     @Override
     public UserWithdraw add(UserWithdrawDto dto) {
+
         UserWithdraw value = new UserWithdraw();
-        org.springframework.beans.BeanUtils.copyProperties(dto, value);
-        mapper.insert(value);
+        BeanUtils.copyProperties(dto, value);
+        Double amountReceived= paypalService.getProduct(dto.getAmount() ,0.3);
+        if(amountReceived != dto.getAmountReceived()){
+            throw new ServiceException(ResultCodeEnum.WITHDRAW_ERROR);
+        }
+        Integer updateCount=systemUserService.updateWithdraw(dto.getUserId(), dto.getAmount());
+        if(updateCount==1) {
+            value.setStatus(WithdrawStatuEnum.WAIT.getCode());
+            value.setWithdrawType(WithdrawTypeEnum.PAYPAY.getCode());
+            mapper.insert(value);
+        }else{
+            throw new ServiceException(ResultCodeEnum.WITHDRAW_ERROR);
+        }
         return value;
     }
 

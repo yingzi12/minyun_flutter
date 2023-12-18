@@ -24,7 +24,7 @@ public class UserWithdrawDto implements Serializable {
 
     private Integer id;
 
-    private Long userId;
+    private Integer userId;
 
     @Size(max = 100, message = " 超出最大长度 100")
     private String userName;
@@ -46,6 +46,8 @@ public class UserWithdrawDto implements Serializable {
      */
     @Schema( description = "提现金额 ")
     private Double amount;
+
+    private Double amountReceived;
 
     /**
      * 状态 1.待提现  2提现完成 3提现失败

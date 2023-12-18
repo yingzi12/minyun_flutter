@@ -130,7 +130,7 @@ public class AdminPaymentController {
                 paymentOrder.setPayTime(LocalDateTime.now());
                 paymentOrderService.updateById(paymentOrder);
                 if(paymentOrder.getIncomeUserId()!=null) {
-                    payPalService.updatIncome(paymentOrder.getIncomeUserId(), paymentOrder.getAmount());
+                    payPalService.updateIncome(paymentOrder.getIncomeUserId(), paymentOrder.getAmount());
                 }
             }
             return Result.success(transactionVo);

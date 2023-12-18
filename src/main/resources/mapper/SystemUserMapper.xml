@@ -17,7 +17,9 @@
                imgUrl,
                count_like,
                count_see,
-               count_attention
+               count_attention,
+               income,
+               withdraw
 
         from system_user
     </sql>
@@ -53,7 +55,9 @@
         img_url,
         count_like,
         count_see,
-        count_attention
+        count_attention,
+        income,
+        withdraw
 
         from system_user
         <where>
@@ -70,52 +74,6 @@
         ${ew.customSqlSegment}
     </select>
 
-    <insert id="add">
-        insert into system_user (id,
-                                 `name`,
-                                 nickname,
-                                 email,
-                                 is_email,
-                                 `password`,
-                                 salt,
-                                 create_time,
-                                 update_time,
-                                 intro,
-                                 directions,
-                                 img_url)
-        values (#{ id },
-                #{ name },
-                #{ nickname },
-                #{ email },
-                #{ isEmail },
-                #{ password },
-                #{ salt },
-                #{ createTime },
-                #{ updateTime },
-                #{ intro },
-                #{ directions },
-                #{imgUrl})
-    </insert>
-
-    <update id="edit">
-        update system_user
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="id !=null ">id= #{id},</if>
-            <if test="name !=null ">`name`= #{name},</if>
-            <if test="nickname !=null ">nickname= #{nickname},</if>
-            <if test="email !=null ">email= #{email},</if>
-            <if test="isEmail !=null ">is_email= #{isEmail},</if>
-            <if test="password !=null ">`password`= #{password},</if>
-            <if test="salt !=null ">salt= #{salt},</if>
-            <if test="createTime !=null ">create_time= #{createTime},</if>
-            <if test="updateTime !=null ">update_time= #{updateTime},</if>
-            <if test="intro !=null ">intro= #{intro},</if>
-            <if test="directions !=null ">directions= #{directions},</if>
-            <if test="imgUrl !=null ">img_url= #{imgUrl},</if>
-
-        </trim>
-        where id=#{id}
-    </update>
 
     <delete id="delById">
         delete
@@ -128,8 +86,16 @@
         where id = #{id}
     </select>
 
-    <update id="updatIncome" >
-       update system_user set income=#{amount}
+    <update id="updateIncome" >
+       update system_user set income=income+#{amount}
         where id = #{userId}
+    </update>
+<!--    <update id="updatWithdraw" >-->
+<!--        update system_user set withdraw=withdraw+#{withdraw}-->
+<!--        where id = #{userId}-->
+<!--    </update>-->
+    <update id="updateWithdraw" >
+        update system_user set withdraw=withdraw+#{withdraw}
+        where id = #{userId}  and income >= withdraw+#{withdraw};
     </update>
 </mapper>

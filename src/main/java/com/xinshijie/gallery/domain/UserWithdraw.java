@@ -25,46 +25,49 @@ import java.time.LocalDateTime;
 @TableName("user_withdraw")
 @Schema(description = " 用户提现记录")
 public class UserWithdraw implements Serializable{
-private static final long serialVersionUID=1L;
-            @Id
+    private static final long serialVersionUID=1L;
+    @Id
     @TableId(value = "id", type = IdType.AUTO)
-        private Integer id;
-                private Long userId;
-                private String userName;
+    private Integer id;
+    private Long userId;
+    private String userName;
     /**
      * 创建时间
      */
-                private LocalDateTime createTime;
+    private LocalDateTime createTime;
     /**
      * 提现时间
      */
-                private LocalDateTime updateTime;
+    private LocalDateTime updateTime;
     /**
      * 提现金额
      */
-                private Double amount;
+    private Double amount;
+
+    private Double amountReceived;
+
     /**
      * 状态 1.待提现  2提现完成 3提现失败
      */
-                private Integer status;
+    private Integer status;
     /**
      * email
      */
-                private String email;
+    private String email;
     /**
      * 银行名称
      */
-                private String bankName;
+    private String bankName;
     /**
      * 提现名称
      */
-                private String withdrawName;
+    private String withdrawName;
     /**
      * 说明
      */
-                private String explanation;
+    private String explanation;
     /**
      * 提现类别 1.paypal 2.银行转
      */
-                private Integer withdrawType;
+    private Integer withdrawType;
 }

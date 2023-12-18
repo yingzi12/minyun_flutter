@@ -46,7 +46,10 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     Boolean saveUploadedFiles(Integer userId, MultipartFile file);
 
-    void updatIncome(Integer userId, Double amount);
+    Integer updateIncome(Integer userId, Double amount);
+
+    Integer updateWithdraw(Integer userId, Double withdraw);
+
 
     IPage<SystemUserIntroVo> selectPage(FindSystemUserDto findDto);
 }

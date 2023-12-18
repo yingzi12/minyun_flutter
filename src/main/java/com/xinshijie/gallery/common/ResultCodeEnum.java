@@ -136,6 +136,7 @@ public enum ResultCodeEnum {
 
     PRICE_ERROR(999008123, "价格错误"),
 
+    WITHDRAW_ERROR(999008124, "提现失败，金额错误"),
 
     ;
 

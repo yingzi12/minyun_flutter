@@ -277,6 +277,7 @@ public class PaypalServiceImpl implements IPaypalService {
      * @param num2
      * @return
      */
+    @Override
     public Double getProduct(Double num1,Double num2){
         BigDecimal bd1 = new BigDecimal(Double.toString(num1));
         BigDecimal bd2 = new BigDecimal(Double.toString(num2));
@@ -286,6 +287,7 @@ public class PaypalServiceImpl implements IPaypalService {
         return result.doubleValue();
     }
 
+    @Override
     public void update(PaymentOrder paymentOrder){
         /**
          * 物品类别 1 网站会员，2 用户会员 3 网站消费 4.用户图集
@@ -380,7 +382,7 @@ public class PaypalServiceImpl implements IPaypalService {
     }
 
     @Override
-    public void updatIncome(Integer userId, Double amount) {
-         systemUserService.updatIncome(userId,amount);
+    public void updateIncome(Integer userId, Double amount) {
+         systemUserService.updateWithdraw(userId,amount);
     }
 }

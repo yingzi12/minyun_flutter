@@ -262,7 +262,8 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         systemUser.setNickname(userDto.getName());
         systemUser.setSalt(RandomUtil.randomNumbers(10));
         systemUser.setCreateTime(LocalDateTime.now());
-
+        systemUser.setIncome(0.0);
+        systemUser.setWithdraw(0.0);
         mapper.insert(systemUser);
         return true;
     }
@@ -374,8 +375,14 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
     @Override
-    public void updatIncome(Integer userId, Double amount) {
-        mapper.updatIncome(userId,amount);
+    public Integer updateIncome(Integer userId, Double amount) {
+       return mapper.updateIncome(userId,amount);
+    }
+
+    @Override
+    public Integer updateWithdraw(Integer userId, Double withdraw) {
+       Integer updateCount = mapper.updateWithdraw(userId,withdraw);
+       return updateCount;
     }
 
     @Override
