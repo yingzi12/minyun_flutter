@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.UserSettingVip;
@@ -48,7 +49,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserSettingVipVo> selectPageUserSettingVip(UserSettingVipDto dto) {
+    public IPage<UserSettingVipVo> selectPageUserSettingVip(UserSettingVipDto dto) {
         Page<UserSettingVipVo> page = new Page<>();
         if (dto.getPageNum() == null) {
             dto.setPageNum(1L);

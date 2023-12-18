@@ -7,7 +7,7 @@
                user_id,
                user_name,
                create_time,
-               rank,
+               `rank`,
                update_time,
                price,
                intro,
@@ -15,6 +15,7 @@
                time_type,
                count_buy,
                introduce,
+               `status`,
                title
         from user_setting_vip
     </sql>
@@ -42,19 +43,12 @@
     <select id="selectPageUserSettingVip" resultType="com.xinshijie.gallery.vo.UserSettingVipVo">
         <include refid="selectUserSettingVip"/>
         <where>
-            <if test="dto.id !=null ">and id= #{dto.id}</if>
             <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
-            <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
-            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-            <if test="dto.rank !=null ">and rank= #{dto.rank}</if>
-            <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
-            <if test="dto.price !=null ">and price= #{dto.price}</if>
+            <if test="dto.rank !=null ">and `rank`= #{dto.rank}</if>
             <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
+            <if test="dto.status !=null ">and `status`= #{dto.status}</if>
             <if test="dto.timeLong !=null ">and time_long= #{dto.timeLong}</if>
             <if test="dto.timeType !=null ">and time_type= #{dto.timeType}</if>
-            <if test="dto.countBuy !=null ">and count_buy= #{dto.countBuy}</if>
-            <if test="dto.introduce !=null ">and introduce= #{dto.introduce}</if>
-            <if test="dto.title !=null ">and title= #{dto.title}</if>
         </where>
     </select>
 
