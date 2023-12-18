@@ -5,14 +5,16 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
 import cn.hutool.extra.mail.MailUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
-import com.xinshijie.gallery.dto.LoginDto;
-import com.xinshijie.gallery.dto.SystemUserDto;
-import com.xinshijie.gallery.dto.UserPasswordDto;
+import com.xinshijie.gallery.dto.*;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
+import com.xinshijie.gallery.vo.SystemUserVo;
+import com.xinshijie.gallery.vo.UserAttentionVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -80,15 +83,7 @@ public class SystemUserController extends BaseController {
         return Result.success(true);
     }
 
-    @PostMapping("/updatePassworld")
-    public Result<Boolean> updatePassworld(@RequestBody UserPasswordDto passwordDto) {
-        if (StringUtils.isEmpty(passwordDto.getNewPassword()) || passwordDto.getNewPassword().length() < 6) {
-            throw new ServiceException(ResultCodeEnum.PASSWORD_NULL);
-        }
-        // 生成令牌
-        systemUserService.updatePwd(getUserId(), passwordDto.getNewPassword(), passwordDto.getOldPassword());
-        return Result.success(true);
-    }
+
 
 
     @GetMapping("/updateCheckEmail")
@@ -190,5 +185,10 @@ public class SystemUserController extends BaseController {
         return Result.success("重置成功");
     }
 
+    @GetMapping("/list")
+    public Result<List<SystemUserVo>> list(FindSystemUserDto findDto) {
+        IPage<SystemUserVo> vo = systemUserService.selectPage(findDto);
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
 
 }

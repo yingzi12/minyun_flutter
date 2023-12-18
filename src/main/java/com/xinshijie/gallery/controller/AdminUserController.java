@@ -8,6 +8,7 @@ import cn.hutool.extra.mail.MailUtil;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.dto.SystemUserDto;
+import com.xinshijie.gallery.dto.UserPasswordDto;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.RequestContextUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -131,5 +132,15 @@ public class AdminUserController extends BaseController {
         log.info("system update");
         Boolean ok = systemUserService.saveUploadedFiles(getUserId(), file);
         return Result.success(ok);
+    }
+
+    @PostMapping("/updatePassworld")
+    public Result<Boolean> updatePassworld(@RequestBody UserPasswordDto passwordDto) {
+        if (StringUtils.isEmpty(passwordDto.getNewPassword()) || passwordDto.getNewPassword().length() < 6) {
+            throw new ServiceException(ResultCodeEnum.PASSWORD_NULL);
+        }
+        // 生成令牌
+        systemUserService.updatePwd(getUserId(), passwordDto.getNewPassword(), passwordDto.getOldPassword());
+        return Result.success(true);
     }
 }

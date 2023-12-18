@@ -25,16 +25,10 @@
         </where>
     </select>
 
-    <select id="selectPageUserAttention" resultType="com.xinshijie.gallery.vo.UserAttentionVo">
-        <include refid="selectUserAttention"/>
-        <where>
-            <if test="dto.id !=null ">and id= #{dto.id}</if>
-            <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
-            <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
-            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-            <if test="dto.attUserName !=null ">and att_user_name= #{dto.attUserName}</if>
-            <if test="dto.attUserId !=null ">and att_user_id= #{dto.attUserId}</if>
-        </where>
+    <select id="selectPageUserAttention" resultType="com.xinshijie.gallery.vo.SystemUserIntroVo">
+        select su.* from `system_user` su ,user_attention ua
+        where su.id =ua.att_user_id
+          and ua.user_id  =#{userId}
     </select>
 
     <select id="getPageUserAttention" resultType="com.xinshijie.gallery.vo.UserAttentionVo">

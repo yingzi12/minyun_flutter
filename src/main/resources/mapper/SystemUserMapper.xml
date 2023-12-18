@@ -41,19 +41,27 @@
     </select>
 
     <select id="selectPageSystemUser" resultType="com.xinshijie.gallery.vo.SystemUserVo">
-        <include refid="selectSystemUser"/>
+        select id,
+        `name`,
+        nickname,
+        email,
+        is_email,
+        create_time,
+        update_time,
+        intro,
+        directions,
+        img_url,
+        count_like,
+        count_see,
+        count_attention
+
+        from system_user
         <where>
-            <if test="dto.id !=null ">and id= #{dto.id}</if>
             <if test="dto.name !=null ">and `name`= #{dto.name}</if>
             <if test="dto.nickname !=null ">and nickname= #{dto.nickname}</if>
             <if test="dto.email !=null ">and email= #{dto.email}</if>
             <if test="dto.isEmail !=null ">and is_email= #{dto.isEmail}</if>
-            <if test="dto.password !=null ">and `password`= #{dto.password}</if>
-            <if test="dto.salt !=null ">and salt= #{dto.salt}</if>
-            <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
-            <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
             <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
-            <if test="dto.directions !=null ">and directions= #{dto.directions}</if>
         </where>
     </select>
 

@@ -4,18 +4,23 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.jwt.JWT;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.CacheConstants;
 import com.xinshijie.gallery.common.Constants;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.SystemUser;
+import com.xinshijie.gallery.dto.FindSystemUserDto;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.mapper.SystemUserMapper;
 import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.SecurityUtils;
+import com.xinshijie.gallery.vo.AlbumCollectionVo;
 import com.xinshijie.gallery.vo.LoginUserVo;
+import com.xinshijie.gallery.vo.SystemUserVo;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.BeanUtils;
@@ -370,6 +375,21 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public void updatIncome(Integer userId, Double amount) {
         mapper.updatIncome(userId,amount);
+    }
+
+    @Override
+    public IPage<SystemUserVo> selectPage(FindSystemUserDto findDto) {
+
+        Page<SystemUserVo> page = new Page<>();
+        if (findDto.getPageNum() == null) {
+            findDto.setPageNum(1L);
+        }
+        if (findDto.getPageSize() == null) {
+            findDto.setPageSize(20L);
+        }
+        page.setSize(findDto.getPageSize());
+        page.setCurrent(findDto.getPageNum());
+        return mapper.selectPageSystemUser(page,findDto);
     }
 
 

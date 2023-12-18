@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.domain.UserAttention;
+import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
 import com.xinshijie.gallery.mapper.UserAttentionMapper;
 import com.xinshijie.gallery.service.IUserAttentionService;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
+import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +45,8 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
      * 分页查询图片信息表
      */
     @Override
-    public Page<UserAttentionVo> selectPageUserAttention(UserAttentionDto dto) {
-        Page<UserAttentionVo> page = new Page<>();
+    public Page<SystemUserIntroVo> selectPageUserAttention(FindUserAttentionDto dto) {
+        Page<SystemUserVo> page = new Page<>();
         if (dto.getPageNum() == null) {
             dto.setPageNum(1L);
         }
@@ -52,7 +55,7 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
         }
         page.setSize(dto.getPageSize());
         page.setCurrent(dto.getPageNum());
-        return mapper.selectPageUserAttention(page, dto);
+        return mapper.selectPageUserAttention(page, dto.getUserId());
     }
 
     /**
@@ -89,7 +92,7 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId, Long id) {
+    public Integer delById(Integer userId, Integer id) {
         QueryWrapper<UserAttention> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("id", id);
@@ -101,7 +104,7 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
      * 根据id数据
      */
     @Override
-    public UserAttention getInfo(Integer userId, Long id) {
+    public UserAttention getInfo(Integer userId, Integer id) {
         QueryWrapper<UserAttention> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("id", id);

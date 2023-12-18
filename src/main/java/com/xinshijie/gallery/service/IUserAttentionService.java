@@ -3,7 +3,10 @@ package com.xinshijie.gallery.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserAttention;
+import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
+import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
 
 import java.util.List;
@@ -28,7 +31,7 @@ public interface IUserAttentionService extends IService<UserAttention> {
      * 分页查询。普通方法
      * 查询图片信息表
      */
-    Page<UserAttentionVo> selectPageUserAttention(UserAttentionDto dto);
+    Page<SystemUserIntroVo> selectPageUserAttention(FindUserAttentionDto dto);
 
     /**
      * 分页查询信息表
@@ -43,10 +46,10 @@ public interface IUserAttentionService extends IService<UserAttention> {
     /**
      * 删除数据
      */
-    Integer delById(Integer userId, Long id);
+    Integer delById(Integer userId, Integer id);
 
     /**
      * 根据id数据
      */
-    UserAttention getInfo(Integer userId, Long id);
+    UserAttention getInfo(Integer userId, Integer id);
 }

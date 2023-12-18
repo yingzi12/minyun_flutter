@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.domain.UserAttention;
+import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
+import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,7 +35,7 @@ public interface UserAttentionMapper extends BaseMapper<UserAttention> {
      * 普通方法
      * 分页查询讨论主题表
      */
-    Page<UserAttentionVo> selectPageUserAttention(Page<UserAttentionVo> page, @Param("dto") UserAttentionDto dto);
+    Page<SystemUserIntroVo> selectPageUserAttention(Page<SystemUserVo> page, @Param("userId") Integer userId);
 
     /**
      * 分页查询讨论主题表

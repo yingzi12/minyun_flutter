@@ -27,12 +27,12 @@ public class UserAttention implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private Long userId;
+    private Integer userId;
     private String userName;
     /**
      * 创建时间
      */
     private LocalDateTime createTime;
     private String attUserName;
-    private Long attUserId;
+    private Integer attUserId;
 }

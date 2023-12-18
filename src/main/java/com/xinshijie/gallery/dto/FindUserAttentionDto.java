@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(name = "UserAttentionDto", description = "用户关注的用户 ")
-public class UserAttentionDto implements Serializable {
+public class FindUserAttentionDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
