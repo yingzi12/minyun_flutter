@@ -4,7 +4,7 @@
 
     <sql id="selectUserImage">
         select id,
-               url,
+               img_url,
                is_free,
                create_time,
                user_id,

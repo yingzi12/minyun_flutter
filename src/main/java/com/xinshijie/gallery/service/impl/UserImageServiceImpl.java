@@ -185,18 +185,18 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                 qw.eq("aid", aid);
                 UserImage value = mapper.selectOne(qw);
                 if (value != null) {
-                    return value.getUrl();
+                    return value.getImgUrl();
                 } else {
                     UserImage userImage = new UserImage();
                     userImage.setUserId(userId);
                     userImage.setCreateTime(LocalDateTime.now());
                     userImage.setAid(aid);
-                    userImage.setUrl(allImage.getSource_url());
+                    userImage.setImgUrl(allImage.getSource_url());
                     userImage.setMd5(md5);
                     userImage.setIsFree(isFree);
                     mapper.insert(userImage);
                     userAlbumService.updateCountImage(aid);
-                    return userImage.getUrl();
+                    return userImage.getImgUrl();
                 }
             } else {
                 allImage = new AllImage();
@@ -212,12 +212,12 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                 userImage.setUserId(userId);
                 userImage.setCreateTime(LocalDateTime.now());
                 userImage.setAid(aid);
-                userImage.setUrl(imgUrl);
+                userImage.setImgUrl(imgUrl);
                 userImage.setMd5(md5);
                 userImage.setIsFree(isFree);
                 mapper.insert(userImage);
                 userAlbumService.updateCountImage(aid);
-                return userImage.getUrl();
+                return userImage.getImgUrl();
             }
         } catch (Exception ex) {
             ex.printStackTrace();

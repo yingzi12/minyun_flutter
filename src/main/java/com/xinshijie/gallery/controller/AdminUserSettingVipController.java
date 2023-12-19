@@ -38,7 +38,6 @@ public class AdminUserSettingVipController extends BaseController {
      *
      * @return
      */
-
     @PostMapping("/add")
     public Result<UserSettingVip> add(@RequestBody UserSettingVipDto dto) {
         dto.setUserId(getUserId());
@@ -52,7 +51,6 @@ public class AdminUserSettingVipController extends BaseController {
      *
      * @return
      */
-
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
         Integer vo = userSettingVipService.delById(getUserId(), id);

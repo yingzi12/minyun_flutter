@@ -52,4 +52,7 @@ public interface IUserAttentionService extends IService<UserAttention> {
      * 根据id数据
      */
     UserAttention getInfo(Integer userId, Integer id);
+
+    UserAttention getInfoByAtten(Integer userId, Integer attUserId);
+
 }

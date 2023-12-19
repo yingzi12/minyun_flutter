@@ -68,6 +68,8 @@ public class UserAlbumController extends BaseController {
 
         UserAlbumVo vo = new UserAlbumVo();
         BeanUtils.copyProperties(userAlbum, vo);
+        vo.setImageList(imageList);
+        vo.setVideoList(videoList);
         vo.setImageCount(imageCount.intValue());
         vo.setVideoCount(videoCount.intValue());
         UserCollection userCollection= userCollectionService.getInfo(userId,userAlbum.getId(),2);
@@ -89,8 +91,7 @@ public class UserAlbumController extends BaseController {
             }
         }
 
-        vo.setImageList(imageList);
-        vo.setVideoList(videoList);
+
         return Result.success(vo);
     }
 

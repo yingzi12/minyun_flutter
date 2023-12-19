@@ -26,7 +26,7 @@ public class UserImageVo implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
-    private String url;
+    private String imgUrl;
 
 
     /**

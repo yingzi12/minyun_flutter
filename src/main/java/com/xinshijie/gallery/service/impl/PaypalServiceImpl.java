@@ -205,6 +205,9 @@ public class PaypalServiceImpl implements IPaypalService {
         //获取折扣价格
         if(systemUser.getVip()!=null && systemUser.getVipExpirationTime() != null && systemUser.getVip()>0) {
             Integer vip = systemUser.getVip();
+            //  dateString = "2023-12-18 15:30:45"
+            //  LocalDateTime.now()    "2023-12-19 15:30:45"  isAfter = 大于
+            //  dateTime.isAfter(LocalDateTime.now())  false
             //判断是否过期
             if(systemUser.getVipExpirationTime().isAfter(LocalDateTime.now())){
                 discount=VipPriceEnum.getDiscountByCode(vip);

@@ -27,7 +27,7 @@ public class UserImage implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private String url;
+    private String imgUrl;
     /**
      * 是否免费
      */

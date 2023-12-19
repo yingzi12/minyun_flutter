@@ -45,6 +45,7 @@ public class SystemUserIntroVo implements Serializable {
     private Integer countAttention;
     private Double income;
     private Double withdraw;
+    private Integer isAttention;
 
 
 }

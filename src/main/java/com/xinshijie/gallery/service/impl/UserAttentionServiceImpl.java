@@ -112,4 +112,12 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
         return mapper.selectOne(queryWrapper);
     }
 
+    @Override
+    public     UserAttention getInfoByAtten(Integer userId, Integer attUserId){
+        QueryWrapper<UserAttention> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("att_user_Id", attUserId);
+        return mapper.selectOne(queryWrapper);
+    }
+
 }

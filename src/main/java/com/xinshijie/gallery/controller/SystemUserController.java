@@ -9,8 +9,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
+import com.xinshijie.gallery.domain.UserAttention;
 import com.xinshijie.gallery.dto.*;
 import com.xinshijie.gallery.service.ISystemUserService;
+import com.xinshijie.gallery.service.IUserAttentionService;
 import com.xinshijie.gallery.util.RequestContextUtil;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
@@ -21,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 
 /**
@@ -48,6 +52,8 @@ public class SystemUserController extends BaseController {
 
     @Autowired
     private ISystemUserService systemUserService;
+    @Autowired
+    private IUserAttentionService attentionService;
     @Autowired
     private RedisCache redisCache;
 
@@ -194,8 +200,18 @@ public class SystemUserController extends BaseController {
     }
 
     @GetMapping("info")
-    public Result<SystemUser> getInfo(@RequestParam("userId")Integer userId) {
-        SystemUser systemUserVo = systemUserService.info(userId);
-        return Result.success(systemUserVo);
+    public Result<SystemUserIntroVo> getInfo(@RequestParam("userId")Integer userId) {
+        Integer loUserId=getUserIdNoLogin();
+        SystemUser systemUser = systemUserService.info(userId);
+        SystemUserIntroVo introVo=new SystemUserIntroVo();
+        BeanUtils.copyProperties(systemUser,introVo);
+        introVo.setIsAttention(2);
+        if(userId!=null) {
+            UserAttention attention = attentionService.getInfoByAtten(loUserId,userId);
+            if(attention != null){
+                introVo.setIsAttention(1);
+            }
+        }
+        return Result.success(introVo);
     }
 }

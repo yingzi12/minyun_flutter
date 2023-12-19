@@ -66,8 +66,8 @@ public class UserWithdrawServiceImpl extends ServiceImpl<UserWithdrawMapper, Use
 
         UserWithdraw value = new UserWithdraw();
         BeanUtils.copyProperties(dto, value);
-        Double amountReceived= paypalService.getProduct(dto.getAmount() ,0.3);
-        if(amountReceived != dto.getAmountReceived()){
+        Double amountReceived= paypalService.getProduct(dto.getAmount() ,0.7);
+        if(!amountReceived.equals(dto.getAmountReceived())){
             throw new ServiceException(ResultCodeEnum.WITHDRAW_ERROR);
         }
         Integer updateCount=systemUserService.updateWithdraw(dto.getUserId(), dto.getAmount());
