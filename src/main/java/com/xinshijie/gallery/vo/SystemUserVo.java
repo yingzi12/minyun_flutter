@@ -49,6 +49,7 @@ public class SystemUserVo implements Serializable {
     private Integer countAttention;
     private Double income;
     private Double withdraw;
+    private Double amountReceived;
 
 
 }

@@ -74,6 +74,10 @@ public class UserWithdrawServiceImpl extends ServiceImpl<UserWithdrawMapper, Use
         if(updateCount==1) {
             value.setStatus(WithdrawStatuEnum.WAIT.getCode());
             value.setWithdrawType(WithdrawTypeEnum.PAYPAY.getCode());
+            value.setAmountReceived(amountReceived);
+            value.setUserId(dto.getUserId());
+            value.setUserName(dto.getUserName());
+
             mapper.insert(value);
         }else{
             throw new ServiceException(ResultCodeEnum.WITHDRAW_ERROR);

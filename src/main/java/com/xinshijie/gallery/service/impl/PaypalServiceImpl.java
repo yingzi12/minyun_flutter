@@ -386,6 +386,6 @@ public class PaypalServiceImpl implements IPaypalService {
 
     @Override
     public void updateIncome(Integer userId, Double amount) {
-         systemUserService.updateWithdraw(userId,amount);
+         systemUserService.updateIncome(userId,amount);
     }
 }

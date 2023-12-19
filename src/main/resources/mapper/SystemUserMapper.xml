@@ -95,7 +95,7 @@
 <!--        where id = #{userId}-->
 <!--    </update>-->
     <update id="updateWithdraw" >
-        update system_user set withdraw=withdraw+#{withdraw}
-        where id = #{userId}  and income >= withdraw+#{withdraw};
+        update system_user set withdraw= withdraw + #{withdraw}
+        where id = #{userId}  and income >= withdraw + #{withdraw};
     </update>
 </mapper>

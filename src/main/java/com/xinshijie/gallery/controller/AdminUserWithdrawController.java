@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
+
 
 /**
  * <p>
@@ -37,6 +40,9 @@ public class AdminUserWithdrawController extends BaseController {
     */
     @PostMapping("/add")
     public Result<UserWithdraw> add(@RequestBody  UserWithdrawDto dto){
+        dto.setUserId(getUserId());
+        dto.setUserName(getUserName());
+
         UserWithdraw vo = userWithdrawService.add(dto);
         return Result.success(vo);
     }
