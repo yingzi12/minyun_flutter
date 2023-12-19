@@ -19,6 +19,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 
 /**
  * <p>
@@ -77,7 +79,7 @@ public class UserWithdrawServiceImpl extends ServiceImpl<UserWithdrawMapper, Use
             value.setAmountReceived(amountReceived);
             value.setUserId(dto.getUserId());
             value.setUserName(dto.getUserName());
-
+            value.setCreateTime(LocalDateTime.now());
             mapper.insert(value);
         }else{
             throw new ServiceException(ResultCodeEnum.WITHDRAW_ERROR);
