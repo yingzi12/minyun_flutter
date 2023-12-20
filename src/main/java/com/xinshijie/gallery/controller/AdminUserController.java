@@ -12,6 +12,7 @@ import com.xinshijie.gallery.dto.UserPasswordDto;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.RequestContextUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,11 @@ public class AdminUserController extends BaseController {
     @Autowired
     private RedisCache redisCache;
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public Result<String> logout() {
         try {
             Integer userId = getUserId();
-            redisTemplate.delete(userId);
+            redisTemplate.delete(CacheConstants.LOGIN_TOKEN_KEY + userId);
         } catch (Exception ex) {
             log.info("退出异常:{}", ex);
         }

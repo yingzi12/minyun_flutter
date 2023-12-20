@@ -31,4 +31,7 @@ public class PayAlbumDto {
 
     private Integer incomeUserId;
 
+    private Integer userId;
+
+
 }

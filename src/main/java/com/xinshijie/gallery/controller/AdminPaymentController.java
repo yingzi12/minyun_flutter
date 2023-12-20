@@ -59,7 +59,9 @@ public class AdminPaymentController {
     @PostMapping("/create")
     public Result<PayOrderVo> createPayment(@Valid  @RequestBody PayAlbumDto albumDto) {
         log.info("-----createPayment----", JSONObject.toJSONString(albumDto));
-        PaymentOrder paymentOrderDto = paymentOrderService.selectWaitPay(getUserId(),albumDto.getKind(),albumDto.getProductId());
+        Integer userId=getUserId();
+        PaymentOrder paymentOrderDto = paymentOrderService.selectWaitPay(userId,albumDto.getKind(),albumDto.getProductId());
+        albumDto.setUserId(userId);
         Double amount=0.0;
         String requstId = IdUtil.fastSimpleUUID();
         if(paymentOrderDto==null){
@@ -129,9 +131,11 @@ public class AdminPaymentController {
                 paymentOrder.setStatus(PaymentStatuEnum.DONE.getCode());
                 paymentOrder.setPayTime(LocalDateTime.now());
                 paymentOrderService.updateById(paymentOrder);
+                payPalService.update(paymentOrder);
                 if(paymentOrder.getIncomeUserId()!=null) {
                     payPalService.updateIncome(paymentOrder.getIncomeUserId(), paymentOrder.getAmount());
                 }
+
             }
             return Result.success(transactionVo);
         }

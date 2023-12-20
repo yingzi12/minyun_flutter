@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.vo.UserAlbumVo;
@@ -50,6 +51,13 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
      * 删除数据
      */
     Integer delById(Integer userId, Integer id);
+
+    Integer updateCountSee(@Param("id") Integer id, @Param("updateDate") String updateDate);
+
+
+    Album previousChapter(@Param("id") Integer id);
+
+    Album nextChapter(@Param("id") Integer id);
 
     /**
      * 根据id数据

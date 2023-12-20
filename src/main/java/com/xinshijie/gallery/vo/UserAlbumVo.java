@@ -2,6 +2,7 @@ package com.xinshijie.gallery.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -156,4 +157,6 @@ public class UserAlbumVo implements Serializable {
 
     private Integer isCollection;
 
+    private Album pre;
+    private Album next;
 }

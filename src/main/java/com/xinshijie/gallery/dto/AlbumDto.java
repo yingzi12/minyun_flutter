@@ -11,7 +11,7 @@ import java.io.Serializable;
 @TableName(value = "album")
 @Data
 public class AlbumDto implements Serializable {
-    private Long id;
+    private Integer id;
     private String title;
     private Integer pageSize;
     private Integer offset;

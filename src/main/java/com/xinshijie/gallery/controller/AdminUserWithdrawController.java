@@ -74,8 +74,9 @@ public class AdminUserWithdrawController extends BaseController {
     * 世界年表 查询
     * @return
     */
-    @PostMapping("/list")
+    @GetMapping("/list")
     public Result<List<UserWithdraw>> list(@RequestBody UserWithdrawDto findDto){
+        findDto.setUserId(getUserId());
         IPage<UserWithdraw> vo = userWithdrawService.getPageUserWithdraw(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }

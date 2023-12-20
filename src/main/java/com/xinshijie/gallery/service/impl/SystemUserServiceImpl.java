@@ -83,7 +83,6 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         // 用户验证
         LoginUserVo ajax = new LoginUserVo();
         ajax.setCode(200);
-        ajax.setCode(200);
         ajax.setToken(getToken(systemUser));
         ajax.setUser(systemUser);
         ajax.setAccessToken(ajax.getToken());

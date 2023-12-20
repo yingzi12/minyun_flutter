@@ -168,9 +168,31 @@
           and user_id = #{userId}
     </delete>
 
+    <update id="updateCountSee">
+        update user_album
+        set count_see=count_see + 1,
+            update_date= #{updateDate}
+        where id = #{id}
+    </update>
+
     <select id="getInfo" resultType="com.xinshijie.gallery.vo.UserAlbumVo">
         <include refid="selectUserAlbum"/>
         where id = #{id} and user_id= #{userId}
+    </select>
+
+    <select id="previousChapter" resultType="com.xinshijie.gallery.dao.Album">
+        SELECT *
+        FROM user_album a
+        WHERE a.id &lt; #{id} and  status=1
+        ORDER BY id desc
+        LIMIT 1
+    </select>
+    <select id="nextChapter" resultType="com.xinshijie.gallery.dao.Album">
+        SELECT *
+        FROM user_album a
+        WHERE a.id > #{id} and  status=1
+        ORDER BY id
+        LIMIT 1 OFFSET 1
     </select>
 
     <update id="updateCountImage">

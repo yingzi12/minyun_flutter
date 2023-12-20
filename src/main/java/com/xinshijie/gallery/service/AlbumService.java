@@ -18,13 +18,13 @@ public interface AlbumService extends IService<Album> {
 
     Integer count(AlbumDto dto);
 
-    AlbumVo getInfo(Long id);
+    AlbumVo getInfo(Integer id);
 
     Album getInfoBytitle(String title);
 
     void add(Album album);
 
-    void updateError(Long id);
+    void updateError(Integer id);
 
     List<Album> findRandomStories(Integer pageSize);
 

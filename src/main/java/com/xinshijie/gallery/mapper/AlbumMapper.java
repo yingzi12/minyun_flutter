@@ -22,17 +22,17 @@ public interface AlbumMapper extends BaseMapper<Album> {
 
     Integer add(@Param("dto") Album dto);
 
-    Album getInfo(@Param("id") Long id);
+    Album getInfo(@Param("id") Integer id);
 
     Album getInfoByTitle(@Param("title") String title);
 
-    Integer updateError(@Param("id") Long id);
+    Integer updateError(@Param("id") Integer id);
 
-    Integer updateCountSee(@Param("id") Long id, @Param("updateTime") String updateTime);
+    Integer updateCountSee(@Param("id") Integer id, @Param("updateTime") String updateTime);
 
-    Album previousChapter(@Param("id") Long id);
+    Album previousChapter(@Param("id") Integer id);
 
-    Album nextChapter(@Param("id") Long id);
+    Album nextChapter(@Param("id") Integer id);
 
     List<Album> findRandomStories(@Param("randomId") Integer randomId, @Param("pageSize") Integer pageSize);
 

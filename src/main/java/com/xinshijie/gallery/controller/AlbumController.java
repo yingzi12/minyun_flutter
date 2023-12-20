@@ -2,15 +2,19 @@ package com.xinshijie.gallery.controller;
 
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.service.AlbumService;
 import com.xinshijie.gallery.service.IReptileImageService;
+import com.xinshijie.gallery.service.IUserCollectionService;
 import com.xinshijie.gallery.vo.AlbumVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 @CrossOrigin
 @RestController
@@ -21,7 +25,8 @@ public class AlbumController {
 
     @Autowired
     private IReptileImageService reptileImageService;
-
+    @Autowired
+    private IUserCollectionService userCollectionService;
     @GetMapping("/list")
     public Result<List<Album>> list(AlbumDto dto) {
         if (dto.getPageNum() == null) {
@@ -69,16 +74,22 @@ public class AlbumController {
     }
 
     @GetMapping("/info")
-    public Result<AlbumVo> info(@RequestParam("id") Long id) {
+    public Result<AlbumVo> info(@RequestParam("id") Integer id) {
+        Integer userId = getUserIdNoLogin();
+
         AlbumVo albumVo = albumService.getInfo(id);
-//        Album album=new Album();
-//        BeanUtils.copyProperties(albumVo,album);
-//        localImageService.saveLocalAlbum(album);
+        albumVo.setIsCollection(2);
+        if(userId!=null) {
+            UserCollection userCollection = userCollectionService.getInfo(userId, id, 1);
+            if(userCollection!=null){
+                albumVo.setIsCollection(1);
+            }
+        }
         return Result.success(albumVo);
     }
 
     @GetMapping("/error")
-    public Result<String> error(@RequestParam("id") Long id) {
+    public Result<String> error(@RequestParam("id") Integer id) {
         albumService.updateError(id);
         return Result.success("");
     }

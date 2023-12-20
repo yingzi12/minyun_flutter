@@ -36,7 +36,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     }
 
     @Override
-    public AlbumVo getInfo(Long id) {
+    public AlbumVo getInfo(Integer id) {
         AlbumVo albumVo = new AlbumVo();
         albumMapper.updateCountSee(id, LocalDate.now().toString());
         Album pre = albumMapper.previousChapter(id);
@@ -63,14 +63,14 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     }
 
     @Override
-    public void updateError(Long id) {
+    public void updateError(Integer id) {
         albumMapper.updateError(id);
     }
 
     @Override
     public List<Album> findRandomStories(Integer pageSize) {
-        Integer maxId = albumMapper.findMaxId(); // 你需要实现这个
-        Integer minId = albumMapper.findMinId(); // 还有这个
+        Integer maxId = albumMapper.findMaxId(); //
+        Integer minId = albumMapper.findMinId(); //
         Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId - 30);
         return albumMapper.findRandomStories(randomId, pageSize);
     }

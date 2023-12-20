@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserBuyAlbum;
@@ -19,13 +20,16 @@ import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -110,6 +114,9 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         UserAlbum value = new UserAlbum();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
         value.setCreateTime(LocalDateTime.now());
+        value.setCountBuy(0);
+        value.setCountSee(0);
+        value.setCountCollection(0);
         value.setStatus(AlbumStatuEnum.NORMAL.getCode());
         setPrice(value, value.getCharge(), value.getPrice(), value.getVipPrice());
         mapper.insert(value);
@@ -154,9 +161,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     @Override
     public UserAlbum getInfo(Integer userId, Integer id) {
         UserAlbum userAlbum = mapper.selectById(id);
-        if (userAlbum == null) {
-            throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
-        }
+
         return userAlbum;
     }
 
@@ -218,6 +223,16 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         }
         userAlbum.setIsSee(false);
         return false;
+    }
+
+    @Override
+    public Album previousChapter(Integer id) {
+        return mapper.previousChapter(id);
+    }
+
+    @Override
+    public Album nextChapter(Integer id) {
+        return mapper.nextChapter(id);
     }
 
 
@@ -417,4 +432,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     public Integer updateCountVideo(Integer id) {
         return mapper.updateCountVideo(id);
     }
+
+    @Override
+    public Integer updateCountSee(Integer id, String updateDate) {
+        return mapper.updateCountSee(id,updateDate);
+    }
+
 }

@@ -8,6 +8,7 @@ import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
+import com.xinshijie.gallery.vo.UserAlbumVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

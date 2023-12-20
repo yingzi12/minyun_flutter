@@ -48,4 +48,7 @@ public class AlbumVo {
 
     private Album pre;
     private Album next;
+
+    private Integer isCollection;
+
 }
