@@ -49,7 +49,7 @@ public class AlbumController {
             pageSize = 8;
         }
         if (pageSize < 10) {
-            pageSize = 9;
+            pageSize = 8;
         }
         List<Album> list = albumService.findRandomStories(pageSize);
 
@@ -106,19 +106,5 @@ public class AlbumController {
         return Result.success("ss");
     }
 
-//    @GetMapping("/updateThread")
-//    public Result<String> updateThread() {
-//        localImageService.updateThread();
-//        return Result.success("ss");
-//    }
-
-//    @GetMapping("/info2")
-//    public Result<String> info2(@RequestParam("id")Long id) {
-//        AlbumVo albumVo = albumService.getInfo(id);
-//        Album album=new Album();
-//        BeanUtils.copyProperties(albumVo,album);
-//        localImageService.saveLocalAlbum(album);
-//        return Result.success("ss");
-//    }
 
 }
