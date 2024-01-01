@@ -60,7 +60,7 @@
         <include refid="selectUserAlbum"/>
         <where>
             <if test="dto.id !=null ">and id= #{dto.id}</if>
-            <if test="dto.title !=null ">and title= #{dto.title}</if>
+            <if test="dto.title !=null and dto.title !='' ">and title= #{dto.title}</if>
             <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
             <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
             <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
@@ -206,4 +206,23 @@
         SET number_video = (SELECT COUNT(*) FROM user_video where aid = #{id})
         where id = #{id}
     </update>
+
+    <select id="findRandomStories" resultType="com.xinshijie.gallery.domain.UserAlbum">
+        SELECT *
+        FROM user_album s
+        WHERE s.id >= #{randomId} and  status=1
+        ORDER BY s.id ASC
+        limit #{pageSize}
+    </select>
+    <select id="findMaxId" resultType="Integer">
+        SELECT max(id)
+        FROM user_album s
+        where   status=1
+    </select>
+    <select id="findMinId" resultType="Integer">
+        SELECT min(id)
+        FROM user_album s
+        where   status=1
+
+    </select>
 </mapper>

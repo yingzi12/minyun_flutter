@@ -68,5 +68,11 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
 
     Integer updateCountVideo(Integer id);
 
+    List<UserAlbum> findRandomStories(@Param("randomId") Integer randomId, @Param("pageSize") Integer pageSize);
+
+    Integer findMaxId();
+
+    Integer findMinId();
+
 }
 

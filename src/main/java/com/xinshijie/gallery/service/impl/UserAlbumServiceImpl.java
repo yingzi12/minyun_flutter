@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * <p>
@@ -85,6 +86,22 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         page.setCurrent(dto.getPageNum());
 
         return mapper.selectPageUserAlbum(page, dto);
+    }
+
+    @Override
+    public List<UserAlbum> findRandomStories(Integer pageSize) {
+        Integer maxId = mapper.findMaxId(); //
+        Integer minId = mapper.findMinId();
+        QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
+        qw.eq("status",AlbumStatuEnum.NORMAL.getCode());
+        Long count=mapper.selectCount(qw);//
+        if(30<count) {
+            Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId - 30);
+            return mapper.findRandomStories(randomId, pageSize);
+        }else{
+            Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId);
+            return mapper.findRandomStories(randomId, pageSize);
+        }
     }
 
     /**

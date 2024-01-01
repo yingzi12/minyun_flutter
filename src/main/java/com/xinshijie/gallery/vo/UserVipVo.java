@@ -25,8 +25,7 @@ public class UserVipVo implements Serializable {
 
     private Integer id;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
+        private Integer userId;
 
     private String userName;
 

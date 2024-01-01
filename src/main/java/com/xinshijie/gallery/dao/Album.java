@@ -48,7 +48,7 @@ public class Album implements Serializable {
     private String imgUrl;
     private String size;
     private Integer numberPhotos;
-    private String numberVideo;
+    private Integer numberVideo;
     private String intro;
     //1 yes 0 No
     private Integer countError;

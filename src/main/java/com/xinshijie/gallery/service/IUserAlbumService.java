@@ -34,6 +34,9 @@ public interface IUserAlbumService extends IService<UserAlbum> {
      */
     IPage<UserAlbum> selectPageUserAlbum(UserAlbumDto dto);
 
+    List<UserAlbum> findRandomStories(Integer pageSize);
+
+
     /**
      * 分页查询信息表
      */

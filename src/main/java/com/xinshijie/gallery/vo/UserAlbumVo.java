@@ -51,7 +51,6 @@ public class UserAlbumVo implements Serializable {
      * 用户id
      */
     @Schema(description = "用户id ")
-    @JsonSerialize(using = ToStringSerializer.class)
     private Integer userId;
 
     /**

@@ -39,8 +39,8 @@ public class AlbumVo {
     private String createTime;
     private String imgUrl;
     private String size;
-    private String numberPhotos;
-    private String numberVideo;
+    private Integer numberPhotos;
+    private Integer numberVideo;
     private String intro;
     //1 yes 0 No
     private Integer countError;

@@ -10,6 +10,7 @@ import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
+import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.service.IUserAlbumService;
@@ -21,12 +22,10 @@ import com.xinshijie.gallery.vo.UserAlbumVo;
 import com.xinshijie.gallery.vo.UserCollectionVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -132,4 +131,25 @@ public class UserAlbumController extends BaseController {
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
+
+    @GetMapping("/random")
+    public Result<List<UserAlbum>> random(@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (pageSize == null) {
+            pageSize = 8;
+        }
+        if (pageSize < 10) {
+            pageSize = 8;
+        }
+        List<UserAlbum> list = userAlbumService.findRandomStories(pageSize);
+
+        return Result.success(list);
+    }
+
+    @GetMapping("/listSee")
+    public Result<List<UserAlbum>> listSee(UserAlbumDto findDto) {
+        findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
+        findDto.setOrder("count_see");
+        IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
 }
