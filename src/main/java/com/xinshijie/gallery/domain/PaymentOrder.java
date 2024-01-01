@@ -83,5 +83,6 @@ public class PaymentOrder implements Serializable {
      * 被购买用户的用户id
      */
     private Integer incomeUserId;
+    private Double paidAmount;
 
 }

@@ -104,12 +104,11 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         // 用户验证
         LoginUserVo ajax = new LoginUserVo();
         ajax.setCode(200);
-        ajax.setCode(200);
         ajax.setToken(getToken(systemUser));
         ajax.setUser(systemUser);
         ajax.setAccessToken(ajax.getToken());
         ajax.setRefreshToken(ajax.getToken());
-        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + ajax.getUser().getId(), ajax.getToken(), 1, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_MODILE_KEY + ajax.getUser().getId(), ajax.getToken(), 30, TimeUnit.DAYS);
         // 生成token
         return ajax;
     }

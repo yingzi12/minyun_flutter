@@ -14,7 +14,19 @@ public interface IPaypalService {
 
     PayPalTransactionVo checkoutOrdersCapture(String token, String orderId, String requestId);
 
-    Double getAmount(PayAlbumDto albumDto);
+    /**
+     * 获取实付金额
+     * @param albumDto
+     * @return
+     */
+    Double getPaidAmount(PayAlbumDto albumDto);
+
+    /**
+     * 获取订单金额。未优惠前的
+     * @param albumDto
+     * @return
+     */
+    Double getOrderAmount(PayAlbumDto albumDto);
 
     void update(PaymentOrder paymentOrder);
 

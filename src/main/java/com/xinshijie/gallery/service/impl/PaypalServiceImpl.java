@@ -192,7 +192,7 @@ public class PaypalServiceImpl implements IPaypalService {
 
     }
 
-    public Double getAmount(PayAlbumDto payDao){
+    public Double getPaidAmount(PayAlbumDto payDao){
         /**
          * 物品类别 1 网站会员，2 用户会员 3 网站消费 4.用户图集
          */
@@ -272,6 +272,37 @@ public class PaypalServiceImpl implements IPaypalService {
                     Double amount = getProduct(discount, userAlbum.getPrice());
                     return amount;
                 }
+            }
+        }
+        return 0.0;
+    }
+
+    @Override
+    public Double getOrderAmount(PayAlbumDto payDao) {
+        if(payDao.getKind() == 1 ) {
+            Double amount = VipPriceEnum.getPriceByCode(payDao.getProductId());
+            return amount;
+        }
+        if(payDao.getKind() == 2 ) {
+            UserSettingVip userVip = settingVipService.getById(payDao.getProductId());
+            if (userVip ==null) {
+                throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
+            }else{
+                return userVip.getPrice();
+            }
+        }
+        if(payDao.getKind() == 3 ) {
+
+        }
+        if(payDao.getKind() == 4 ) {
+            UserAlbum userAlbum = userAlbumService.getById(payDao.getProductId());
+            if (userAlbum ==null) {
+                throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
+            }else{
+                if(userAlbum.getCharge()==AlbumChargeEnum.VIP_EXCLUSIVE.getCode()){
+                        return userAlbum.getVipPrice();
+                }
+                return userAlbum.getPrice();
             }
         }
         return 0.0;

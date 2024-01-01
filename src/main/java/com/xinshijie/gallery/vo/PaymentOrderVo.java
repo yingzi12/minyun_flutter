@@ -105,5 +105,6 @@ public class PaymentOrderVo implements Serializable {
     private String payType;
     private Integer aid;
     private Integer vid;
+    private Double paidAmount;
 
 }
