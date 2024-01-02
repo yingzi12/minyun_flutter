@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -45,8 +46,10 @@ public class SystemUserDto implements Serializable {
     @Size(max = 20, message = " 超出最大长度 20")
     private String salt;
 
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     @Size(max = 100, message = " 超出最大长度 100")

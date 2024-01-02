@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +36,7 @@ public class UserVideoVo implements Serializable {
     @Schema(description = "是否免费 ")
     private Integer isFree;
 
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     @JsonSerialize(using = ToStringSerializer.class)

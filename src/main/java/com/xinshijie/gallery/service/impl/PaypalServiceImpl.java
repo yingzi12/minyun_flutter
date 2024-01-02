@@ -299,6 +299,14 @@ public class PaypalServiceImpl implements IPaypalService {
             if (userAlbum ==null) {
                 throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
             }else{
+                if(userAlbum.getCharge()==AlbumChargeEnum.VIP_DISCOUNT.getCode()){
+                    UserVip userVip=userVipService.getInfo(getUserId(),userAlbum.getUserId());
+                    if(userVip==null){
+                        return userAlbum.getPrice();
+                    }else {
+                        return userAlbum.getVipPrice();
+                    }
+                }
                 if(userAlbum.getCharge()==AlbumChargeEnum.VIP_EXCLUSIVE.getCode()){
                         return userAlbum.getVipPrice();
                 }
@@ -334,31 +342,42 @@ public class PaypalServiceImpl implements IPaypalService {
             systemUser.setId(paymentOrder.getProductId());
             LocalDateTime now=LocalDateTime.now();
             if(systemUser.getVipExpirationTime()==null ||now.isAfter(systemUser.getVipExpirationTime())) {
+                systemUser.setVip(0);
                 now=LocalDateTime.now();
             }else{
                 now=systemUser.getVipExpirationTime();
             }
             if(VipPriceEnum.MONTH.getCode().equals(paymentOrder.getProductId())){
-                systemUser.setVip(VipPriceEnum.MONTH.getCode());
+                if(systemUser.getVip()<VipPriceEnum.MONTH.getCode()) {
+                    systemUser.setVip(VipPriceEnum.MONTH.getCode());
+                }
                 systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 1, ChronoUnit.MONTHS));
             }
             if(VipPriceEnum.QUARTER.getCode().equals(paymentOrder.getProductId())){
-                systemUser.setVip(VipPriceEnum.QUARTER.getCode());
+                if(systemUser.getVip()<VipPriceEnum.QUARTER.getCode()) {
+                    systemUser.setVip(VipPriceEnum.QUARTER.getCode());
+                }
                 systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 3, ChronoUnit.MONTHS));
 
             }
             if(VipPriceEnum.HALF_YEAR.getCode().equals(paymentOrder.getProductId())){
-                systemUser.setVip(VipPriceEnum.HALF_YEAR.getCode());
+                if(systemUser.getVip()<VipPriceEnum.HALF_YEAR.getCode()) {
+                    systemUser.setVip(VipPriceEnum.HALF_YEAR.getCode());
+                }
                 systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 6, ChronoUnit.MONTHS));
 
             }
             if(VipPriceEnum.YEAR.getCode().equals(paymentOrder.getProductId())){
-                systemUser.setVip(VipPriceEnum.YEAR.getCode());
+                if(systemUser.getVip()<VipPriceEnum.YEAR.getCode()) {
+                    systemUser.setVip(VipPriceEnum.YEAR.getCode());
+                }
                 systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 1, ChronoUnit.YEARS));
 
             }
             if(VipPriceEnum.FOREVER.getCode().equals(paymentOrder.getProductId())){
-                systemUser.setVip(VipPriceEnum.FOREVER.getCode());
+                if(systemUser.getVip()<VipPriceEnum.FOREVER.getCode()) {
+                    systemUser.setVip(VipPriceEnum.FOREVER.getCode());
+                }
                 systemUser.setVipExpirationTime( LocalDateTimeUtil.offset(now, 99, ChronoUnit.YEARS));
             }
             systemUserService.updateById(systemUser);
@@ -367,13 +386,13 @@ public class PaypalServiceImpl implements IPaypalService {
             UserSettingVip settingVip=settingVipService.getById(paymentOrder.getProductId());
             UserVip userVip=userVipService.getInfo(paymentOrder.getUserId(),settingVip.getUserId());
             userVip.setTitle(settingVip.getTitle());
-            userVip.setRanks(settingVip.getRank());
             userVip.setVid(paymentOrder.getProductId());
             userVip.setUserId(getUserId());
             userVip.setUserName(getUserName());
             userVip.setVipUserId(settingVip.getUserId());
             userVip.setVipUserName(settingVip.getUserName());
             if(userVip==null){
+                userVip.setRanks(settingVip.getRank());
                 LocalDateTime now=LocalDateTime.now();
                 userVip.setCreateTime(LocalDateTime.now());
                 setTime(now,userVip,settingVip);
@@ -381,10 +400,13 @@ public class PaypalServiceImpl implements IPaypalService {
             }else {
                 LocalDateTime now=LocalDateTime.now();
                 userVip.setUpdateTime(LocalDateTime.now());
-
                 if(userVip.getExpirationTime()==null ||now.isAfter(userVip.getExpirationTime())) {
+                    userVip.setRanks(-1);
                     now=LocalDateTime.now();
                 }else{
+                    if(userVip.getRanks()<settingVip.getRank()) {
+                        userVip.setRanks(settingVip.getRank());
+                    }
                     now=userVip.getExpirationTime();
                 }
                 setTime(now,userVip,settingVip);

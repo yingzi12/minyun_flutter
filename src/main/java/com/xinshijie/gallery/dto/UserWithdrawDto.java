@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -33,12 +34,14 @@ public class UserWithdrawDto implements Serializable {
      * 创建时间
      */
     @Schema( description = "创建时间 ")
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
      * 提现时间
      */
     @Schema( description = "提现时间 ")
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     /**

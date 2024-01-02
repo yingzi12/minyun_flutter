@@ -3,6 +3,7 @@ package com.xinshijie.gallery.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +30,7 @@ public class PaymentOrder implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
-     * 金额
+     * 金额.实际支付的，优惠之后的
      */
     private Double amount;
     private String payId;
@@ -44,6 +45,7 @@ public class PaymentOrder implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     /**
      * 支付时间
@@ -83,6 +85,9 @@ public class PaymentOrder implements Serializable {
      * 被购买用户的用户id
      */
     private Integer incomeUserId;
+    /**
+     * 需要支付的，是优惠前的，也是网站需要给用户结算的
+     */
     private Double paidAmount;
 
 }

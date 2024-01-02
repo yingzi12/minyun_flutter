@@ -22,7 +22,7 @@ public interface IPaypalService {
     Double getPaidAmount(PayAlbumDto albumDto);
 
     /**
-     * 获取订单金额。未优惠前的
+     * 获取订单金额。未优惠前的.也是用户收集需要支付，网站需要支付的
      * @param albumDto
      * @return
      */

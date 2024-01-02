@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class ReptileRule implements Serializable {
     private Integer id;
     private Integer isHead;
     private Integer isUpdate;
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     /**
      * 开始时间

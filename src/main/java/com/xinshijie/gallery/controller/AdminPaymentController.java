@@ -34,6 +34,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserName;
 @Slf4j
 @Validated
 @RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.OPTIONS, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/admin/payments")
 public class AdminPaymentController {
 
@@ -56,6 +57,7 @@ public class AdminPaymentController {
         return map;
     }
 
+    @CrossOrigin
     @PostMapping("/create")
     public Result<PayOrderVo> createPayment(@Valid  @RequestBody PayAlbumDto albumDto) {
         log.info("-----createPayment----", JSONObject.toJSONString(albumDto));
@@ -112,6 +114,7 @@ public class AdminPaymentController {
                 paymentOrder.setRequestId(requstId);
                 paymentOrder.setIncomeUserId(albumDto.getIncomeUserId());
                 paymentOrder.setExpiredTime( LocalDateTimeUtil.offset(LocalDateTime.now(), 3, ChronoUnit.HOURS));
+                //保存优惠前的金额
                 Double orderAmount= payPalService.getOrderAmount(albumDto);
                 paymentOrder.setPaidAmount(orderAmount);
                 paymentOrderService.save(paymentOrder);
@@ -135,7 +138,7 @@ public class AdminPaymentController {
                 paymentOrderService.updateById(paymentOrder);
                 payPalService.update(paymentOrder);
                 if(paymentOrder.getIncomeUserId()!=null) {
-                    payPalService.updateIncome(paymentOrder.getIncomeUserId(), paymentOrder.getAmount());
+                    payPalService.updateIncome(paymentOrder.getIncomeUserId(), paymentOrder.getPaidAmount());
                 }
 
             }

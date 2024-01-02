@@ -1,6 +1,7 @@
 package com.xinshijie.gallery.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class UserVideoDto implements Serializable {
     @Schema(description = "是否免费 ")
     private Integer isFree;
 
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     private Integer aid;
