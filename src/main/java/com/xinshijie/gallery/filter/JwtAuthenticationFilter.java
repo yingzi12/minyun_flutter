@@ -74,15 +74,17 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                                 key=CacheConstants.LOGIN_TOKEN_MODILE_KEY + systemUserVo.getId();
                             }
                             if (redisTemplate.hasKey(key)) {
-                                if(change !=null && "modile".equals(change)){
-                                    redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_MODILE_KEY + systemUserVo.getId(), token, 31, TimeUnit.DAYS);
-                                }else {
-                                    redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
-                                }
-                                String oldToken = redisTemplate.opsForValue().get(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
+
+                                String oldToken = redisTemplate.opsForValue().get(key);
                                 if (oldToken.equals(token)) {
                                     httpServletRequest.setAttribute("userId", systemUserVo.getId());
                                     httpServletRequest.setAttribute("userName", systemUserVo.getName());
+
+                                    if(change !=null && "modile".equals(change)){
+                                        redisTemplate.opsForValue().set(key, token, 31, TimeUnit.DAYS);
+                                    }else {
+                                        redisTemplate.opsForValue().set(key, token, 2, TimeUnit.HOURS);
+                                    }
                                     filterChain.doFilter(servletRequest, servletResponse);
                                 } else {
                                     sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);

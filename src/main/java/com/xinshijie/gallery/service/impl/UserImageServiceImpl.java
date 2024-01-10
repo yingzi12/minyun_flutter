@@ -191,7 +191,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     userImage.setUserId(userId);
                     userImage.setCreateTime(LocalDateTime.now());
                     userImage.setAid(aid);
-                    userImage.setImgUrl(allImage.getSource_url());
+                    userImage.setImgUrl(allImage.getSourceUrl());
                     userImage.setMd5(md5);
                     userImage.setIsFree(isFree);
                     mapper.insert(userImage);
@@ -229,14 +229,14 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), file);
         try {
             if (StringUtils.isNotEmpty(url)) {
-                allImage.setSource_web(sourceWeb);
-                allImage.setSource_url(url);
+                allImage.setSourceWeb(sourceWeb);
+                allImage.setSourceUrl(url);
                 allImageService.save(allImage);
             }
         } catch (Exception ex) {
             //保存出问题。要么是md5出现重复，要么就数据库异常。
             allImage = allImageService.getMD5(md5);
-            return allImage.getSource_url();
+            return allImage.getSourceUrl();
         }
         return url;
     }

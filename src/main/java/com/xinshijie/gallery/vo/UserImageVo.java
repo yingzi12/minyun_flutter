@@ -24,7 +24,6 @@ public class UserImageVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     private String imgUrl;
@@ -39,7 +38,6 @@ public class UserImageVo implements Serializable {
     @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long aid;
 
     private String md5;

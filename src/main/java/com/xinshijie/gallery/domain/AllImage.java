@@ -26,8 +26,8 @@ public class AllImage implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    private String source_web;
-    private String source_url;
+    private String sourceWeb;
+    private String sourceUrl;
     private String md5;
     private String title;
 

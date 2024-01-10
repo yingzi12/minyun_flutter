@@ -59,7 +59,7 @@ public class ReptileMain {
 
     @Test
     public void info() {
-        AlbumVo albumVo = albumService.getInfo(56597L);
+        AlbumVo albumVo = albumService.getInfo(56597);
         Album album = new Album();
         BeanUtils.copyProperties(albumVo, album);
         localImageService.saveAlbum(album);

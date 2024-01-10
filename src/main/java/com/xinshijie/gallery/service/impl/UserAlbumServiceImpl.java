@@ -134,7 +134,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         value.setCountBuy(0);
         value.setCountSee(0);
         value.setCountCollection(0);
-        value.setStatus(AlbumStatuEnum.NORMAL.getCode());
+        value.setStatus(AlbumStatuEnum.WAIT.getCode());
         setPrice(value, value.getCharge(), value.getPrice(), value.getVipPrice());
         mapper.insert(value);
         return value;
