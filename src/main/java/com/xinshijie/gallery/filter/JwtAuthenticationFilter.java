@@ -3,10 +3,7 @@ package com.xinshijie.gallery.filter;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTHeader;
 import com.alibaba.fastjson2.JSONObject;
-import com.xinshijie.gallery.common.CacheConstants;
-import com.xinshijie.gallery.common.Constants;
-import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisCache redisCache;
 //    private final String secretKey;
 
-    public JwtAuthenticationFilter(RedisTemplate<String, String> redisTemplate, String secretKey) {
-        this.redisTemplate = redisTemplate;
+    public JwtAuthenticationFilter(RedisCache redisCache, String secretKey) {
+        this.redisCache = redisCache;
 //        this.secretKey = secretKey;
     }
 
@@ -73,17 +70,17 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                             if(change !=null && "modile".equals(change)){
                                 key=CacheConstants.LOGIN_TOKEN_MODILE_KEY + systemUserVo.getId();
                             }
-                            if (redisTemplate.hasKey(key)) {
+                            if (redisCache.hasKey(key)) {
 
-                                String oldToken = redisTemplate.opsForValue().get(key);
+                                String oldToken = redisCache.getCacheString(key);
                                 if (oldToken.equals(token)) {
                                     httpServletRequest.setAttribute("userId", systemUserVo.getId());
                                     httpServletRequest.setAttribute("userName", systemUserVo.getName());
 
                                     if(change !=null && "modile".equals(change)){
-                                        redisTemplate.opsForValue().set(key, token, 31, TimeUnit.DAYS);
+                                        redisCache.setCacheString(key, token, 31, TimeUnit.DAYS);
                                     }else {
-                                        redisTemplate.opsForValue().set(key, token, 2, TimeUnit.HOURS);
+                                        redisCache.setCacheString(key, token, 2, TimeUnit.HOURS);
                                     }
                                     filterChain.doFilter(servletRequest, servletResponse);
                                 } else {
@@ -125,9 +122,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 httpServletRequest.setAttribute("userInfo", userInfo); // Or use custom header
                 SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
                 if (systemUserVo != null) {
-                    if (redisTemplate.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
-                        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
-                        String oldToken = redisTemplate.opsForValue().get(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
+                    if (redisCache.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
+                        redisCache.setCacheString(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
+                        String oldToken = redisCache.getCacheString(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
                         if (oldToken.equals(token)) {
                             httpServletRequest.setAttribute("userId", systemUserVo.getId());
                             httpServletRequest.setAttribute("userName", systemUserVo.getName());

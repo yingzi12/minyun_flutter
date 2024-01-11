@@ -50,6 +50,7 @@ public class PaymentOrder implements Serializable {
     /**
      * 支付时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime payTime;
     /**
      * 状态 1 等待支付，2支付完成 3退款 4取消
@@ -77,6 +78,7 @@ public class PaymentOrder implements Serializable {
      */
     private String payType;
 
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime expiredTime;
 
     private String requestId;

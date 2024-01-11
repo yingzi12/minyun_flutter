@@ -81,11 +81,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             dto.setPageNum(1L);
         }
         if (dto.getPageSize() == null) {
-            dto.setPageSize(20L);
+            dto.setPageSize(10L);
         }
         page.setSize(dto.getPageSize());
         page.setCurrent(dto.getPageNum());
-
         return mapper.selectPageUserAlbum(page, dto);
     }
 

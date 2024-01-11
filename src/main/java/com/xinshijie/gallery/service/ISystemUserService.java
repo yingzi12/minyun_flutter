@@ -3,12 +3,15 @@ package com.xinshijie.gallery.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.SystemUser;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.FindSystemUserDto;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.vo.LoginUserVo;
 import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -50,6 +53,8 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     Integer updateWithdraw(Integer userId, Double withdraw);
 
-
     IPage<SystemUserIntroVo> selectPage(FindSystemUserDto findDto);
+
+    List<SystemUserIntroVo> findRandomStories(Integer pageSize);
+
 }

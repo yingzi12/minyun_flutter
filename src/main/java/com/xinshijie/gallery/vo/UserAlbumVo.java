@@ -147,7 +147,7 @@ public class UserAlbumVo implements Serializable {
 
     private Integer isVip;
 
-    private List<UserImage> imageList;
+    private List<UserImageVo> imageList;
 
     private List<UserVideo> videoList;
 
@@ -159,6 +159,7 @@ public class UserAlbumVo implements Serializable {
     private Double amount;
 
     private Integer isCollection;
+    private String imgUrl;
 
     private Album pre;
     private Album next;

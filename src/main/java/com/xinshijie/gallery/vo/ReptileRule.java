@@ -31,14 +31,17 @@ public class ReptileRule implements Serializable {
     /**
      * 开始时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
     /**
      * 结束时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
     /**
      * 上次运行时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime latestTime;
     /**
      * 规则名称

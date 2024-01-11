@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.domain.SystemUser;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.FindSystemUserDto;
 import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.vo.SystemUserIntroVo;
@@ -57,5 +58,10 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
 
     Integer updateWithdraw(@Param("userId") Integer userId,@Param("withdraw") Double withdraw);
 
+    List<SystemUserIntroVo> findRandomStories(@Param("randomId") Integer randomId, @Param("pageSize") Integer pageSize);
+
+    Integer findMaxId();
+
+    Integer findMinId();
 }
 

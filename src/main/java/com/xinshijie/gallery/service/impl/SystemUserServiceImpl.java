@@ -7,13 +7,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.common.CacheConstants;
-import com.xinshijie.gallery.common.Constants;
-import com.xinshijie.gallery.common.ResultCodeEnum;
-import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.FindSystemUserDto;
 import com.xinshijie.gallery.dto.SystemUserDto;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.mapper.SystemUserMapper;
 import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.service.ISystemUserService;
@@ -35,6 +34,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static com.xinshijie.gallery.common.CacheConstants.PWD_ERR_CNT_KEY;
@@ -59,7 +60,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisCache redisCache;
 
     @Value("${image.sourceWeb}")
     private String imageSourceWeb;
@@ -80,14 +81,15 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         // 验证码
         validateCaptcha(username, code, uuid);
         SystemUser systemUser = isLogin(username, password);
+        String token=getToken(systemUser);
         // 用户验证
         LoginUserVo ajax = new LoginUserVo();
         ajax.setCode(200);
-        ajax.setToken(getToken(systemUser));
+        ajax.setToken(token);
         ajax.setUser(systemUser);
         ajax.setAccessToken(ajax.getToken());
         ajax.setRefreshToken(ajax.getToken());
-        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_KEY + ajax.getUser().getId(), ajax.getToken(), 1, TimeUnit.HOURS);
+        redisCache.setCacheString(CacheConstants.LOGIN_TOKEN_KEY + ajax.getUser().getId(), token, 1, TimeUnit.HOURS);
         // 生成token
         return ajax;
     }
@@ -101,14 +103,15 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
      */
     public LoginUserVo loginModile(String username, String password) {
         SystemUser systemUser = isLogin(username, password);
+        String token=getToken(systemUser);
         // 用户验证
         LoginUserVo ajax = new LoginUserVo();
         ajax.setCode(200);
-        ajax.setToken(getToken(systemUser));
+        ajax.setToken(token);
         ajax.setUser(systemUser);
         ajax.setAccessToken(ajax.getToken());
         ajax.setRefreshToken(ajax.getToken());
-        redisTemplate.opsForValue().set(CacheConstants.LOGIN_TOKEN_MODILE_KEY + ajax.getUser().getId(), ajax.getToken(), 30, TimeUnit.DAYS);
+        redisCache.setCacheString(CacheConstants.LOGIN_TOKEN_MODILE_KEY + ajax.getUser().getId(), token, 30, TimeUnit.DAYS);
         // 生成token
         return ajax;
     }
@@ -119,18 +122,18 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         queryWrapper.eq("name", username).or().eq("email", username);
         SystemUser systemUser = mapper.selectOne(queryWrapper);
         if (systemUser != null) {
-            if (redisTemplate.hasKey(PWD_ERR_CNT_KEY + ":" + systemUser.getId())) {
-                int count = Integer.parseInt(redisTemplate.opsForValue().get(PWD_ERR_CNT_KEY + ":" + systemUser.getId()).toString());
+            if (redisCache.hasKey(PWD_ERR_CNT_KEY  + systemUser.getId())) {
+                int count = Integer.parseInt(redisCache.getCacheString(PWD_ERR_CNT_KEY  + systemUser.getId()));
                 if (count > 3) {
                     throw new ServiceException(ResultCodeEnum.USER_ACCOUNT_ERROR_LONG_TIME);
                 }
             }
             if (!SecurityUtils.matchesPassword(password, systemUser.getPassword())) {
-                if (redisTemplate.hasKey(PWD_ERR_CNT_KEY + ":" + systemUser.getId())) {
-                    int count = Integer.parseInt(redisTemplate.opsForValue().get(PWD_ERR_CNT_KEY + ":" + systemUser.getId()).toString());
-                    redisTemplate.opsForValue().set(PWD_ERR_CNT_KEY + ":" + systemUser.getId(), count + 1, 1, TimeUnit.HOURS);
+                if (redisCache.hasKey(PWD_ERR_CNT_KEY  + systemUser.getId())) {
+                    int count = Integer.parseInt(redisCache.getCacheString(PWD_ERR_CNT_KEY  + systemUser.getId()));
+                    redisCache.setCacheInteger(PWD_ERR_CNT_KEY  + systemUser.getId(), count + 1, 1, TimeUnit.HOURS);
                 } else {
-                    redisTemplate.opsForValue().set(PWD_ERR_CNT_KEY + ":" + systemUser.getId(), 1, 1, TimeUnit.HOURS);
+                    redisCache.setCacheInteger(PWD_ERR_CNT_KEY  + systemUser.getId(), 1, 1, TimeUnit.HOURS);
                 }
                 throw new ServiceException(ResultCodeEnum.USER_ACCOUNT_ERROR);
             }
@@ -152,11 +155,11 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
      */
     public void validateCaptcha(String username, String code, String uuid) {
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
-        if (!redisTemplate.hasKey(verifyKey)) {
+        if (!redisCache.hasKey(verifyKey)) {
             throw new ServiceException(ResultCodeEnum.USER_CODE_ERROR);
         }
-        String captcha = redisTemplate.opsForValue().get(verifyKey).toString();
-        redisTemplate.delete(verifyKey);
+        String captcha = redisCache.getCacheString(verifyKey);
+        redisCache.deleteObject(verifyKey);
         if (captcha == null) {
             throw new ServiceException(ResultCodeEnum.USER_CODE_ERROR);
         }
@@ -398,5 +401,19 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         return mapper.selectPageSystemUser(page,findDto);
     }
 
-
+    @Override
+    public List<SystemUserIntroVo> findRandomStories(Integer pageSize) {
+        Integer maxId = mapper.findMaxId(); //
+        Integer minId = mapper.findMinId();
+        QueryWrapper<SystemUser> qw=new QueryWrapper<>();
+//        qw.eq("status", AlbumStatuEnum.NORMAL.getCode());
+        Long count=mapper.selectCount(qw);//
+        if(30<count) {
+            Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId - 30);
+            return mapper.findRandomStories(randomId, pageSize);
+        }else{
+            Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId);
+            return mapper.findRandomStories(randomId, pageSize);
+        }
+    }
 }

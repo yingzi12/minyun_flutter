@@ -51,6 +51,7 @@ public class UserBuyVip implements Serializable {
     /**
      * 购买时间
      */
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime buyTime;
     /**
      * 状态

@@ -76,12 +76,11 @@ public class UserAlbumController extends BaseController {
 
         UserImageDto findDto=new UserImageDto();
         findDto.setAid(id);
-        findDto.setPageSize(6L);
+        findDto.setPageSize(10L);
         IPage<UserImageVo> pageUserImage = userImageService.selectPageUserImage(findDto);
 
         List<UserImageVo> imageList = pageUserImage.getRecords();
         List<UserVideo> videoList = userVideoService.selectAllAid(id,null );
-        Long videoCount = userVideoService.selectCount(id, userId, 2);
         UserAlbumVo vo = new UserAlbumVo();
         BeanUtils.copyProperties(userAlbum, vo);
         userAlbumService.updateCountSee(id, LocalDate.now().toString());
@@ -129,18 +128,19 @@ public class UserAlbumController extends BaseController {
             for(UserVideo video:videoList){
                 if(video.getIsFree()==2) {
                     video.setUrl(null);
-                    video.setStatus(2);
+                    video.setStatus(-1);
                 }
             }
             for(UserImageVo image:imageList){
                 if(image.getIsFree()==2) {
                     image.setImgUrl(null);
-                    image.setStatus(2);
+                    image.setStatus(-1);
                 }
             }
         }
         vo.setVideoList(videoList);
-        vo.setVideoCount(videoCount.intValue());
+        vo.setImageList(imageList);
+
         return Result.success(vo);
     }
 

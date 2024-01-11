@@ -49,6 +49,7 @@ public class SystemUser implements Serializable {
     private Integer credit;
     private Double income;
     private Double withdraw;
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime vipExpirationTime;
 
 }

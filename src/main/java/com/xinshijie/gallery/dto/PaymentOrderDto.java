@@ -110,6 +110,7 @@ public class PaymentOrderDto implements Serializable {
 
     private Integer  incomeUserId;
 
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime expiredTime;
 
     private String requestId;

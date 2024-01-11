@@ -199,6 +199,12 @@ public class SystemUserController extends BaseController {
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
+    @GetMapping("/random")
+    public Result<List<SystemUserIntroVo>> random() {
+        List<SystemUserIntroVo> vo = systemUserService.findRandomStories(6);
+        return Result.success(vo);
+    }
+
     @GetMapping("info")
     public Result<SystemUserIntroVo> getInfo(@RequestParam("userId")Integer userId) {
         Integer loUserId=getUserIdNoLogin();
