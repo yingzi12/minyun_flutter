@@ -1,10 +1,7 @@
 package com.xinshijie.gallery.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xinshijie.gallery.common.BaseController;
-import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.common.ResultCodeEnum;
-import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
@@ -12,6 +9,8 @@ import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.dto.UserAlbumDto;
+import com.xinshijie.gallery.dto.UserImageDto;
+import com.xinshijie.gallery.enmus.AlbumChargeEnum;
 import com.xinshijie.gallery.enmus.AlbumStatuEnum;
 import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserCollectionService;
@@ -20,16 +19,20 @@ import com.xinshijie.gallery.service.IUserVideoService;
 import com.xinshijie.gallery.vo.AmountVo;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import com.xinshijie.gallery.vo.UserCollectionVo;
+import com.xinshijie.gallery.vo.UserImageVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 
@@ -52,10 +55,11 @@ public class UserAlbumController extends BaseController {
     @Autowired
     private IUserCollectionService userCollectionService;
     @Autowired
-    private IUserImageService userImageService;
+    private RedisCache redisCache;
     @Autowired
     private IUserVideoService userVideoService;
-
+    @Autowired
+    private IUserImageService userImageService;
     /**
      * 查询详情
      *
@@ -64,33 +68,36 @@ public class UserAlbumController extends BaseController {
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserAlbumVo> getInfo(@PathVariable("id") Integer id) {
         Integer userId = getUserIdNoLogin();
-        UserAlbum userAlbum = userAlbumService.getInfo(userId, id);
 
+        UserAlbum userAlbum = userAlbumService.getInfo( id);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
         }
 
-        List<UserImage> imageList = userImageService.selectAllAid(id, 1);
-        List<UserVideo> videoList = userVideoService.selectAllAid(id, 1);
-        Long imageCount = userImageService.selectCount(id, userId, 2);
-        Long videoCount = userVideoService.selectCount(id, userId, 2);
+        UserImageDto findDto=new UserImageDto();
+        findDto.setAid(id);
+        findDto.setPageSize(6L);
+        IPage<UserImageVo> pageUserImage = userImageService.selectPageUserImage(findDto);
 
+        List<UserImageVo> imageList = pageUserImage.getRecords();
+        List<UserVideo> videoList = userVideoService.selectAllAid(id,null );
+        Long videoCount = userVideoService.selectCount(id, userId, 2);
         UserAlbumVo vo = new UserAlbumVo();
         BeanUtils.copyProperties(userAlbum, vo);
         userAlbumService.updateCountSee(id, LocalDate.now().toString());
         Album pre = userAlbumService.previousChapter(id);
         Album next = userAlbumService.nextChapter(id);
-        BeanUtils.copyProperties(userAlbum,vo);
+
+        Boolean isSee=userAlbumService.isCheck(findDto.getAid(), userId);
         vo.setPre(pre);
         vo.setNext(next);
-        vo.setImageList(imageList);
-        vo.setVideoList(videoList);
-        vo.setImageCount(imageCount.intValue());
-        vo.setVideoCount(videoCount.intValue());
+
         vo.setIsCollection(2);
         vo.setAmount(0.0);
         vo.setIsVip(2);
-        vo.setIsSee(false);
+        //是否有权限可看
+        vo.setIsSee(isSee);
+        //判断是否有权限观看
         if(userId != null) {
             UserCollection userCollection = userCollectionService.getInfo(userId, userAlbum.getId(), 2);
             if (userCollection != null) {
@@ -104,14 +111,36 @@ public class UserAlbumController extends BaseController {
                 try {
                     Double amount = userAlbumService.getAmount(id, userId, vo.getCharge(), vo.getPrice(), vo.getVipPrice());
                     vo.setAmount(amount);
-                    userAlbumService.isSee(vo, userId);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
+        }else{
+            if(userAlbum.getCharge().equals(AlbumChargeEnum.FREE.getCode())){
+                vo.setIsSee(true);
+            }
         }
-
-
+        if(userId != null) {
+            redisCache.setCacheInteger(CacheConstants.USER_ALBUM_SEE + userId,vo.getIsSee()?1:2  ,1, TimeUnit.DAYS);
+        }else{
+            redisCache.setCacheInteger(CacheConstants.USER_ALBUM_SEE + "-1000",vo.getIsSee()?1:2 ,1, TimeUnit.DAYS );
+        }
+        if(!vo.getIsSee()){
+            for(UserVideo video:videoList){
+                if(video.getIsFree()==2) {
+                    video.setUrl(null);
+                    video.setStatus(2);
+                }
+            }
+            for(UserImageVo image:imageList){
+                if(image.getIsFree()==2) {
+                    image.setImgUrl(null);
+                    image.setStatus(2);
+                }
+            }
+        }
+        vo.setVideoList(videoList);
+        vo.setVideoCount(videoCount.intValue());
         return Result.success(vo);
     }
 
@@ -123,9 +152,6 @@ public class UserAlbumController extends BaseController {
      */
     @GetMapping("/list")
     public Result<List<UserAlbum>> list(UserAlbumDto findDto) {
-//        if(findDto.getUserId()==null){
-//            throw new ServiceException(ResultCodeEnum.PARAMS_IS_INVALID);
-//        }
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));

@@ -24,7 +24,8 @@
                score,
                introduce,
                status,
-                charge
+                charge,
+               img_url
         from user_album
     </sql>
 

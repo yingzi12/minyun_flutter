@@ -20,6 +20,7 @@ import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.UserAlbumVo;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -129,7 +130,11 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     @Override
     public UserAlbum add(UserAlbumDto dto) {
         UserAlbum value = new UserAlbum();
+
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
+        if(Strings.isNotEmpty(dto.getImgUrl())){
+            value.setImgUrl(dto.getImgUrl());
+        }
         value.setCreateTime(LocalDateTime.now());
         value.setCountBuy(0);
         value.setCountSee(0);
@@ -153,6 +158,9 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         userAlbum.setGirl(dto.getGirl());
         userAlbum.setTags(dto.getTags());
         userAlbum.setPrice(dto.getPrice());
+        if(Strings.isNotEmpty(dto.getImgUrl())){
+            userAlbum.setImgUrl(dto.getImgUrl());
+        }
         userAlbum.setVipPrice(dto.getVipPrice());
         userAlbum.setUpdateTime(LocalDateTime.now());
         setPrice(userAlbum, dto.getCharge(), dto.getPrice(), dto.getVipPrice());
@@ -176,70 +184,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
      * 根据id数据
      */
     @Override
-    public UserAlbum getInfo(Integer userId, Integer id) {
+    public UserAlbum getInfo( Integer id) {
         UserAlbum userAlbum = mapper.selectById(id);
 
         return userAlbum;
-    }
-
-    public Boolean isSee(UserAlbumVo userAlbum, Integer userId) {
-        userAlbum.setAmount(0.0);
-        //'1 免费', '2 VIP免费', '3 VIP折扣', '4 VIP独享' 5.统一
-        //判断是否需要付费
-        if (AlbumChargeEnum.FREE.getCode().equals(userAlbum.getCharge())) {
-            userAlbum.setAmount(0.0);
-            userAlbum.setIsSee(true);
-            return true;
-        }
-        if (userId == null) {
-            userAlbum.setIsSee(false);
-            return false;
-        }
-        if (userAlbum.getUserId() == userId) {
-            userAlbum.setIsSee(true);
-            return true;
-        }
-        //判断用户是否是VIP
-        UserVip userVip = userVipService.getInfo(userAlbum.getUserId(), userId);
-        if (userVip != null) {
-            userAlbum.setIsVip(1);
-        } else {
-            userAlbum.setIsVip(0);
-        }
-        //判断是否vip免费
-        if (AlbumChargeEnum.VIP_FREE.getCode().equals(userAlbum.getCharge())) {
-            if (userVip != null) {
-                userAlbum.setAmount(0.0);
-                userAlbum.setIsSee(true);
-                return true;
-            }else {
-                userAlbum.setAmount(userAlbum.getPrice());
-            }
-        }
-        //判断是否是否已经购买
-        PaymentOrder paymentOrder = paymentOrderService.selectByDonePay(userId, PaymentKindEnum.USER_ALBUM.getCode(), userAlbum.getId());
-        if (paymentOrder != null) {
-            userAlbum.setAmount(0.0);
-            userAlbum.setIsSee(true);
-            return true;
-        } else {
-            if (AlbumChargeEnum.VIP_DISCOUNT.getCode().equals(userAlbum.getCharge())) {
-                if (userVip != null) {
-                    userAlbum.setAmount(userAlbum.getVipPrice());
-                    userAlbum.setPrice(userAlbum.getVipPrice());
-                }else{
-                    userAlbum.setAmount(userAlbum.getPrice());
-                }
-            }
-            if (AlbumChargeEnum.VIP_EXCLUSIVE.getCode().equals(userAlbum.getCharge())) {
-                if (userVip != null) {
-                    userAlbum.setPrice(userAlbum.getVipPrice());
-                }
-                userAlbum.setAmount(userAlbum.getPrice());
-            }
-        }
-        userAlbum.setIsSee(false);
-        return false;
     }
 
     @Override

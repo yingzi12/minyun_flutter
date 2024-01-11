@@ -155,6 +155,7 @@ public class UserAlbumVo implements Serializable {
 
     private Integer videoCount;
 
+    //购买需要的价格
     private Double amount;
 
     private Integer isCollection;

@@ -140,6 +140,7 @@ public class UserAlbumDto implements Serializable {
     @Schema(description = "介绍 ")
     @Size(max = 500, message = "介绍 超出最大长度 500")
     private String introduce;
+    private String imgUrl;
 
     /**
      * 状态

@@ -18,6 +18,9 @@ public class CacheConstants {
      */
     public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
 
+    public static final String USER_ALBUM_SEE = "user:album:";
+
+
     /**
      * 参数管理 cache key
      */

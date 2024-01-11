@@ -9,7 +9,7 @@
                create_time,
                title,
                aid
-        from album_collection
+        from user_collection
     </sql>
 
     <select id="selectListAlbumCollection" parameterType="com.xinshijie.gallery.dto.AlbumCollectionDto"
@@ -43,7 +43,7 @@
     </select>
 
     <insert id="add">
-        insert into album_collection (id,
+        insert into user_collection (id,
                                       user_id,
                                       user_name,
                                       create_time,
@@ -58,7 +58,7 @@
     </insert>
 
     <update id="edit">
-        update album_collection
+        update user_collection
         <trim prefix="SET" suffixOverrides=",">
             <if test="id !=null ">id= #{id},</if>
             <if test="userId !=null ">user_id= #{userId},</if>
@@ -72,7 +72,7 @@
 
     <delete id="delById">
         delete
-        FROM album_collection
+        FROM user_collection
         where id = #{id}
     </delete>
 

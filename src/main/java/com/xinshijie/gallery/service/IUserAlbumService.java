@@ -60,9 +60,7 @@ public interface IUserAlbumService extends IService<UserAlbum> {
     /**
      * 根据id数据
      */
-    UserAlbum getInfo(Integer userId, Integer id);
-
-    Boolean isSee(UserAlbumVo userAlbum, Integer userId);
+    UserAlbum getInfo(Integer id);
 
     Integer updateCountSee(Integer id, String updateDate);
 

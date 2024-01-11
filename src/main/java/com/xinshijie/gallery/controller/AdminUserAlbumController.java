@@ -84,7 +84,7 @@ public class AdminUserAlbumController extends BaseController {
     @GetMapping(value = "/getInfo/{id}")
     public Result<UserAlbum> getInfo(@PathVariable("id") Integer id) {
         Integer userId = getUserId();
-        UserAlbum vo = userAlbumService.getInfo(userId, id);
+        UserAlbum vo = userAlbumService.getInfo( id);
         if (vo.getUserId() != userId) {
             throw new ServiceException(ResultCodeEnum.INSUFFICIENT_PERMISSIONS);
         }

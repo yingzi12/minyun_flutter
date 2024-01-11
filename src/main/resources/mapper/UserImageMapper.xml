@@ -29,6 +29,7 @@
             <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
             <if test="dto.aid !=null ">and aid= #{dto.aid}</if>
         </where>
+        order by is_free
     </select>
 
 

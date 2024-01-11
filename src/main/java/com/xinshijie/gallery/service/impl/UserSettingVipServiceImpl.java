@@ -100,6 +100,9 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     public UserSettingVip add(UserSettingVipDto dto) {
         UserSettingVip value = new UserSettingVip();
         org.springframework.beans.BeanUtils.copyProperties(dto, value);
+        if(dto.getRank() != null){
+            value.setRank(-1);
+        }
         value.setCreateTime(LocalDateTime.now());
         mapper.insert(value);
         return value;

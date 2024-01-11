@@ -171,7 +171,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
 
     @Override
     public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file) {
-        UserAlbum userAlbum = userAlbumService.getInfo(userId, aid);
+        UserAlbum userAlbum = userAlbumService.getInfo(aid);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
