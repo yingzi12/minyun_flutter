@@ -75,7 +75,7 @@ public class AdminUserWithdrawController extends BaseController {
     * @return
     */
     @GetMapping("/list")
-    public Result<List<UserWithdraw>> list(@RequestBody UserWithdrawDto findDto){
+    public Result<List<UserWithdraw>> list( UserWithdrawDto findDto){
         findDto.setUserId(getUserId());
         IPage<UserWithdraw> vo = userWithdrawService.getPageUserWithdraw(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));

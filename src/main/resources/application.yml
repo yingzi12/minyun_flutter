@@ -3,6 +3,18 @@ spring:
     multipart:
       max-file-size: 1024MB
       max-request-size: 1024MB
+  mail:
+    host: smtp.zoho.com    # Replace with your SMTP host
+    port: 587                          # Replace with your SMTP port
+    username: admin@aiavr.uk
+#    password: huanglu33573
+    password: v3xMXbzvLTUR
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   #  datasource:
   #    type: com.alibaba.druid.pool.DruidDataSource
   #    driverClassName: org.sqlite.JDBC

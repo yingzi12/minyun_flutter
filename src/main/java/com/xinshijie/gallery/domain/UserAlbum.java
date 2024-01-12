@@ -86,6 +86,8 @@ public class UserAlbum implements Serializable {
      * 查看数
      */
     private Integer countSee;
+    private Integer countLike;
+
     /**
      * 照片数
      */

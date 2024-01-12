@@ -138,6 +138,10 @@ public enum ResultCodeEnum {
 
     WITHDRAW_ERROR(999008124, "提现失败，金额错误"),
 
+    EMAIL_ERROR(999008125, "Email错误"),
+
+    EMAIL_CODE_ERROR(999008125, "Email CODE错误"),
+
     ;
 
 

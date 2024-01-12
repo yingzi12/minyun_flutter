@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>邮箱验证码</title>
+</head>
+<body>
+<h1 th:text="'尊敬的 ' + ${nickname} + '：'">尊敬的 Nickname：</h1>
+<p>你正在进行安全邮箱的绑定操作,请点击下方链接地址,来进行邮箱的验证操作,链接30分钟有效.</p>
+<p>验证码：<span th:text="${code}">code</span></p>
+<p>点击验证:
+    <a th:href="@{'https://www.aiavr.com/check/email?key=' + ${simpleUUID} + '&check=' + ${digestHex}}">
+        验证邮箱
+    </a>
+</p>
+</body>
+</html>

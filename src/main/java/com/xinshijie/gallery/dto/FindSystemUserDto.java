@@ -61,6 +61,7 @@ public class FindSystemUserDto implements Serializable {
     private Integer countLike;
     private Integer countSee;
     private Integer countAttention;
+    private String orderBy;
 
     private Long pageNum;
 

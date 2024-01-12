@@ -76,7 +76,7 @@ public class UserAlbumController extends BaseController {
 
         UserImageDto findDto=new UserImageDto();
         findDto.setAid(id);
-        findDto.setPageSize(10L);
+        findDto.setPageSize(6L);
         IPage<UserImageVo> pageUserImage = userImageService.selectPageUserImage(findDto);
 
         List<UserImageVo> imageList = pageUserImage.getRecords();

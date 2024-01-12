@@ -199,6 +199,12 @@ public class SystemUserController extends BaseController {
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
+    @GetMapping("/listSee")
+    public Result<List<SystemUserIntroVo>> listSee(FindSystemUserDto findDto) {
+        IPage<SystemUserIntroVo> vo = systemUserService.selectPage(findDto);
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
+
     @GetMapping("/random")
     public Result<List<SystemUserIntroVo>> random() {
         List<SystemUserIntroVo> vo = systemUserService.findRandomStories(6);

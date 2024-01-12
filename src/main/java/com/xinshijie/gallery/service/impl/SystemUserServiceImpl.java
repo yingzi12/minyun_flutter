@@ -209,7 +209,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         if (userVo == null) {
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
         }
-        if (!SecurityUtils.matchesPassword(oldPassword, newPassword)) {
+        if (!SecurityUtils.matchesPassword(oldPassword, userVo.getPassword())) {
             throw new ServiceException(ResultCodeEnum.FAILED_TO_CHANGE_PASSWORD);
         }
         SystemUser userDto = new SystemUser();
@@ -272,9 +272,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public SystemUser edit(SystemUserDto userDto) {
         SystemUser systemUser = mapper.selectById(userDto.getId());
-        BeanUtils.copyProperties(userDto, systemUser);
-//        systemUser.setPassword(SecurityUtils.encryptPassword(userDto.getPassword()));
-        if (!systemUser.getEmail().equals(userDto.getEmail())) {
+        if (userDto.getIsEmail() !=null && !systemUser.getEmail().equals(userDto.getEmail())) {
             QueryWrapper<SystemUser> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("email", userDto.getEmail());
             SystemUser user = mapper.selectOne(queryWrapper);
@@ -284,9 +282,12 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 throw new ServiceException(ResultCodeEnum.ALREADY_BOUND_ACCOUNT);
             }
         }
-        systemUser.setNickname(userDto.getNickname());
-        systemUser.setSalt(null);
-        systemUser.setPassword(null);
+        if(userDto.getIntro()!=null) {
+            systemUser.setIntro(userDto.getIntro());
+        }
+        if(userDto.getNickname()!=null) {
+            systemUser.setNickname(userDto.getNickname());
+        }
         systemUser.setUpdateTime(LocalDateTime.now());
         mapper.updateById(systemUser);
         return systemUser;
@@ -330,11 +331,11 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     }
 
 
-    public Boolean saveUploadedFiles(Integer userId, MultipartFile file) {
+    public String saveUploadedFiles(Integer userId, MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 log.error("No image file provided");
-                return false;
+                throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
             }
             try {
                 String mm5 = fileService.getMD5(file.getInputStream());
@@ -360,18 +361,19 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 // 图片验证通过，更新用户信息
                 SystemUser user = new SystemUser();
                 user.setId(userId);
-                user.setImgUrl(imageSourceWeb + imgUrl);
+                user.setImgUrl(imgUrl);
                 mapper.updateById(user);
-                return true;
+                return imgUrl;
             } catch (IOException e) {
                 log.error("Error during image processing: " + e.getMessage());
-                return false;
+                throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
             }
 
 
         } catch (Exception exception) {
+            log.error("Error during image processing: " + exception.getMessage());
             // 处理异常
-            return false;
+            throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
         }
     }
 

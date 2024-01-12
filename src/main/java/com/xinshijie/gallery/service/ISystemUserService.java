@@ -47,7 +47,7 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     String getCacheKey(String username);
 
-    Boolean saveUploadedFiles(Integer userId, MultipartFile file);
+    String saveUploadedFiles(Integer userId, MultipartFile file);
 
     Integer updateIncome(Integer userId, Double amount);
 

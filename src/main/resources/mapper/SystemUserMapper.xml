@@ -58,7 +58,6 @@
         count_attention,
         income,
         withdraw
-
         from system_user
         <where>
             <if test="dto.name !=null ">and `name`= #{dto.name}</if>
@@ -67,6 +66,7 @@
             <if test="dto.isEmail !=null ">and is_email= #{dto.isEmail}</if>
             <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
         </where>
+        <if test="dto.orderBy !=null">order by count_see</if>
     </select>
 
     <select id="getPageSystemUser" resultType="com.xinshijie.gallery.vo.SystemUserVo">

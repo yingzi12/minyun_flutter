@@ -147,6 +147,8 @@ public class UserAlbumVo implements Serializable {
 
     private Integer isVip;
 
+    private Integer countLike;
+
     private List<UserImageVo> imageList;
 
     private List<UserVideo> videoList;
