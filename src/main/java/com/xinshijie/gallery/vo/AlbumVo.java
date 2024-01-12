@@ -1,7 +1,9 @@
 package com.xinshijie.gallery.vo;
 
 import com.xinshijie.gallery.dao.Album;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
 
 @Data
 public class AlbumVo {
@@ -50,5 +52,11 @@ public class AlbumVo {
     private Album next;
 
     private Integer isCollection;
+
+    /**
+     * 更新时间
+     */
+    @Schema(description = "更新时间 ")
+    private String updateTime;
 
 }

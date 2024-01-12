@@ -102,18 +102,13 @@ public class UserAlbumController extends BaseController {
             if (userCollection != null) {
                 vo.setIsCollection(1);
             }
-            if (vo.getUserId() == userId) {
-                vo.setIsVip(1);
-                vo.setIsSee(true);
-                return Result.success(vo);
-            } else {
-                try {
-                    Double amount = userAlbumService.getAmount(id, userId, vo.getCharge(), vo.getPrice(), vo.getVipPrice());
-                    vo.setAmount(amount);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+            try {
+                Double amount = userAlbumService.getAmount(id, userId, vo.getCharge(), vo.getPrice(), vo.getVipPrice());
+                vo.setAmount(amount);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
+
         }else{
             if(userAlbum.getCharge().equals(AlbumChargeEnum.FREE.getCode())){
                 vo.setIsSee(true);

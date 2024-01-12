@@ -49,6 +49,9 @@ public class SystemUserIntroVo implements Serializable {
     private Double income;
     private Double withdraw;
     private Integer isAttention;
-
+    private Integer vip;
+    private Integer credit;
+    @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime vipExpirationTime;
 
 }

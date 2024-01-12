@@ -122,9 +122,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 httpServletRequest.setAttribute("userInfo", userInfo); // Or use custom header
                 SystemUserVo systemUserVo = JSONObject.parseObject(userInfo, SystemUserVo.class);
                 if (systemUserVo != null) {
-                    if (redisCache.hasKey(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId())) {
-                        redisCache.setCacheString(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId(), token, 2, TimeUnit.HOURS);
-                        String oldToken = redisCache.getCacheString(CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId());
+                    String key=CacheConstants.LOGIN_TOKEN_KEY + systemUserVo.getId();
+                    String change = httpServletRequest.getHeader("change");
+                    if(change !=null && "modile".equals(change)){
+                        key=CacheConstants.LOGIN_TOKEN_MODILE_KEY + systemUserVo.getId();
+                    }
+                    if (redisCache.hasKey(key)) {
+                        if(change !=null && "modile".equals(change)){
+                            redisCache.setCacheString(key, token, 31, TimeUnit.DAYS);
+                        }else {
+                            redisCache.setCacheString(key, token, 2, TimeUnit.HOURS);
+                        }
+                        String oldToken = redisCache.getCacheString(key);
                         if (oldToken.equals(token)) {
                             httpServletRequest.setAttribute("userId", systemUserVo.getId());
                             httpServletRequest.setAttribute("userName", systemUserVo.getName());
