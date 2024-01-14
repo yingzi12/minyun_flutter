@@ -87,7 +87,7 @@
           and uc.user_id  =#{userId}  and ctype =2
     </select>
 
-    <select id="listSystem" resultType="com.xinshijie.gallery.dao.Album">
+    <select id="listSystem" resultType="com.xinshijie.gallery.domain.Album">
         select a.* from album a   ,user_collection uc
         where a.id =uc.aid
           and uc.user_id  =#{userId}  and ctype =1

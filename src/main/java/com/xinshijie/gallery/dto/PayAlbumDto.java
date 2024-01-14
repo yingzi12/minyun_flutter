@@ -22,16 +22,18 @@ public class PayAlbumDto {
     @NotNull
     private Integer productId;
 
-    @Size(max = 100,min = 5)
+    @Size(max = 100,min = 2)
     @NotNull
     private String productName;
 
-    @Size(max = 300,min = 5,message = "description 超出大小")
+    @Size(max = 300,min = 3,message = "description 超出大小")
     private String description;
 
     private Integer incomeUserId;
 
     private Integer userId;
+    private String returnUrl;
+    private String cancelUrl;
 
 
 }

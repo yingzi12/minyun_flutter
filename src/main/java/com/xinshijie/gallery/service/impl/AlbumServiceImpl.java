@@ -2,7 +2,7 @@ package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.mapper.AlbumMapper;
 import com.xinshijie.gallery.service.AlbumService;

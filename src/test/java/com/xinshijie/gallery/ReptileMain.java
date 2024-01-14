@@ -5,7 +5,7 @@ import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.service.AlbumService;
 import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;

@@ -53,5 +53,8 @@ public class SystemUserIntroVo implements Serializable {
     private Integer credit;
     @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime vipExpirationTime;
+    private String vipTitle;
+    private String invite;
+    private Integer countInvite;
 
 }

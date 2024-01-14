@@ -18,6 +18,7 @@ public class PayOrderDto {
     private String intent = "CAPTURE";
 
     private Integer aid;
+    private PaymentSourceDto payment_source;
 
 
 }

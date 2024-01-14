@@ -1,7 +1,7 @@
 package com.xinshijie.gallery.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xinshijie.gallery.dao.FindImage;
+import com.xinshijie.gallery.domain.FindImage;
 
 /**
  * @author User

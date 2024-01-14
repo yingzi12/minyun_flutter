@@ -4,24 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.dao.Album;
 import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.domain.UserAlbum;
-import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.PaymentOrderDto;
 import com.xinshijie.gallery.enmus.PaymentKindEnum;
 import com.xinshijie.gallery.enmus.PaymentStatuEnum;
-import com.xinshijie.gallery.enmus.VipPriceEnum;
 import com.xinshijie.gallery.mapper.PaymentOrderMapper;
 import com.xinshijie.gallery.service.IPaymentOrderService;
-import com.xinshijie.gallery.vo.PaymentOrderVo;
-import com.xinshijie.gallery.vo.UserImageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <p>

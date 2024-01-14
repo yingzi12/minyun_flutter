@@ -2,7 +2,7 @@ package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.dao.Image;
+import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.mapper.ImageMapper;
 import com.xinshijie.gallery.service.ImageService;

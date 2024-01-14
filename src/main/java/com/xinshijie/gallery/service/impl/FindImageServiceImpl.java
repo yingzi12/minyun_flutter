@@ -1,7 +1,7 @@
 package com.xinshijie.gallery.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinshijie.gallery.dao.FindImage;
+import com.xinshijie.gallery.domain.FindImage;
 import com.xinshijie.gallery.mapper.FindImageMapper;
 import com.xinshijie.gallery.service.FindImageService;
 import org.springframework.beans.factory.annotation.Autowired;

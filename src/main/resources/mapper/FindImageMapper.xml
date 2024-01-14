@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinshijie.gallery.mapper.FindImageMapper">
 
-    <resultMap id="BaseResultMap" type="com.xinshijie.gallery.dao.FindImage">
+    <resultMap id="BaseResultMap" type="com.xinshijie.gallery.domain.FindImage">
         <id property="id" column="id" jdbcType="OTHER"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="girl" column="girl" jdbcType="VARCHAR"/>

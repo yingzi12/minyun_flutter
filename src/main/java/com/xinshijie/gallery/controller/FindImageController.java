@@ -3,7 +3,7 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.dao.FindImage;
+import com.xinshijie.gallery.domain.FindImage;
 import com.xinshijie.gallery.service.FindImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

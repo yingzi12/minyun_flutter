@@ -1,10 +1,7 @@
 package com.xinshijie.gallery.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.xinshijie.gallery.dao.Album;
-import com.xinshijie.gallery.domain.UserImage;
+import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.UserVideo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

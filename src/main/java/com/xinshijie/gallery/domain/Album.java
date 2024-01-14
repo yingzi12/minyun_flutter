@@ -1,4 +1,4 @@
-package com.xinshijie.gallery.dao;
+package com.xinshijie.gallery.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

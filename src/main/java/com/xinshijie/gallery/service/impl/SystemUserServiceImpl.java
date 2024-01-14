@@ -256,10 +256,13 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         if (!userOk) {
             throw new ServiceException(ResultCodeEnum.USER_ALREADY_EXISTS);
         }
+        String invite=RandomUtil.randomStringUpper(6);
         SystemUser systemUser = new SystemUser();
         BeanUtils.copyProperties(userDto, systemUser);
         systemUser.setPassword(SecurityUtils.encryptPassword(userDto.getPassword()));
         systemUser.setIsEmail(2);
+        systemUser.setInvite(invite);
+        systemUser.setCountInvite(0);
         systemUser.setNickname(userDto.getName());
         systemUser.setSalt(RandomUtil.randomNumbers(10));
         systemUser.setCreateTime(LocalDateTime.now());

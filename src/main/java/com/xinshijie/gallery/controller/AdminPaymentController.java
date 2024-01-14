@@ -8,10 +8,7 @@ import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.PaymentOrder;
-import com.xinshijie.gallery.dto.AmountDto;
-import com.xinshijie.gallery.dto.PayAlbumDto;
-import com.xinshijie.gallery.dto.PayOrderDto;
-import com.xinshijie.gallery.dto.PurchaseUnitDto;
+import com.xinshijie.gallery.dto.*;
 import com.xinshijie.gallery.enmus.PaymentStatuEnum;
 import com.xinshijie.gallery.service.*;
 import com.xinshijie.gallery.vo.PayOrderVo;
@@ -92,6 +89,13 @@ public class AdminPaymentController {
         List<PurchaseUnitDto> list = new ArrayList<>();
         list.add(purchaseUnit);
         dto.setPurchase_units(list);
+        PaymentSourceDto paymentSourceDto=new PaymentSourceDto();
+        PaypalDto paypalDto= new PaypalDto();
+        ExperienceContextDto experienceContextDto=new ExperienceContextDto();
+        experienceContextDto.setReturn_url(albumDto.getReturnUrl());
+        experienceContextDto.setCancel_url(albumDto.getCancelUrl());
+        paypalDto.setExperience_context(experienceContextDto);
+        paymentSourceDto.setPaypal(paypalDto);
 //        String requstId= IdUtil.getSnowflakeNextId()+"";
         //请求，防止重复交易  6 hours.
         PayOrderVo payOrderVo = payPalService.createOrder(token, dto, requstId);

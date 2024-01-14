@@ -2,12 +2,10 @@ package com.xinshijie.gallery.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.common.*;
-import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
-import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.domain.UserVideo;
-import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.dto.UserImageDto;
 import com.xinshijie.gallery.enmus.AlbumChargeEnum;
@@ -16,23 +14,18 @@ import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserCollectionService;
 import com.xinshijie.gallery.service.IUserImageService;
 import com.xinshijie.gallery.service.IUserVideoService;
-import com.xinshijie.gallery.vo.AmountVo;
 import com.xinshijie.gallery.vo.UserAlbumVo;
-import com.xinshijie.gallery.vo.UserCollectionVo;
 import com.xinshijie.gallery.vo.UserImageVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 

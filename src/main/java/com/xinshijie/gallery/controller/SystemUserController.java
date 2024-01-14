@@ -10,9 +10,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.*;
 import com.xinshijie.gallery.domain.SystemUser;
 import com.xinshijie.gallery.domain.UserAttention;
+import com.xinshijie.gallery.domain.UserVip;
 import com.xinshijie.gallery.dto.*;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.service.IUserAttentionService;
+import com.xinshijie.gallery.service.IUserVipService;
 import com.xinshijie.gallery.util.RequestContextUtil;
 import com.xinshijie.gallery.util.SecurityUtils;
 import com.xinshijie.gallery.vo.LoginUserVo;
@@ -52,6 +54,8 @@ public class SystemUserController extends BaseController {
 
     @Autowired
     private ISystemUserService systemUserService;
+    @Autowired
+    private IUserVipService userVipService;
     @Autowired
     private IUserAttentionService attentionService;
     @Autowired
@@ -215,14 +219,28 @@ public class SystemUserController extends BaseController {
     public Result<SystemUserIntroVo> getInfo(@RequestParam("userId")Integer userId) {
         Integer loUserId=getUserIdNoLogin();
         SystemUser systemUser = systemUserService.info(userId);
+        if(systemUser==null){
+            throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
+        }
+
         SystemUserIntroVo introVo=new SystemUserIntroVo();
         BeanUtils.copyProperties(systemUser,introVo);
         introVo.setIsAttention(2);
-        if(userId!=null) {
+        if(loUserId != null) {
             UserAttention attention = attentionService.getInfoByAtten(loUserId,userId);
             if(attention != null){
                 introVo.setIsAttention(1);
             }
+        }
+        if(loUserId!=null) {
+            UserVip userVip = userVipService.getInfo(userId, getUserId());
+            if (userVip != null) {
+                introVo.setVipTitle(userVip.getTitle());
+            }
+//            if(userVip.getExpirationTime()==null ||now.isAfter(userVip.getExpirationTime())) {
+//                userVip.setRanks(-1);
+//                now=LocalDateTime.now();
+//            }
         }
         return Result.success(introVo);
     }

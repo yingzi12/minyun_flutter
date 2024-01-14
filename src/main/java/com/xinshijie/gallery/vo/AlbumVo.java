@@ -1,6 +1,6 @@
 package com.xinshijie.gallery.vo;
 
-import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.Album;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

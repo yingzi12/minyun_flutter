@@ -181,14 +181,14 @@
         where id = #{id} and user_id= #{userId}
     </select>
 
-    <select id="previousChapter" resultType="com.xinshijie.gallery.dao.Album">
+    <select id="previousChapter" resultType="com.xinshijie.gallery.domain.Album">
         SELECT *
         FROM user_album a
         WHERE a.id &lt; #{id} and  status=1
         ORDER BY id desc
         LIMIT 1
     </select>
-    <select id="nextChapter" resultType="com.xinshijie.gallery.dao.Album">
+    <select id="nextChapter" resultType="com.xinshijie.gallery.domain.Album">
         SELECT *
         FROM user_album a
         WHERE a.id > #{id} and  status=1

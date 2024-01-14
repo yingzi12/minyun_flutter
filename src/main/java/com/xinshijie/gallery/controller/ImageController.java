@@ -1,7 +1,7 @@
 package com.xinshijie.gallery.controller;
 
 import com.xinshijie.gallery.common.Result;
-import com.xinshijie.gallery.dao.Image;
+import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;

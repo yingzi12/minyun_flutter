@@ -29,6 +29,7 @@ public class UserVip implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    //购买的
     private Integer userId;
     private String userName;
     /**
@@ -48,7 +49,7 @@ public class UserVip implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * vip的用户id
+     * vip的用户id。出售的
      */
     private Integer vipUserId;
     /**

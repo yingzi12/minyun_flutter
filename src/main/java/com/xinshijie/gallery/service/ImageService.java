@@ -1,7 +1,7 @@
 package com.xinshijie.gallery.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xinshijie.gallery.dao.Image;
+import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.ImageDto;
 
 import java.util.List;

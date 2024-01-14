@@ -1,6 +1,6 @@
 package com.xinshijie.gallery.service;
 
-import com.xinshijie.gallery.dao.Album;
+import com.xinshijie.gallery.domain.Album;
 
 public interface ILocalImageService {
 

@@ -51,5 +51,8 @@ public class SystemUser implements Serializable {
     private Double withdraw;
     @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime vipExpirationTime;
+    private String invite;
+    private Integer countInvite;
+
 
 }

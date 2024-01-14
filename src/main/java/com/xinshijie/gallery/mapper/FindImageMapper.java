@@ -1,7 +1,7 @@
 package com.xinshijie.gallery.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xinshijie.gallery.dao.FindImage;
+import com.xinshijie.gallery.domain.FindImage;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

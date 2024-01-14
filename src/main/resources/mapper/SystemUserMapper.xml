@@ -19,8 +19,9 @@
                count_see,
                count_attention,
                income,
-               withdraw
-
+               withdraw,
+                   invite,
+               countInvite
         from system_user
     </sql>
 

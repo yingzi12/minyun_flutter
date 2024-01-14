@@ -1,7 +1,7 @@
 package com.xinshijie.gallery;
 
-import com.xinshijie.gallery.dao.Album;
-import com.xinshijie.gallery.dao.Image;
+import com.xinshijie.gallery.domain.Album;
+import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.service.AlbumService;
