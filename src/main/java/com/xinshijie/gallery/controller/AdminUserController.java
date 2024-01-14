@@ -12,10 +12,12 @@ import com.xinshijie.gallery.dto.SystemUserDto;
 import com.xinshijie.gallery.dto.UserPasswordDto;
 import com.xinshijie.gallery.service.ISystemUserService;
 import com.xinshijie.gallery.util.RequestContextUtil;
+import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -64,11 +66,13 @@ public class AdminUserController extends BaseController {
      * @return 用户信息
      */
     @GetMapping("getInfo")
-    public Result<SystemUser> getInfo() {
+    public Result<SystemUserIntroVo> getInfo() {
         Integer userId = getUserId();
-        String userName = RequestContextUtil.getUserName();
+//        String userName = RequestContextUtil.getUserName();
         SystemUser systemUserVo = systemUserService.info(userId);
-        return Result.success(systemUserVo);
+        SystemUserIntroVo introVo=new SystemUserIntroVo();
+        BeanUtils.copyProperties(systemUserVo,introVo);
+        return Result.success(introVo);
     }
 
     @PostMapping("/edit")

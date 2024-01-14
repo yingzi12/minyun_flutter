@@ -235,12 +235,22 @@ public class SystemUserController extends BaseController {
         if(loUserId!=null) {
             UserVip userVip = userVipService.getInfo(userId, getUserId());
             if (userVip != null) {
-                introVo.setVipTitle(userVip.getTitle());
+                if(LocalDateTime.now().isAfter(userVip.getExpirationTime())) {
+                    introVo.setVip(null);
+                    introVo.setVipTitle(null);
+                    introVo.setVipExpirationTime(null);
+                }else {
+                    introVo.setVip(userVip.getVid());
+                    introVo.setVipTitle(userVip.getTitle());
+                    introVo.setVipExpirationTime(userVip.getExpirationTime());
+                }
+            }else{
+                introVo.setVip(null);
+                introVo.setVipTitle(null);
+                introVo.setVipExpirationTime(null);
             }
-//            if(userVip.getExpirationTime()==null ||now.isAfter(userVip.getExpirationTime())) {
-//                userVip.setRanks(-1);
-//                now=LocalDateTime.now();
-//            }
+        }else{
+            introVo.setVip(null);
         }
         return Result.success(introVo);
     }
