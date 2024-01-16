@@ -141,6 +141,7 @@ public class UserAlbumController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserAlbum>> list(UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
+        findDto.setOrderBy("createTime");
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
@@ -162,7 +163,7 @@ public class UserAlbumController extends BaseController {
     @GetMapping("/listSee")
     public Result<List<UserAlbum>> listSee(UserAlbumDto findDto) {
         findDto.setStatus(AlbumStatuEnum.NORMAL.getCode());
-        findDto.setOrder("count_see");
+        findDto.setOrderBy("countSee");
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }

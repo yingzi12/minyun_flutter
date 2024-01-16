@@ -147,7 +147,7 @@ public class UserAlbumDto implements Serializable {
      */
     @Schema(description = "状态 ")
     private Integer status;
-    private String order;
+    private String orderBy;
 
     private Long pageNum;
 

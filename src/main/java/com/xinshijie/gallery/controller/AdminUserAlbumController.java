@@ -8,7 +8,6 @@ import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.service.IUserAlbumService;
-import com.xinshijie.gallery.vo.UserAlbumVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +116,7 @@ public class AdminUserAlbumController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserAlbum>> select(UserAlbumDto findDto) {
         findDto.setUserId(getUserId());
+        findDto.setOrderBy("createTime");
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }

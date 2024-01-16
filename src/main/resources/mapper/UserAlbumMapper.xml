@@ -82,6 +82,9 @@
             <if test="dto.introduce !=null ">and introduce= #{dto.introduce}</if>
             <if test="dto.status !=null ">and status= #{dto.status}</if>
         </where>
+        <if test="dto.orderBy == 'countSee'"> order by count_see desc</if>
+        <if test="dto.orderBy == 'createTime'"> order by create_time desc</if>
+
     </select>
 
     <select id="getPageUserAlbum" resultType="com.xinshijie.gallery.domain.UserAlbum">
