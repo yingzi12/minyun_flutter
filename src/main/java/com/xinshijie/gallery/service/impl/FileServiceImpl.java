@@ -245,6 +245,7 @@ public class FileServiceImpl implements IFileService {
         mkdirParentDir(savePath + imgUrlPath);
         try (InputStream inputStream = file.getInputStream();
              FileOutputStream outputStream = new FileOutputStream(savePath + imgUrlPath)) {
+            log.info("保存图片 saveImage path:{}",savePath + imgUrlPath);
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -260,6 +261,7 @@ public class FileServiceImpl implements IFileService {
     public void mkdirParentDir(String path)  {
         File destinationFile = new File(path);
         File parentDir = destinationFile.getParentFile();
+        log.info("父目录的绝对路径: " + parentDir.getAbsolutePath());
         // 如果父目录不存在，尝试创建它
         if (parentDir != null && !parentDir.exists()) {
             boolean created = parentDir.mkdirs();
