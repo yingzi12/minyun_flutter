@@ -64,11 +64,12 @@ public class FileServiceImpl implements IFileService {
             }
             log.info("file:" + file.getOriginalFilename());
             String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".webp";
-            File destinationFile = new File(savePath + imgUrl);
-            File parentDir = destinationFile.getParentFile();
-            if (parentDir != null && !parentDir.exists()) {
-                parentDir.mkdirs();
-            }
+//            File destinationFile = new File(savePath + imgUrl);
+//            File parentDir = destinationFile.getParentFile();
+//            if (parentDir != null && !parentDir.exists()) {
+//                parentDir.mkdirs();
+//            }
+            mkdirParentDir(savePath + imgUrl);
 
             // 检查文件大小或格式
             if (file.getSize() <= 600 * 1024 || isWebPFormat(file)) {
@@ -81,7 +82,7 @@ public class FileServiceImpl implements IFileService {
                 ImageWriteParam param = writer.getDefaultWriteParam();
                 param.setCompressionQuality(outputQuality);
 
-                ImageOutputStream ios = ImageIO.createImageOutputStream(destinationFile);
+                ImageOutputStream ios = ImageIO.createImageOutputStream(savePath + imgUrl);
                 writer.setOutput(ios);
                 writer.write(null, new IIOImage(image, null, null), param);
                 ios.close();
@@ -241,6 +242,7 @@ public class FileServiceImpl implements IFileService {
         String[] hzArr = file.getOriginalFilename().split("\\.");
         String hz = hzArr[hzArr.length - 1];
         String imgUrlPath = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + "." + hz;
+        mkdirParentDir(savePath + imgUrlPath);
         try (InputStream inputStream = file.getInputStream();
              FileOutputStream outputStream = new FileOutputStream(savePath + imgUrlPath)) {
             byte[] buffer = new byte[1024];
@@ -255,5 +257,17 @@ public class FileServiceImpl implements IFileService {
         return imgUrlPath;
     }
 
+    public void mkdirParentDir(String path)  {
+        File destinationFile = new File(path);
+        File parentDir = destinationFile.getParentFile();
+        // 如果父目录不存在，尝试创建它
+        if (parentDir != null && !parentDir.exists()) {
+            boolean created = parentDir.mkdirs();
+            if (!created) {
+                log.error("无法创建目录 path:{}",path);
+                throw new ServiceException("无法创建目录: " + parentDir.getAbsolutePath());
+            }
+        }
+    }
 
 }

@@ -177,7 +177,6 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         }
         try {
             String md5 = fileService.getMD5(file.getInputStream());
-
             AllImage allImage = allImageService.getMD5(md5);
             if (allImage != null) {
                 QueryWrapper<UserImage> qw = new QueryWrapper<>();

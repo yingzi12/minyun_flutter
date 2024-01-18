@@ -24,7 +24,9 @@ public class ImageController {
         if (dto.getPageNum() == null) {
             dto.setPageNum(1);
         }
-        dto.setPageSize(6);
+        if(dto.getPageSize()==null) {
+            dto.setPageSize(6);
+        }
         dto.setOffset(dto.getPageSize() * (dto.getPageNum() - 1));
         Integer total = imageService.count(dto);
 
