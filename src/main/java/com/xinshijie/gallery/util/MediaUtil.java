@@ -65,7 +65,8 @@ public class MediaUtil {
      * FFmpeg程序执行路径
      * 当前系统安装好ffmpeg程序并配置好相应的环境变量后，值为ffmpeg可执行程序文件在实际系统中的绝对路径
      */
-    private static String FFMPEG_PATH = "/Users/luhuang/Documents/git/SubtitleGenerated/src/main/resources/ffmpeg"; // /usr/bin/ffmpeg
+//    private static String FFMPEG_PATH = "/Users/luhuang/Documents/git/SubtitleGenerated/src/main/resources/ffmpeg"; // /usr/bin/ffmpeg
+    private static String FFMPEG_PATH = "ffmpeg"; // /usr/bin/ffmpeg
 
 
     /**
@@ -141,8 +142,8 @@ public class MediaUtil {
         }
         List<String> cmds = new ArrayList<>(1);
         cmds.add("-version");
-        String ffmpegVersionStr = executeCommand(cmds);
-        if (StringUtils.isBlank(ffmpegVersionStr)) {
+        Boolean ok = executeCommand(cmds);
+        if (!ok) {
             log.error("--- 工作状态异常，因为ffmpeg命令执行失败！ ---");
             return false;
         }
@@ -157,7 +158,53 @@ public class MediaUtil {
      * @param commonds 要执行的FFmpeg命令
      * @return FFmpeg程序在执行命令过程中产生的各信息，执行出错时返回null
      */
-    public static String executeCommand(List<String> commonds) {
+    public static boolean executeCommand(List<String> commonds) {
+        if (CollectionUtils.isEmpty(commonds)) {
+            log.error("--- 指令执行失败，因为要执行的FFmpeg指令为空！ ---");
+            return false;
+        }
+        LinkedList<String> ffmpegCmds = new LinkedList<>(commonds);
+        ffmpegCmds.addFirst(FFMPEG_PATH); // 设置ffmpeg程序所在路径
+        log.info("--- 待执行的FFmpeg指令为：---" + ffmpegCmds);
+
+        Runtime runtime = Runtime.getRuntime();
+        Process ffmpeg = null;
+        try {
+            // 执行ffmpeg指令
+            ProcessBuilder builder = new ProcessBuilder();
+            builder.command(ffmpegCmds);
+            ffmpeg = builder.start();
+            log.info("--- 开始执行FFmpeg指令：--- 执行线程名：" + builder);
+
+            // 取出输出流和错误流的信息
+            PrintStream errorStream = new PrintStream(ffmpeg.getErrorStream());
+            PrintStream inputStream = new PrintStream(ffmpeg.getInputStream());
+            errorStream.start();
+            inputStream.start();
+            // 等待ffmpeg命令执行完
+            int exitCode = ffmpeg.waitFor();
+
+            // 获取执行结果字符串
+            String result = errorStream.stringBuffer.append(inputStream.stringBuffer).toString();
+
+            // 输出执行的命令信息
+            String cmdStr = Arrays.toString(ffmpegCmds.toArray()).replace(",", "");
+            String resultStr = StringUtils.isBlank(result) ? "【异常】" : "正常";
+            log.info("--- 已执行的FFmepg命令： ---" + cmdStr + " 已执行完毕,执行结果： " + resultStr);
+            return exitCode == 0;
+        } catch (Exception e) {
+            log.error("--- FFmpeg命令执行出错！ --- 出错信息： " + e.getMessage());
+            return false;
+
+        } finally {
+            if (null != ffmpeg) {
+                ProcessKiller ffmpegKiller = new ProcessKiller(ffmpeg);
+                // JVM退出时，先通过钩子关闭FFmepg进程
+                runtime.addShutdownHook(ffmpegKiller);
+            }
+        }
+    }
+    public static String executeAyscCommand(List<String> commonds) {
         if (CollectionUtils.isEmpty(commonds)) {
             log.error("--- 指令执行失败，因为要执行的FFmpeg指令为空！ ---");
             return null;
@@ -830,7 +877,7 @@ public class MediaUtil {
      * @param inputFile 源媒体文件
      * @return 解析后的结果字符串，解析失败时为空
      */
-    public static String getMetaInfoFromFFmpeg(File inputFile) {
+    public static String  getMetaInfoFromFFmpeg(File inputFile) {
         if (inputFile == null || !inputFile.exists()) {
             throw new RuntimeException("源媒体文件不存在，源媒体文件路径： ");
         }
@@ -844,7 +891,7 @@ public class MediaUtil {
         }
         commond.add(input);
 
-        String executeResult = MediaUtil.executeCommand(commond);
+        String executeResult = MediaUtil.executeAyscCommand(commond);
         return executeResult;
     }
 

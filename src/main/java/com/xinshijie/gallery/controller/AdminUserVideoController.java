@@ -167,11 +167,8 @@ public class AdminUserVideoController extends BaseController {
                                                    @RequestParam("isFree") Integer isFree,
                                                    @RequestParam("md5") String md5) {
         try {
-            Long count = userVideoService.getCount(aid, isFree);
-            if (isFree == 1 && count > 3) {
-                throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
-            }
-            if (isFree == 2 && count > 10) {
+            Long count = userVideoService.getCount(aid, null);
+            if (count > 3) {
                 throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
             }
 
@@ -200,9 +197,14 @@ public class AdminUserVideoController extends BaseController {
             // Check if all chunks have been uploaded
             if (allChunksUploaded(day, hashFileName, totalChunks)) {
                 log.info("All chunks uploaded, starting to merge file: " + hashFileName);
-
                 mergeFile(soruceSavePath, hashFileName, totalChunks);
-
+                count = userVideoService.getCount(aid, null);
+                if ( count > 3) {
+                    //超过限制，删除合并之后的文件
+                    Path fileOutput = Paths.get(Constants.videoHcPath + soruceSavePath + "/" + hashFileName);
+                    Files.delete(fileOutput); // 删除分块文件
+                    throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+                }
                 userVideoService.updateUploadedFiles(getUserId(), aid, isFree, 0L, md5, soruceSavePath, hashFileName);
             }
         } catch (Exception ex) {
@@ -271,23 +273,6 @@ public class AdminUserVideoController extends BaseController {
                 Files.delete(chunkFile); // 删除分块文件
             }
         }
-
-        // 计算简化的哈希.改成前段
-//        try (RandomAccessFile file = new RandomAccessFile(fileOutput.toFile(), "r")) {
-//            long[] samplePoints = new long[]{0, fileSize / 2, fileSize - Math.min(fileSize, 4096)};
-//            for (long point : samplePoints) {
-//                file.seek(point);
-//                byte[] bytes = new byte[Math.min((int) (fileSize - point), 4096)];
-//                int readSize = file.read(bytes);
-//                md.update(bytes, 0, readSize);
-//            }
-//        }
-
-//        byte[] md5Bytes = md.digest();
-//        BigInteger bi = new BigInteger(1, md5Bytes);
-//        String md5 = String.format("%032x", bi);
-
-//        log.info("File merged successfully: {}, MD5: {}", fileOutput, md5);
         return "";
     }
 

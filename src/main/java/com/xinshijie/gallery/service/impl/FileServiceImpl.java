@@ -166,14 +166,7 @@ public class FileServiceImpl implements IFileService {
      * @return
      */
     public String chargeVideoThreadFile(String headPath, String title, String sourcePathUrl) {
-//        boolean acquired = false;
         try {
-            // 尝试获取许可，最多等待一定时间
-//            acquired = semaphore.tryAcquire(1000, TimeUnit.MILLISECONDS);
-//            if (!acquired) {
-//                // 无法获得许可，可能是因为已达到最大并发数
-//                throw new ServiceException("System is busy, please try again later.");
-//            }
 
             // 你的方法逻辑
             Path sourcePath = Paths.get(Constants.videoHcPath + sourcePathUrl);
