@@ -400,10 +400,12 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         log.info("---------------------------截图成功-------------md5:{}--------------------------------",video.getMd5());
         //转换视频为ts
         String url = fileService.chargeVideoThreadFile(Constants.videoHcPath, video.getTitle(), video.getUrl());
-        log.info("---------------------------转码成功--------------md5:{}-------------------------------");
+        log.info("---------------------------转码成功--------------md5:{}-------------------------------",video.getMd5());
 
         updateVideo(video, video.getMd5(), url, imagUrl, VideoStatuEnum.LOCK.getCode());
-//        delFile( video.getUrl());
+        log.info("---------------------------开始删除缓存--------------md5:{}-------------------------------",video.getMd5());
+        delFile( video.getUrl());
+        log.info("---------------------------删除缓存成功--------------md5:{}-------------------------------",video.getMd5());
     }
     public void updateVideo(AllVideo video, String md5, String url, String imgUrl, Integer status) {
         QueryWrapper<UserVideo> qw = new QueryWrapper<>();
