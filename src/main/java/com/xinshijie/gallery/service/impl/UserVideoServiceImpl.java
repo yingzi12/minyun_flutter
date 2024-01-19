@@ -181,7 +181,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public Integer delById(Integer userId, Long id, Integer aid) {
         QueryWrapper<UserVideo> qw = new QueryWrapper<>();
         qw.eq("id", id);
-        qw.eq("userId", userId);
+        qw.eq("user_id", userId);
         qw.eq("aid", aid);
 
         int i= mapper.delete(qw);
@@ -193,7 +193,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     public Integer updateIsFree(Integer userId, Long id, Integer isFree) {
         QueryWrapper<UserVideo> qw = new QueryWrapper<>();
         qw.eq("id", id);
-        qw.eq("userId", userId);
+        qw.eq("user_id", userId);
         UserVideo video = new UserVideo();
         video.setIsFree(isFree);
         return mapper.update(video, qw);
