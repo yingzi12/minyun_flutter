@@ -438,6 +438,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         Time time = new Time(startTimeInSeconds);
         File destinationFile = new File(imaUrl);
         File parentDir = destinationFile.getParentFile();
+        log.info("视频截取图片地址：{}",destinationFile.getAbsolutePath());
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
