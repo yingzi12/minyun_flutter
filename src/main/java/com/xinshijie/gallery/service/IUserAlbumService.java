@@ -62,9 +62,9 @@ public interface IUserAlbumService extends IService<UserAlbum> {
 
     Integer updateCountSee(Integer id, String updateDate);
 
-    Album previousChapter(Integer id);
+    UserAlbum previousChapter(Integer id);
 
-    Album nextChapter(Integer id);
+    UserAlbum nextChapter(Integer id);
 
     Double getAmount(Integer aid, Integer userId, Integer charge, Double price, Double vipPrice);
 

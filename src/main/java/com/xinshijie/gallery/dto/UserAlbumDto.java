@@ -142,6 +142,8 @@ public class UserAlbumDto implements Serializable {
     private String introduce;
     private String imgUrl;
 
+    private String payIntro;
+
     /**
      * 状态
      */

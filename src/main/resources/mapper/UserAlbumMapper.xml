@@ -25,7 +25,8 @@
                introduce,
                status,
                 charge,
-               img_url
+               img_url,
+               pay_intro
         from user_album
     </sql>
 
@@ -92,78 +93,6 @@
         ${ew.customSqlSegment}
     </select>
 
-    <insert id="add">
-        insert into user_album (id,
-                                title,
-                                create_time,
-                                update_time,
-                                user_id,
-                                user_name,
-                                intro,
-                                tags,
-                                vip_price,
-                                charge,
-                                price,
-                                discount,
-                                girl,
-                                count_see,
-                                number_photos,
-                                number_video,
-                                count_collection,
-                                count_buy,
-                                score,
-                                introduce,
-                                status)
-        values (#{ id },
-                #{ title },
-                #{ createTime },
-                #{ updateTime },
-                #{ userId },
-                #{ userName },
-                #{ intro },
-                #{ tags },
-                #{ vipPrice },
-                #{ charge },
-                #{ price },
-                #{ discount },
-                #{ girl },
-                #{ countSee },
-                #{ numberPhotos },
-                #{ numberVideo },
-                #{ countCollection },
-                #{ countBuy },
-                #{ score },
-                #{ introduce },
-                #{ status })
-    </insert>
-
-    <update id="edit">
-        update user_album
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="id !=null ">id= #{id},</if>
-            <if test="title !=null ">title= #{title},</if>
-            <if test="createTime !=null ">create_time= #{createTime},</if>
-            <if test="updateTime !=null ">update_time= #{updateTime},</if>
-            <if test="userId !=null ">user_id= #{userId},</if>
-            <if test="userName !=null ">user_name= #{userName},</if>
-            <if test="intro !=null ">intro= #{intro},</if>
-            <if test="tags !=null ">tags= #{tags},</if>
-            <if test="vipPrice !=null ">vip_price= #{vipPrice},</if>
-            <if test="charge !=null ">charge= #{charge},</if>
-            <if test="price !=null ">price= #{price},</if>
-            <if test="discount !=null ">discount= #{discount},</if>
-            <if test="girl !=null ">girl= #{girl},</if>
-            <if test="countSee !=null ">count_see= #{countSee},</if>
-            <if test="numberPhotos !=null ">number_photos= #{numberPhotos},</if>
-            <if test="numberVideo !=null ">number_video= #{numberVideo},</if>
-            <if test="countCollection !=null ">count_collection= #{countCollection},</if>
-            <if test="countBuy !=null ">count_buy= #{countBuy},</if>
-            <if test="score !=null ">score= #{score},</if>
-            <if test="introduce !=null ">introduce= #{introduce},</if>
-            <if test="status !=null ">status= #{status},</if>
-        </trim>
-        where id=#{id} and user_id= #{userId}
-    </update>
 
     <delete id="delById">
         delete
@@ -184,14 +113,14 @@
         where id = #{id} and user_id= #{userId}
     </select>
 
-    <select id="previousChapter" resultType="com.xinshijie.gallery.domain.Album">
+    <select id="previousChapter" resultType="com.xinshijie.gallery.domain.UserAlbum">
         SELECT *
         FROM user_album a
         WHERE a.id &lt; #{id} and  status=1
         ORDER BY id desc
         LIMIT 1
     </select>
-    <select id="nextChapter" resultType="com.xinshijie.gallery.domain.Album">
+    <select id="nextChapter" resultType="com.xinshijie.gallery.domain.UserAlbum">
         SELECT *
         FROM user_album a
         WHERE a.id > #{id} and  status=1

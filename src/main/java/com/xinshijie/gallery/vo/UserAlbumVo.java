@@ -2,6 +2,7 @@ package com.xinshijie.gallery.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xinshijie.gallery.domain.Album;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVideo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -154,12 +155,14 @@ public class UserAlbumVo implements Serializable {
 
     private Integer videoCount;
 
+    private String payIntro;
+
     //购买需要的价格
     private Double amount;
 
     private Integer isCollection;
     private String imgUrl;
 
-    private Album pre;
-    private Album next;
+    private UserAlbum pre;
+    private UserAlbum next;
 }

@@ -72,4 +72,12 @@ public interface IUserVideoService extends IService<UserVideo> {
     String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file);
 
     String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath, String fileName);
+
+    void transcodeTs(AllVideo video);
+
+    void updateVideo(AllVideo video, String md5, String url, String imgUrl, Integer status);
+
+    void jietu(String vedioUrl, String imaUrl, int startTimeInSeconds, int width, int height);
+
+    void delFile(String strPath);
 }

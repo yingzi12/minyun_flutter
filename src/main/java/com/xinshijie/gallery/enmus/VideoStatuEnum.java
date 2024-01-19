@@ -3,7 +3,7 @@ package com.xinshijie.gallery.enmus;
 import lombok.Getter;
 
 @Getter
-public enum VedioStatuEnum {
+public enum VideoStatuEnum {
 
     WAIT(1, "等待"),
     NORMAL(2, "转码中"),
@@ -13,13 +13,13 @@ public enum VedioStatuEnum {
     private final Integer code;
     private final String name;
 
-    VedioStatuEnum(Integer code, String name) {
+    VideoStatuEnum(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
 
     public static String getNameByCode(Integer code) {
-        for (VedioStatuEnum enable : values()) {
+        for (VideoStatuEnum enable : values()) {
             if (enable.getCode() == code) {
                 return enable.getName();
             }

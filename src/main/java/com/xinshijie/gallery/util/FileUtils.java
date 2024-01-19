@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 文件处理工具类
@@ -202,6 +204,46 @@ public class FileUtils {
         }
         String baseName = FilenameUtils.getBaseName(fileName);
         return baseName;
+    }
+
+    /**
+     * 删除指定目录下子目录不是今天的文件夹
+     * @param parentDirPath
+     */
+    public void deleteOldDirectories(String parentDirPath) {
+        File parentDir = new File(parentDirPath);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String todayStr = dateFormat.format(new Date());
+
+        // 确保提供的路径是一个目录
+        if (parentDir.isDirectory()) {
+            File[] subDirs = parentDir.listFiles(File::isDirectory);  // 获取所有子目录
+            if (subDirs != null) {
+                for (File dir : subDirs) {
+                    // 检查目录名称是否为今天
+                    if (!dir.getName().equals(todayStr)) {
+                        deleteDirectory(dir);  // 删除目录
+                    }
+                }
+            }
+        } else {
+            System.out.println(parentDirPath + " 不是一个目录");
+        }
+    }
+
+    private boolean deleteDirectory(File dir) {
+        if (dir.isDirectory()) {
+            File[] children = dir.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    boolean success = deleteDirectory(child);
+                    if (!success) {
+                        return false; // 如果无法删除，立即返回
+                    }
+                }
+            }
+        }
+        return dir.delete(); // 删除目录本身
     }
 
 }

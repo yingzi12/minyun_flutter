@@ -77,10 +77,14 @@ public class UserAlbumController extends BaseController {
         UserAlbumVo vo = new UserAlbumVo();
         BeanUtils.copyProperties(userAlbum, vo);
         userAlbumService.updateCountSee(id, LocalDate.now().toString());
-        Album pre = userAlbumService.previousChapter(id);
-        Album next = userAlbumService.nextChapter(id);
-
+        UserAlbum pre = userAlbumService.previousChapter(id);
+        pre.setPayIntro("");
+        UserAlbum next = userAlbumService.nextChapter(id);
+        next.setPayIntro("");
         Boolean isSee=userAlbumService.isCheck(findDto.getAid(), userId);
+        if(!isSee){
+            userAlbum.setPayIntro("锁定中。。。。。。。");
+        }
         vo.setPre(pre);
         vo.setNext(next);
 

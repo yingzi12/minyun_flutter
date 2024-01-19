@@ -186,12 +186,12 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     }
 
     @Override
-    public Album previousChapter(Integer id) {
+    public UserAlbum previousChapter(Integer id) {
         return mapper.previousChapter(id);
     }
 
     @Override
-    public Album nextChapter(Integer id) {
+    public UserAlbum nextChapter(Integer id) {
         return mapper.nextChapter(id);
     }
 

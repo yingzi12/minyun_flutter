@@ -186,7 +186,6 @@ public class MediaUtil {
 
             // 获取执行结果字符串
             String result = errorStream.stringBuffer.append(inputStream.stringBuffer).toString();
-
             // 输出执行的命令信息
             String cmdStr = Arrays.toString(ffmpegCmds.toArray()).replace(",", "");
             String resultStr = StringUtils.isBlank(result) ? "【异常】" : "正常";

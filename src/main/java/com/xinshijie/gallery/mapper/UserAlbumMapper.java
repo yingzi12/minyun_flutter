@@ -42,10 +42,6 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
      */
     IPage<UserAlbum> getPageUserAlbum(Page<UserAlbum> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
-    /**
-     * 根据id修改数据
-     */
-    Integer edit(UserAlbumDto dto);
 
     /**
      * 删除数据
@@ -55,9 +51,9 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
     Integer updateCountSee(@Param("id") Integer id, @Param("updateDate") String updateDate);
 
 
-    Album previousChapter(@Param("id") Integer id);
+    UserAlbum previousChapter(@Param("id") Integer id);
 
-    Album nextChapter(@Param("id") Integer id);
+    UserAlbum nextChapter(@Param("id") Integer id);
 
     /**
      * 根据id数据
