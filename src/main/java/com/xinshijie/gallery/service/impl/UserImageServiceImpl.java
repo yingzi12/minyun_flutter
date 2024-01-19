@@ -144,11 +144,15 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId, Long id) {
+    public Integer delById(Integer userId, Long id, Integer aid) {
         QueryWrapper<UserImage> qw = new QueryWrapper<>();
         qw.eq("id", id);
         qw.eq("user_id", userId);
-        return mapper.delete(qw);
+        qw.eq("aid", aid);
+
+        int i= mapper.delete(qw);
+        userAlbumService.updateCountVideo(aid);
+         return i;
     }
 
     @Override

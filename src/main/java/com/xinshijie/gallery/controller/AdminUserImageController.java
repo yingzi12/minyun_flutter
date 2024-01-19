@@ -48,7 +48,7 @@ public class AdminUserImageController extends BaseController {
      * @return
      */
     @GetMapping("/remove")
-    public Result<Integer> del(@RequestParam("aid") Long aid,@RequestParam("id") Long id) {
+    public Result<Integer> del(@RequestParam("aid") Integer aid,@RequestParam("id") Long id) {
         UserAlbum userAlbum = userAlbumService.getById(aid);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
@@ -59,7 +59,7 @@ public class AdminUserImageController extends BaseController {
         if (!userAlbum.getUserId().equals(getUserId())) {
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
         }
-        Integer vo = userImageService.delById(getUserId(), id);
+        Integer vo = userImageService.delById(getUserId(), id,aid);
         return Result.success(vo);
     }
 

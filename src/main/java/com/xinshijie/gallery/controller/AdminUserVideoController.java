@@ -75,16 +75,16 @@ public class AdminUserVideoController extends BaseController {
      *
      * @return
      */
-    @GetMapping("/remove/{id}")
-    public Result<Integer> del(@PathVariable("id") Long id) {
-        UserAlbum userAlbum = userAlbumService.getById(id);
+    @GetMapping("/remove")
+    public Result<Integer> del(@RequestParam("id") Long id,@RequestParam("aid") Integer aid) {
+        UserAlbum userAlbum = userAlbumService.getById(aid);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
         }
         if (userAlbum.getStatus() != AlbumStatuEnum.NORMAL.getCode()) {
             throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
         }
-        Integer vo = userVideoService.delById(getUserId(), id);
+        Integer vo = userVideoService.delById(getUserId(), id,aid);
         return Result.success(vo);
     }
 
