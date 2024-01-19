@@ -151,6 +151,33 @@ public class MediaUtil {
         return true;
     }
 
+    /**
+     * 使用 FFmpeg 从视频中截取单帧图片。
+     *
+     * @param inputVideoPath 输入视频文件的路径。
+     * @param outputImagePath 输出图片文件的路径。
+     * @param time           截取帧的时间点，格式为 "HH:mm:ss"。
+     * @return 命令执行是否成功。
+     */
+    public static boolean extractFrame(String inputVideoPath, String outputImagePath, String time) {
+        ProcessBuilder processBuilder = new ProcessBuilder(
+                FFMPEG_PATH,
+                "-ss", time,
+                "-i", inputVideoPath,
+                "-frames:v", "1",
+                "-y", // 覆盖输出文件
+                outputImagePath
+        );
+
+        try {
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+            return exitCode == 0;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 执行FFmpeg命令
@@ -203,6 +230,8 @@ public class MediaUtil {
             }
         }
     }
+
+
     public static String executeAyscCommand(List<String> commonds) {
         if (CollectionUtils.isEmpty(commonds)) {
             log.error("--- 指令执行失败，因为要执行的FFmpeg指令为空！ ---");

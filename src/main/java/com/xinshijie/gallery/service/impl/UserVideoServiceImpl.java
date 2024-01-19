@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -384,20 +385,17 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         if (videoMetaInfo == null) {
             return;
         }
-
         video.setSize(videoMetaInfo.getSize());
         video.setDuration(video.getDuration());
         String[] fileNameArr = video.getUrl().toString().split("\\.");
-        String imagUrl = "/video/"+fileNameArr[0]+".jpg";
+        String imagUrl = "/video/"+ LocalDate.now().toString()+"/"+video.getMd5() +".jpg";
         //生成预览图
         if (video.getDuration() > 13000) {
 //            imagUrl = video.getUrl().replaceAll(, "jpg");
-            jietu(Constants.videoHcPath + video.getUrl(), savePath + imagUrl, 1, videoMetaInfo.getWidth(), videoMetaInfo.getHeight());
+            jietu(Constants.videoHcPath + video.getUrl(), savePath + imagUrl, 10000);
 //            jietu(Constants.videoHcPath + video.getUrl(),savePath + imagUrl,10,videoMetaInfo.getWidth(),videoMetaInfo.getHeight() );
         } else {
-//            imagUrl = video.getUrl().replaceAll("m3u8", "jpg");
-//            int height = videoMetaInfo.getHeight() / videoMetaInfo.getWidth(); // 根据宽度计算适合的高度，防止画面变形
-            jietu(Constants.videoHcPath + video.getUrl(), savePath + imagUrl, 1, videoMetaInfo.getWidth(), videoMetaInfo.getHeight());
+            jietu(Constants.videoHcPath + video.getUrl(), savePath + imagUrl, 0);
         }
         log.info("---------------------------截图成功-------------md5:{}--------------------------------",video.getMd5());
         //转换视频为ts
@@ -426,25 +424,24 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         allVideoService.updateById(video);
     }
 
-    public void jietu(String vedioUrl, String imaUrl, int startTimeInSeconds, int width, int height) {
-        File videoFile = new File(vedioUrl); // 源视频文件路径
-        String outputFolderPath = imaUrl; // 转换后的文件输出文件夹路径
-//        int startTimeInSeconds = 1; // 开始截取视频帧的时间点（单位：s）
-//        int width = 300; // 截取的视频帧图片的宽度（单位：px）
-//        int height = 300; // 截取的视频帧图片的高度（单位：px）
-        int timeLengthInSeconds = 1; // 截取的视频帧的时长（从time开始算，单位:s）
-        boolean isContinuous = false; // false - 静态图，true - 动态图
-
-        Time time = new Time(startTimeInSeconds);
+    public void jietu(String vedioUrl, String imaUrl, int startTimeInSeconds) {
         File destinationFile = new File(imaUrl);
         File parentDir = destinationFile.getParentFile();
         log.info("视频截取图片地址：{}",destinationFile.getAbsolutePath());
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
-        MediaUtil.cutVideoFrame(videoFile, outputFolderPath, time, width, height, timeLengthInSeconds, isContinuous);
+        MediaUtil.extractFrame(vedioUrl, imaUrl,convertMillisToTimeFormat(startTimeInSeconds));
     }
 
+    public static String convertMillisToTimeFormat(long millis) {
+        long totalSeconds = millis / 1000;
+        long seconds = totalSeconds % 60;
+        long minutes = (totalSeconds / 60) % 60;
+        long hours = totalSeconds / 3600;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
     public void delFile(String strPath){
         try {
             Path path = Paths.get(Constants.videoHcPath + strPath);

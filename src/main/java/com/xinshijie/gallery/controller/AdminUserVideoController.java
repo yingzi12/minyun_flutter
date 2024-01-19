@@ -123,7 +123,9 @@ public class AdminUserVideoController extends BaseController {
     @GetMapping("/list")
     public Result<List<UserVideo>> list(UserVideoFindDto findDto) {
         findDto.setUserId(getUserId());
-
+        if(findDto.getAid()==null){
+            throw  new ServiceException(ResultCodeEnum.PARAMS_IS_NULL);
+        }
         List<UserVideo> vo = userVideoService.selectUserVideoList(findDto.getAid(), findDto.getUserId(), findDto.getIsFree());
         Long count = userVideoService.selectCount(findDto.getAid(), findDto.getUserId(), findDto.getIsFree());
         return Result.success(vo, count.intValue());

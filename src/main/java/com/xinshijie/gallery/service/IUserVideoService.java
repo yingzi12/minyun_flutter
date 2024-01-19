@@ -77,7 +77,7 @@ public interface IUserVideoService extends IService<UserVideo> {
 
     void updateVideo(AllVideo video, String md5, String url, String imgUrl, Integer status);
 
-    void jietu(String vedioUrl, String imaUrl, int startTimeInSeconds, int width, int height);
+    void jietu(String vedioUrl, String imaUrl, int startTimeInSeconds);
 
     void delFile(String strPath);
 }

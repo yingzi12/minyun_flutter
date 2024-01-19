@@ -151,7 +151,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         qw.eq("aid", aid);
 
         int i= mapper.delete(qw);
-        userAlbumService.updateCountVideo(aid);
+        userAlbumService.updateCountImage(aid);
          return i;
     }
 
