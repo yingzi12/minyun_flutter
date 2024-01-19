@@ -40,45 +40,4 @@ public class MessageConsumer {
         }
         userVideoService.transcodeTs(video);
     }
-
-//    public void update(AllVideo video, String md5, String url, String imgUrl, Integer status) {
-//        QueryWrapper<UserVideo> qw = new QueryWrapper<>();
-//        qw.eq("md5", md5);
-//        UserVideo userVideo = new UserVideo();
-//        userVideo.setUrl(url);
-//        userVideo.setImgUrl(imgUrl);
-//
-//        userVideo.setStatus(status);
-//        userVideoService.update(userVideo, qw);
-//
-////        AllVideo allVideo=new AllVideo();
-////        allVideo.setId(video.getId());
-//        video.setSourceUrl(url);
-//        video.setStatus(status);
-//        video.setImgUrl(imgUrl);
-//
-//        allVideoService.updateById(video);
-//    }
-
-//    public void jietu(String vedioUrl, String imaUrl, int startTimeInSeconds, int width, int height) {
-//        File videoFile = new File(vedioUrl); // 源视频文件路径
-//        String outputFolderPath = imaUrl; // 转换后的文件输出文件夹路径
-////        int startTimeInSeconds = 1; // 开始截取视频帧的时间点（单位：s）
-////        int width = 300; // 截取的视频帧图片的宽度（单位：px）
-////        int height = 300; // 截取的视频帧图片的高度（单位：px）
-//        int timeLengthInSeconds = 1; // 截取的视频帧的时长（从time开始算，单位:s）
-//        boolean isContinuous = false; // false - 静态图，true - 动态图
-//
-//        Time time = new Time(startTimeInSeconds);
-//        MediaUtil.cutVideoFrame(videoFile, outputFolderPath, time, width, height, timeLengthInSeconds, isContinuous);
-//    }
-//
-//    public void delFile(String strPath){
-//        try {
-//            Path path = Paths.get(Constants.videoHcPath + strPath);
-//           Files.delete(path);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }
