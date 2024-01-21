@@ -279,13 +279,13 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
     }
 
     public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath, String fileName) {
-        Long count = this.getCount(aid, isFree);
-        if (isFree == 1 && count > 3) {
+        Long count = this.getCount(aid, null);
+        if ( count > 3) {
             throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
         }
-        if (isFree == 2 && count > 10) {
-            throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
-        }
+//        if (isFree == 2 && count > 10) {
+//            throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
+//        }
         UserAlbum userAlbum = userAlbumService.getInfo(aid);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
@@ -388,7 +388,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
             return;
         }
         video.setSize(videoMetaInfo.getSize());
-        video.setDuration(video.getDuration());
+        video.setDuration(videoMetaInfo.getDuration());
         String[] fileNameArr = video.getUrl().toString().split("\\.");
         String imagUrl = "/video/"+ LocalDate.now().toString()+"/"+video.getMd5() +".jpg";
         //生成预览图
@@ -419,8 +419,6 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         userVideo.setStatus(status);
         this.update(userVideo, qw);
 
-//        AllVideo allVideo=new AllVideo();
-//        allVideo.setId(video.getId());
         video.setSourceUrl(url);
         video.setStatus(status);
         video.setImgUrl(imgUrl);
