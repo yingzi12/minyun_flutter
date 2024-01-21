@@ -41,7 +41,7 @@ public class UserVideoVo implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long aid;
-
+    private Long duration;
 
     private String md5;
 

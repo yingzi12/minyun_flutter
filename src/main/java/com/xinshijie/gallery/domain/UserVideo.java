@@ -42,5 +42,7 @@ public class UserVideo implements Serializable {
     private Integer status;
 
     private String imgUrl;
+    private Long duration;
+
 
 }

@@ -49,6 +49,7 @@ public class UserVideoDto implements Serializable {
 
     private Integer userId;
     private Integer status;
+    private Long duration;
 
 
 }

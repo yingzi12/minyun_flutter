@@ -241,6 +241,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
                     userVideo.setUserId(userId);
                     userVideo.setCreateTime(LocalDateTime.now());
                     userVideo.setAid(aid);
+                    userVideo.setDuration(allVideo.getDuration());
                     userVideo.setImgUrl(allVideo.getImgUrl());
                     userVideo.setUrl(allVideo.getSourceUrl());
                     userVideo.setMd5(md5);
