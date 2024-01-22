@@ -4,6 +4,7 @@ import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.service.ImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/image")
@@ -48,6 +50,15 @@ public class ImageController {
     public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid) {
         String url = imageService.saveUploadedFiles( aid, uploadfile);
         return Result.success(url);
+    }
+
+    @PostMapping("/uploadBatch")
+    public Result<String> handleFileBatchUpload(@RequestPart(value = "files") final List<MultipartFile> files, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        for(MultipartFile uploadfile:files) {
+            log.info("upload aid:{},fileName:{}" ,aid,uploadfile.getOriginalFilename());
+            String url = imageService.saveUploadedFiles(aid,  uploadfile);
+        }
+        return Result.success("success");
     }
 
 }
