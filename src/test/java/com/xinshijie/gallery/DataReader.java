@@ -1,10 +1,11 @@
 package com.xinshijie.gallery;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.dto.ImageDto;
-import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -22,7 +23,7 @@ import java.util.List;
 @SpringBootTest(classes = GalleryApplication.class)
 public class DataReader {
     @Autowired
-    private AlbumService albumService;
+    private IAlbumService albumService;
 
     @Autowired
     private ImageService imageService;
@@ -35,8 +36,8 @@ public class DataReader {
             albumDto.setPageNum(1);
             albumDto.setPageSize(1000);
             albumDto.setOffset(i * 1000);
-            List<Album> list = albumService.list(albumDto);
-            for (Album album : list) {
+            IPage<Album> list = albumService.list(albumDto);
+            for (Album album : list.getRecords()) {
                 ImageDto imageDto = new ImageDto();
                 imageDto.setAid(album.getId());
                 imageDto.setPageNum(1);

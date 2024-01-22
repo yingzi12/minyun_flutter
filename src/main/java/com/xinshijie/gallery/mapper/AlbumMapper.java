@@ -1,7 +1,10 @@
 package com.xinshijie.gallery.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.domain.Album;
+import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.AlbumDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,11 +19,9 @@ import java.util.List;
  */
 @Mapper
 public interface AlbumMapper extends BaseMapper<Album> {
-    List<Album> list(AlbumDto dto);
+    IPage<Album> list(Page<Album> page, @Param("dto") AlbumDto dto);
 
     Integer count(AlbumDto dto);
-
-    Integer add(@Param("dto") Album dto);
 
     Album getInfo(@Param("id") Integer id);
 
@@ -41,6 +42,8 @@ public interface AlbumMapper extends BaseMapper<Album> {
     Integer findMinId();
 
     Integer updateSourceUrl(@Param("dto") Album dto);
+
+    Integer updateCountImage(Integer aid);
 }
 
 

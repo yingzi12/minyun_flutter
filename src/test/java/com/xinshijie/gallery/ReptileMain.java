@@ -6,7 +6,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.Album;
-import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;
 import com.xinshijie.gallery.vo.AlbumVo;
@@ -27,7 +27,7 @@ public class ReptileMain {
     @Autowired
     private ILocalImageService localImageService;
     @Autowired
-    private AlbumService albumService;
+    private IAlbumService albumService;
 
     @Test
     public void detail() {

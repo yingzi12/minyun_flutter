@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ImageDto {
-    private Long aid;
+    private Integer aid;
 
     private Integer pageSize;
 

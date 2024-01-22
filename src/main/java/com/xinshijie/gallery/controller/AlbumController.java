@@ -1,10 +1,11 @@
 package com.xinshijie.gallery.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.AlbumDto;
-import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.IReptileImageService;
 import com.xinshijie.gallery.service.IUserCollectionService;
 import com.xinshijie.gallery.vo.AlbumVo;
@@ -21,7 +22,7 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 @RequestMapping("/album")
 public class AlbumController {
     @Autowired
-    private AlbumService albumService;
+    private IAlbumService albumService;
 
     @Autowired
     private IReptileImageService reptileImageService;
@@ -37,10 +38,9 @@ public class AlbumController {
         }
         dto.setPageSize(30);
         dto.setOffset(dto.getPageSize() * (dto.getPageNum() - 1));
-        Integer total = albumService.count(dto);
-        List<Album> list = albumService.list(dto);
+        IPage<Album> list = albumService.list(dto);
 
-        return Result.success(list, total);
+        return Result.success(list.getRecords(), Integer.parseInt(String.valueOf(list.getTotal())));
     }
 
     @GetMapping("/random")
@@ -67,10 +67,9 @@ public class AlbumController {
         dto.setOrder("count_see");
         dto.setPageSize(30);
         dto.setOffset(dto.getPageSize() * (dto.getPageNum() - 1));
-        Integer total = albumService.count(dto);
-        List<Album> list = albumService.list(dto);
+        IPage<Album> list = albumService.list(dto);
 
-        return Result.success(list, total);
+        return Result.success(list.getRecords(), Integer.parseInt(String.valueOf(list.getTotal())));
     }
 
     @GetMapping("/info")

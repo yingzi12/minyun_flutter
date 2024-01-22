@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
-import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserVip;

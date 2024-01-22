@@ -5,7 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.Image;
-import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 public class BatchFileReader {
 
     @Autowired
-    private AlbumService albumService;
+    private IAlbumService albumService;
 
     @Autowired
     private ImageService imageService;
@@ -141,7 +141,7 @@ public class BatchFileReader {
         }
     }
 
-    public Image addImage(Long aid, String path) {
+    public Image addImage(Integer aid, String path) {
         Image image = new Image();
         image.setAid(aid);
         image.setUrl(path);

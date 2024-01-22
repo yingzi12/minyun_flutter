@@ -5,12 +5,12 @@ import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.ImageDto;
 import com.xinshijie.gallery.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
 @CrossOrigin
 @RestController
@@ -44,5 +44,10 @@ public class ImageController {
         return Result.success(total);
     }
 
+    @PostMapping("/upload")
+    public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid) {
+        String url = imageService.saveUploadedFiles( aid, uploadfile);
+        return Result.success(url);
+    }
 
 }

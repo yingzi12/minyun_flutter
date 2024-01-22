@@ -8,12 +8,13 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.dto.ImageDto;
-import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.IReptileImageService;
 import com.xinshijie.gallery.service.ImageService;
 import com.xinshijie.gallery.vo.ReptilePage;
@@ -75,7 +76,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
     private final ReentrantLock lock = new ReentrantLock();
     private final ReentrantLock lockData = new ReentrantLock();
     @Autowired
-    private AlbumService albumService;
+    private IAlbumService albumService;
     @Autowired
     private ImageService imageService;
     @Value("${reptile.url}")
@@ -326,8 +327,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         albumDto.setPageNum(1);
         albumDto.setOrder("count_see");
         albumDto.setPageSize(800);
-        List<Album> list = albumService.list(albumDto);
-        for (Album album : list) {
+        IPage<Album> list = albumService.list(albumDto);
+        for (Album album : list.getRecords()) {
             if (album.getImgUrl() != null && album.getImgUrl().length() > 0 && (album.getSourceUrl() == null || !album.getSourceUrl().startsWith("/image"))) {
                 String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb() + album.getImgUrl());
                 if (sourceUrl.equals("")) {
@@ -664,7 +665,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
      * @param aid
      * @return
      */
-    public boolean isCheckImage(Long aid, ReptileRule reptileRule) {
+    public boolean isCheckImage(Integer aid, ReptileRule reptileRule) {
         ImageDto finDto = new ImageDto();
         finDto.setPageSize(3);
         finDto.setPageNum(2);
@@ -812,7 +813,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         return "";
     }
 
-    public Set<String> getList(String title, Long aid) {
+    public Set<String> getList(String title, Integer aid) {
         List<Image> list = imageService.listAll(aid);
         Set<String> urlist = new HashSet<>();
         int errorCount = 0;

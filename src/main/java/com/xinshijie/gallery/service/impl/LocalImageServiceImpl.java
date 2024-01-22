@@ -3,10 +3,11 @@ package com.xinshijie.gallery.service.impl;
 import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.dto.AlbumDto;
-import com.xinshijie.gallery.service.AlbumService;
+import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
@@ -50,15 +51,11 @@ import java.util.concurrent.*;
 public class LocalImageServiceImpl implements ILocalImageService {
 
     private final Semaphore semaphore = new Semaphore(30); // Adjust the number of permits as needed
-    private final Set<Long> currentAlbumIds = ConcurrentHashMap.newKeySet();
+    private final Set<Integer> currentAlbumIds = ConcurrentHashMap.newKeySet();
     @Autowired
-    private AlbumService albumService;
+    private IAlbumService albumService;
     @Autowired
     private ImageService imageService;
-
-    //    private String sourceWeb="https://image.51x.uk/xinshijie";
-//
-//    private String sourcePaht="/data/e2";
     @Value("${image.sourceWeb}")
     private String sourceWeb;
 
@@ -80,10 +77,10 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
         for (int i = 0; i < total; i++) {
             System.out.println("i：" + i);
-            List<Album> list = albumService.list(dto);
+            IPage<Album> list = albumService.list(dto);
             List<Future<?>> futures = new ArrayList<>();
 
-            for (Album album : list) {
+            for (Album album : list.getRecords()) {
                 System.out.println("i:" + i + "  aid:" + album.getId());
                 // 提交任务到线程池
                 Future<?> future = executorService.submit(() -> saveAlbum(album));
@@ -115,7 +112,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
     @Async
     public void saveLocalAlbum(Album album) {
-        Long albumId = album.getId();
+        Integer albumId = album.getId();
 
         if (currentAlbumIds.add(albumId)) { // Add returns true if the set did not already contain the specified element
             try {
@@ -199,7 +196,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
 
     }
 
-    public Image addImage(Long aid, String path) {
+    public Image addImage(Integer aid, String path) {
         Image image = new Image();
         image.setAid(aid);
         image.setUrl(path);
@@ -208,7 +205,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
         return image;
     }
 
-    public void updateImage(Long id, Long aid, String path) {
+    public void updateImage(Long id, Integer aid, String path) {
         Image image = new Image();
         image.setId(id);
         image.setAid(aid);

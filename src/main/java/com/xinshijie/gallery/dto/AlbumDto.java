@@ -1,6 +1,5 @@
 package com.xinshijie.gallery.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -8,11 +7,11 @@ import java.io.Serializable;
 /**
  * @TableName album
  */
-@TableName(value = "album")
 @Data
 public class AlbumDto implements Serializable {
     private Integer id;
     private String title;
+    private Integer isFree;
     private Integer pageSize;
     private Integer offset;
     private Integer pageNum;

@@ -20,7 +20,7 @@ public class Album implements Serializable {
      *
      */
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
     /**
      *
      */
@@ -53,4 +53,6 @@ public class Album implements Serializable {
     //1 yes 0 No
     private Integer countError;
     private String sourceUrl;
+    private Integer isFree;
+
 }

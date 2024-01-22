@@ -18,5 +18,5 @@ public interface ImageMapper extends BaseMapper<Image> {
 
     Integer updateSourceUrl(@Param("dto") Image dto);
 
-    Integer delCfAid(@Param("aid") Long aid);
+    Integer delCfAid(@Param("aid") Integer aid);
 }

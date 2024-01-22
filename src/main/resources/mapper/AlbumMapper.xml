@@ -20,14 +20,14 @@
     <select id="list" resultType="com.xinshijie.gallery.domain.Album">
         select * from album
         <where>
-            <if test="id != null ">and id = #{id}</if>
-            <if test="title != null ">and title LIKE CONCAT('%', #{title}, '%')</if>
-            <if test="notSource != null ">and source_web != #{notSource}</if>
+            <if test="dto.id != null ">and id = #{dto.id}</if>
+            <if test="dto.isFree != null ">and is_free = #{dto.isFree}</if>
+            <if test="dto.title != null ">and title LIKE CONCAT('%', #{dto.title}, '%')</if>
+            <if test="dto.notSource != null ">and source_web != #{dto.notSource}</if>
             and count_error &lt; 100
         </where>
-        <if test="order == null ">order by create_time desc ,count_see desc</if>
-        <if test="order != null ">order by count_see desc</if>
-        LIMIT #{offset},#{pageSize}
+        <if test="dto.order == null ">order by create_time desc ,count_see desc</if>
+        <if test="dto.order != null ">order by count_see desc</if>
     </select>
     <select id="count" resultType="Integer">
         select count(1) from album
@@ -49,13 +49,6 @@
         from album
         where title = #{title}
     </select>
-    <insert id="add" parameterType="com.xinshijie.gallery.domain.Album">
-        INSERT INTO album (url, title, source_web, `hash`, count_see, girl, create_time, update_time, img_url,
-                           count_error, source_url, number_photos)
-        VALUES (#{dto.url}, #{dto.title}, #{dto.sourceWeb}, #{dto.hash}, #{dto.countSee}, #{dto.girl},
-                #{dto.createTime}, #{dto.updateTime}, #{dto.imgUrl}, #{dto.countError}, #{dto.sourceUrl},
-                #{dto.numberPhotos})
-    </insert>
     <update id="updateError">
         update album
         set count_error=count_error + 1
@@ -103,5 +96,10 @@
         set source_url = #{dto.sourceUrl}
         where id = #{dto.id}
     </insert>
+    <update id="updateCountImage">
+        UPDATE album
+        SET number_photos = (SELECT COUNT(*) FROM image where aid = #{aid})
+        where id = #{aid}
 
+    </update>
 </mapper>
