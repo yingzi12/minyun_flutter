@@ -75,7 +75,7 @@ public interface IUserAlbumService extends IService<UserAlbum> {
 
     Boolean updateStatus(Integer userId, Long id, Integer status);
 
-    String saveUploadedFiles(Integer userId, MultipartFile file);
+    String saveUploadedFiles(String day, MultipartFile file);
 
     Integer updateCountImage(Integer id);
 

@@ -166,7 +166,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     public Boolean edit(Album dto) {
         Album album = new Album();
         album.setIntro(dto.getIntro());
-        album.setCountSee(RandomUtil.randomLong(100));
+//        album.setCountSee(RandomUtil.randomLong(100));
         album.setTitle(dto.getTitle());
         album.setGirl(dto.getGirl());
         album.setTags(dto.getTags());

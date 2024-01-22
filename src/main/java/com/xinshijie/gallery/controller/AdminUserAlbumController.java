@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
@@ -141,7 +142,7 @@ public class AdminUserAlbumController extends BaseController {
     @PostMapping("/upload")
     public Result<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         log.info("system update");
-        String url = userAlbumService.saveUploadedFiles(getUserId(), file);
+        String url = userAlbumService.saveUploadedFiles(LocalDate.now().toString(), file);
         return Result.success(url);
     }
 }

@@ -21,11 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 
 
@@ -174,5 +176,12 @@ public class UserAlbumController extends BaseController {
         findDto.setOrderBy("countSee");
         IPage<UserAlbum> vo = userAlbumService.selectPageUserAlbum(findDto);
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
+
+    @PostMapping("/upload")
+    public Result<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        log.info("system update");
+        String url = userAlbumService.saveUploadedFiles(LocalDate.now().toString(), file);
+        return Result.success(url);
     }
 }

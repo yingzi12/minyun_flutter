@@ -344,7 +344,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         return i == 1;
     }
 
-    public String saveUploadedFiles(Integer userId, MultipartFile file) {
+    public String saveUploadedFiles(String day, MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 log.error("No image file provided");
@@ -352,7 +352,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
             }
             try {
                 String mm5 = fileService.getMD5(file.getInputStream());
-                String imgUrl = "/user/album/" + userId + "_" + mm5 + ".jpg";
+                String imgUrl = "/user/album/" + day + "_" + mm5 + ".jpg";
                 // 假设我们将图片保存在服务器的某个位置
                 File destinationFile = new File(imagePath + imgUrl);
                 File parentDir = destinationFile.getParentFile();
@@ -401,7 +401,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
 
     public void isCheckOperate(Integer aid){
         UserAlbum userAlbum= mapper.selectById(aid);
-        if(userAlbum!=null){
+        if(userAlbum==null){
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
         }
         if(userAlbum.getStatus() != AlbumStatuEnum.WAIT.getCode()){
