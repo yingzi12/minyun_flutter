@@ -62,10 +62,10 @@ public class AdminUserSettingVipController extends BaseController {
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Integer id) {
         UserSettingVip settingVip=userSettingVipService.getInfo(getUserId(),id);
-        if(settingVip!=null){
+        if(settingVip ==null){
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
         }
-        if(settingVip.getStatus()== VipStatuEnum.NORMAL.getCode()){
+        if(settingVip.getStatus()!= VipStatuEnum.WAIT.getCode()){
             throw new ServiceException(ResultCodeEnum.USER_ALBUM_STATUS_ERROR);
         }
         //判断是否是否已经购买
@@ -86,10 +86,10 @@ public class AdminUserSettingVipController extends BaseController {
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserSettingVipDto dto) {
         UserSettingVip settingVip=userSettingVipService.getInfo(getUserId(),dto.getId());
-        if(settingVip!=null){
+        if(settingVip ==null){
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
         }
-        if(settingVip.getStatus()== VipStatuEnum.NORMAL.getCode()){
+        if(settingVip.getStatus()!= VipStatuEnum.WAIT.getCode()){
             throw new ServiceException(ResultCodeEnum.USER_ALBUM_STATUS_ERROR);
         }
         //判断是否是否已经购买
