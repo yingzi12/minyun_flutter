@@ -64,29 +64,12 @@ public class FileServiceImpl implements IFileService {
             }
             log.info("file:" + file.getOriginalFilename());
             String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".webp";
-//            File destinationFile = new File(savePath + imgUrl);
-//            File parentDir = destinationFile.getParentFile();
-//            if (parentDir != null && !parentDir.exists()) {
-//                parentDir.mkdirs();
-//            }
             mkdirParentDir(savePath + imgUrl);
-
             // 检查文件大小或格式
             if (file.getSize() <= 600 * 1024 || isWebPFormat(file)) {
                 return saveImage(file, headPath, title);
             } else {
-                // 转换为WebP格式
-                float outputQuality = 0.8f; // 可以根据需要设置压缩质量
-                ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
-                BufferedImage image = ImageIO.read(file.getInputStream());
-                ImageWriteParam param = writer.getDefaultWriteParam();
-                param.setCompressionQuality(outputQuality);
-
-                ImageOutputStream ios = ImageIO.createImageOutputStream(savePath + imgUrl);
-                writer.setOutput(ios);
-                writer.write(null, new IIOImage(image, null, null), param);
-                ios.close();
-                writer.dispose();
+                convertWebp(imgUrl,file);
             }
             return imgUrl;
         } catch (Exception e) {
@@ -94,6 +77,39 @@ public class FileServiceImpl implements IFileService {
             return saveImage(file, headPath, title);
         }
     }
+
+    public  void convertWebp(String imgUrl,MultipartFile file) {
+        try {
+            // 转换为WebP格式
+            float outputQuality = 0.8f; // 可以根据需要设置压缩质量
+            ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+            BufferedImage image = ImageIO.read(file.getInputStream());
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            param.setCompressionQuality(outputQuality);
+
+            // 确保输出文件存在
+            File outputFile = new File(savePath + imgUrl);
+            outputFile.getParentFile().mkdirs(); // 创建父目录
+            outputFile.createNewFile(); // 创建文件
+
+            ImageOutputStream ios = ImageIO.createImageOutputStream(outputFile);
+            if (ios == null) {
+                log.error("转换文件出现错误：{}",imgUrl);
+                throw new ServiceException("无法创建 ImageOutputStream");
+            }
+            try {
+                writer.setOutput(ios);
+                writer.write(null, new IIOImage(image, null, null), param);
+            } finally {
+                ios.close();
+                writer.dispose();
+            }
+        } catch (Exception exception) {
+            log.error("转换文件出现错误",exception);
+            throw new ServiceException("无法创建 ImageOutputStream");
+        }
+    }
+
 
     private boolean isWebPFormat(MultipartFile file) {
         String contentType = file.getContentType();
@@ -264,5 +280,6 @@ public class FileServiceImpl implements IFileService {
             }
         }
     }
+
 
 }

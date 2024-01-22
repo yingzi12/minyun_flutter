@@ -118,4 +118,15 @@ public class AdminUserImageController extends BaseController {
         return Result.success(url);
     }
 
+    @PostMapping("/uploadBatch")
+    public Result<String> handleFileBatchUpload(@RequestPart(value = "files") final List<MultipartFile> files, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        userAlbumService.isCheckOperate(aid);
+
+        for(MultipartFile uploadfile:files) {
+            log.info("upload aid:{},fileName:{}" ,aid,uploadfile.getOriginalFilename());
+            String url = userImageService.saveUploadedFiles(getUserId(), aid, isFree, uploadfile);
+        }
+        return Result.success("success");
+    }
+
 }
