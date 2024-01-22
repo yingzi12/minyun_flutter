@@ -52,6 +52,7 @@ public class AdminUserVideoController extends BaseController {
 
     @PostMapping("/add")
     public Result<UserVideo> add(@RequestBody UserVideo dto) {
+        userAlbumService.isCheckOperate(dto.getAid());
         dto.setUserId(getUserId());
         UserVideo vo = userVideoService.add(dto);
         return Result.success(vo);
@@ -65,6 +66,7 @@ public class AdminUserVideoController extends BaseController {
 
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserVideo dto) {
+        userAlbumService.isCheckOperate(dto.getAid());
         dto.setUserId(getUserId());
         Integer vo = userVideoService.edit(dto);
         return Result.success(vo);
@@ -77,13 +79,7 @@ public class AdminUserVideoController extends BaseController {
      */
     @GetMapping("/remove")
     public Result<Integer> del(@RequestParam("id") Long id,@RequestParam("aid") Integer aid) {
-        UserAlbum userAlbum = userAlbumService.getById(aid);
-        if (userAlbum == null) {
-            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
-        }
-        if (userAlbum.getStatus() != AlbumStatuEnum.NORMAL.getCode()) {
-            throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
-        }
+        userAlbumService.isCheckOperate(aid);
         Integer vo = userVideoService.delById(getUserId(), id,aid);
         return Result.success(vo);
     }
@@ -144,6 +140,7 @@ public class AdminUserVideoController extends BaseController {
 
     @PostMapping("/upload")
     public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        userAlbumService.isCheckOperate(aid);
         log.info("upload aid:" + aid);
         String url = userVideoService.saveUploadedFiles(getUserId(), aid, isFree, uploadfile);
         return Result.success(url);
@@ -169,6 +166,7 @@ public class AdminUserVideoController extends BaseController {
                                                    @RequestParam("isFree") Integer isFree,
                                                    @RequestParam("md5") String md5) {
         try {
+            userAlbumService.isCheckOperate(aid);
             Long count = userVideoService.getCount(aid, null);
             if (count > 3) {
                 throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);

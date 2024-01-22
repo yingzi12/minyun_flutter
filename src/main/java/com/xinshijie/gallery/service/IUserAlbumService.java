@@ -80,4 +80,6 @@ public interface IUserAlbumService extends IService<UserAlbum> {
     Integer updateCountImage(Integer id);
 
     Integer updateCountVideo(Integer id);
+
+    void isCheckOperate(Integer aid);
 }

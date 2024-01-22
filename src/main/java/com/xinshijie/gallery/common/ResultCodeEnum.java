@@ -142,6 +142,10 @@ public enum ResultCodeEnum {
 
     EMAIL_CODE_ERROR(999008125, "Email CODE错误"),
 
+    USER_ALBUM_STATUS_ERROR(999008126, "状态错误，发布状态不能操作"),
+
+    USER_ALBUM_SELL_ERROR(999008126, "已被购买，不能操作"),
+
     ;
 
 

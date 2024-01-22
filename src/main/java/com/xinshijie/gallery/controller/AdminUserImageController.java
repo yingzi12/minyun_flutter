@@ -49,16 +49,7 @@ public class AdminUserImageController extends BaseController {
      */
     @GetMapping("/remove")
     public Result<Integer> del(@RequestParam("aid") Integer aid,@RequestParam("id") Long id) {
-        UserAlbum userAlbum = userAlbumService.getById(aid);
-        if (userAlbum == null) {
-            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
-        }
-        if (userAlbum.getStatus() != AlbumStatuEnum.NORMAL.getCode()) {
-            throw new ServiceException(ResultCodeEnum.NOT_POST_STATUS);
-        }
-        if (!userAlbum.getUserId().equals(getUserId())) {
-            throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
-        }
+         userAlbumService.isCheckOperate(aid);
         Integer vo = userImageService.delById(getUserId(), id,aid);
         return Result.success(vo);
     }
@@ -84,6 +75,7 @@ public class AdminUserImageController extends BaseController {
 
     @PostMapping("/edit")
     public Result<Integer> edit(@RequestBody UserImage dto) {
+        userAlbumService.isCheckOperate(dto.getAid());
         Integer vo = userImageService.edit(dto);
         return Result.success(vo);
     }
@@ -119,6 +111,8 @@ public class AdminUserImageController extends BaseController {
 
     @PostMapping("/upload")
     public Result<String> handleFileUpload(@RequestPart(value = "file") final MultipartFile uploadfile, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+        userAlbumService.isCheckOperate(aid);
+
         log.info("upload aid:" + aid);
         String url = userImageService.saveUploadedFiles(getUserId(), aid, isFree, uploadfile);
         return Result.success(url);

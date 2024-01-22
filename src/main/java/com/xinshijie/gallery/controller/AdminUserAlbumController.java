@@ -5,8 +5,13 @@ import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.UserAlbumDto;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
+import com.xinshijie.gallery.enmus.PaymentKindEnum;
+import com.xinshijie.gallery.enmus.VipStatuEnum;
+import com.xinshijie.gallery.service.IPaymentOrderService;
 import com.xinshijie.gallery.service.IUserAlbumService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +62,7 @@ public class AdminUserAlbumController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Integer id) {
+        userAlbumService.isCheckOperate(id);
         Integer vo = userAlbumService.delById(getUserId(), id);
         return Result.success(vo);
     }
@@ -69,11 +75,18 @@ public class AdminUserAlbumController extends BaseController {
      */
     @PostMapping("/edit")
     public Result<Boolean> edit(@RequestBody UserAlbumDto dto) {
+
+        userAlbumService.isCheckOperate(dto.getId());
         dto.setUserId(getUserId());
         Boolean vo = userAlbumService.edit(dto);
         return Result.success(vo);
     }
 
+    @GetMapping(value = "/isCheckOperate")
+    public Result<Boolean> updateStatus(@RequestParam("aid") Integer aid) {
+        userAlbumService.isCheckOperate(aid);
+        return Result.success(true);
+    }
 
     /**
      * 查询详情

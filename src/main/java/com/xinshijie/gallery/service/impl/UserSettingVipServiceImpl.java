@@ -63,7 +63,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
     }
 
     @Override
-    public Boolean updateStatus(Integer userId, Long id, Integer status) {
+    public Boolean updateStatus(Integer userId, Integer id, Integer status) {
         QueryWrapper<UserSettingVip> qw = new QueryWrapper<>();
         qw.eq("user_id", userId);
         qw.eq("id", id);
@@ -126,7 +126,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
      * 删除数据
      */
     @Override
-    public Integer delById(Integer userId, Long id) {
+    public Integer delById(Integer userId, Integer id) {
         QueryWrapper<UserSettingVip> qw = new QueryWrapper<>();
         qw.eq("user_id", userId);
         qw.eq("id", id);
@@ -137,7 +137,7 @@ public class UserSettingVipServiceImpl extends ServiceImpl<UserSettingVipMapper,
      * 根据id数据
      */
     @Override
-    public UserSettingVip getInfo(Integer userId, Long id) {
+    public UserSettingVip getInfo(Integer userId, Integer id) {
         QueryWrapper<UserSettingVip> qw = new QueryWrapper<>();
         qw.eq("user_id", userId);
         qw.eq("id", id);

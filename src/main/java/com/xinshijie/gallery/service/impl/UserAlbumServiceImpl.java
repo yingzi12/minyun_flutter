@@ -31,6 +31,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
+
 /**
  * <p>
  * 用户创建的  服务实现类
@@ -398,4 +400,18 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         return mapper.updateCountSee(id,updateDate);
     }
 
+    public void isCheckOperate(Integer aid){
+        UserAlbum userAlbum= mapper.selectById(aid);
+        if(userAlbum!=null){
+            throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
+        }
+        if(userAlbum.getStatus() != AlbumStatuEnum.WAIT.getCode()){
+            throw new ServiceException(ResultCodeEnum.USER_ALBUM_STATUS_ERROR);
+        }
+        //判断是否是否已经购买
+        PaymentOrder paymentOrder = paymentOrderService.selectByDonePay(getUserId(), PaymentKindEnum.USER_ALBUM.getCode(), userAlbum.getId());
+        if(paymentOrder!=null){
+            throw new ServiceException(ResultCodeEnum.USER_ALBUM_SELL_ERROR);
+        }
+    }
 }

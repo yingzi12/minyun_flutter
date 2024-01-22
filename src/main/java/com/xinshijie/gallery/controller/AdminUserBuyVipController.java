@@ -3,8 +3,14 @@ package com.xinshijie.gallery.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
+import com.xinshijie.gallery.common.ResultCodeEnum;
+import com.xinshijie.gallery.common.ServiceException;
+import com.xinshijie.gallery.domain.PaymentOrder;
 import com.xinshijie.gallery.domain.UserBuyVip;
+import com.xinshijie.gallery.domain.UserSettingVip;
 import com.xinshijie.gallery.dto.UserBuyVipDto;
+import com.xinshijie.gallery.enmus.AlbumStatuEnum;
+import com.xinshijie.gallery.enmus.PaymentKindEnum;
 import com.xinshijie.gallery.service.IUserBuyVipService;
 import com.xinshijie.gallery.vo.UserBuyVipVo;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.xinshijie.gallery.util.RequestContextUtil.getUserId;
 
 
 /**
@@ -50,7 +58,9 @@ public class AdminUserBuyVipController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public Result<Integer> del(@PathVariable("id") Long id) {
+
         Integer vo = userBuyVipService.delById(id);
+
         return Result.success(vo);
     }
 

@@ -31,7 +31,7 @@ public interface IUserSettingVipService extends IService<UserSettingVip> {
      */
     IPage<UserSettingVipVo> selectPageUserSettingVip(UserSettingVipDto dto);
 
-    Boolean updateStatus(Integer userId, Long id, Integer status);
+    Boolean updateStatus(Integer userId, Integer id, Integer status);
 
 
     /**
@@ -52,10 +52,10 @@ public interface IUserSettingVipService extends IService<UserSettingVip> {
     /**
      * 删除数据
      */
-    Integer delById(Integer userId, Long id);
+    Integer delById(Integer userId, Integer id);
 
     /**
      * 根据id数据
      */
-    UserSettingVip getInfo(Integer userId, Long id);
+    UserSettingVip getInfo(Integer userId, Integer id);
 }
