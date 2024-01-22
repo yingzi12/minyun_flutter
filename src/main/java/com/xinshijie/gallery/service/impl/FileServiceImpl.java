@@ -66,7 +66,7 @@ public class FileServiceImpl implements IFileService {
             String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".webp";
             mkdirParentDir(savePath + imgUrl);
             // 检查文件大小或格式
-            if (file.getSize() <= 600 * 1024 || isWebPFormat(file)) {
+            if (file.getSize() <= 300 * 1024 || isWebPFormat(file)) {
                 return saveImage(file, headPath, title);
             } else {
                 convertWebp(imgUrl,file);
