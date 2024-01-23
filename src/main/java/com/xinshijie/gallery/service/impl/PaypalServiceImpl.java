@@ -83,9 +83,9 @@ public class PaypalServiceImpl implements IPaypalService {
         String token = "";
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Access Token: " + response.body());
+//            System.out.println("Access Token: " + response.body());
             JSONObject jsonObject = JSONObject.parseObject(response.body());
-            System.out.println("Access Token: " + jsonObject.get("access_token"));
+//            System.out.println("Access Token: " + jsonObject.get("access_token"));
             token = jsonObject.get("access_token").toString();
         } catch (IOException e) {
             throw new RuntimeException(e);

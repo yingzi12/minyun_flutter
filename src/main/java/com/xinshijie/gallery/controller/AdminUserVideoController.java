@@ -199,7 +199,7 @@ public class AdminUserVideoController extends BaseController {
                 log.info("All chunks uploaded, starting to merge file: " + hashFileName);
                 mergeFile(soruceSavePath, hashFileName, totalChunks);
                 count = userVideoService.getCount(aid, null);
-                if ( count > 3) {
+                if ( count > 5) {
                     //超过限制，删除合并之后的文件
                     Path fileOutput = Paths.get(Constants.videoHcPath + soruceSavePath + "/" + hashFileName);
                     Files.delete(fileOutput); // 删除分块文件

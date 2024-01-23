@@ -174,11 +174,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
     }
 
     @Override
-    public String saveUploadedFiles(Integer userId, Integer aid, Integer isFree, MultipartFile file) {
-        UserAlbum userAlbum = userAlbumService.getInfo(aid);
-        if (userAlbum == null) {
-            throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);
-        }
+    public String saveUploadedFiles(Integer userId, Integer aid,String title, Integer isFree, MultipartFile file) {
         try {
             String md5 = fileService.getMD5(file.getInputStream());
             AllImage allImage = allImageService.getMD5(md5);
@@ -198,14 +194,13 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                     userImage.setMd5(md5);
                     userImage.setIsFree(isFree);
                     mapper.insert(userImage);
-                    userAlbumService.updateCountImage(aid);
                     return userImage.getImgUrl();
                 }
             } else {
                 allImage = new AllImage();
                 allImage.setMd5(md5);
                 allImage.setSize(file.getSize());
-                allImage.setTitle(userAlbum.getTitle());
+                allImage.setTitle(title);
                 //保存图片到本地
                 String imgUrl = saveImage(allImage, md5, file);
                 if (StringUtils.isEmpty(imgUrl)) {
@@ -219,7 +214,6 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
                 userImage.setMd5(md5);
                 userImage.setIsFree(isFree);
                 mapper.insert(userImage);
-                userAlbumService.updateCountImage(aid);
                 return userImage.getImgUrl();
             }
         } catch (Exception ex) {

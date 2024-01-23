@@ -13,6 +13,7 @@ public class RabbitMQConfig {
     @Bean
     public Queue queue() {
         return new Queue("com.gallery.upload.video", true);
+//        return new Queue("com.gallery.upload.dev.video", true);
     }
 
     @Bean

@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                         } else {
                             sendErrorResponse(httpServletResponse, ResultCodeEnum.EXPIRED);
                         }
-                        log.info("Token: " + token);
+//                        log.info("Token: " + token);
                         boolean validate = JWT.of(token).setKey(Constants.TOKEN_KEY).verify();
 
                         JWT jwt = JWT.of(token);

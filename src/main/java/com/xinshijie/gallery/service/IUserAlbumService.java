@@ -81,5 +81,5 @@ public interface IUserAlbumService extends IService<UserAlbum> {
 
     Integer updateCountVideo(Integer id);
 
-    void isCheckOperate(Integer aid);
+    UserAlbum isCheckOperate(Integer aid);
 }

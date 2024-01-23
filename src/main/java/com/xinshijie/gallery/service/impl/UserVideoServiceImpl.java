@@ -281,12 +281,9 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
 
     public String updateUploadedFiles(Integer userId, Integer aid, Integer isFree, Long size, String md5, String sourcePath, String fileName) {
         Long count = this.getCount(aid, null);
-        if ( count > 3) {
+        if ( count > 5) {
             throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
         }
-//        if (isFree == 2 && count > 10) {
-//            throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
-//        }
         UserAlbum userAlbum = userAlbumService.getInfo(aid);
         if (userAlbum == null) {
             throw new ServiceException(ResultCodeEnum.DATA_IS_WRONG);

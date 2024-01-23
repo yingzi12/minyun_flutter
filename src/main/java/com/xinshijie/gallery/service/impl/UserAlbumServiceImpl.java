@@ -400,7 +400,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         return mapper.updateCountSee(id,updateDate);
     }
 
-    public void isCheckOperate(Integer aid){
+    public UserAlbum isCheckOperate(Integer aid){
         UserAlbum userAlbum= mapper.selectById(aid);
         if(userAlbum==null){
             throw new ServiceException(ResultCodeEnum.OPERATOR_ERROR);
@@ -413,5 +413,6 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         if(paymentOrder!=null){
             throw new ServiceException(ResultCodeEnum.USER_ALBUM_SELL_ERROR);
         }
+        return userAlbum;
     }
 }

@@ -30,9 +30,9 @@ class PaypalMain {
         String token = "";
         try {
             String accessToken = generateAccessToken();
-            System.out.println("Access Token: " + accessToken);
+//            System.out.println("Access Token: " + accessToken);
             JSONObject jsonObject = JSONObject.parseObject(accessToken);
-            System.out.println("Access Token: " + jsonObject.get("access_token"));
+//            System.out.println("Access Token: " + jsonObject.get("access_token"));
             token = jsonObject.get("access_token").toString();
         } catch (Exception e) {
             e.printStackTrace();
