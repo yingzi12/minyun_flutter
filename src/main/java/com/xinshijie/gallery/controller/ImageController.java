@@ -53,9 +53,9 @@ public class ImageController {
     }
 
     @PostMapping("/uploadBatch")
-    public Result<String> handleFileBatchUpload(@RequestPart(value = "files") final List<MultipartFile> files, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
+    public Result<String> handleFileBatchUpload(@RequestPart(value = "files") final List<MultipartFile> files, @RequestParam("aid") Integer aid) {
         for(MultipartFile uploadfile:files) {
-            log.info("upload aid:{},fileName:{}" ,aid,uploadfile.getOriginalFilename());
+            log.info("--------------------------upload aid:{},fileName:{},fileSize:{}" ,aid,uploadfile.getOriginalFilename(),uploadfile.getSize());
             String url = imageService.saveUploadedFiles(aid,  uploadfile);
         }
         return Result.success("success");

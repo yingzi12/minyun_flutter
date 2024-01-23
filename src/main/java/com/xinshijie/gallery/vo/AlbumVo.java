@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class AlbumVo {
-    private Long id;
+    private Integer id;
 
     /**
      *
