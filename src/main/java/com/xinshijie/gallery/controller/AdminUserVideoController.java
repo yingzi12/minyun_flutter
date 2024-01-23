@@ -206,12 +206,13 @@ public class AdminUserVideoController extends BaseController {
                     throw new ServiceException(ResultCodeEnum.VEDIO_UPLOAD_MAX);
                 }
                 userVideoService.updateUploadedFiles(getUserId(), aid, isFree, 0L, md5, soruceSavePath, hashFileName);
+                return Result.success(true);
             }
         } catch (Exception ex) {
             log.error("Error in file upload: " + identifier, ex);
             return Result.error(ResultCodeEnum.SYSTEM_INNER_ERROR);
         }
-        return Result.success(true);
+        return Result.success(false);
     }
 
     private boolean allChunksUploaded(String day, String idHash, int totalChunks) {

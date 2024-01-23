@@ -31,6 +31,7 @@ public interface IFileService {
      */
     String saveUploadedFilesDown(String headPath, String title, MultipartFile file);
 
+    String saveFile(MultipartFile file, String headPath, String title);
     /**
      * 转换ts
      *

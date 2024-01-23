@@ -123,14 +123,14 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         SystemUser systemUser = mapper.selectOne(queryWrapper);
         if (systemUser != null) {
             if (redisCache.hasKey(PWD_ERR_CNT_KEY  + systemUser.getId())) {
-                int count = Integer.parseInt(redisCache.getCacheString(PWD_ERR_CNT_KEY  + systemUser.getId()));
+                int count = redisCache.getCacheInteger(PWD_ERR_CNT_KEY  + systemUser.getId());
                 if (count > 3) {
                     throw new ServiceException(ResultCodeEnum.USER_ACCOUNT_ERROR_LONG_TIME);
                 }
             }
             if (!SecurityUtils.matchesPassword(password, systemUser.getPassword())) {
                 if (redisCache.hasKey(PWD_ERR_CNT_KEY  + systemUser.getId())) {
-                    int count = Integer.parseInt(redisCache.getCacheString(PWD_ERR_CNT_KEY  + systemUser.getId()));
+                    int count = redisCache.getCacheInteger(PWD_ERR_CNT_KEY  + systemUser.getId());
                     redisCache.setCacheInteger(PWD_ERR_CNT_KEY  + systemUser.getId(), count + 1, 1, TimeUnit.HOURS);
                 } else {
                     redisCache.setCacheInteger(PWD_ERR_CNT_KEY  + systemUser.getId(), 1, 1, TimeUnit.HOURS);
@@ -340,26 +340,26 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 log.error("No image file provided");
                 throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
             }
-            try {
-                String mm5 = fileService.getMD5(file.getInputStream());
-                String imgUrl = "/user/head/" + userId + "_" + mm5 + ".jpg";
-                // 假设我们将图片保存在服务器的某个位置
-                File destinationFile = new File(imagePath + imgUrl);
-                File parentDir = destinationFile.getParentFile();
-                // 如果父目录不存在，尝试创建它
-                if (parentDir != null && !parentDir.exists()) {
-                    parentDir.mkdirs();
-                }
-                // 根据图片大小设置压缩质量
-                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
-
-                // 转换图片格式为JPG并添加水印
-                Thumbnails.of(file.getInputStream())
-                        .size(100, 100)
-                        .outputQuality(outputQuality) // 设置压缩质量
-                        .outputFormat("jpg")
-                        .toFile(destinationFile); // 保存到文件
-
+//            try {
+//                String mm5 = fileService.getMD5(file.getInputStream());
+//                String imgUrl = "/user/head/" + userId + "_" + mm5 + ".jpg";
+//                // 假设我们将图片保存在服务器的某个位置
+//                File destinationFile = new File(imagePath + imgUrl);
+//                File parentDir = destinationFile.getParentFile();
+//                // 如果父目录不存在，尝试创建它
+//                if (parentDir != null && !parentDir.exists()) {
+//                    parentDir.mkdirs();
+//                }
+//                // 根据图片大小设置压缩质量
+//                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
+//
+//                // 转换图片格式为JPG并添加水印
+//                Thumbnails.of(file.getInputStream())
+//                        .size(100, 100)
+//                        .outputQuality(outputQuality) // 设置压缩质量
+//                        .outputFormat("jpg")
+//                        .toFile(destinationFile); // 保存到文件
+                String imgUrl = fileService.saveUploadedFilesWatermark("/user/head/" , file.getOriginalFilename(), file);
 
                 // 图片验证通过，更新用户信息
                 SystemUser user = new SystemUser();
@@ -367,10 +367,10 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
                 user.setImgUrl(imgUrl);
                 mapper.updateById(user);
                 return imgUrl;
-            } catch (IOException e) {
-                log.error("Error during image processing: " + e.getMessage());
-                throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
-            }
+//            } catch (IOException e) {
+//                log.error("Error during image processing: " + e.getMessage());
+//                throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
+//            }
 
 
         } catch (Exception exception) {

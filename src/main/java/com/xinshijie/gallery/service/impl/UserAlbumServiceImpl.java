@@ -350,31 +350,32 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
                 log.error("No image file provided");
                 throw new ServiceException(ResultCodeEnum.ALBUM_IMGURL_NULL);
             }
-            try {
-                String mm5 = fileService.getMD5(file.getInputStream());
-                String imgUrl = "/user/album/" + day + "_" + mm5 + ".jpg";
-                // 假设我们将图片保存在服务器的某个位置
-                File destinationFile = new File(imagePath + imgUrl);
-                File parentDir = destinationFile.getParentFile();
-                // 如果父目录不存在，尝试创建它
-                if (parentDir != null && !parentDir.exists()) {
-                    parentDir.mkdirs();
-                }
-                // 根据图片大小设置压缩质量
-                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
-
-                // 转换图片格式为JPG并添加水印
-                Thumbnails.of(file.getInputStream())
-                        .size(213, 320)
-                        .outputQuality(outputQuality) // 设置压缩质量
-                        .outputFormat("jpg")
-                        .toFile(destinationFile); // 保存到文件
+//            try {
+//                String mm5 = fileService.getMD5(file.getInputStream());
+//                String imgUrl = "/user/album/" + day + "_" + mm5 + ".jpg";
+//                // 假设我们将图片保存在服务器的某个位置
+//                File destinationFile = new File(imagePath + imgUrl);
+//                File parentDir = destinationFile.getParentFile();
+//                // 如果父目录不存在，尝试创建它
+//                if (parentDir != null && !parentDir.exists()) {
+//                    parentDir.mkdirs();
+//                }
+//                // 根据图片大小设置压缩质量
+//                double outputQuality = file.getSize() > 1024 * 1024 ? 0.6 : 0.8;
+//
+//                // 转换图片格式为JPG并添加水印
+//                Thumbnails.of(file.getInputStream())
+//                        .size(213, 320)
+//                        .outputQuality(outputQuality) // 设置压缩质量
+//                        .outputFormat("jpg")
+//                        .toFile(destinationFile); // 保存到文件
+                String imgUrl = fileService.saveUploadedFilesWatermark("/user/head/" , file.getOriginalFilename(), file);
 
                 return imgUrl;
-            } catch (IOException e) {
-                log.error("Error during image processing: {}," + e.getMessage(), e);
-                throw new ServiceException(ResultCodeEnum.ALBUM_IMGURL_UPLOAD_ERROR);
-            }
+//            } catch (IOException e) {
+//                log.error("Error during image processing: {}," + e.getMessage(), e);
+//                throw new ServiceException(ResultCodeEnum.ALBUM_IMGURL_UPLOAD_ERROR);
+//            }
 
 
         } catch (Exception exception) {

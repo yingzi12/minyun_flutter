@@ -53,7 +53,7 @@ public class FileServiceImpl implements IFileService {
     }
 
     /**
-     * 视频上传缓存路径
+     * 照片
      */
     @Override
     public String saveUploadedFilesWatermark(String headPath, String title, MultipartFile file) {
@@ -67,14 +67,14 @@ public class FileServiceImpl implements IFileService {
             mkdirParentDir(savePath + imgUrl);
             // 检查文件大小或格式
             if (file.getSize() <= 300 * 1024 || isWebPFormat(file)) {
-                return saveImage(file, headPath, title);
+                return saveFile(file, headPath, title);
             } else {
                 convertWebp(imgUrl,file);
             }
             return imgUrl;
         } catch (Exception e) {
             log.error("Error during image processing: ", e);
-            return saveImage(file, headPath, title);
+            return saveFile(file, headPath, title);
         }
     }
 
@@ -247,7 +247,7 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
-    public String saveImage(MultipartFile file, String headPath, String title) {
+    public String saveFile(MultipartFile file, String headPath, String title) {
         String[] hzArr = file.getOriginalFilename().split("\\.");
         String hz = hzArr[hzArr.length - 1];
         String imgUrlPath = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + "." + hz;
