@@ -17,10 +17,7 @@ import com.xinshijie.gallery.service.IUserAttentionService;
 import com.xinshijie.gallery.service.IUserVipService;
 import com.xinshijie.gallery.util.RequestContextUtil;
 import com.xinshijie.gallery.util.SecurityUtils;
-import com.xinshijie.gallery.vo.LoginUserVo;
-import com.xinshijie.gallery.vo.SystemUserIntroVo;
-import com.xinshijie.gallery.vo.SystemUserVo;
-import com.xinshijie.gallery.vo.UserAttentionVo;
+import com.xinshijie.gallery.vo.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -253,5 +251,17 @@ public class SystemUserController extends BaseController {
             introVo.setVip(null);
         }
         return Result.success(introVo);
+    }
+
+    @GetMapping("systemInfo")
+    public Result<SystemInfoVo> getSystemInfo(){
+        SystemInfoVo infoVo=new SystemInfoVo();
+        infoVo.setVersion(9);
+        infoVo.setNewVersion("2.0.2");
+        infoVo.setUpVersion("2.0.1");
+        infoVo.setUpdateTime(LocalDate.now().toString());
+        infoVo.setIntro("1.解决无法支付的BUG;2.优化上传照片功能");
+        infoVo.setDownUrl("https://image.51x.uk/xinshijie/gallery_album_1_1.apk");
+        return Result.success(infoVo);
     }
 }
