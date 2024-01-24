@@ -28,7 +28,7 @@ public class AllVideoServiceImpl extends ServiceImpl<AllVideoMapper, AllVideo> i
     @Override
     public List<AllVideo> getListWait() {
         QueryWrapper<AllVideo> qw = new QueryWrapper<>();
-        qw.eq("status", VideoStatuEnum.NORMAL);
+        qw.eq("status", VideoStatuEnum.NORMAL.getCode());
         List<AllVideo> value = mapper.selectList(qw);
         return value;
     }

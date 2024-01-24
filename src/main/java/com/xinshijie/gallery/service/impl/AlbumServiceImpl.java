@@ -1,6 +1,5 @@
 package com.xinshijie.gallery.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,14 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.Album;
-import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.dto.AlbumDto;
-import com.xinshijie.gallery.dto.UserAlbumDto;
 import com.xinshijie.gallery.mapper.AlbumMapper;
 import com.xinshijie.gallery.service.IAlbumService;
 import com.xinshijie.gallery.service.IFileService;
 import com.xinshijie.gallery.vo.AlbumVo;
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,6 +34,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     private AlbumMapper albumMapper;
     @Autowired
     private IFileService fileService;
+
     @Value("${image.sourceWeb}")
     private String imageSourceWeb;
     @Value("${image.path}")
@@ -71,6 +65,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         Album pre = albumMapper.previousChapter(id);
         Album next = albumMapper.nextChapter(id);
         Album album = albumMapper.getInfo(id);
+
         if (album == null) {
             throw new ServiceException("图集不存在！");
         }
@@ -88,7 +83,6 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
 
     @Override
     public void add(Album album) {
-
         albumMapper.insert(album);
     }
 

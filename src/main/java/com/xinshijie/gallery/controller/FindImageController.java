@@ -36,7 +36,7 @@ public class FindImageController {
         page.setSize(dto.getPageSize());
         page.setCurrent(dto.getPageNum());
         QueryWrapper<FindImage> qw=new QueryWrapper<>();
-        qw.orderByAsc("sub_time");
+        qw.orderByDesc("sub_time");
         IPage<FindImage> list = findImageService.page(page,qw);
         return Result.success(list.getRecords(), Integer.parseInt(String.valueOf(list.getTotal())));
     }

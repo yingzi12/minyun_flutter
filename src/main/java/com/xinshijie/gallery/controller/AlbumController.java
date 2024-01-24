@@ -6,10 +6,12 @@ import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.AlbumDto;
 import com.xinshijie.gallery.service.IAlbumService;
+import com.xinshijie.gallery.service.ILocalImageService;
 import com.xinshijie.gallery.service.IReptileImageService;
 import com.xinshijie.gallery.service.IUserCollectionService;
 import com.xinshijie.gallery.vo.AlbumVo;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,6 @@ import static com.xinshijie.gallery.util.RequestContextUtil.getUserIdNoLogin;
 public class AlbumController {
     @Autowired
     private IAlbumService albumService;
-
     @Autowired
     private IReptileImageService reptileImageService;
     @Autowired
@@ -32,6 +33,9 @@ public class AlbumController {
     public Result<List<Album>> list(AlbumDto dto) {
         if (dto.getPageNum() == null) {
             dto.setPageNum(1);
+        }
+        if (dto.getPageNum() > 100) {
+            dto.setPageNum(100);
         }
         if (StringUtils.isEmpty(dto.getTitle())) {
             dto.setTitle(null);
@@ -61,6 +65,9 @@ public class AlbumController {
         if (dto.getPageNum() == null) {
             dto.setPageNum(1);
         }
+        if (dto.getPageNum() > 100) {
+            dto.setPageNum(100);
+        }
         if (StringUtils.isEmpty(dto.getTitle())) {
             dto.setTitle(null);
         }
@@ -77,6 +84,10 @@ public class AlbumController {
         Integer userId = getUserIdNoLogin();
 
         AlbumVo albumVo = albumService.getInfo(id);
+//        Album album = new Album();
+//        BeanUtils.copyProperties(albumVo, album);
+//        localImageService.saveAlbum(album);
+
         albumVo.setIsCollection(2);
         if(userId!=null) {
             UserCollection userCollection = userCollectionService.getInfo(userId, id, 1);
