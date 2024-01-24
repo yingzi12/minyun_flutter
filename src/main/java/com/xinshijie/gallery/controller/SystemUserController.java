@@ -259,7 +259,7 @@ public class SystemUserController extends BaseController {
         infoVo.setVersion(9);
         infoVo.setNewVersion("2.0.2");
         infoVo.setUpVersion("2.0.1");
-        infoVo.setUpdateTime(LocalDate.now().toString());
+        infoVo.setUpdateTime("2024-01-24");
         infoVo.setIntro("1.解决无法支付的BUG;2.优化上传照片功能");
         infoVo.setDownUrl("https://image.51x.uk/xinshijie/gallery_album_1_1.apk");
         return Result.success(infoVo);
