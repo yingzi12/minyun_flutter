@@ -108,7 +108,7 @@ public class PaypalServiceImpl implements IPaypalService {
         PayOrderVo payOrderVo = null;
         try {
             //请求id,唯一
-            URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders");
+            URL url = new URL(baseUrl + "/v2/checkout/orders");
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             httpConn.setRequestMethod("POST");
 
@@ -146,7 +146,7 @@ public class PaypalServiceImpl implements IPaypalService {
      */
     public PayPalTransactionVo checkoutOrdersCapture(String token, String orderId, String requestId) {
         try {
-            URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/capture");
+            URL url = new URL(baseUrl + "/v2/checkout/orders/" + orderId + "/capture");
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             httpConn.setRequestProperty("Content-Type", "application/json");
             httpConn.setRequestMethod("POST");
@@ -177,7 +177,7 @@ public class PaypalServiceImpl implements IPaypalService {
      * @throws IOException
      */
     public void getDetail(String token, String orderId) throws IOException {
-        URL url = new URL("https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId);
+        URL url = new URL(baseUrl + "/v2/checkout/orders/" + orderId);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("GET");
 

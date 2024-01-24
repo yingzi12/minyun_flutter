@@ -30,6 +30,9 @@ spring:
     url: jdbc:mysql://103.231.255.132:3306/gallery_test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: gallery_test
     password: t8ZtiScXtsXTrGTF
+#    url: jdbc:mysql://103.231.255.132:3306/gallery?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#    username: gallery
+#    password: hsAynhaZT8pBGTjj
   data:
     redis:
       host: 43.131.248.108
@@ -65,8 +68,8 @@ ffmpeg:
   path: /Users/luhuang/Documents/git/SubtitleGenerated/src/main/resources/ffmpeg
 paypal:
   client:
-    id: AWwAGKZhvPE3xSgDh-gRH9sXwNMKDQSzr65ZwaUHp-U7CTbUk-FTnRRjlF0zTpz5LaeDz5rHgcaaekVm
-    secret: ECmBhtDZKC-HCsF_4jeWuZk3uiuaicf0k0IU38O8ivuZJFgvgs_5lfS14DvPdtme5FIXyodxj4jclVWe
+    id: AcdD25YW71MTOxAO6qWz2nmu2yiw-4HR9ETC7J-ena06gRtqRu1RrRUoXTp65OCtQ-YYZeRbkgIwRxsq
+    secret: EMCu_LgIkLMb0w4cUDchU-zIRliAY-HV6K1Mo1NBBsPY1PgteViti3yAnPp25t80G3WgqM6W5QAPMSkg
   api:
     base:
-      url: https://api-m.sandbox.paypal.com
+      url: https://api-m.paypal.com
