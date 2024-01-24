@@ -387,7 +387,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         }
         video.setSize(videoMetaInfo.getSize());
         video.setDuration(videoMetaInfo.getDuration());
-        String[] fileNameArr = video.getUrl().toString().split("\\.");
+//        String[] fileNameArr = video.getUrl().toString().split("\\.");
         String imagUrl = "/video/"+ LocalDate.now().toString()+"/"+video.getMd5() +".jpg";
         //生成预览图
         if (video.getDuration() > 13000) {
