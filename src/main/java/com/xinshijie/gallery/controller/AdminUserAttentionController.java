@@ -1,5 +1,6 @@
 package com.xinshijie.gallery.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.common.BaseController;
 import com.xinshijie.gallery.common.Result;
@@ -7,10 +8,12 @@ import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.UserAttention;
 import com.xinshijie.gallery.domain.UserAttention;
+import com.xinshijie.gallery.dto.FindSystemUserDto;
 import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
 import com.xinshijie.gallery.service.IUserAttentionService;
+import com.xinshijie.gallery.vo.AlbumDiscoverVo;
 import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
@@ -110,5 +113,11 @@ public class AdminUserAttentionController extends BaseController {
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
+    @GetMapping("/discover")
+    public Result<List<AlbumDiscoverVo>> discover(FindUserAttentionDto findDto) {
+        findDto.setUserId(getUserId());
+        IPage<AlbumDiscoverVo> vo = userAttentionService.discover(findDto);
+        return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
+    }
 
 }

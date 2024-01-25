@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xinshijie.gallery.domain.UserAttention;
 import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
+import com.xinshijie.gallery.vo.AlbumDiscoverVo;
 import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
@@ -57,5 +58,8 @@ public interface UserAttentionMapper extends BaseMapper<UserAttention> {
      * 根据id数据
      */
     UserAttentionVo getInfo(Long id);
+
+    Page<AlbumDiscoverVo> discover(Page<UserAttention> page,@Param("userId") Integer userId);
+
 }
 

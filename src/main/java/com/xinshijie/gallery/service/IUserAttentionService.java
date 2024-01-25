@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinshijie.gallery.domain.UserAttention;
 import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
+import com.xinshijie.gallery.vo.AlbumDiscoverVo;
 import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
@@ -54,5 +55,7 @@ public interface IUserAttentionService extends IService<UserAttention> {
     UserAttention getInfo(Integer userId, Integer id);
 
     UserAttention getInfoByAtten(Integer userId, Integer attUserId);
+
+    Page<AlbumDiscoverVo> discover(FindUserAttentionDto dto);
 
 }

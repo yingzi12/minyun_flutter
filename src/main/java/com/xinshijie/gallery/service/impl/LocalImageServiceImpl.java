@@ -135,7 +135,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
         List<Image> values = imageService.listAll(albumVo.getId());
         albumVo.setNumberPhotos(values.size());
         updateAlbum(albumVo);
-        imageService.delCfAid(albumVo.getId());
+//        imageService.delCfAid(albumVo.getId());
         int count = 0;
         int error = 0;
         for (Image image : values) {
@@ -144,7 +144,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                     Path path = Paths.get(image.getUrl());
                     Path imageName = path.getFileName(); // 这将获取路径的最后一部分
                     if (image.getUrl().startsWith("/image")) {
-                        updateImage(image.getId(), image.getAid(), image.getUrl());
+//                        updateImage(image.getId(), image.getAid(), image.getUrl());
                         count = count + 1;
                     } else {
                         String imageLJ = "/image/" + Math.abs(HashUtil.apHash(albumVo.getTitle())) % 1000 + "/" + DigestUtil.md5Hex(albumVo.getTitle()) + "/" + imageName;
@@ -155,7 +155,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                         }
                         boolean ok = downloadImage(imgUrl, destinationPath, 0);
                         if (ok) {
-                            updateImage(image.getId(), image.getAid(), imageLJ);
+//                            updateImage(image.getId(), image.getAid(), imageLJ);
                             count = count + 1;
                         } else {
                             error = error + 1;
@@ -168,7 +168,7 @@ public class LocalImageServiceImpl implements ILocalImageService {
                     }
                 } else {
                     if (!sourceWeb.equals(image.getSourceWeb())) {
-                        updateImage(image.getId(), image.getAid(), image.getSourceUrl());
+//                        updateImage(image.getId(), image.getAid(), image.getSourceUrl());
                     }
                     if (count < 6 && !isImageUrlValid(image.getSourceWeb() + image.getSourceUrl(), 0)) {
                         if (error > 5) {
@@ -184,26 +184,26 @@ public class LocalImageServiceImpl implements ILocalImageService {
             }
         }
         if (count == 0) {
-            imageService.delAlum(albumVo.getId());
-            albumService.removeById(albumVo.getId());
+//            imageService.delAlum(albumVo.getId());
+//            albumService.removeById(albumVo.getId());
         } else {
             if (StringUtils.isEmpty(albumVo.getSourceUrl())) {
-                albumVo.setSourceUrl(values.get(0).getSourceUrl());
-                albumService.updateById(albumVo);
+//                albumVo.setSourceUrl(values.get(0).getSourceUrl());
+//                albumService.updateById(albumVo);
             }
         }
 
 
     }
 
-    public Image addImage(Integer aid, String path) {
-        Image image = new Image();
-        image.setAid(aid);
-        image.setUrl(path);
-        image.setSourceWeb(sourceWeb);
-        image.setSourceUrl(path);
-        return image;
-    }
+//    public Image addImage(Integer aid, String path) {
+//        Image image = new Image();
+//        image.setAid(aid);
+//        image.setUrl(path);
+//        image.setSourceWeb(sourceWeb);
+//        image.setSourceUrl(path);
+//        return image;
+//    }
 
     public void updateImage(Long id, Integer aid, String path) {
         Image image = new Image();
@@ -224,23 +224,23 @@ public class LocalImageServiceImpl implements ILocalImageService {
                     String destinationPath = sourcePaht + imageLJ;
                     boolean ok = downloadImage(albumVo.getSourceWeb() + albumVo.getImgUrl(), destinationPath, 0);
                     if (ok) {
-                        albumVo.setSourceUrl(imageLJ);
-                        albumVo.setSourceWeb(sourceWeb);
-                        albumService.updateById(albumVo);
+//                        albumVo.setSourceUrl(imageLJ);
+//                        albumVo.setSourceWeb(sourceWeb);
+//                        albumService.updateById(albumVo);
                     } else {
                         if (StringUtils.isNotEmpty(albumVo.getSourceUrl()) && albumVo.getSourceUrl().startsWith("http")) {
                             Document doc = requestUrl(albumVo.getSourceUrl(), 0);
                             if (doc == null) {
-                                albumVo.setSourceWeb(sourceWeb);
-                                albumVo.setSourceUrl("");
-                                albumService.updateById(albumVo);
+//                                albumVo.setSourceWeb(sourceWeb);
+//                                albumVo.setSourceUrl("");
+//                                albumService.updateById(albumVo);
                                 return;
                             }
                             String imgUlr = getString(doc, "meta[property=og:image]");
                             if (StringUtils.isEmpty(imgUlr)) {
-                                albumVo.setSourceWeb(sourceWeb);
-                                albumVo.setSourceUrl("");
-                                albumService.updateById(albumVo);
+//                                albumVo.setSourceWeb(sourceWeb);
+//                                albumVo.setSourceUrl("");
+//                                albumService.updateById(albumVo);
                                 return;
                             }
                             String fileName = imgUlr.substring(imgUlr.lastIndexOf('/') + 1);
@@ -249,21 +249,21 @@ public class LocalImageServiceImpl implements ILocalImageService {
                             destinationPath = sourcePaht + imageLJ;
                             ok = downloadImage(imgUlr, destinationPath, 0);
                             if (ok) {
-                                albumVo.setSourceUrl(imageLJ);
-                                albumVo.setSourceWeb(sourceWeb);
-                                albumService.updateById(albumVo);
+//                                albumVo.setSourceUrl(imageLJ);
+//                                albumVo.setSourceWeb(sourceWeb);
+//                                albumService.updateById(albumVo);
                             } else {
-                                albumVo.setSourceWeb(sourceWeb);
-                                albumVo.setSourceUrl("");
-                                albumService.updateById(albumVo);
+//                                albumVo.setSourceWeb(sourceWeb);
+//                                albumVo.setSourceUrl("");
+//                                albumService.updateById(albumVo);
                             }
                         }
                     }
                 }
             } else {
                 if (albumVo.getSourceUrl().startsWith("/image") || !sourceWeb.equals(albumVo.getSourceWeb())) {
-                    albumVo.setSourceWeb(sourceWeb);
-                    albumService.updateById(albumVo);
+//                    albumVo.setSourceWeb(sourceWeb);
+//                    albumService.updateById(albumVo);
                 }
             }
         } catch (Exception ex) {
@@ -354,14 +354,14 @@ public class LocalImageServiceImpl implements ILocalImageService {
             try {
                 // 移动文件，如果目标文件存在则替换它
                 Files.move(imagePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
-                Image image = addImage(album.getId(), imageLJ);
-                imageList.add(image);
+//                Image image = addImage(album.getId(), imageLJ);
+//                imageList.add(image);
             } catch (Exception e) {
                 System.err.println("Error occurred while moving the file.");
                 e.printStackTrace();
             }
         }
-        imageService.addBatch(imageList);
+//        imageService.addBatch(imageList);
     }
 
     public Document requestUrl(String url, int count) {

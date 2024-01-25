@@ -75,4 +75,26 @@
         where id = #{id}
     </select>
 
+    <select id="discover" resultType="com.xinshijie.gallery.vo.AlbumDiscoverVo">
+        SELECT
+            su.id,
+            su.nickname,
+            su.img_url as userActor,
+            ua2.id as aid,
+            ua2.title,
+            ua2.intro,
+            ua2.create_time,
+            ua2.img_url,
+            ua2.count_see,
+            ua2.count_like
+        FROM
+            `system_user` su
+                JOIN
+            user_attention ua ON su.id = ua.att_user_id
+                JOIN
+            user_album ua2 ON su.id = ua2.user_id
+        WHERE
+            ua.user_id = #{userId}
+        order by create_time desc
+    </select>
 </mapper>

@@ -8,6 +8,7 @@ import com.xinshijie.gallery.dto.FindUserAttentionDto;
 import com.xinshijie.gallery.dto.UserAttentionDto;
 import com.xinshijie.gallery.mapper.UserAttentionMapper;
 import com.xinshijie.gallery.service.IUserAttentionService;
+import com.xinshijie.gallery.vo.AlbumDiscoverVo;
 import com.xinshijie.gallery.vo.SystemUserIntroVo;
 import com.xinshijie.gallery.vo.SystemUserVo;
 import com.xinshijie.gallery.vo.UserAttentionVo;
@@ -118,6 +119,20 @@ public class UserAttentionServiceImpl extends ServiceImpl<UserAttentionMapper, U
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("att_user_Id", attUserId);
         return mapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public Page<AlbumDiscoverVo> discover(FindUserAttentionDto dto) {
+        Page<UserAttention> page = new Page<>();
+        if (dto.getPageNum() == null) {
+            dto.setPageNum(1L);
+        }
+        if (dto.getPageSize() == null) {
+            dto.setPageSize(20L);
+        }
+        page.setSize(dto.getPageSize());
+        page.setCurrent(dto.getPageNum());
+        return mapper.discover(page, dto.getUserId());
     }
 
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.xinshijie.gallery.dto.AmountDto;
 import com.xinshijie.gallery.dto.PayOrderDto;
 import com.xinshijie.gallery.dto.PurchaseUnitDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Scanner;
-
+@Slf4j
 class PaypalMain {
 
     private static final String PAYPAL_CLIENT_ID = "AWwAGKZhvPE3xSgDh-gRH9sXwNMKDQSzr65ZwaUHp-U7CTbUk-FTnRRjlF0zTpz5LaeDz5rHgcaaekVm";
@@ -146,9 +147,9 @@ class PaypalMain {
                 : httpConn.getErrorStream();
         Scanner s = new Scanner(responseStream).useDelimiter("\\A");
         String response = s.hasNext() ? s.next() : "";
-        System.out.println(response);
-        PayOrderVo payOrderVo = JSONObject.parseObject(response, PayOrderVo.class);
-        System.out.println(JSONObject.toJSONString(payOrderVo));
+        log.info(response);
+//        PayOrderVo payOrderVo = JSONObject.parseObject(response, PayOrderVo.class);
+//        System.out.println(JSONObject.toJSONString(payOrderVo));
     }
 
     /**

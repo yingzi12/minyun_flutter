@@ -79,6 +79,7 @@
         SELECT *
         FROM album s
         WHERE s.id >= #{randomId}
+          <if test="dto.isFree != null ">and is_free = #{dto.isFree}</if>
         ORDER BY s.id ASC
         limit #{pageSize}
     </select>

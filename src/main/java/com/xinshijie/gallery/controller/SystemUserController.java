@@ -264,4 +264,6 @@ public class SystemUserController extends BaseController {
         infoVo.setDownUrl("https://image.51x.uk/xinshijie/gallery_album_1_1.apk");
         return Result.success(infoVo);
     }
+
+
 }

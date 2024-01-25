@@ -756,23 +756,6 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         }
     }
 
-    public String getFileExtensionFromURL(String urlString) {
-        try {
-            URL url = new URL(urlString);
-            String path = url.getPath();
-            int lastSlashIndex = path.lastIndexOf("/");
-            int lastDotIndex = path.lastIndexOf(".");
-
-            if (lastDotIndex > 0 && lastDotIndex > lastSlashIndex) {
-                return path.substring(lastDotIndex + 1);
-            }
-        } catch (Exception e) {
-            // URL解析错误
-            log.error("getFileExtensionFromURL urlString:{}", urlString, e);
-        }
-        return ""; // 无法提取文件扩展名
-    }
-
     public String downloadImage(String url, String destinationFile, int count) {
         if (count > 3) {
             log.error("同步url 下载图片，url:{}", url);
@@ -816,6 +799,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         return "";
     }
 
+    /**
+     * 获取图库里的照片
+     * @param title
+     * @param aid
+     * @return
+     */
     public Set<String> getList(String title, Integer aid) {
         List<Image> list = imageService.listAll(aid);
         Set<String> urlist = new HashSet<>();
@@ -842,10 +831,8 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     imageService.updateById(image);
                     urlist.add(imageName);
                     sucCount++;
-
                 } else {
                     errorCount = errorCount + 1;
-
                 }
             }
             if (errorCount > 5) {

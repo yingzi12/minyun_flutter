@@ -58,6 +58,26 @@ public class ReptileMain {
     }
 
     @Test
+    public void testDetail() {
+        String url="";
+        String imgUrl="";
+        String result = HttpRequest.get(  "https://admin.aiavr.uk/wiki/reptileRule/getInfo/")
+                .header(Header.USER_AGENT, "Hutool http")//头信息，多个头信息多次调用此方法即可
+//                 .form(paramMap)//表单内容
+                .timeout(20000)//超时，毫秒
+                .execute().body();
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        if (jsonObject.getIntValue("code") != 200) {
+            throw new ServiceException(" reptileRuleVo 出现异常");
+        }
+        ReptileRule reptileRuleVo = JSON.parseObject(jsonObject.getString("data"), ReptileRule.class);
+
+        reptileService.detail(url,imgUrl,reptileRuleVo);
+    }
+
+//    void detail(String url, String imgUrl, ReptileRule reptileRule);
+
+    @Test
     public void info() {
         AlbumVo albumVo = albumService.getInfo(56597);
         Album album = new Album();

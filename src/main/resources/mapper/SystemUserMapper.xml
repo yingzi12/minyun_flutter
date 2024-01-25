@@ -58,11 +58,12 @@
         count_see,
         count_attention,
         income,
-        withdraw
+        withdraw,
+        credit
         from system_user
         <where>
             <if test="dto.name !=null ">and `name`= #{dto.name}</if>
-            <if test="dto.nickname !=null ">and nickname= #{dto.nickname}</if>
+            <if test="dto.nickname !=null ">and nickname LIKE CONCAT('%', #{dto.nickname}, '%')</if>
             <if test="dto.email !=null ">and email= #{dto.email}</if>
             <if test="dto.isEmail !=null ">and is_email= #{dto.isEmail}</if>
             <if test="dto.intro !=null ">and intro= #{dto.intro}</if>
