@@ -99,7 +99,7 @@ public class UserImageController extends BaseController {
             for (UserImageVo image : vo.getRecords()) {
                 if (image.getIsFree() == 2) {
                     image.setImgUrl(null);
-                    image.setStatus(2);
+                    image.setStatus(-1);
                 }
             }
         }

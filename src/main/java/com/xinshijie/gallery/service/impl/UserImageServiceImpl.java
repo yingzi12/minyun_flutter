@@ -279,6 +279,7 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         }
         if(map.size()>0) {
             this.saveBatch(map.values());
+            map.clear();
         }
     }
 
