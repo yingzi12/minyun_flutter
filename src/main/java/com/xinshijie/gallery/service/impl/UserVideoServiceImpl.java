@@ -343,8 +343,7 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
 
     public String saveFileVideo(AllVideo allVideo, String md5, MultipartFile file) {
         //保存到本地
-        String url = fileService.saveUploadedFilesDown(Constants.videoHcPath, allVideo.getTitle(), file);
-
+        String url = fileService.saveUploadedFilesDown(Constants.videoHcPath, allVideo.getTitle(),md5, file);
         try {
             allVideo.setSourceWeb(sourceWeb);
             allVideo.setUrl(url);
@@ -356,21 +355,6 @@ public class UserVideoServiceImpl extends ServiceImpl<UserVideoMapper, UserVideo
         }
         return url;
     }
-
-//    public String saveUrlVideo(AllVideo allVideo, String md5, String sourcePath) {
-//        String url = fileService.chargeVideoFile(headPath, allVideo.getTitle(), sourcePath);
-//        try {
-//            allVideo.setSourceWeb(sourceWeb);
-//            allVideo.setSourceUrl(url);
-//            allVideoService.save(allVideo);
-//        } catch (Exception ex) {
-//            //保存出问题。要么是md5出现重复，要么就数据库异常。
-//            allVideo = allVideoService.getMD5(md5);
-//            return allVideo.getSourceUrl();
-//        }
-//        return url;
-//    }
-
 
     /**
      * 转码ts

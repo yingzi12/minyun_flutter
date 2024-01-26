@@ -122,8 +122,9 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
                 log.error("No image file provided");
                 throw new ServiceException(ResultCodeEnum.ALBUM_IMGURL_NULL);
             }
-                String imgUrl = fileService.saveUploadedFilesWatermark("/user/album/" , file.getOriginalFilename(), file);
-                return imgUrl;
+            String md5=fileService.getMD5(file.getInputStream());
+            String imgUrl = fileService.saveUploadedFilesWatermark("/user/album/" , file.getOriginalFilename(),md5, file);
+            return imgUrl;
         } catch (Exception exception) {
             log.error("Error during image processing: {}," + exception.getMessage(), exception);
             // 处理异常

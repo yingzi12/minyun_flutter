@@ -361,7 +361,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
                 log.error("No image file provided");
                 throw new ServiceException(ResultCodeEnum.ALBUM_IMGURL_NULL);
             }
-            String imgUrl = fileService.saveUploadedFilesWatermark("/user/head/" , file.getOriginalFilename(), file);
+            String md5 = fileService.getMD5(file.getInputStream());
+            String imgUrl = fileService.saveUploadedFilesWatermark("/user/head/" , file.getOriginalFilename(), md5,file);
             return imgUrl;
         } catch (Exception exception) {
             log.error("Error during image processing: {}," + exception.getMessage(), exception);

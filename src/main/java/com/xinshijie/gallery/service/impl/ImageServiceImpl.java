@@ -125,7 +125,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     }
 
     public String saveImage(AllImage allImage, String md5, MultipartFile file) {
-        String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), file);
+        String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(),md5, file);
         try {
             if (StringUtils.isNotEmpty(url)) {
                 allImage.setSourceWeb(imageSourceWeb);

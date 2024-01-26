@@ -56,25 +56,25 @@ public class FileServiceImpl implements IFileService {
      * 照片
      */
     @Override
-    public String saveUploadedFilesWatermark(String headPath, String title, MultipartFile file) {
+    public String saveUploadedFilesWatermark(String headPath, String title,String md5, MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 log.error("No image file provided");
                 return null;
             }
             log.info("file:" + file.getOriginalFilename());
-            String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + ".webp";
+            String imgUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + md5 + ".webp";
             mkdirParentDir(savePath + imgUrl);
             // 检查文件大小或格式
             if (file.getSize() <= 300 * 1024 || isWebPFormat(file)) {
-                return saveFile(file, headPath, title);
+                return saveFile(file, headPath, title,md5);
             } else {
                 convertWebp(imgUrl,file);
             }
             return imgUrl;
         } catch (Exception e) {
             log.error("Error during image processing: ", e);
-            return saveFile(file, headPath, title);
+            return saveFile(file, headPath, title,md5);
         }
     }
 
@@ -206,7 +206,7 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public String saveUploadedFilesDown(String headPath, String title, MultipartFile file) {
+    public String saveUploadedFilesDown(String headPath, String title,String md5, MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 log.error("No image file provided");
@@ -215,7 +215,7 @@ public class FileServiceImpl implements IFileService {
             try {
                 // 你的方法逻辑
                 String[] fileNameArr = file.getOriginalFilename().split("\\.");
-                String fileUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + "." + fileNameArr[fileNameArr.length - 1];
+                String fileUrl = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + md5 + "." + fileNameArr[fileNameArr.length - 1];
 
                 // 假设我们将视频保存在服务器的某个位置
                 File destinationFile = new File(Constants.videoHcPath + fileUrl);
@@ -247,10 +247,10 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
-    public String saveFile(MultipartFile file, String headPath, String title) {
+    public String saveFile(MultipartFile file, String headPath, String title,String md5) {
         String[] hzArr = file.getOriginalFilename().split("\\.");
         String hz = hzArr[hzArr.length - 1];
-        String imgUrlPath = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + HashUtil.apHash(file.getOriginalFilename()) + "." + hz;
+        String imgUrlPath = headPath + Math.abs(HashUtil.apHash(title)) % 1000 + "/" + DigestUtil.md5Hex(title) + "/" + md5 + "." + hz;
         mkdirParentDir(savePath + imgUrlPath);
         try (InputStream inputStream = file.getInputStream();
              FileOutputStream outputStream = new FileOutputStream(savePath + imgUrlPath)) {
@@ -270,7 +270,7 @@ public class FileServiceImpl implements IFileService {
     public void mkdirParentDir(String path)  {
         File destinationFile = new File(path);
         File parentDir = destinationFile.getParentFile();
-        log.info("父目录的绝对路径: " + parentDir.getAbsolutePath());
+        //log.info("父目录的绝对路径: " + parentDir.getAbsolutePath());
         // 如果父目录不存在，尝试创建它
         if (parentDir != null && !parentDir.exists()) {
             boolean created = parentDir.mkdirs();

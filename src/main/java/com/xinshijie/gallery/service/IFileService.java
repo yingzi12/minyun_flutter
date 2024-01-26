@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 public interface IFileService {
-    String saveUploadedFilesWatermark(String headPath, String title, MultipartFile file);
+    String saveUploadedFilesWatermark(String headPath, String title, String md5,MultipartFile file);
 
     String getMD5(InputStream is);
 
@@ -29,9 +29,9 @@ public interface IFileService {
      * @param file
      * @return
      */
-    String saveUploadedFilesDown(String headPath, String title, MultipartFile file);
+    String saveUploadedFilesDown(String headPath, String title,String md5, MultipartFile file);
 
-    String saveFile(MultipartFile file, String headPath, String title);
+    String saveFile(MultipartFile file, String headPath, String title,String md5);
     /**
      * 转换ts
      *

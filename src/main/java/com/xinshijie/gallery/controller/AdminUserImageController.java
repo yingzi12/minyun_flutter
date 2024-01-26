@@ -124,10 +124,11 @@ public class AdminUserImageController extends BaseController {
     public Result<String> handleFileBatchUpload(@RequestPart(value = "files") final List<MultipartFile> files, @RequestParam("aid") Integer aid, @RequestParam("isFree") Integer isFree) {
         UserAlbum userAlbum=userAlbumService.isCheckOperate(aid);
 
-        for(MultipartFile uploadfile:files) {
-            log.info("upload aid:{},fileName:{}" ,aid,uploadfile.getOriginalFilename());
-            String url = userImageService.saveUploadedFiles(getUserId(), aid,userAlbum.getTitle(), isFree, uploadfile);
-        }
+//        for(MultipartFile uploadfile:files) {
+//            log.info("upload aid:{},fileName:{}" ,aid,uploadfile.getOriginalFilename());
+//            String url = userImageService.saveUploadedFiles(getUserId(), aid,userAlbum.getTitle(), isFree, uploadfile);
+//        }
+        userImageService.saveUploadedBatchFiles(getUserId(), aid,userAlbum.getTitle(), isFree,files);
         userAlbumService.updateCountImage(aid);
         return Result.success("success");
     }

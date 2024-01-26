@@ -65,4 +65,6 @@ public interface IUserImageService extends IService<UserImage> {
     UserImageVo getInfo(Long id);
 
     String saveUploadedFiles(Integer userId, Integer aid,String title, Integer isFree, MultipartFile file);
+
+    void saveUploadedBatchFiles(Integer userId, Integer aid,String title, Integer isFree, List<MultipartFile> files);
 }

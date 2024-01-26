@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinshijie.gallery.common.ResultCodeEnum;
 import com.xinshijie.gallery.common.ServiceException;
 import com.xinshijie.gallery.domain.AllImage;
+import com.xinshijie.gallery.domain.Image;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserImage;
 import com.xinshijie.gallery.dto.UserImageDto;
@@ -24,7 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -222,8 +225,65 @@ public class UserImageServiceImpl extends ServiceImpl<UserImageMapper, UserImage
         }
     }
 
+    @Override
+    public void saveUploadedBatchFiles(Integer userId, Integer aid,String title, Integer isFree, List<MultipartFile> files) {
+        Map<String,UserImage> map=new HashMap<>();
+        for(MultipartFile uploadfile:files) {
+            try {
+                String md5 = fileService.getMD5(uploadfile.getInputStream());
+                AllImage allImage = allImageService.getMD5(md5);
+                if (allImage != null) {
+                    QueryWrapper<UserImage> qw = new QueryWrapper<>();
+                    qw.eq("md5", md5);
+                    qw.eq("aid", aid);
+                    List<UserImage> value = mapper.selectList(qw);
+                    if (value != null && value.size()>0) {
+
+                    } else {
+                        UserImage userImage = new UserImage();
+                        userImage.setUserId(userId);
+                        userImage.setCreateTime(LocalDateTime.now());
+                        userImage.setAid(aid);
+                        userImage.setImgUrl(allImage.getSourceUrl());
+                        userImage.setMd5(md5);
+                        userImage.setIsFree(isFree);
+//                        mapper.insert(userImage);
+                        map.put(md5,userImage);
+//                        return userImage.getImgUrl();
+                    }
+                } else {
+                    allImage = new AllImage();
+                    allImage.setMd5(md5);
+                    allImage.setSize(uploadfile.getSize());
+                    allImage.setTitle(title);
+                    //保存图片到本地
+                    String imgUrl = saveImage(allImage, md5, uploadfile);
+                    if (StringUtils.isEmpty(imgUrl)) {
+                        throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
+                    }
+                    UserImage userImage = new UserImage();
+                    userImage.setUserId(userId);
+                    userImage.setCreateTime(LocalDateTime.now());
+                    userImage.setAid(aid);
+                    userImage.setImgUrl(imgUrl);
+                    userImage.setMd5(md5);
+                    userImage.setIsFree(isFree);
+                    map.put(md5,userImage);
+//                    mapper.insert(userImage);
+//                    return userImage.getImgUrl();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new ServiceException(ResultCodeEnum.UPLOAD_IMAGE_ERROR);
+            }
+        }
+        if(map.size()>0) {
+            this.saveBatch(map.values());
+        }
+    }
+
     public String saveImage(AllImage allImage, String md5, MultipartFile file) {
-        String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), file);
+        String url = fileService.saveUploadedFilesWatermark(headPath, allImage.getTitle(), md5,file);
         try {
             if (StringUtils.isNotEmpty(url)) {
                 allImage.setSourceWeb(sourceWeb);
