@@ -169,6 +169,7 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         if(Strings.isNotEmpty(dto.getImgUrl())){
             userAlbum.setImgUrl(dto.getImgUrl());
         }
+        userAlbum.setDevice(dto.getDevice());
         userAlbum.setVipPrice(dto.getVipPrice());
         userAlbum.setUpdateTime(LocalDateTime.now());
         setPrice(userAlbum, dto.getCharge(), dto.getPrice(), dto.getVipPrice());

@@ -82,9 +82,9 @@
             <if test="dto.score !=null ">and score= #{dto.score}</if>
             <if test="dto.introduce !=null ">and introduce= #{dto.introduce}</if>
             <if test="dto.status !=null ">and status= #{dto.status}</if>
-            <if test="dto.device == 1 ">and device= in ( 0,1)</if>
-            <if test="dto.device == 2 ">and device= in ( 0,2)</if>
-            <if test="dto.device == 0 ">and device= in ( 0,1,2)</if>
+            <if test="dto.device == 1 ">and device in ( 0,1)</if>
+            <if test="dto.device == 2 ">and device in ( 0,2)</if>
+            <if test="dto.device == 0 ">and device in ( 0,1,2)</if>
             <if test="dto.device ==null ">and device =  0</if>
         </where>
         <if test="dto.orderBy == 'countSee'"> order by count_see desc</if>

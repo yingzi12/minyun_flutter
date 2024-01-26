@@ -37,20 +37,20 @@ public class FileServiceImpl implements IFileService {
     @Value("${image.path}")
     private String savePath;
 
-    public static void main(String[] args) {
-        String[] readFormats = ImageIO.getReaderFormatNames();
-        String[] writeFormats = ImageIO.getWriterFormatNames();
-        System.out.println("支持的Readers: " + Arrays.asList(readFormats));
-        System.out.println("支持的Writers: " + Arrays.asList(writeFormats));
-        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("WBMP");
-        while (readers.hasNext()) {
-            System.out.println("reader: " + readers.next());
-        }
-        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
-
-        System.out.println("writers: " + writer);
-
-    }
+//    public static void main(String[] args) {
+//        String[] readFormats = ImageIO.getReaderFormatNames();
+//        String[] writeFormats = ImageIO.getWriterFormatNames();
+//        System.out.println("支持的Readers: " + Arrays.asList(readFormats));
+//        System.out.println("支持的Writers: " + Arrays.asList(writeFormats));
+//        Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("WBMP");
+//        while (readers.hasNext()) {
+//            System.out.println("reader: " + readers.next());
+//        }
+//        ImageWriter writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
+//
+//        System.out.println("writers: " + writer);
+//
+//    }
 
     /**
      * 照片
