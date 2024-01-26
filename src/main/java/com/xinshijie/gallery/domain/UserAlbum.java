@@ -118,4 +118,7 @@ public class UserAlbum implements Serializable {
 
     private String payIntro;
 
+//    设备 0-全部  1。手机   2.PC
+    private Integer device;
+
 }

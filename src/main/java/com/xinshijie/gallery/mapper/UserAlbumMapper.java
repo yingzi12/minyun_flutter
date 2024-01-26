@@ -51,20 +51,20 @@ public interface UserAlbumMapper extends BaseMapper<UserAlbum> {
     Integer updateCountSee(@Param("id") Integer id, @Param("updateDate") String updateDate);
 
 
-    UserAlbum previousChapter(@Param("id") Integer id);
+    UserAlbum previousChapter(@Param("id") Integer id,@Param("device") Integer device);
 
-    UserAlbum nextChapter(@Param("id") Integer id);
+    UserAlbum nextChapter(@Param("id") Integer id,@Param("device") Integer device);
 
     /**
      * 根据id数据
      */
     UserAlbumVo getInfo(Integer userId, Integer id);
 
-    Integer updateCountImage(Integer id);
+    Integer updateCountImage(Integer id );
 
     Integer updateCountVideo(Integer id);
 
-    List<UserAlbum> findRandomStories(@Param("randomId") Integer randomId, @Param("pageSize") Integer pageSize);
+    List<UserAlbum> findRandomStories(@Param("randomId") Integer randomId,@Param("device") Integer device,@Param("pageSize") Integer pageSize);
 
     Integer findMaxId();
 

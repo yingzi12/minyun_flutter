@@ -154,4 +154,7 @@ public class UserAlbumDto implements Serializable {
     private Long pageNum;
 
     private Long pageSize;
+
+    //    设备 0-全部  1。手机   2.PC
+    private Integer device;
 }

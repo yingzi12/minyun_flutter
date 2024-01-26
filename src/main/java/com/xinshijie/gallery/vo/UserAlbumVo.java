@@ -165,4 +165,6 @@ public class UserAlbumVo implements Serializable {
 
     private UserAlbum pre;
     private UserAlbum next;
+    //    设备 0-全部  1。手机   2.PC
+    private Integer device;
 }

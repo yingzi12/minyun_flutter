@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -91,13 +92,14 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         Integer minId = mapper.findMinId();
         QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
         qw.eq("status",AlbumStatuEnum.NORMAL.getCode());
+        qw.eq("device",0);
         Long count=mapper.selectCount(qw);//
         if(30<count) {
             Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId - 30);
-            return mapper.findRandomStories(randomId, pageSize);
+            return mapper.findRandomStories(randomId, null,pageSize);
         }else{
             Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId);
-            return mapper.findRandomStories(randomId, pageSize);
+            return mapper.findRandomStories(randomId,null, pageSize);
         }
     }
 
@@ -117,6 +119,11 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         page.setCurrent(dto.getPageNum());
 
         QueryWrapper<UserAlbum> qw = new QueryWrapper<>();
+        if (dto.getDevice() == null) {
+            qw.eq("device",0);
+        }else{
+            qw.eq("device",dto.getDevice());
+        }
         return mapper.getPageUserAlbum(page, qw);
     }
 
@@ -134,6 +141,11 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         value.setCreateTime(LocalDateTime.now());
         value.setCountBuy(0);
         value.setCountSee(0);
+        if(dto.getDevice()==null){
+            value.setDevice(0);
+        }else{
+            value.setDevice(dto.getDevice());
+        }
         value.setCountCollection(0);
         value.setStatus(AlbumStatuEnum.WAIT.getCode());
         setPrice(value, value.getCharge(), value.getPrice(), value.getVipPrice());
@@ -163,7 +175,6 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         QueryWrapper<UserAlbum> qw = new QueryWrapper<>();
         qw.eq("user_id", dto.getUserId());
         qw.eq("id", dto.getId());
-
         int i = mapper.update(userAlbum, qw);
         return i == 1;
     }
@@ -188,12 +199,12 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
 
     @Override
     public UserAlbum previousChapter(Integer id) {
-        return mapper.previousChapter(id);
+        return mapper.previousChapter(id,null);
     }
 
     @Override
     public UserAlbum nextChapter(Integer id) {
-        return mapper.nextChapter(id);
+        return mapper.nextChapter(id,null);
     }
 
 

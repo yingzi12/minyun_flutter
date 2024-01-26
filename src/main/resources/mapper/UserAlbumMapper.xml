@@ -26,7 +26,8 @@
                status,
                 charge,
                img_url,
-               pay_intro
+               pay_intro,
+               device
         from user_album
     </sql>
 
@@ -55,6 +56,10 @@
             <if test="score !=null ">and score= #{score}</if>
             <if test="introduce !=null ">and introduce= #{introduce}</if>
             <if test="status !=null ">and status= #{status}</if>
+            <if test="device == 0 ">and device in (0,1,2)</if>
+            <if test="device == 1 ">and device in (0,1)</if>
+            <if test="device == 2 ">and device in (0,2)</if>
+            <if test="device == null ">and device = 0</if>
         </where>
     </select>
 
@@ -74,14 +79,13 @@
             <if test="dto.price !=null ">and price= #{dto.price}</if>
             <if test="dto.discount !=null ">and discount= #{dto.discount}</if>
             <if test="dto.girl !=null ">and girl= #{dto.girl}</if>
-            <if test="dto.countSee !=null ">and count_see= #{dto.countSee}</if>
-            <if test="dto.numberPhotos !=null ">and number_photos= #{dto.numberPhotos}</if>
-            <if test="dto.numberVideo !=null ">and number_video= #{dto.numberVideo}</if>
-            <if test="dto.countCollection !=null ">and count_collection= #{dto.countCollection}</if>
-            <if test="dto.countBuy !=null ">and count_buy= #{dto.countBuy}</if>
             <if test="dto.score !=null ">and score= #{dto.score}</if>
             <if test="dto.introduce !=null ">and introduce= #{dto.introduce}</if>
             <if test="dto.status !=null ">and status= #{dto.status}</if>
+            <if test="dto.device == 1 ">and device= in ( 0,1)</if>
+            <if test="dto.device == 2 ">and device= in ( 0,2)</if>
+            <if test="dto.device == 0 ">and device= in ( 0,1,2)</if>
+            <if test="dto.device ==null ">and device =  0</if>
         </where>
         <if test="dto.orderBy == 'countSee'"> order by count_see desc</if>
         <if test="dto.orderBy == 'createTime'"> order by create_time desc</if>
@@ -117,6 +121,10 @@
         SELECT *
         FROM user_album a
         WHERE a.id &lt; #{id} and  status=1
+        <if test="device == 0 ">and device in (0,1,2)</if>
+        <if test="device == 1 ">and device in (0,1)</if>
+        <if test="device == 2 ">and device in (0,2)</if>
+        <if test="device == null ">and device = 0</if>
         ORDER BY id desc
         LIMIT 1
     </select>
@@ -124,6 +132,10 @@
         SELECT *
         FROM user_album a
         WHERE a.id > #{id} and  status=1
+        <if test="device == 0 ">and device in (0,1,2)</if>
+        <if test="device == 1 ">and device in (0,1)</if>
+        <if test="device == 2 ">and device in (0,2)</if>
+        <if test="device == null ">and device = 0</if>
         ORDER BY id
         LIMIT 1 OFFSET 1
     </select>
@@ -144,6 +156,10 @@
         SELECT *
         FROM user_album s
         WHERE s.id >= #{randomId} and  status=1
+        <if test="device == 0 ">and device in (0,1,2)</if>
+        <if test="device == 1 ">and device in (0,1)</if>
+        <if test="device == 2 ">and device in (0,2)</if>
+        <if test="device == null ">and device = 0</if>
         ORDER BY s.id ASC
         limit #{pageSize}
     </select>
