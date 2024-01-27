@@ -36,7 +36,7 @@ public class UserCollection implements Serializable {
     @JsonFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     private String title;
-    private Long aid;
+    private Integer aid;
     private Integer ctype;
 
 }

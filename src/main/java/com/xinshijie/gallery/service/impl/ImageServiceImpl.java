@@ -42,6 +42,11 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     }
 
     @Override
+    public List<String> listUrl(Integer aid) {
+        return imageMapper.listUrl(aid);
+    }
+
+    @Override
     public Integer count(ImageDto dto) {
         return imageMapper.count(dto);
     }

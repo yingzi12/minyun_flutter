@@ -9,6 +9,8 @@ import com.xinshijie.gallery.domain.Album;
 import com.xinshijie.gallery.domain.UserAlbum;
 import com.xinshijie.gallery.domain.UserCollection;
 import com.xinshijie.gallery.dto.UserCollectionDto;
+import com.xinshijie.gallery.service.IAlbumService;
+import com.xinshijie.gallery.service.IUserAlbumService;
 import com.xinshijie.gallery.service.IUserCollectionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -38,14 +40,31 @@ public class AdminUserCollectionController extends BaseController {
 
     @Autowired
     private IUserCollectionService userCollectionService;
-
+    @Autowired
+    private IUserAlbumService userAlbumService;
+    @Autowired
+    private IAlbumService albumService;
     /**
      * 添加
      *
      * @return
      */
     @GetMapping("/on")
-    public Result<UserCollection> on(@RequestParam("aid") Long aid, @RequestParam("title") String title, @RequestParam("ctype") Integer ctype) {
+    public Result<UserCollection> on(@RequestParam("aid") Integer aid,  @RequestParam("ctype") Integer ctype) {
+        String title="";
+        if(ctype==2) {
+            UserAlbum userAlbum = userAlbumService.getById(aid);
+            if (userAlbum == null) {
+                throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
+            }
+            title=userAlbum.getTitle();
+        }else{
+            Album Album = albumService.getById(aid);
+            if (Album == null) {
+                throw new ServiceException(ResultCodeEnum.DATA_NOT_FOUND);
+            }
+            title=Album.getTitle();
+        }
         UserCollectionDto dto = new UserCollectionDto();
         Integer userId=getUserId();
         if(userId==null){

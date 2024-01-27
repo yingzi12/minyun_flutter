@@ -8,6 +8,12 @@
         where aid = #{aid}
         LIMIT #{offset},#{pageSize}
     </select>
+
+    <select id="listUrl" resultType="java.lang.String">
+        select url
+        from image
+        where aid = #{aid}
+    </select>
     <select id="count" resultType="java.lang.Integer">
         select count(1) from image
         <where>

@@ -433,47 +433,12 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
                 albumService.add(album);
                 album = albumService.getInfoBytitle(title);
-            } else {
-                //判断图集的图片是否可以访问
-                boolean ok = isImageUrlValid(album.getSourceWeb() + album.getSourceUrl(), 0);
-                //判断是否是同一组
-                if (!ok || !hash.equals(album.getHash()) || StringUtils.isEmpty(album.getGirl()) || StringUtils.isEmpty(album.getUrl()) || StringUtils.isEmpty(album.getIntro())) {
-                    album.setHash(hash);
-                    album.setSourceUrl(imgUrl);
-                    if (StringUtils.isNotEmpty(desc)) {
-                        album.setIntro(desc);
-                    }
-                    if (StringUtils.isNotEmpty(sourceWeb)) {
-                        album.setSourceWeb(sourceWeb);
-                    }
-                    if (StringUtils.isNotEmpty(imgUrl)) {
-                        album.setImgUrl(imgUrl);
-                    }
-                    if (StringUtils.isNotEmpty(detailUrl)) {
-                        album.setUrl(detailUrl);
-                    }
-                    if (StringUtils.isNotEmpty(girl)) {
-                        album.setGirl(girl);
-                    }
-                    if (StringUtils.isNotEmpty(desc)) {
-                        album.setIntro(desc);
-                    }
-                    album.setUpdateTime(LocalDate.now().toString());
-
-                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() ,album.getImgUrl());
-                    if (StringUtils.isNotEmpty(sourceUrl)) {
-                        album.setUrl(album.getSourceWeb() + album.getImgUrl());
-                        album.setSourceUrl(sourceUrl);
-                        album.setSourceWeb(imageSourceWeb);
-                    }
-                    albumService.updateById(album);
-                }
+            }else{
+                return;
             }
-
-            Set<String> urlList = getList(album.getTitle(), album.getId());
             int count = 0;
             if (StringUtils.isEmpty(reptileRule.getContentPageRule())) {
-                count = count + addImageList(detailUrl, album, reptileRule, urlList);
+                count = count + addImageList(detailUrl, album, reptileRule);
             } else {
                 Element body = doc.body();
                 Element imagePageCoent = body.select(reptileRule.getContentPageRule()).first();
@@ -484,7 +449,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                         if (StringUtils.isNotEmpty(reptileRule.getPageUrl())) {
                             pageUrl = reptileRule.getPageUrl() + pageUrl;
                         }
-                        count = count + addImageList(pageUrl, album, reptileRule, urlList);
+                        count = count + addImageList(pageUrl, album, reptileRule);
                     }
                 }
             }
@@ -506,7 +471,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     }
 
-    public int addImageList(String detailUrl, Album album, ReptileRule reptileRule, Set<String> urlList) {
+    public int addImageList(String detailUrl, Album album, ReptileRule reptileRule) {
         Document doc = requestUrl(detailUrl, reptileRule, 0);
         if (doc == null) {
             return 0;
@@ -531,33 +496,29 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 }
                 if (StringUtils.isNotEmpty(imageUrlSource)) {
                     String imageName = imageUrlSource.substring(imageUrlSource.lastIndexOf('/') + 1);
-                    if (!urlList.contains(imageName)) {
-                        Image image = new Image();
-                        image.setAid(album.getId());
-                        image.setSourceUrl(imageUrlSource);
-                        image.setUrl(imageUrlSource);
-                        String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(imageName),null, imageUrlSource);
-                        if (StringUtils.isNotEmpty(sourceUrl)) {
-                            image.setSourceUrl(sourceUrl);
-                            image.setSourceWeb(imageSourceWeb);
-                            iamgeBatchInsertList.add(image);
-                            count++;
-                        } else {
-                            errorCount = errorCount + 1;
-                            if (errorCount > 5) {
-                                albumService.removeById(album.getId());
-                                iamgeBatchInsertList.clear();
-                                return 0;
-                            }
+                    Image image = new Image();
+                    image.setAid(album.getId());
+                    image.setSourceUrl(imageUrlSource);
+                    image.setUrl(imageUrlSource);
+                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(imageName),null, imageUrlSource);
+                    if (StringUtils.isNotEmpty(sourceUrl)) {
+                        image.setSourceUrl(sourceUrl);
+                        image.setSourceWeb(imageSourceWeb);
+                        iamgeBatchInsertList.add(image);
+                        count++;
+                    } else {
+                        errorCount = errorCount + 1;
+                        if (errorCount > 5) {
+                            albumService.removeById(album.getId());
+                            iamgeBatchInsertList.clear();
+                            return 0;
                         }
                     }
+
                 }
             }
             if (iamgeBatchInsertList.size() > 0) {
                 imageService.addBatch(iamgeBatchInsertList);
-            } else {
-                count = 0;
-                albumService.removeById(album.getId());
             }
             iamgeBatchInsertList.clear();
 
@@ -801,49 +762,26 @@ public class ReptileImageServiceImpl implements IReptileImageService {
 
     /**
      * 获取图库里的照片
-     * @param title
      * @param aid
      * @return
      */
-    public Set<String> getList(String title, Integer aid) {
-        List<Image> list = imageService.listAll(aid);
-        Set<String> urlist = new HashSet<>();
+    public List<String> getList(Integer aid) {
+        List<String> imageUrlList = imageService.listUrl(aid);
         int errorCount = 0;
         int sucCount = 0;
 
-        for (Image image : list) {
-            if (image.getUrl().startsWith("/image")) {
-                String imageName = image.getSourceUrl().substring(image.getSourceUrl().lastIndexOf('/') + 1);
-                //判断系统的图集中的图片是否可以访问
-                if (sucCount > 6 || isImageUrlValid(image.getSourceWeb() + image.getSourceUrl(), 0)) {
-                    sucCount++;
-                    urlist.add(imageName);
-                } else {
-                    errorCount = errorCount + 1;
-                }
+        for (String imageUrl : imageUrlList) {
+            //判断系统的图集中的图片是否可以访问
+            if (sucCount > 6 || isImageUrlValid(imageSourceWeb+imageUrl, 0)) {
+                sucCount++;
             } else {
-                String imageName = image.getUrl().substring(image.getUrl().lastIndexOf('/') + 1);
-                String sourceUrl = getImageUrl(title, HashUtil.apHash(image.getUrl()), image.getSourceWeb() , image.getUrl());
-                if (StringUtils.isNotEmpty(sourceUrl)) {
-                    image.setUrl(image.getSourceWeb() + image.getUrl());
-                    image.setSourceUrl(sourceUrl);
-                    image.setSourceWeb(imageSourceWeb);
-                    imageService.updateById(image);
-                    urlist.add(imageName);
-                    sucCount++;
-                } else {
-                    errorCount = errorCount + 1;
-                }
+                errorCount = errorCount + 1;
             }
             if (errorCount > 5) {
                 imageService.delAlum(aid);
-                urlist.clear();
-                list.clear();
-                return urlist;
+                return new ArrayList<>();
             }
-
         }
-        list.clear();
-        return urlist;
+        return imageUrlList;
     }
 }

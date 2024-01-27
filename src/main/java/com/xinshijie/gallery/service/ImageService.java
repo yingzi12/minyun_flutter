@@ -10,6 +10,8 @@ import java.util.List;
 public interface ImageService extends IService<Image> {
     List<Image> list(ImageDto dto);
 
+    List<String> listUrl(Integer aid);
+
     Integer count(ImageDto dto);
 
     Integer delAlum(Integer aid);

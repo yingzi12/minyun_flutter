@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper
 public interface ImageMapper extends BaseMapper<Image> {
     List<Image> list(ImageDto dto);
+    List<String> listUrl(Integer aid);
 
     Integer count(ImageDto dto);
 
