@@ -74,7 +74,6 @@ public class SystemUserController extends BaseController {
         return ajax;
     }
 
-
     @PostMapping("/loginModile")
     public LoginUserVo loginModile(@RequestBody LoginDto loginBody) {
         // 生成令牌
@@ -92,9 +91,6 @@ public class SystemUserController extends BaseController {
         systemUserService.add(userDto);
         return Result.success(true);
     }
-
-
-
 
     @GetMapping("/updateCheckEmail")
     public Result<String> updateCheckEmail(@Validated @Param("key") String key, @Param("check") String check) {
@@ -166,6 +162,11 @@ public class SystemUserController extends BaseController {
         return Result.success("绑定成功");
     }
 
+    /**
+     * 重置密码
+     * @param dto
+     * @return
+     */
     @PutMapping("/restPasswort")
     public Result<String> restPasswort(@RequestBody UserPasswordDto dto) {
         if (!redisCache.hasKey(CacheConstants.PASSWORD + dto.getKey())) {

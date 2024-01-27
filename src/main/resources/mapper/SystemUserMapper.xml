@@ -59,9 +59,11 @@
         count_attention,
         income,
         withdraw,
-        credit
+        credit,
+        count_album
         from system_user
         <where>
+            count_album > 0
             <if test="dto.name !=null ">and `name`= #{dto.name}</if>
             <if test="dto.nickname !=null ">and nickname LIKE CONCAT('%', #{dto.nickname}, '%')</if>
             <if test="dto.email !=null ">and email= #{dto.email}</if>
@@ -76,6 +78,11 @@
         ${ew.customSqlSegment}
     </select>
 
+    <update id="updateCountAlbum">
+        UPDATE system_user
+        SET count_album = (SELECT COUNT(*) FROM user_album where user_id = #{userId} and status = 1 )
+        where id = #{userId}
+    </update>
 
     <delete id="delById">
         delete
@@ -100,7 +107,7 @@
     <select id="findRandomStories" resultType="com.xinshijie.gallery.vo.SystemUserIntroVo">
         SELECT *
         FROM system_user s
-        WHERE s.id >= #{randomId}
+        WHERE s.id >= #{randomId} and count_album > 0
         ORDER BY s.id ASC
         limit #{pageSize}
     </select>

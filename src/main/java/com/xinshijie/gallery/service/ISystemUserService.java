@@ -57,4 +57,6 @@ public interface ISystemUserService extends IService<SystemUser> {
 
     List<SystemUserIntroVo> findRandomStories(Integer pageSize);
 
+    Integer updateCountAlbum(Integer userId);
+
 }

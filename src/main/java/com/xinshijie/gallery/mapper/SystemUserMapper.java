@@ -43,6 +43,8 @@ public interface SystemUserMapper extends BaseMapper<SystemUser> {
      */
     Page<SystemUserVo> getPageSystemUser(Page<SystemUserVo> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
+    Integer updateCountAlbum(Integer userId);
+
     /**
      * 删除数据
      */

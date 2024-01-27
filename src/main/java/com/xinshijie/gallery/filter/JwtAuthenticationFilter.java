@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -148,12 +149,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private void sendErrorResponse(HttpServletResponse response, ResultCodeEnum resultCode) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 更合适的状态码
-        response.setContentType("application/json");
-        Result<Object> result = Result.error(resultCode);
-        response.getWriter().write(JSONObject.toJSONString(result));
+        try {
+            response.setStatus(HttpServletResponse.SC_OK); // Always returns HTTP 200
+            response.setContentType("application/json");
+            Result<String> result = Result.error(resultCode);
+            PrintWriter writer = response.getWriter();
+            writer.write(JSONObject.toJSONString(result));
+            writer.flush(); // Flush the stream
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception for debugging
+            // Handle exception or rethrow as appropriate
+        }
     }
-
 
 }
 

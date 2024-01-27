@@ -394,6 +394,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         Integer maxId = mapper.findMaxId(); //
         Integer minId = mapper.findMinId();
         QueryWrapper<SystemUser> qw=new QueryWrapper<>();
+        qw.gt("count_album",0);
 //        qw.eq("status", AlbumStatuEnum.NORMAL.getCode());
         Long count=mapper.selectCount(qw);//
         if(30<count) {
@@ -403,5 +404,10 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
             Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId);
             return mapper.findRandomStories(randomId, pageSize);
         }
+    }
+
+    @Override
+    public Integer updateCountAlbum(Integer userId) {
+        return mapper.updateCountAlbum(userId);
     }
 }

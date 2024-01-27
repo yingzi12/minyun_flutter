@@ -332,7 +332,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
         IPage<Album> list = albumService.list(albumDto);
         for (Album album : list.getRecords()) {
             if (album.getImgUrl() != null && album.getImgUrl().length() > 0 && (album.getSourceUrl() == null || !album.getSourceUrl().startsWith("/image"))) {
-                String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb() ,album.getImgUrl());
+                String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getImgUrl()), album.getSourceWeb()+album.getImgUrl());
                 if (sourceUrl.equals("")) {
                     log.error("同步album错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), album.getId(), album.getSourceWeb(), album.getImgUrl());
                 } else {
@@ -351,7 +351,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             List<Image> values = imageService.listAll(album.getId());
             for (Image image : values) {
                 if (image.getUrl() != null && image.getUrl().length() > 0 && (image.getSourceUrl() == null || !image.getSourceUrl().startsWith("/image"))) {
-                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb() , image.getUrl());
+                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(image.getUrl()), image.getSourceWeb()+ image.getUrl());
                     if (sourceUrl.equals("")) {
                         log.error("同步url错误1，albumId:{},album:{},imageId:{},sourceWeb:{},imageUrl:{}", album.getId(), album.getTitle(), image.getId(), image.getSourceWeb(), image.getUrl());
                     } else {
@@ -398,22 +398,21 @@ public class ReptileImageServiceImpl implements IReptileImageService {
             Album album = albumService.getInfoBytitle(title);
             log.info("开始导入 name:{},", title);
 
-            String sourceWeb = "";
-            if (StringUtils.isNotEmpty(imgUrl) && imgUrl.startsWith("http")) {
-                URL imgURLPath = new URL(imgUrl);
-                // 获取协议和主机名
-                String protocol = imgURLPath.getProtocol();
-                String host = imgURLPath.getHost();
-                // 构建基本 URL
-                sourceWeb = protocol + "://" + host;
-                // 获取资源路径
-                imgUrl = imgURLPath.getPath();
-            } else {
-                sourceWeb = reptileRule.getImgUrl();
-            }
+//            String sourceWeb = "";
+//            if (StringUtils.isNotEmpty(imgUrl) && imgUrl.startsWith("http")) {
+//                URL imgURLPath = new URL(imgUrl);
+//                // 获取协议和主机名
+//                String protocol = imgURLPath.getProtocol();
+//                String host = imgURLPath.getHost();
+//                // 构建基本 URL
+//                sourceWeb = protocol + "://" + host;
+//                // 获取资源路径
+//                imgUrl = imgURLPath.getPath();
+//            } else {
+//                sourceWeb = reptileRule.getImgUrl();
+//            }
             if (album == null) {
                 album = new Album();
-                album.setSourceWeb(sourceWeb);
                 album.setSourceUrl(imgUrl);
                 album.setUrl(detailUrl);
                 album.setImgUrl(imgUrl);
@@ -426,7 +425,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 album.setHash(hash);
                 album.setTitle(title);
                 album.setIsFree(1);
-                String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()), album.getSourceWeb() , album.getImgUrl());
+                String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(album.getUrl()),  album.getImgUrl());
                 if (StringUtils.isNotEmpty(sourceUrl)) {
                     album.setSourceUrl(sourceUrl);
                     album.setSourceWeb(imageSourceWeb);
@@ -500,7 +499,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                     image.setAid(album.getId());
                     image.setSourceUrl(imageUrlSource);
                     image.setUrl(imageUrlSource);
-                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(imageName),null, imageUrlSource);
+                    String sourceUrl = getImageUrl(album.getTitle(), HashUtil.apHash(imageName), imageUrlSource);
                     if (StringUtils.isNotEmpty(sourceUrl)) {
                         image.setSourceUrl(sourceUrl);
                         image.setSourceWeb(imageSourceWeb);
@@ -664,11 +663,7 @@ public class ReptileImageServiceImpl implements IReptileImageService {
                 .execute().body();
     }
 
-    public String getImageUrl(String name, int imagehash,String sourceWeb, String sourceUrl) {
-        String url=sourceUrl;
-        if(!sourceUrl.startsWith("http")){
-            url=sourceWeb+sourceUrl;
-        }
+    public String getImageUrl(String name, int imagehash, String url) {
         try {
             if (StringUtils.isEmpty(url)) {
                 return "";

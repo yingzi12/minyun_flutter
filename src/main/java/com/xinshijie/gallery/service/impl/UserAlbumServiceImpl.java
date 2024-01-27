@@ -54,7 +54,8 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     private IPaymentOrderService paymentOrderService;
     @Autowired
     private IFileService fileService;
-
+    @Autowired
+    private ISystemUserService systemUserService;
     @Value("${image.sourceWeb}")
     private String imageSourceWeb;
 
@@ -349,10 +350,10 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
         QueryWrapper<UserAlbum> qw = new QueryWrapper<>();
         qw.eq("user_id", userId);
         qw.eq("id", id);
-
         UserAlbum userAlbum = new UserAlbum();
         userAlbum.setStatus(status);
         int i = mapper.update(userAlbum, qw);
+        systemUserService.updateCountAlbum(userId);
         return i == 1;
     }
 
