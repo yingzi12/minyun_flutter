@@ -88,12 +88,16 @@ public class UserAlbumServiceImpl extends ServiceImpl<UserAlbumMapper, UserAlbum
     }
 
     @Override
-    public List<UserAlbum> findRandomStories(Integer pageSize) {
+    public List<UserAlbum> findRandomStories(Integer pageSize,Integer device) {
         Integer maxId = mapper.findMaxId(); //
         Integer minId = mapper.findMinId();
         QueryWrapper<UserAlbum> qw=new QueryWrapper<>();
         qw.eq("status",AlbumStatuEnum.NORMAL.getCode());
-        qw.eq("device",0);
+        if(device !=null) {
+            qw.eq("device", device);
+        }else{
+            qw.eq("device", 1);
+        }
         Long count=mapper.selectCount(qw);//
         if(30<count) {
             Integer randomId = ThreadLocalRandom.current().nextInt(minId, maxId - 30);

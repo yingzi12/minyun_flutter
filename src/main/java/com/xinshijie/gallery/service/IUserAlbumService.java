@@ -32,7 +32,7 @@ public interface IUserAlbumService extends IService<UserAlbum> {
      */
     IPage<UserAlbum> selectPageUserAlbum(UserAlbumDto dto);
 
-    List<UserAlbum> findRandomStories(Integer pageSize);
+    List<UserAlbum> findRandomStories(Integer pageSize,Integer device);
 
 
     /**

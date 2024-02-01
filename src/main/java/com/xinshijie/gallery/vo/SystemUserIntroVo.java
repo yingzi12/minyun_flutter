@@ -56,5 +56,6 @@ public class SystemUserIntroVo implements Serializable {
     private String vipTitle;
     private String invite;
     private Integer countInvite;
+    private String inviteCode;
 
 }

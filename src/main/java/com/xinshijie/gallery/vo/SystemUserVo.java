@@ -55,6 +55,7 @@ public class SystemUserVo implements Serializable {
     private Double amountReceived;
     private String invite;
     private Integer countInvite;
+    private String inviteCode;
 
 
 }

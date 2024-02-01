@@ -158,14 +158,14 @@ public class UserAlbumController extends BaseController {
 
 
     @GetMapping("/random")
-    public Result<List<UserAlbum>> random(@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    public Result<List<UserAlbum>> random(@RequestParam(value = "pageSize", required = false) Integer pageSize,@RequestParam(value = "device", required = false) Integer device) {
         if (pageSize == null) {
             pageSize = 8;
         }
         if (pageSize < 10) {
             pageSize = 8;
         }
-        List<UserAlbum> list = userAlbumService.findRandomStories(pageSize);
+        List<UserAlbum> list = userAlbumService.findRandomStories(pageSize, device);
 
         return Result.success(list);
     }

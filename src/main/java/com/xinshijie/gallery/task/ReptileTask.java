@@ -34,7 +34,7 @@ public class ReptileTask {
     /**
      * zhuanma
      */
-    @Scheduled(cron = "0 1 * * * ?")
+    //@Scheduled(cron = "0 1 * * * ?")
     public void zhuanma() {
         log.info("转码。。。。。。");
         List<AllVideo> videoList=allVideoService.getListWait();

@@ -108,6 +108,11 @@ public class AdminUserAttentionController extends BaseController {
         return Result.success(vo.getRecords(), Integer.parseInt(String.valueOf(vo.getTotal())));
     }
 
+    /**
+     * 获取关注对象的图集列表
+     * @param findDto
+     * @return
+     */
     @GetMapping("/discover")
     public Result<List<AlbumDiscoverVo>> discover(FindUserAttentionDto findDto) {
         findDto.setUserId(getUserId());

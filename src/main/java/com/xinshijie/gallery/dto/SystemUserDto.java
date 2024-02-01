@@ -61,8 +61,10 @@ public class SystemUserDto implements Serializable {
     private Integer countLike;
     private Integer countSee;
     private Integer countAttention;
+    private String inviteCode;
 
     private Long pageNum;
 
     private Long pageSize;
+
 }

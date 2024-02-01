@@ -53,6 +53,7 @@ public class SystemUser implements Serializable {
     private LocalDateTime vipExpirationTime;
     private String invite;
     private Integer countInvite;
+    private String inviteCode;
 
 
 }

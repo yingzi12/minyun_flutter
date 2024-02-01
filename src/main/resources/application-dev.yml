@@ -21,24 +21,24 @@ spring:
   #    url: jdbc:sqlite:D:\\git\\gallery\\db\\db_gallery.db
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://127.0.0.1:3306/gallery?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-#    username: root
-#    password: wiki@335610
+    url: jdbc:mysql://127.0.0.1:3306/gallery?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: wiki@335610
   #    url: jdbc:mysql://127.0.0.1:3306/gallery?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
   #    username: root
   #    password: wiki@335610
-    url: jdbc:mysql://103.231.255.132:3306/gallery_test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-    username: gallery_test
-    password: t8ZtiScXtsXTrGTF
+#    url: jdbc:mysql://103.231.255.132:3306/gallery_test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+#    username: gallery_test
+#    password: t8ZtiScXtsXTrGTF
 #    url: jdbc:mysql://103.231.255.132:3306/gallery?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
 #    username: gallery
 #    password: hsAynhaZT8pBGTjj
   data:
     redis:
-      host: 43.131.248.108
+      host: 127.0.0.1
       port: 6379
       database: 0
-      password: sha@335610
+      #password: sha@335610
       timeout: 10s
   rabbitmq:
      host: 47.116.1.65
@@ -56,9 +56,9 @@ server:
 mybatis-plus:
   typeAliasesPackage: com.xinshijie.**.domain
   mapperLocations: classpath*:mapper/**/*Mapper.xml
-  #configuration:
+  configuration:
     ## 开启打印sql配置
-     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 reptile:
   url: https://admin.aiavr.com
 image:

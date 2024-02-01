@@ -266,6 +266,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         systemUser.setNickname(userDto.getName());
         systemUser.setSalt(RandomUtil.randomNumbers(10));
         systemUser.setCreateTime(LocalDateTime.now());
+        systemUser.setInviteCode(userDto.getInviteCode());
         systemUser.setIncome(0.0);
         systemUser.setWithdraw(0.0);
         mapper.insert(systemUser);
