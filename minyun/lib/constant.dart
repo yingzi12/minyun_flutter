@@ -106,7 +106,7 @@ const ganzhi = [
 /// 五行
 const wuXing = ['木', '火', '土', '金', '水'];
 //天干十神对应
-const Map<String, String> _ganzhiMap = {
+const Map<String, String> ganzhiMap = {
   '甲甲': '比肩',
   '甲乙': '劫财',
   '甲丙': '食神',

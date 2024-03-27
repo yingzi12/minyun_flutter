@@ -750,8 +750,8 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
         Expanded(
           child: Column(
             children: <Widget>[
-              for(var gan in eightChar.getTimeHideGan())
-                getSSText('甲')
+              for(var gan in dizhiMap[""]!)
+                getZGText(gan,ganzhiMap[gan])
             ],
           ),
         ),
@@ -1168,5 +1168,10 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
 
   Widget getSSText(String title){
     return Text( title,style: TextStyle(fontSize: 10,color:hourColorMap[title] ?? Colors.black87),);
+  }
+
+  Widget getZGText(String dizhi,String shishen){
+    return Text( dizhi,style: TextStyle(fontSize: 10,color:hourColorMap[dizhi] ?? Colors.black87),
+    );
   }
 }
