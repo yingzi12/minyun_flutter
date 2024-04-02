@@ -11,9 +11,6 @@ import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/models/lucky_model.dart';
 import 'package:minyun/models/lucky_year_model.dart';
-import 'package:minyun/screens/splayed_figure_detail_analyze_screen.dart';
-import 'package:minyun/screens/splayed_figure_detail_intro_screen.dart';
-import 'package:minyun/screens/splayed_figure_detail_paipan_screen.dart';
 import 'package:mongol/mongol.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
@@ -21,21 +18,22 @@ import '../utils/color.dart';
 import '../utils/common.dart';
 import '../utils/images.dart';
 
-class SplayedFigureDetailScreen extends StatefulWidget {
+class SplayedFigureDetailPaipanScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
-  SplayedFigureDetailScreen({required this.search});
+  final SplayedFigureModel splayedFigureModel;
+  SplayedFigureDetailPaipanScreen({required this.search, required this.splayedFigureModel});
 
   @override
-  State<SplayedFigureDetailScreen> createState() => _SplayedFigureDetailScreenState();
+  State<SplayedFigureDetailPaipanScreen> createState() => _SplayedFigureDetailPaipanScreenState();
 }
 
-class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  with TickerProviderStateMixin {
+class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPaipanScreen>  with TickerProviderStateMixin {
 
-  SplayedFigureModel? splayedFigureModel;
-  bool isRefreshing = false; // 用于表示是否正在刷新数据
-  GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey<RefreshIndicatorState>();
+  // SplayedFigureModel? splayedFigureModel;
+  // bool isRefreshing = false; // 用于表示是否正在刷新数据
+  // GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey<RefreshIndicatorState>();
   Lunar lunar = Lunar.fromDate(DateTime.now());
-  late final TabController _tabController;
+  // late final TabController _tabController;
   //获取当前年
   DateTime now = DateTime.now();
   int currentYear =DateTime.now().year ;
@@ -67,7 +65,7 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    // _tabController = TabController(length: 3, vsync: this);
     _refreshApiData();
     _refreshSdkData();
   }
@@ -123,265 +121,49 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
     });
   }
   Future<void> _refreshApiData() async {
-    Map<String, String> queryParams=new HashMap();
-    queryParams["act"]="ok";
-    queryParams["name"]="七";
-    queryParams["DateType"]="5";
-    queryParams["inputdate"]="公历1994年3月23日 11时";
-    // queryParams["ng"]="己卯";
-    // queryParams["yg"]="丙寅";
-    // queryParams["rg"]="庚寅";
-    // queryParams["sg"]="丙子";
-
-    queryParams["sex"]="0";
-    queryParams["ztys"]="0";
-    // queryParams["city1"]="北京";
-    // queryParams["city2"]="北京";
-    // queryParams["city3"]="东城区";
-    queryParams["Sect"]="1";
-    queryParams["Siling"]="0";
-
-    queryParams["leixinggg"]="on";
-    queryParams["api"]="1";
-    queryParams["bcxx"]="1";
-
-
-    SplayedFigureModel resultModel = await SplayedFigureApi.getSplayedFigure(queryParams);
-    // 刷新完成后，设置isRefreshing为false，并更新albumDataModel
-    // "bazi": {//干支信息
-    //    "ng": "癸",//年干
-    //    "nz": "卯",//年支
-    //    "yg": "癸",//月干
-    //    "yz": "亥",//月支
-    //    "rg": "壬",//日干
-    //    "rz": "午",//日支
-    //    "sg": "癸",//时干
-    //    "sz": "卯",//时支
-    //    "tg": "甲",//胎元干
-    //    "tz": "寅",//胎元支
-    //    "Tg": "丁",//胎息
-    //    "Tz": "未",//胎息
-    //    "mg": "乙",//命宫
-    //    "mz": "卯",//命宫
-    //    "Sg": "乙",//身宫
-    //    "Sz": "卯"//身宫
-    //   },
-    debugPrint("八字 ："+ json.encode(resultModel.bz));
-
-    //根据所选日期的天干地支
-    debugPrint("空亡 ："+ json.encode(resultModel.dykw));
-    //根据所选日期的天干地支
-    debugPrint("纳音 ："+ json.encode(resultModel.dyny));
-    //根据所选日期的地支
-    debugPrint("星运 ："+ json.encode(resultModel.dyws));
-    //根据所选日期的天干地支
-    debugPrint("自座 ："+ json.encode(resultModel.dyzz));
-
-    /**
-     * "shishen": {//十神总表(不论四柱乃至大运流年的干支都从此处获取)
-        "甲": {//天干
-        "全": "⁢食神",//全词
-        "半": "⁢食"//半词
-     */
-    debugPrint("十神 ："+ json.encode(resultModel.dzss));
-
-    debugPrint("分析 ："+resultModel.fx.toString());
-
-    //"minggua": {//命卦
-    //    "zg": "坤卦(西四命)",//分析
-    //    "b": "绝命",//方位宜忌北
-    //    "db": "生气",//东北
-    //    "d": "祸害",//东
-    //    "dn": "五鬼",//东南
-    //    "n": "六煞",//南
-    //    "xn": "伏位",//西南
-    //    "x": "天医",//西
-    //    "xb": "延年"//西北
-    //   },
-    debugPrint("命卦 ："+ resultModel.jsfw.toString());
-
-
-    debugPrint("神煞 ："+ resultModel.llss.toString());
-
-    //[
-    //   2024,  时间
-    //   1,     多少岁
-    //   "小运",  运势
-    //   2025,
-    //   2,
-    //   "戊辰",  //天干地支
-    //   2035,
-    //   12,
-    //   "己巳",
-    //   2045,
-    //   22,
-    //   "庚午",
-    //   2055,
-    //   32,
-    //   "辛未",
-    //   2065,
-    //   42,
-    //   "壬申",
-    //   2075,
-    //   52,
-    //   "癸酉",
-    //   2085,
-    //   62,
-    //   "甲戌",
-    //   2095,
-    //   72,
-    //   "乙亥",
-    //   2105,
-    //   82,
-    //   "丙子"
-    // ]
-    debugPrint("鸿运/运年 ："+ resultModel.lndy.toString());
-
-    //所有年：天干/地支
-    debugPrint("鸿运/运年 ："+ resultModel.lnxy.toString());
-    // shensha": {//神煞
-    //   "nz": [//年柱神煞
+    // Map<String, String> queryParams=new HashMap();
+    // queryParams["act"]="ok";
+    // queryParams["name"]="七";
+    // queryParams["DateType"]="5";
+    // queryParams["inputdate"]="公历1994年3月23日 11时";
+    // // queryParams["ng"]="己卯";
+    // // queryParams["yg"]="丙寅";
+    // // queryParams["rg"]="庚寅";
+    // // queryParams["sg"]="丙子";
     //
-    //   ],
-    //   "yz": [//月
-
-    //   ],
-    //   "rz": [//日
-    //   "天德贵人",//   "黄煞日"
-    //   ],
-    //   "sz": [//时
-
-    //   ],
-    // },
-    debugPrint("八字神撒 ："+ resultModel.ss.toString());
-
-    debugPrint("？？？ ："+ resultModel.zGss.toString());
-
-    /**
-     * "zh": [//八字统计
-        [
-        0,//金个数
-        2,//木个数
-        5,//水
-        1,//火
-        0//土
-        ],
-        [
-        2,//阳个数
-        6//阴个数
-        ],
-        [
-        75,//阴占比
-        25//阳占比
-        ],
-        [
-        0,//藏干金个数
-        3,//木
-        1,//水
-        1,//火
-        1//土
-        ],
-        [
-        2,//藏干阳个数
-        4//阴
-        ],
-        [
-        67,//藏干阴占比
-        33//阳
-        ],
-        "未落空"//六甲空亡是否落空
-        ],
-        "ZaoShi": "湿",//八字燥湿
-
-        bazishengyue:"惊蛰之时，飞龙在天，利见大人，利路亨通，作事大与，有机可称，正是出头之时，德望成功，终成大业，竟天才成功之守，地位权位受人敬仰，有冲天之势，威镇山河。"
-        wanzishiliupai:"按明天"  //晚子时规则
-     */
-    debugPrint("八字信息 ："+ resultModel.bazixinxi.toString());
-
-    /**
-     * cl1 节气与时间
-     * cl2 节气与时间
-     * dl1 节气与时间
-     * dl2 节气与时间
-     * hyws 换运尾数
-     * qh  一年的节气
-     * qy 起运
-     * wxws 五行旺衰:
-     * gongli 公历
-     * nongli 农历
-     */
-    debugPrint("出生 ："+ resultModel.chusheng.toString());
-
-    /**
-     * "qiangruo": [//传统强弱算法
-        "得令",//是否得令
-        1,//强气根
-        0,//中气根
-        0,//余气根
-        3,//得势
-        "强",//强弱
-        4,//助我数
-        3//克我数
-        ],
-     */
-    debugPrint("用神参考 ："+ resultModel.deling.toString());
-
-    debugPrint("？？？？ ："+ resultModel.fanhui.toString());
-
-    /**
-     * {
-        "yhbh": null,
-        "beizhu": "",
-        "name": "张三",
-        "xmwx": "张(火)三(金)",
-        "sexx": "男",
-        "PPFS": "公历排盘",
-        "city": "北京 北京 东城区",
-        "ztys": "0",   // 1 为启用真太阳时
-        "Z_QRQ": "2024年3月31日19时9分",   //生日
-        "JYRQ": "2025-07-11",       //交运日期
-        "GNF": "2024",            //
-        "SiLing": "乙",       ////司令
-        "SiLingFangshi": "子平真诠",  //司令规则
-        "nylm": "伏潭之龙",     //纳音论命
-        "KLFX": "XmY1NDsIgEIVPM2zcQFuQWcwCOOnOBngAbQogGje2i3l4cm5i4e0onme0oPCstH9KkogGDX4HpyEsQNvweIQSOfCB6vB9RxGsKaRTcc6gu9aGA1gD9a2iuMZnD4pPLI3yL360IiSvjMVK6YDuEm8PpQ3kV031T3xPFwH6H500oXcHQCnWuJOcI6k5kxS3mPdcUkp0LOOKyVLKELZIIj0zqDQo0o0",
-        "XingZuo": "白羊座",   //星座
-        "WuHou": "始电",    //物候
-        "Hou": "春分 三候",    //物候
-        "getXiu": "星",     // 宿
-        "getAnimal": "马",  //生肖
-        "getXiuLuck": "凶",  //宿
-        "getXiuSong": "星宿日好造新房，进职加官近帝王，不可埋葬并放水，凶星临位女人亡，生离死别无心恋，要自归休别嫁郎，孔子九曲殊难度，放水开门天命伤。",
-        "getZheng": "日",     //七政
-        "getYueXiang": "下弦",  //月相
-        "SCWG": "天格:金(8) 人格:水(10) 地格:火(4) 总格:水(10) 外格:木(1)",  //三才五格
-        "shengxiao": "龙"   //生肖
-        }
-     */
-    debugPrint("个人信息:"+ resultModel.system.toString());
+    // queryParams["sex"]="0";
+    // queryParams["ztys"]="0";
+    // // queryParams["city1"]="北京";
+    // // queryParams["city2"]="北京";
+    // // queryParams["city3"]="东城区";
+    // queryParams["Sect"]="1";
+    // queryParams["Siling"]="0";
+    //
+    // queryParams["leixinggg"]="on";
+    // queryParams["api"]="1";
+    // queryParams["bcxx"]="1";
+    //
 
     setState(() {
-      isRefreshing = false;
-      splayedFigureModel=resultModel;
-      print("-----------加载数据-----start-------------");
+      // isRefreshing = false;
+      // splayedFigureModel=widget.splayedFigureModel;
       // Map<String, String> map = Map<String, String>.cast(resultModel.bz);
-      bzMap = Map<String, String>.from(resultModel.bz.map(
+      bzMap = Map<String, String>.from(widget.splayedFigureModel.bz.map(
             (key, value) => MapEntry(key, value.toString()),
       ));
-      xyMap = Map<String, String>.from(resultModel.dyws.map(
+      xyMap = Map<String, String>.from(widget.splayedFigureModel.dyws.map(
             (key, value) => MapEntry(key, value.toString()),
       ));
-      zzMap = Map<String, String>.from(resultModel.dyzz.map(
+      zzMap = Map<String, String>.from(widget.splayedFigureModel.dyzz.map(
             (key, value) => MapEntry(key, value.toString()),
       ));
-      resultModel.llss.forEach((key, value) {
+      widget.splayedFigureModel.llss.forEach((key, value) {
         print(value.toString());
         List<dynamic> stringList = value.cast<String>().map((e) => e.toString()).toList();
         ssMap[key] = stringList;
       });
       riTianGan=bzMap!['rg'];
       riDiZhi=bzMap!['rz'];
-      print("-----------加载数据----end--------------");
 
       // albumDataModel = resultModel.data ?? albumDataModel; // 如果获取失败，保留原数据
     });
@@ -400,72 +182,52 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
     final width = MediaQuery.of(context).size.width;
 
     DaYun nowDaYun=daYunList[luckDaYunIndex];
-    return Scaffold(
-      appBar: AppBar(
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const <Widget>[
-            Tab(
-              text: '基本信息',
-              // icon: Icon(Icons.cloud_outlined),
-            ),
-            Tab(
-              text: '八字排盘',
-              // icon: Icon(Icons.beach_access_sharp),
-            ),
-            Tab(
-              text: '分析',
-              // icon: Icon(Icons.brightness_5_sharp),
-            ),
-          ],
+    return  ListView(
+      children: [
+        nowDate(lunar.getSolar(),lunar),
+        getBaziTitle("标注","流时","流日","流月","流年","大运","年柱","月柱","日柱","时柱",10,Colors.black87),
+        getBaziShishen(eightChar!,lunar),
+        getBaziTitle("天干",lunar.getTimeGan(),lunar.getDayGan(),lunar.getMonthGan(),lunar.getYearGan(),lunar.getYearGan(),
+            eightChar!.getYearGan(),eightChar!.getMonthGan(), eightChar!.getDayGan(), eightChar!.getTimeGan(),
+            20,Colors.black87
         ),
-        title: Text("排盘详细"),
-        titleTextStyle: boldTextStyle(fontSize: 24),
-        elevation: 0,
-        titleSpacing: 0,
-        leading: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Image.asset(splash_screen_image, color: primaryColor),
+        getBaziTitle("地支",lunar.getTimeZhi(),lunar.getDayZhi(),lunar.getMonthZhi(),lunar.getYearZhi(),lunar.getYearZhi(),
+            eightChar!.getYearZhi(),eightChar!.getMonthZhi(), eightChar!.getDayZhi(), eightChar!.getTimeZhi(),
+            20,Colors.black87
         ),
-      ),
-      body:Stack(
-        children: [
-          Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child:  TabBarView(
-                  controller: _tabController,
-                  children:  <Widget>[
-                    splayedFigureModel == null ?
-                    Center(
-                      child: Center(child: Text("加载中"),), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailIntroScreen(
-                      search: widget.search,
-                      splayedFigureModel: splayedFigureModel!,
-                    ),
-                    // 这里添加条件判断
-                    splayedFigureModel == null ?
-                    Center(
-                      child: CircularProgressIndicator(), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailPaipanScreen(
-                      search: widget.search,
-                      splayedFigureModel: splayedFigureModel!,
-                    ),
-                    splayedFigureModel == null ?
-                    Center(
-                      child: Center(child: Text("加载中"),), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailAnalyzeScreen(
-                      search: widget.search,
-                      splayedFigureModel: splayedFigureModel!,
-                    ),
-                  ],
-                ),
-              ))
-        ],
-      ),
+        getZgan(eightChar!,lunar),
+        getTable( "星运",xyMap[lunar.getTimeZhi()]??"",xyMap[lunar.getDayZhi()]??"",xyMap[lunar.getMonthZhi()]??"",xyMap[lunar.getYearZhi()]??"",xyMap[lunar.getYearZhi()]??"",
+            xyMap[eightChar!.getYearZhi()]??"",xyMap[eightChar!.getMonthZhi()]??"",xyMap[eightChar!.getDayZhi()]??"",xyMap[eightChar!.getTimeZhi()]??"",
+            10,Colors.black87
+        ),
+        getTable( "自坐",zzMap[lunar.getTimeGan()+lunar.getTimeZhi()]??"",zzMap[lunar.getDayGan()+lunar.getDayZhi()]??"",zzMap[lunar.getMonthGan()+lunar.getMonthZhi()]??"",zzMap[lunar.getYearGan()+lunar.getYearZhi()]??"",zzMap[lunar.getYearGan()+lunar.getYearZhi()]??"",
+            zzMap[eightChar!.getYearGan()+eightChar!.getYearZhi()]??"",zzMap[eightChar!.getMonthGan()+eightChar!.getMonthZhi()]??"",zzMap[eightChar!.getDayGan()+eightChar!.getDayZhi()]??"",zzMap[eightChar!.getTimeGan()+eightChar!.getTimeZhi()]??"",
+            10,Colors.black87
+        ),
+        getTable( "空亡",lunar.getTimeXunKong(),lunar.getDayXunKong(),lunar.getMonthXunKong(),lunar.getYearXunKong(),lunar.getYearXunKong(),
+            eightChar!.getYearXunKong(),eightChar!.getMonthXunKong(),eightChar!.getDayXunKong(),eightChar!.getTimeXunKong(),
+            10,Colors.black87
+        ),
+        getTableNode( "纳音",lunar.getTimeNaYin(),lunar.getDayNaYin(),lunar.getMonthNaYin(),lunar.getYearNaYin(),lunar.getYearNaYin(),
+            eightChar!.getYearNaYin(),eightChar!.getMonthNaYin(),eightChar!.getDayNaYin(),eightChar!.getTimeNaYin(),
+            10,Colors.black87
+        ),
+        Divider(),
+        getShensa(eightChar!,lunar,10,Colors.black87,ssMap),
+        Divider(),
+        getBigLucky(bigLuckyList,10,Colors.black87),
+        Divider(),
+        getNowYear(nowDaYun,10,Colors.black87),
+        Divider(),
+        getAllYear(daYunList,10,Colors.black87),
+        Divider(),
+        getNowMonth(currentYear,currentMonth,8,Colors.black87),
+        Divider(),
+        getNowDay(currentYear,currentMonth,currentDay,8,Colors.black87),
+        Divider(),
+        getNowHour(currentYear,currentMonth,currentDay,currentHour,8,Colors.black87),
+        // Divider(),
+      ],
     );
   }
 
@@ -976,55 +738,9 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
             children: <Widget>[
               for(var nowBigLucky in nowBigLuckyList)
               getNowYearCell(nowBigLucky),
-
             ],
           ),
         ),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[0]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[1]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[2]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[4]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[5]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[6]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[7]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[8]),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowYearCell(nowBigLuckyList[9]),
       ],
     );
 
@@ -1226,113 +942,6 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
                 flex: (11-(LuckyDateList.length-22)),
                   child: SizedBox()),
             ],),
-            // Row(children: <Widget>[
-            //   getNowDayCell(LuckyDateList[0],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[1],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[2],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[4],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[5],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[6],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[7],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[8],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[9],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[10],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[11],size,color),
-            // ],),
-            // Row(children: <Widget>[
-            //   getNowDayCell(LuckyDateList[0],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[1],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[2],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[4],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[5],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[6],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[7],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[8],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[9],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[10],size,color),
-            //   SizedBox(
-            //     height: hight, // 使用 double.infinity
-            //     child: VerticalDivider(),
-            //   ),
-            //   getNowDayCell(LuckyDateList[11],size,color),
-            // ],),
-
           ],),
         ),
       ],
@@ -1423,61 +1032,6 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
             ],
           ),
         ),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[1],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[2],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[4],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[5],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[6],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[7],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[8],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[9],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[10],size,color),
-        // SizedBox(
-        //   height: hight, // 使用 double.infinity
-        //   child: VerticalDivider(),
-        // ),
-        // getNowHourCell(LuckyDateList[11],size,color),
       ],
     );
 
@@ -1604,12 +1158,12 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
           child: Container(
             height: 70, // 设置固定高度为150
             color: Colors.black12, // 设置背景颜色
-           child:  Column(
-             mainAxisAlignment: MainAxisAlignment.center, // 将子部件垂直居中
-             children: <Widget>[
-              getSmallTitle("藏干"),
-            ],
-          ),),
+            child:  Column(
+              mainAxisAlignment: MainAxisAlignment.center, // 将子部件垂直居中
+              children: <Widget>[
+                getSmallTitle("藏干"),
+              ],
+            ),),
         ),
         Expanded(
           flex: 1,
@@ -1633,24 +1187,24 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
         Expanded(
           flex: 1,
           child: Container(
-    height: 70, // 设置固定高度为150
-    color: Colors.black12, // 设置背景颜色
-    child:  Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-              for(var gan in dizhiMap[lrDz]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[lrDz]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),),
+            height: 70, // 设置固定高度为150
+            color: Colors.black12, // 设置背景颜色
+            child:  Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                for(var gan in dizhiMap[lrDz]!)
+                  Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text.rich(
+                    TextSpan(
+                      style: TextStyle(fontSize: 11, color: Colors.black),
+                      children: [
+                        for(var gan in dizhiMap[lrDz]!)
+                          TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
+                      ],
+                    )
+                ),
+              ],
+            ),),
         ),
         Expanded(
           child: Column(
@@ -1674,7 +1228,7 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
             children: <Widget>[
               for(var gan in dizhiMap[lnDz]!)
                 Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
+               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
                     children: [

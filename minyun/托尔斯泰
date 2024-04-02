@@ -1,0 +1,4 @@
+getTable( "自坐",xyMap![lunar.getTimeZhi()]??"",xyMap![lunar.getDayZhi()]??"",xyMap![lunar.getMonthZhi()]??"",xyMap![lunar.getYearZhi()]??"",xyMap![lunar.getYearZhi()]??"",
+                            xyMap![eightChar!.getYearZhi()]??"",xyMap![eightChar!.getMonthZhi()]??"",xyMap![eightChar!.getDayZhi()]??"",xyMap![eightChar!.getTimeZhi()]??"",
+                            10,Colors.black87
+                        ),

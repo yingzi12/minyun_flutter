@@ -27,7 +27,7 @@ class SplayedFigureModel {
   SplayedFigureModel({
       num? fanhui, 
       String? vip, 
-      List<String>? deling, 
+      List<dynamic>? deling,
       System? system,
     dynamic? bz,
       String? gwgx, 
@@ -37,7 +37,7 @@ class SplayedFigureModel {
     dynamic? zGss,
       Bazixinxi? bazixinxi, 
       Jsfw? jsfw, 
-      List<num>? lndy, 
+      List<dynamic>? lndy,
       Ss? ss,
     dynamic? llss,
     dynamic? dyws,
@@ -72,7 +72,7 @@ class SplayedFigureModel {
   SplayedFigureModel.fromJson(dynamic json) {
     _fanhui = json['fanhui'];
     _vip = json['vip'];
-    _deling = json['deling'] != null ? json['deling'].cast<String>() : [];
+    _deling = json['deling'] != null ? json['deling'].cast<dynamic>() : [];
     _system = json['system'] != null ? System.fromJson(json['system']) : null;
     _bz = json['BZ'] != null ? json['BZ'] : null;
     _gwgx = json['gwgx'];
@@ -82,7 +82,7 @@ class SplayedFigureModel {
     _zGss = json['ZGss'] != null ? json['ZGss'] : null;
     _bazixinxi = json['bazixinxi'] != null ? Bazixinxi.fromJson(json['bazixinxi']) : null;
     _jsfw = json['JSFW'] != null ? Jsfw.fromJson(json['JSFW']) : null;
-    _lndy = json['LNDY'] != null ? json['LNDY'].cast<num>() : [];
+    _lndy = json['LNDY'] != null ? json['LNDY'].cast<dynamic>() : [];
     _ss = json['SS'] != null ? Ss.fromJson(json['SS']) : null;
     _llss = json['LLSS'] != null ? json['LLSS'] : null;
     _dyws = json['DYWS'] != null ? json['DYWS'] : null;
@@ -94,7 +94,7 @@ class SplayedFigureModel {
   }
   num? _fanhui;
   String? _vip;
-  List<String>? _deling;
+  List<dynamic>? _deling;
   System? _system;
   dynamic? _bz;
   String? _gwgx;
@@ -104,7 +104,7 @@ class SplayedFigureModel {
   dynamic? _zGss;
   Bazixinxi? _bazixinxi;
   Jsfw? _jsfw;
-  List<num>? _lndy;
+  List<dynamic>? _lndy;
   Ss? _ss;
   dynamic? _llss;
   dynamic? _dyws;
@@ -115,7 +115,7 @@ class SplayedFigureModel {
   String? _glBirthday;
 SplayedFigureModel copyWith({  num? fanhui,
   String? vip,
-  List<String>? deling,
+  List<dynamic>? deling,
   System? system,
   dynamic? bz,
   String? gwgx,
@@ -125,7 +125,7 @@ SplayedFigureModel copyWith({  num? fanhui,
   dynamic? zGss,
   Bazixinxi? bazixinxi,
   Jsfw? jsfw,
-  List<num>? lndy,
+  List<dynamic>? lndy,
   Ss? ss,
   dynamic? llss,
   dynamic? dyws,
@@ -158,7 +158,7 @@ SplayedFigureModel copyWith({  num? fanhui,
 );
   num? get fanhui => _fanhui;
   String? get vip => _vip;
-  List<String>? get deling => _deling;
+  List<dynamic>? get deling => _deling;
   System? get system => _system;
   dynamic? get bz => _bz;
   String? get gwgx => _gwgx;
@@ -168,7 +168,7 @@ SplayedFigureModel copyWith({  num? fanhui,
   dynamic? get zGss => _zGss;
   Bazixinxi? get bazixinxi => _bazixinxi;
   Jsfw? get jsfw => _jsfw;
-  List<num>? get lndy => _lndy;
+  List<dynamic>? get lndy => _lndy;
   Ss? get ss => _ss;
   dynamic? get llss => _llss;
   dynamic? get dyws => _dyws;
