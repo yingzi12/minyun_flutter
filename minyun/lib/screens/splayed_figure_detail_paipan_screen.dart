@@ -83,11 +83,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       sex=0;
     }
 
-    //  currentYear = now.year;
-    // /int currentMonth = now.month;
-    // int currentDay= now.day;
-    // int currentHour= now.hour;
-
     setState(() {
       eightChar = birthLunar.getEightChar();
       Yun yun = eightChar!.getYun(sex);
@@ -121,28 +116,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     });
   }
   Future<void> _refreshApiData() async {
-    // Map<String, String> queryParams=new HashMap();
-    // queryParams["act"]="ok";
-    // queryParams["name"]="七";
-    // queryParams["DateType"]="5";
-    // queryParams["inputdate"]="公历1994年3月23日 11时";
-    // // queryParams["ng"]="己卯";
-    // // queryParams["yg"]="丙寅";
-    // // queryParams["rg"]="庚寅";
-    // // queryParams["sg"]="丙子";
-    //
-    // queryParams["sex"]="0";
-    // queryParams["ztys"]="0";
-    // // queryParams["city1"]="北京";
-    // // queryParams["city2"]="北京";
-    // // queryParams["city3"]="东城区";
-    // queryParams["Sect"]="1";
-    // queryParams["Siling"]="0";
-    //
-    // queryParams["leixinggg"]="on";
-    // queryParams["api"]="1";
-    // queryParams["bcxx"]="1";
-    //
+
 
     setState(() {
       // isRefreshing = false;

@@ -355,15 +355,24 @@ Map<String, String> twelveGods = {
   "癸辰": "养",
 };
 //通用分析
+// Map<String, String> generalAnalyzeCode = {
+//   "rizhufenxi": "日主分析",
+//   "XingZuo": "星座分析",
+//   "KWSC2": "综合分析",
+//   "GDLM": "宫度论命",
+//   "SCWG": "三才五格",
+//   "xiyongshencankao1": "喜用神参考",
+//   "xiyongshencankao2": "喜用神参考",
+//   "YRJPFX":"月日精参",
+// };
 Map<String, String> generalAnalyzeCode = {
-  "rizhufenxi": "日主分析",
-  "XingZuo": "星座分析",
-  "KWSC2": "综合分析",
-  "GDLM": "宫度论命",
-  "SCWG": "三才五格",
-  "xiyongshencankao1": "喜用神参考",
-  "xiyongshencankao2": "喜用神参考",
-  "YRJPFX":"月日精参",
+  "日主分析":"rizhufenxi",
+  "星座分析": "xingZuo",
+  "综合分析": "kwsc",
+  "宫度论命": "GDLM",
+  "三才五格": "SCWG",
+  "喜用神参考": "xiyongshencankao",
+  "月日精参":"YRJPFX",
 };
 //古籍参考
 Map<String, String> ancientBooksAnalyzeCode = {

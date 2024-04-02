@@ -10,16 +10,16 @@ import 'package:minyun/models/SplayedFigureModel.dart';
 
 import '../constant.dart';
 
-class SplayedFigureDetailAnalyzeScreen extends StatefulWidget {
+class SplayedFigureDetailBookScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
   final Fx fx;
-  SplayedFigureDetailAnalyzeScreen({required this.search, required this.fx});
+  SplayedFigureDetailBookScreen({required this.search, required this.fx});
 
   @override
-  State<SplayedFigureDetailAnalyzeScreen> createState() => _SplayedFigureDetailAnalyzeScreenState();
+  State<SplayedFigureDetailBookScreen> createState() => _SplayedFigureDetailBookScreenState();
 }
 
-class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAnalyzeScreen>  with TickerProviderStateMixin {
+class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookScreen>  with TickerProviderStateMixin {
 
   String gz="";
   String py="";
@@ -60,48 +60,27 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
   Widget build(BuildContext context) {
     return  ListView(
       children: [
-        Text("袁天罡称骨"),
-        getText("骨重",widget.fx.gz??""),
-        getText("评语",widget.fx.cgg??""),
-        Text("通用分析"),
+        Text("古籍参考"),
         Center(
           child: Wrap(
             spacing: 8.0, // 子组件之间的间距
             runSpacing: 4.0, // 换行之间的间距
             children: <Widget>[
               // 在这里放置你的组件
-              getTitle('日主分析'),
-              getTitle('星座分析'),
-              getTitle('宫度论命'),
-              getTitle('综合分析'),
-              getTitle('三才五格'),
-              getTitle('喜用神参考'),
-              getTitle('月日精参'),
+              getTitle('穷通宝鉴'),
+              getTitle('滴天髓'),
+              getTitle('三命通会'),
+              getTitle('八字提要'),
+              getTitle('神峰通考'),
+              getTitle('天元巫咸'),
+              getTitle('五行经纪'),
+              getTitle('李虚中命书'),
+              getTitle('鬼谷子两头钳'),
+              getTitle('格物至言'),
             ],
           ),
         ),
-        getTAnalyzeText(tyfx),
-        // Text("古籍参考"),
-        // Center(
-        //   child: Wrap(
-        //     spacing: 8.0, // 子组件之间的间距
-        //     runSpacing: 4.0, // 换行之间的间距
-        //     children: <Widget>[
-        //       // 在这里放置你的组件
-        //       getTitle('穷通宝鉴'),
-        //       getTitle('滴天髓'),
-        //       getTitle('三命通会'),
-        //       getTitle('八字提要'),
-        //       getTitle('神峰通考'),
-        //       getTitle('天元巫咸'),
-        //       getTitle('五行经纪'),
-        //       getTitle('李虚中命书'),
-        //       getTitle('鬼谷子两头钳'),
-        //       getTitle('格物至言'),
-        //     ],
-        //   ),
-        // ),
-        // getTAnalyzeText(""),
+        getTAnalyzeText(""),
       ],
     );
   }
@@ -124,8 +103,8 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
 
   Widget getTAnalyzeText(String key){
     switch (key){
-      case "rizhufenxi":
-        return getRizhufenxi(widget.fx.rizhufenxi);
+      case "qiongtongbaojian":
+        return getFxText(widget.fx.qiongtongbaojian??"");
       case "xingZuo":
         return getFxText(widget.fx.xingZuo);
       case "kwsc":
@@ -133,7 +112,7 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
       case "xingZuo":
         return getFxText(widget.fx.xingZuo);
       default:
-        return getRizhufenxi(widget.fx.rizhufenxi);
+        return getFxText(widget.fx.qiongtongbaojian??"");
     }
     }
 
