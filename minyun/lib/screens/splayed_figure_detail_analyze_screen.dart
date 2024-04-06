@@ -9,6 +9,7 @@ import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 
 import '../constant.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class SplayedFigureDetailAnalyzeScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
@@ -23,8 +24,7 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
 
   String gz="";
   String py="";
-  String tyfx="rizhufenxi";
-  String gjck="古籍参考";
+  String tyfx="日主分析";
 
 
   @override
@@ -81,27 +81,6 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
           ),
         ),
         getTAnalyzeText(tyfx),
-        // Text("古籍参考"),
-        // Center(
-        //   child: Wrap(
-        //     spacing: 8.0, // 子组件之间的间距
-        //     runSpacing: 4.0, // 换行之间的间距
-        //     children: <Widget>[
-        //       // 在这里放置你的组件
-        //       getTitle('穷通宝鉴'),
-        //       getTitle('滴天髓'),
-        //       getTitle('三命通会'),
-        //       getTitle('八字提要'),
-        //       getTitle('神峰通考'),
-        //       getTitle('天元巫咸'),
-        //       getTitle('五行经纪'),
-        //       getTitle('李虚中命书'),
-        //       getTitle('鬼谷子两头钳'),
-        //       getTitle('格物至言'),
-        //     ],
-        //   ),
-        // ),
-        // getTAnalyzeText(""),
       ],
     );
   }
@@ -125,28 +104,48 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
   Widget getTAnalyzeText(String key){
     switch (key){
       case "rizhufenxi":
-        return getRizhufenxi(widget.fx.rizhufenxi);
+        return getMap(widget.fx.rizhufenxi);
       case "xingZuo":
-        return getFxText(widget.fx.xingZuo);
+        return getMap(widget.fx.xingZuo);
       case "kwsc":
-        return getKWSC(widget.fx.kwsc2??[]);
-      case "xingZuo":
-        return getFxText(widget.fx.xingZuo);
+        return getList(widget.fx.kwsc2 ?? []);
+      case "gdlm":
+        return getList(widget.fx.gdlm ?? []);
+      case "scwg":
+        return getList(widget.fx.scwg ?? []);
+      case "xiyongshencankao":
+        List<String> list=[];
+        list.add(widget.fx.xiyongshencankao1??"");
+        list.add(widget.fx.xiyongshencankao2??"");
+        return getList(list);
+      case "yrjpfx":
+        return getFxText(widget.fx.yrjpfx ?? "");
       default:
-        return getRizhufenxi(widget.fx.rizhufenxi);
+        return getMap(widget.fx.rizhufenxi);
     }
     }
 
     Widget getFxText(String text){
-     return Text(widget.fx.rizhufenxi);
+      return Html(
+        data: text,
+        style: {
+          "p":Style(
+            fontSize: FontSize(20),
+            color:  Colors.black,
+          )
+        },
+      );
     }
-  Widget getKWSC(List<String> lists){
+  Widget getList(List<String> lists){
+    if(lists.length==0){
+      return Text("无数据");
+    }
     return RichText(
       text: TextSpan(
         children: [
           for(var str in lists)
             TextSpan(
-              text: str,
+              text: str+"\n",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
 
@@ -156,7 +155,7 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
 
   }
 
-  Widget getRizhufenxi(dynamic keyValue){
+  Widget getMap(dynamic keyValue){
     Map<String,String> map = Map<String, String>.from(keyValue.map(
           (key, value) => MapEntry(key, value.toString()),
     ));

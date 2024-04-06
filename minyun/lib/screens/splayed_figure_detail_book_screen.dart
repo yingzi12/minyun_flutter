@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lunar/lunar.dart';
 
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../constant.dart';
 
@@ -23,8 +25,7 @@ class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookS
 
   String gz="";
   String py="";
-  String tyfx="rizhufenxi";
-  String gjck="古籍参考";
+  String gjck="穷通宝鉴";
 
 
   @override
@@ -80,7 +81,7 @@ class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookS
             ],
           ),
         ),
-        getTAnalyzeText(""),
+        getTAnalyzeText(gjck),
       ],
     );
   }
@@ -90,12 +91,12 @@ class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookS
       onTap: () {
         // 在这里处理点击事件  
         setState(() {
-          tyfx=generalAnalyzeCode[title]!;
+          gjck=ancientBooksAnalyzeCode[title]!;
         });
       },
       child: Chip(
           label: Text(title),
-            backgroundColor: tyfx == generalAnalyzeCode[title] ? Colors.grey : Colors.transparent,
+            backgroundColor: gjck == ancientBooksAnalyzeCode[title] ? Colors.grey : Colors.transparent,
            // selected: selectedChips[title],
       ),
     );
@@ -105,30 +106,74 @@ class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookS
     switch (key){
       case "qiongtongbaojian":
         return getFxText(widget.fx.qiongtongbaojian??"");
-      case "xingZuo":
-        return getFxText(widget.fx.xingZuo);
-      case "kwsc":
-        return getKWSC(widget.fx.kwsc2??[]);
-      case "xingZuo":
-        return getFxText(widget.fx.xingZuo);
+      case "ditiansui":
+        return getFxText(widget.fx.ditiansui??"");
+      case "sanmingtonghui":
+        List<String> list=[];
+        list.add(widget.fx.sanmingtonghui1??"");
+        list.add(widget.fx.sanmingtonghui2??"");
+        list.add(widget.fx.sanmingtonghui3??"");
+        list.add(widget.fx.sanmingtonghui4??"");
+        return getList(list);
+      case "bazitiyao":
+        List<String> list=[];
+        list.add(widget.fx.bazitiyao1??"");
+        list.add(widget.fx.bazitiyao2??"");
+        list.add(widget.fx.bazitiyao3??"");
+        return getList(list);
+      case "shenfengtongkao":
+        List<String> list=[];
+        list.add(widget.fx.shenfengtongkao1??"");
+        list.add(widget.fx.shenfengtongkao2??"");
+        list.add(widget.fx.shenfengtongkao3??"");
+        return getList(list);
+
+      case "tianwuwuxian":
+        return getFxText(widget.fx.tianwuwuxian ?? "");
+      case "wuxingjingji":
+        List<String> list=[];
+        list.add(widget.fx.wuxingjingji1??"");
+        list.add(widget.fx.wuxingjingji2??"");
+        list.add(widget.fx.wuxingjingji3??"");
+        list.add(widget.fx.wuxingjingji4??"");
+        list.add(widget.fx.wuxingjingji5??"");
+        list.add(widget.fx.wuxingjingji6??"");
+        return getList(list);
+      case "lixuzhongmingshu":
+        List<String> list=[];
+        list.add(widget.fx.lixuzhongmingshu1??"");
+        list.add(widget.fx.lixuzhongmingshu2??"");
+        return getList(list);
+      case "liangtoqian":
+        return getFxText(widget.fx.liangtoqian??"");
+      case "gewuzhiyan":
+        return getFxText(widget.fx.gewuzhiyan??"");
       default:
         return getFxText(widget.fx.qiongtongbaojian??"");
     }
     }
 
     Widget getFxText(String text){
-     return Text(widget.fx.rizhufenxi);
+     return Html(
+        data: text,
+       style: {
+          "p":Style(
+            fontSize: FontSize(20),
+            color:  Colors.black,
+          )
+       },
+      );
+     // return document.outerHtml;
     }
-  Widget getKWSC(List<String> lists){
+  Widget getList(List<String> lists){
     return RichText(
       text: TextSpan(
         children: [
           for(var str in lists)
             TextSpan(
-              text: str,
+              text: str+"\n",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
-
         ],
       ),
     );

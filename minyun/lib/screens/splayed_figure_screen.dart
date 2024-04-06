@@ -1,13 +1,12 @@
-import 'package:bruno/bruno.dart';
-import 'package:china_city_selector/area_analyzer.dart';
-import 'package:china_city_selector/area_result.dart';
-import 'package:china_city_selector/selector_area.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_lunar_datetime_picker/date_init.dart';
 import 'package:flutter_lunar_datetime_picker/flutter_lunar_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lunar/lunar.dart';
+import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/screens/splayed_figure_detail_screen.dart';
@@ -15,7 +14,6 @@ import 'package:minyun/utils/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../utils/color.dart';
-import '../utils/common.dart';
 import '../utils/images.dart';
 
 class SplayedFigureScreen extends StatefulWidget {
@@ -39,9 +37,27 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   IconLabel? selectedIcon;
   String selected_2 = '';
   List<List<String>> data_2 = [];
+  String xz="1";
+  //起盘方式
+  int _selectedQipanValue=1;
+  //排盘
+  int _selectedPaipanValue=1;
+  //晚子时
+  int _selectedLateValue=1;
+  //真太阳时
+  int _selectedSunValue=1;
+  //性别
+  int _selectedSexValue=1;
+  //生日
+  int _selectedBirthValue=1;
 
-  int _singleSelectedIndex=0;
-  int? _sexRadio = 0; // 初始化选中第一项
+  String birthValue="";
+
+  //下拉
+   String _selectedYearValue = '甲子';
+  String _selectedMonthValue = '甲子';
+  String _selectedDayValue = '甲子';
+  String _selectedHourValue = '甲子';
 
   /// 日期
   String? time = '1995-11-8 12:12';
@@ -54,19 +70,23 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
 
    List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
+  String selected_3 = '';
 
   @override
   void initState() {
-    var list = <String>[];
-    for(var i = 2022; i >= 2000; i--) {
-      list.add('${i}年');
-    }
-    data_2.add(list);
-    data_2.add(['春', '夏', '秋', '冬']);
-    data_2.add(['春', '夏', '秋', '冬']);
-    data_2.add(['春', '夏', '秋', '冬']);
-
+    data_2.add(yearTianGanList);
+    data_2.add(yearTianGanList);
+    data_2.add(yearTianGanList);
+    data_2.add(yearTianGanList);
     super.initState();
+  }
+
+  //获取指定月的天数
+  int getDaysInMonth(int year, int month) {
+    var a = Solar.fromYmd(year, month, 1);
+    var b = a.nextMonth(1);
+    // 返回差异的天数
+    return b.subtract(a);
   }
 
   void _clearText() {
@@ -139,120 +159,28 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
       ),
       body: Stack(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          ListView(
             children: [
               _basicTypeRequire(context),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Text("起盘方式：",
-                        // style: boldTextStyle(fontSize: 18)
-                    ),
-                  ),
-                  Expanded(
-                    child:TDRadioGroup(
-                      selectId: 'index:1',
-                      direction: Axis.horizontal,
-                      directionalTdRadios: const [
-                        TDRadio(
-                          id: '0',
-                          title: '日期排盘',
-                          radioStyle: TDRadioStyle.circle,
-                          showDivider: false,
-                        ),
-                        TDRadio(
-                          id: '1',
-                          title: '八字反推',
-                          radioStyle: TDRadioStyle.circle,
-                          showDivider: false,
-                        ),
-                      ],
-                    )
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Text("命主性别：",
-                        // style: boldTextStyle(fontSize: 18)
-                    ),
-                  ),
-                  Expanded(
-                      child:TDRadioGroup(
-                        selectId: 'index:1',
-                        direction: Axis.horizontal,
-                        directionalTdRadios: const [
-                          TDRadio(
-                            id: '0',
-                            title: '男',
-                            radioStyle: TDRadioStyle.circle,
-                            showDivider: false,
-                          ),
-                          TDRadio(
-                            id: '1',
-                            title: '女',
-                            radioStyle: TDRadioStyle.circle,
-                            showDivider: false,
-                          ),
-                        ],
-                      )
-                  ),
-                ],
-              ),
-
+              //排盘方式
+              buildQipan(),
+              _selectedQipanValue ==1 ? buildBirth(context) : buildXiala(),
               buildTime(context),
-              // _horizontalRadios(context),
-              Center(
-                child: OutlinedButton(
-                  onPressed: () async {
-                    final nation = AreaAnalyzer.analyzeNation();
-                    final provinces = nation.allProvinces.values.toList();
-                    provinces.sort((a, b) => a.value.compareTo(b.value));
-                    print(provinces);
-                  },
-                  child: const Text('print all provinces'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: SelectorArea(
-                  onNewArea: (AreaResult newArea) async {
-                    print(newArea);
-                  },
-                ),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Text("出生时间：",
-                        // style: boldTextStyle(fontSize: 18)
-                    ),
-                  ),
-                  Expanded(
-                      child: TextField(
-                        controller: _birthController,
-                        decoration: InputDecoration(
-                          labelText: 'Select a date',
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.calendar_today),
-                            iconSize: 24.0,
-                            onPressed: () => _showDatePicker(context),
-                          ),
-                        ),
-                        onTap: () => _showDatePicker(context), // 当TextField被点击时弹出日期选择器
-                        readOnly: true, // 设置为只读，因为日期将通过日期选择器设置
-                      )
-                  ),
-                ],
-              ),
-              getPp(),
+              buildSex(),
+              //真太阳时
+              if (_selectedPaipanValue ==2)
+                buildYesSun(),
+              if (_selectedPaipanValue ==2 && _selectedSunValue ==1)
+                buildMultiArea(context),
+              if (_selectedPaipanValue ==2)
+                buildLateSun(),
+              //人元司令
+              if (_selectedPaipanValue ==2)
+                buildRenyuan(),
+              buildPaipan(),
+
               TDButton(
-                text: '填充按钮',
+                text: '开始排盘',
                 size: TDButtonSize.large,
                 type: TDButtonType.fill,
                 shape: TDButtonShape.rectangle,
@@ -268,6 +196,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                   SplayedFigureDetailScreen(search: sera,).launch(context);
                 }
               ),
+
             ],
           ),
         ],
@@ -275,15 +204,518 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
     );
   }
 
+
+  Widget buildQipan(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("起盘方式：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+          child:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: RadioListTile(
+                      value: 1,
+                      groupValue: _selectedQipanValue,
+                      contentPadding: EdgeInsets.zero,
+                      title: Text('日期排盘'),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedQipanValue = value as int;
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: RadioListTile(
+                      value: 2,
+                      groupValue: _selectedQipanValue,
+                      contentPadding: EdgeInsets.zero,
+                      title: Text('八字反推'),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedQipanValue = value as int;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              )
+          // ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildLateSun(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("晚子时：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RadioListTile(
+                    value: 1,
+                    groupValue: _selectedLateValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('按明天'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedLateValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    value: 2,
+                    groupValue: _selectedLateValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('按当天'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedLateValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          // ),
+        ),
+      ],
+    );
+  }
+
+  //真太阳时
+  Widget buildYesSun(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("真太阳时：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RadioListTile(
+                    value: 1,
+                    groupValue: _selectedSunValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('是'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSunValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    value: 2,
+                    groupValue: _selectedSunValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('否'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSunValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          // ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildSex(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("性别：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RadioListTile(
+                    value: 1,
+                    groupValue: _selectedSexValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('男'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSexValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    value: 2,
+                    groupValue: _selectedSexValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('女'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSexValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          // ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildPaipan(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("排盘方式：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RadioListTile(
+                    value: 1,
+                    groupValue: _selectedPaipanValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('普通排盘'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedPaipanValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    value: 2,
+                    groupValue: _selectedPaipanValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('专业排盘'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedPaipanValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          // ),
+        ),
+      ],
+    );
+  }
+
+  //横
+  Widget buildRadioCross(){
+    return Row(
+      children: [
+        SizedBox(
+          // flex: 3,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("出生时间：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+          // flex: 9,
+          child:  Center(
+            child:
+            Row(
+              children: [
+                Expanded(
+                  child: RadioListTile(
+                    value: 1,
+                    groupValue: _selectedBirthValue,
+                    title: Text('选项一'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedBirthValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    value: 2,
+                    groupValue: _selectedBirthValue,
+                    title: Text('选项二'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedBirthValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          ),
+        ),
+      ],
+    );
+  }
+
+  //人元司令
+  Widget buildRenyuan(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("人元司令：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),),
+        Expanded(
+          child:
+            Wrap(
+              spacing: 8.0, // 子组件之间的间距
+              runSpacing: 4.0, // 换行之间的间距
+              children: <Widget>[
+                RadioListTile<String>(
+                  title: const Text('子平真诠'),
+                  value: "1",
+                  groupValue: xz,
+                  onChanged: ( value) {
+                    setState(() {
+                      xz = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('三命通会'),
+                  value: "2",
+                  groupValue: xz,
+                  onChanged: ( value) {
+                    setState(() {
+                      xz = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('渊海子平'),
+                  value: "3",
+                  groupValue: xz,
+                  onChanged: (value) {
+                    setState(() {
+                      xz = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('神峰通考'),
+                  value: "4",
+                  groupValue: xz,
+                  onChanged: (value) {
+                    setState(() {
+                      xz = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('星平会海'),
+                  value: "5",
+                  groupValue: xz,
+                  onChanged: (value) {
+                    setState(() {
+                      xz = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('万育吾之法诀'),
+                  value: "6",
+                  groupValue: xz,
+                  onChanged: (value) {
+                    setState(() {
+                      xz = value!;
+                    });
+                  },
+                ),
+              ],
+            ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildXiala(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("出生时间：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),),
+        Expanded(
+          child:
+          Wrap(
+            spacing: 8.0, // 子组件之间的间距
+            runSpacing: 4.0, // 换行之间的间距
+            children: <Widget>[
+              DropdownButton<String>(
+                value: _selectedYearValue,
+                items: <DropdownMenuItem<String>>[
+                  for(var tiangan in yearTianGanList)
+                    DropdownMenuItem(
+                      value: tiangan,
+                      child: Text(tiangan),
+                    ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedYearValue = value!;
+                  });
+                },
+              ),
+              DropdownButton<String>(
+                value: _selectedMonthValue,
+                items: <DropdownMenuItem<String>>[
+                  for(var tiangan in yearTianGanList)
+                    DropdownMenuItem(
+                      value: tiangan,
+                      child: Text(tiangan),
+                    ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedMonthValue = value!;
+                  });
+                },
+              ),
+              DropdownButton<String>(
+                value: _selectedDayValue,
+                items: <DropdownMenuItem<String>>[
+                  for(var tiangan in yearTianGanList)
+                    DropdownMenuItem(
+                      value: tiangan,
+                      child: Text(tiangan),
+                    ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedDayValue = value!;
+                  });
+                },
+              ),
+              DropdownButton<String>(
+                value: _selectedHourValue,
+                items: <DropdownMenuItem<String>>[
+                  for(var tiangan in yearTianGanList)
+                    DropdownMenuItem(
+                      value: tiangan,
+                      child: Text(tiangan),
+                    ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedHourValue = value!;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget getTitle(String title){
+    return GestureDetector(
+      onTap: () {
+        // 在这里处理点击事件
+        setState(() {
+          // tyfx=generalAnalyzeCode[title]!;
+        });
+      },
+      child: Chip(
+        label: Text(title),
+        // backgroundColor: tyfx == generalAnalyzeCode[title] ? Colors.grey : Colors.transparent,
+        // selected: selectedChips[title],
+      ),
+    );
+  }
   Widget buildTime(BuildContext context) {
     return GestureDetector(
       onTap: (){
         TDPicker.showMultiPicker(context, title: '选择时间',
             onConfirm: (selected) {
               setState(() {
-                selected_2 = '${data_2[0][selected[0]]} ${data_2[1][selected[1]]}';
+                selected_2 = '${data_2[0][selected[0]]} ${data_2[1][selected[1]]}  ${data_2[2][selected[2]]}  ${data_2[3][selected[3]]}';
+                print("-------${selected_2 }----------");
               });
-            }, data: data_2);
+            }, data: data_2
+        );
       },
       child: buildSelectRow(context, selected_2, '选择时间'),
     );
@@ -354,35 +786,52 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
     );
   }
 
-  //横向
-  Widget _horizontalRadios(BuildContext context) {
-    return TDRadioGroup(
-      selectId: 'index:1',
-      direction: Axis.horizontal,
-      directionalTdRadios: const [
-        TDRadio(
-          id: '0',
-          title: '单选标题',
-          radioStyle: TDRadioStyle.circle,
-          showDivider: false,
+  Widget buildBirth(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        _showDatePicker(context);
+      },
+      child: Container(
+        color: TDTheme.of(context).whiteColor1,
+        height: 56,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                  child: TDText("选择时间", font: TDTheme.of(context).fontBodyLarge,),
+                ),
+                Expanded(child: Padding(
+                  padding: const EdgeInsets.only(right: 16, left: 16),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(
+                        this.time.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 2),
+                        child: Icon(
+                          TDIcons.calendar,
+                          color: TDTheme.of(context).fontGyColor3.withOpacity(0.4),),
+                      ),
+                    ],
+                  ),
+                )),
+              ],
+            ),
+          ],
         ),
-        TDRadio(
-          id: '1',
-          title: '单选标题',
-          radioStyle: TDRadioStyle.circle,
-          showDivider: false,
-        ),
-        TDRadio(
-          id: '2',
-          title: '上限四字',
-          radioStyle: TDRadioStyle.circle,
-          showDivider: false,
-        ),
-      ],
+      ),
     );
   }
 
-  Widget getPp(){
+  Widget getRadio(String title,String key,String value1,String value2){
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
       padding: EdgeInsets.all(16),
@@ -390,66 +839,55 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           color:  Colors.grey.shade200, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  // dashboardFilesList[index].titleText.toString(),
-                  "专业排盘",
-                  // style: primaryTextStyle(),
-                  overflow: TextOverflow.fade,
-                ),
-                SizedBox(height: 16),
-                // CircleBackgroundText(lunarTime.getTianShenLuck(),lunarTime.getTianShenLuck() == '吉'?Colors.yellow :Colors.red,30)
-              ],
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("起盘方式：",
             ),
           ),
-
-          SizedBox(width: 16),
           Expanded(
-            flex: 7,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _horizontalCardStyle(context)
-              ],
-            ),
+              child:TDRadioGroup(
+                selectId: 'index:1',
+                direction: Axis.horizontal,
+                onRadioGroupChange: (String? selectedId)=>{
+                  print("----${selectedId}------")
+                },
+                directionalTdRadios: const [
+                  TDRadio(
+                    id: '0',
+                    title: '日期排盘',
+                    radioStyle: TDRadioStyle.circle,
+                    showDivider: false,
+                  ),
+                  TDRadio(
+                    id: '1',
+                    title: '八字反推',
+                    radioStyle: TDRadioStyle.circle,
+                    showDivider: false,
+                  ),
+                ],
+              )
           ),
-
         ],
       ),
     );
   }
 
-  Widget _horizontalCardStyle(BuildContext context) {
-    return TDRadioGroup(
-      selectId: 'index:1',
-      cardMode: true,
-      direction: Axis.horizontal,
-      directionalTdRadios: const [
-        TDRadio(
-          id: 'index:0',
-          title: '单选',
-          cardMode: true,
-        ),
-        TDRadio(
-          id: 'index:1',
-          title: '单选',
-          cardMode: true,
-        ),
-        TDRadio(
-          id: 'index:2',
-          title: '单选',
-          cardMode: true,
-        ),
-        TDRadio(
-          id: 'index:3',
-          title: '单选',
-          cardMode: true,
-        ),
-      ],
+
+  Widget buildMultiArea(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        TDPicker.showMultiLinkedPicker(context, title: '选择地区',
+            onConfirm: (selected) {
+              setState(() {
+                selected_3 = '${selected[0]} ${selected[1]} ${selected[2]}';
+              });
+              Navigator.of(context).pop();
+            },
+            data: cityData,
+            columnNum: 3,
+            initialData: ['浙江省', '杭州市', '西湖区']);
+      },
+      child: buildSelectRow(context, selected_3, '选择地区'),
     );
   }
 }
