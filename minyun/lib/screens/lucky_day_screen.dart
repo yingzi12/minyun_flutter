@@ -1,4 +1,5 @@
 import 'package:bruno/bruno.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lunar_datetime_picker/date_init.dart';
 import 'package:flutter_lunar_datetime_picker/flutter_lunar_datetime_picker.dart';
@@ -27,14 +28,12 @@ class LuckyDayScreen extends StatefulWidget {
 
 class _LuckyDayScreenState extends State<LuckyDayScreen> {
 
-  Lunar lunar = Lunar.fromDate(DateTime.now());
-  Solar solar = Solar.fromDate(DateTime.now());
+  // Lunar lunar = Lunar.fromDate(DateTime.now());
+  // Solar solar = Solar.fromDate(DateTime.now());
   /// 日期
-  String? time = '1995-11-8 12:12';
-  DateFormat formatter = DateFormat("yyyy-MM-dd Hh:mm");
+  String format="yyyy-MM-dd";
   /// 是否是农历
   bool isLunar = true;
-  String _selectedValue = '选项1';
 
   @override
   Widget build(BuildContext context) {
@@ -56,46 +55,25 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
           Column(
             children: [
               getGl(),
-              lunarDate(lunar,solar),
               Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Text("Total ${recentFilesList.length} files", style: boldTextStyle(fontSize: 18)),
+                    child: Text("共 ${recentFilesList.length} 天", style: boldTextStyle(fontSize: 18,color: Colors.black45)),
                   ),
                   Spacer(),
-                  PopupMenuButton(
-                    icon: Image.asset(page_up_down_image, height: 18, color: mode.theme ? Colors.white : Colors.black),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
-                    onSelected: (value) {},
-                    color: mode.theme ? darkPrimaryLightColor : Colors.white,
-                    splashRadius: 24,
-                    itemBuilder: (context) => [
-                      popupItem(title: "Title (A to Z)", value: 1),
-                      popupItem(title: "Title (Z to A)", value: 2),
-                      popupItem(title: "Date Created", value: 3),
-                      popupItem(title: "Date Modified", value: 4),
-                      popupItem(title: "Date Last Opened", value: 5),
-                      popupItem(title: "Date Added", value: 6),
-                      popupItem(title: "Size", value: 7),
-                    ],
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        NewFolderBottomSheetComponent(context).then((_) => setState(() {}));
-                      },
-                      splashRadius: 24,
-                      icon: Image.asset(folder_image, height: 22, color: mode.theme ? Colors.white : Colors.black)),
                 ],
               ),
               Expanded(
-                child:                     ListView.builder(
+                child:
+                ListView.builder(
                   itemCount: hourList.length,
                   primary: false,
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   shrinkWrap: true,
                   itemBuilder: (context, int index) {
                     HourModel hour= hourList[index];
+                    Lunar lunar = Lunar.fromDate(DateTime.now());
                     LunarTime lunarTime = LunarTime.fromYmdHms(lunar.getYear(), lunar.getMonth(), lunar.getDay(), hour.sj, 30, 0);
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 8),
@@ -105,32 +83,20 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                            flex: 1,
+                            // flex: 7,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  // dashboardFilesList[index].titleText.toString(),
-                                  hour.title.toString(),
-                                  // style: primaryTextStyle(),
-                                  overflow: TextOverflow.fade,
+                                Row(
+                                  children: [
+                                    Text("2012-11-11", style: TextStyle(fontSize:   20,color: Colors.black)),
+                                    CircleBackgroundText(lunarTime.getTianShenLuck(),lunarTime.getTianShenLuck() == '吉'?Colors.yellow :Colors.red,30),
+                                  ],
                                 ),
-                                SizedBox(height: 16),
-                                CircleBackgroundText(lunarTime.getTianShenLuck(),lunarTime.getTianShenLuck() == '吉'?Colors.yellow :Colors.red,30)
-                              ],
-                            ),
-                          ),
-
-                          SizedBox(width: 16),
-                          Expanded(
-                            flex: 7,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
                                 // SizedBox(height: 16),
                                 Text("${lunarTime.getMinHm() + '-' + lunarTime.getMaxHm()}  时冲${lunarTime.getChongDesc()} 煞${lunarTime.getSha()}", style: TextStyle(fontSize:   14,color: Colors.black45)),
                                 Text("财神${lunarTime.getPositionCaiDesc()} 喜神${lunarTime.getPositionXiDesc()}  福神${lunarTime.getPositionFuDesc()} 阳神${lunarTime.getPositionYangGuiDesc()} 阴神${lunarTime.getPositionYinGuiDesc()}", style: TextStyle(fontSize:   12,color: Colors.black45)),
-                                getYJ(lunar),
+                                getYJ(lunar,widget.search),
                               ],
                             ),
                           ),
@@ -143,34 +109,6 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
               ),
             ],
           ),
-          // Positioned(
-          //   bottom: 16,
-          //   right: 86,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       //
-          //     },
-          //     child: Container(
-          //       padding: EdgeInsets.all(16),
-          //       decoration: BoxDecoration(shape: BoxShape.circle, color: primaryColor),
-          //       child: Image.asset(camera_image, color: Colors.white, height: 20, fit: BoxFit.fill),
-          //     ),
-          //   ),
-          // ),
-          // Positioned(
-          //   bottom: 16,
-          //   right: 16,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       //
-          //     },
-          //     child: Container(
-          //       padding: EdgeInsets.all(16),
-          //       decoration: BoxDecoration(shape: BoxShape.circle, color: primaryColor),
-          //       child: Image.asset(picture_image, color: Colors.white, height: 20, fit: BoxFit.fill),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
@@ -186,41 +124,65 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
       value: value,
     );
   }
-  Widget getGl(){
-    return  Center(
-      child: Row(
-        children: [
-          DropdownButton<String>(
-            value: _selectedValue,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            style: TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
+  Widget getGl() {
+    String format = 'yyyy-MM-dd';
+    BrnPickerTitleConfig pickerTitleConfig = BrnPickerTitleConfig(titleContent: "选择时间范围");
+    return Center(
+      child:
+          GestureDetector(
+            onTap: () {
+              // 这里是点击事件发生时调用的代码
+              print('2013-11-11');
+              BrnDateRangePicker.showDatePicker(context,
+                  isDismissible: false,
+                  minDateTime: DateTime(2010, 06, 01, 00, 00, 00),
+                  maxDateTime: DateTime(2029, 07, 24, 23, 59, 59),
+                  pickerMode: BrnDateTimeRangePickerMode.date,
+                  minuteDivider: 10,
+                  pickerTitleConfig: pickerTitleConfig,
+                  dateFormat: format,
+                  initialStartDateTime: DateTime(2020, 06, 21, 11, 00, 00),
+                  initialEndDateTime: DateTime(2020, 06, 23, 10, 00, 00),
+                  onConfirm: (startDateTime, endDateTime, startlist, endlist) {
+                    BrnToast.show(
+                        "onConfirm:  $startDateTime   $endDateTime     $startlist     $endlist", context);
+                  }, onClose: () {
+                    print("onClose");
+                  }, onCancel: () {
+                    print("onCancel");
+                  }, onChange: (startDateTime, endDateTime, startlist, endlist) {
+                    BrnToast.show(
+                        "onChange:  $startDateTime   $endDateTime     $startlist     $endlist", context);
+                  });
+              // 你可以在这里导航到新的页面、显示对话框等
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center, // 水平居中
+              children: [Text(
+              '2024-11-11',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.blue, // 可以设置文本颜色以指示它是可点击的
+                // decoration: TextDecoration.underline, // 可以添加下划线以指示它是可点击的
+              ),
             ),
-            // onChanged: (String newValue) {
-            //   setState(() {
-            //     _selectedValue = newValue;
-            //   });
-            // },
-            items: <String>['选项1', '选项2', '选项3']
-                .map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            })
-                .toList(), onChanged: (String? value) {  },
+                SizedBox(width: 10,),
+                Text("至"),
+                SizedBox(width: 10,),
+                Text(
+                  '2024-11-11',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.blue, // 可以设置文本颜色以指示它是可点击的
+                    // decoration: TextDecoration.underline, // 可以添加下划线以指示它是可点击的
+                  ),
+                ),
+            ],
+            ),
           ),
-
-        ],
-      )
-
     );
   }
-  Widget getYJ(Lunar lunar){
+  Widget getYJ(Lunar lunar,String title){
     List<String> yList = lunar.getDayYi();
     String y=yList.join(",");
     // 忌
@@ -228,74 +190,94 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
     String j=jList.join(",");
     return Column(
       children: [
-        BrnPairInfoTable(
-          children: <BrnInfoModal>[
-            BrnInfoModal(keyPart: CircleBackgroundText("宜",Colors.yellow,30)
-                , valuePart: y),
-            BrnInfoModal(keyPart: CircleBackgroundText("忌",Colors.red,30), valuePart: j),
+        Row(
+          children: [
+            Container(
+              width: 30.0, // 设置固定宽度为100
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.yellow,
+              ),
+              alignment: Alignment.center, // 使内容水平垂直居中
+              padding: EdgeInsets.all(8.0), // 可选，根据需要设置内边距
+              child: Text(
+                "宜",
+                style: TextStyle(
+                  fontSize: 20.0, // 根据需要设置字体大小
+                  color: Colors.black, // 根据需要设置文字颜色
+                ),
+              ),
+            ),
+
+            Expanded(
+              child:  Wrap(
+                spacing: 8.0, // 子组件之间的间距
+                runSpacing: 4.0, // 换行之间的间距
+                children: <Widget>[
+                  // 在这里放置你的组件
+                  for(var y in yList)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: title== j ? Colors.red :Colors.white10,
+                      ),
+                      child: Text(
+                        y,
+                        style: TextStyle(
+                          fontSize: 15.0, // 根据需要设置字体大小
+                          color: Colors.black, // 根据需要设置文字颜色
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              width: 30.0, // 设置固定宽度为100
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.red,
+              ),
+              alignment: Alignment.center, // 使内容水平垂直居中
+              padding: EdgeInsets.all(8.0), // 可选，根据需要设置内边距
+              child: Text(
+                "忌",
+                style: TextStyle(
+                  fontSize: 20.0, // 根据需要设置字体大小
+                  color: Colors.black, // 根据需要设置文字颜色
+                ),
+              ),
+            ),
+
+            Expanded(
+              child:  Wrap(
+                spacing: 8.0, // 子组件之间的间距
+                runSpacing: 4.0, // 换行之间的间距
+                children: <Widget>[
+                  // 在这里放置你的组件
+                  for(var j in jList)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: title== j ? Colors.red :Colors.white10,
+                      ),
+                      child: Text(
+                        j,
+                        style: TextStyle(
+                          fontSize: 15.0, // 根据需要设置字体大小
+                          color: Colors.black, // 根据需要设置文字颜色
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            )
           ],
         ),
       ],
     );
-  }
-  Widget lunarDate(Lunar lunar,Solar solar){
-    String time=solar.toYmdHms();
-    return Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "日期:$time",
-              style: const TextStyle(fontSize: 20),
-            ),
-            // const SizedBox(height: 100),
-            ElevatedButton(
-              onPressed: () {
-                DatePicker.showDatePicker(
-                  context,
-                  lunarPicker: isLunar,
-                  dateInitTime: time == null
-                      ? DateInitTime(
-                      currentTime: DateTime.now(),
-                      maxTime: DateTime(2100, 12, 12),
-                      minTime: DateTime(1800, 2, 4))
-                      : DateInitTime(
-                      currentTime:
-                      DateFormat("yyyy-MM-dd h:m").parse(time ?? ""),
-                      maxTime: DateTime(2100, 12, 12),
-                      minTime: DateTime(1800, 1, 1)),
-                  onConfirm: (time, lunar) {
-                    debugPrint("onConfirm:${time.toString()} ${lunar.toString()}");
-                    setState(() {
-                      this.time =
-                      "${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
-                      // DateTime dateTime = formatter.parse(time.toString());
-                      //isLunar=
-                      if(isLunar){
-                        Lunar lunar = Lunar.fromDate(time);
-                        this.lunar=lunar;
-                        this.solar = lunar.getSolar();
-                      }else{
-                        Solar solar = Solar.fromDate(time);
-                        this.solar=solar;
-                        this.lunar = solar.getLunar();
-                      }
-                      this.isLunar = isLunar;
-                    });
-                  },
-                  onChanged: (time, lunar) {
-                    // setState(() {
-                    // this.lunar=lunar;
-                    // this.solar=
-                    // });
-                    debugPrint("onChanged:${time.toString()} ${lunar.toString()}");
-                  },
-                );
-              },
-              child: const Text("选择"),
-            )
-          ],
-        ));
   }
 
 

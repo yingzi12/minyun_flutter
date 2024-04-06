@@ -1,3 +1,4 @@
+import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,6 +20,15 @@ class MyApp extends StatelessWidget {
           title: 'ProScan App',
           theme: getThemeData(mode.theme),
           home: SplashScreen(),
+          localizationsDelegates: [
+            // GlobalMaterialLocalizations.delegate,
+            // GlobalCupertinoLocalizations.delegate,
+            BrnLocalizationDelegate(), // Add the BrnLocalizationDelegate
+          ],
+          supportedLocales: [
+            const Locale('en', ''), // English (basic example)
+            // You can add other supported locales here
+          ],
           builder: (context, child) {
             return ScrollConfiguration(behavior: AppBehavior(), child: child!);
           },

@@ -2,7 +2,7 @@ import 'JsonSerializable.dart';
 
 //流月，流时。流日
 class LuckyDateModel   {
-  String? date;
+  int? date;
   //节气
   String? solarTerms;
   //节气天

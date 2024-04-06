@@ -9,7 +9,6 @@ import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/models/lucky_model.dart';
 import 'package:minyun/models/lucky_year_model.dart';
 import 'package:mongol/mongol.dart';
-import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 
 class SplayedFigureDetailPaipanScreen extends StatefulWidget {
@@ -25,10 +24,12 @@ class SplayedFigureDetailPaipanScreen extends StatefulWidget {
 
 class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPaipanScreen>  with TickerProviderStateMixin {
 
-  Lunar lunar = Lunar.fromDate(DateTime.now());
+  Lunar nowLunar = Solar.fromDate(DateTime.now()).getLunar();
+  Lunar luckyLunar = Solar.fromDate(DateTime.now()).getLunar();
+
   //获取当前年
   DateTime now = DateTime.now();
-  int currentYear =DateTime.now().year ;
+  int currentYear =DateTime.now().year;
   int currentMonth = DateTime.now().month;
   int currentDay= DateTime.now().day;
   int currentHour= DateTime.now().hour;
@@ -81,7 +82,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         if( daYun.getStartYear() <= currentYear && currentYear <= daYun.getEndYear() ){
           luckDaYunIndex=daYun.getIndex();
         }
-        luckyYear.year=daYun.getStartYear().toString();
+        luckyYear.year=daYun.getStartYear();
         luckyYear.age=daYun.getStartAge().toString();
         if(0==daYun.getIndex()) {
           Lunar yartLunar = daYun.getLunar();
@@ -92,7 +93,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           luckyYear.gan = ganzhi[0];
           luckyYear.zhi = ganzhi[1];
         }
-        String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+lunar.getGan()]??"";
+        String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+luckyYear.gan!]??"";
         luckyYear.ganShishenIntro=tenGods[tianganShishen];
         var oneZG=dizhiMap[luckyYear.zhi]![0];
         var dizhiShishen= ganzhiMap[widget.eightChar.getDayGan()+oneZG]??"";
@@ -120,7 +121,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
             (key, value) => MapEntry(key, value.toString()),
       ));
       widget.splayedFigureModel.llss.forEach((key, value) {
-        print(value.toString());
         List<dynamic> stringList = value.cast<String>().map((e) => e.toString()).toList();
         ssMap[key] = stringList;
       });
@@ -146,36 +146,36 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     DaYun nowDaYun=daYunList[luckDaYunIndex];
     return  ListView(
       children: [
-        nowDate(lunar.getSolar(),lunar),
+        nowDate(nowLunar.getSolar(),nowLunar),
         getBaziTitle("标注","流时","流日","流月","流年","大运","年柱","月柱","日柱","时柱",10,Colors.black87),
-        getBaziShishen(lunar),
-        getBaziTitle("天干",lunar.getTimeGan(),lunar.getDayGan(),lunar.getMonthGan(),lunar.getYearGan(),lunar.getYearGan(),
+        getBaziShishen(),
+        getBaziTitle("天干",nowLunar.getTimeGan(),nowLunar.getDayGan(),nowLunar.getMonthGan(),nowLunar.getYearGan(),luckyLunar.getYearGan(),
             widget.eightChar.getYearGan(),widget.eightChar.getMonthGan(), widget.eightChar.getDayGan(), widget.eightChar.getTimeGan(),
             20,Colors.black87
         ),
-        getBaziTitle("地支",lunar.getTimeZhi(),lunar.getDayZhi(),lunar.getMonthZhi(),lunar.getYearZhi(),lunar.getYearZhi(),
+        getBaziTitle("地支",nowLunar.getTimeZhi(),nowLunar.getDayZhi(),nowLunar.getMonthZhi(),nowLunar.getYearZhi(),luckyLunar.getYearZhi(),
             widget.eightChar.getYearZhi(),widget.eightChar.getMonthZhi(), widget.eightChar.getDayZhi(), widget.eightChar.getTimeZhi(),
             20,Colors.black87
         ),
-        getZgan(lunar),
-        getTable( "星运",xyMap[lunar.getTimeZhi()]??"",xyMap[lunar.getDayZhi()]??"",xyMap[lunar.getMonthZhi()]??"",xyMap[lunar.getYearZhi()]??"",xyMap[lunar.getYearZhi()]??"",
+        getZgan(),
+        getTable( "星运",xyMap[nowLunar.getTimeZhi()]??"",xyMap[nowLunar.getDayZhi()]??"",xyMap[nowLunar.getMonthZhi()]??"",xyMap[nowLunar.getYearZhi()]??"",xyMap[luckyLunar.getYearZhi()]??"",
             xyMap[widget.eightChar.getYearZhi()]??"",xyMap[widget.eightChar.getMonthZhi()]??"",xyMap[widget.eightChar.getDayZhi()]??"",xyMap[widget.eightChar.getTimeZhi()]??"",
             10,Colors.black87
         ),
-        getTable( "自坐",zzMap[lunar.getTimeGan()+lunar.getTimeZhi()]??"",zzMap[lunar.getDayGan()+lunar.getDayZhi()]??"",zzMap[lunar.getMonthGan()+lunar.getMonthZhi()]??"",zzMap[lunar.getYearGan()+lunar.getYearZhi()]??"",zzMap[lunar.getYearGan()+lunar.getYearZhi()]??"",
+        getTable( "自坐",zzMap[nowLunar.getTimeGan()+nowLunar.getTimeZhi()]??"",zzMap[nowLunar.getDayGan()+nowLunar.getDayZhi()]??"",zzMap[nowLunar.getMonthGan()+nowLunar.getMonthZhi()]??"",zzMap[nowLunar.getYearGan()+nowLunar.getYearZhi()]??"",zzMap[luckyLunar.getYearGan()+luckyLunar.getYearZhi()]??"",
             zzMap[widget.eightChar.getYearGan()+widget.eightChar.getYearZhi()]??"",zzMap[widget.eightChar.getMonthGan()+widget.eightChar.getMonthZhi()]??"",zzMap[widget.eightChar.getDayGan()+widget.eightChar.getDayZhi()]??"",zzMap[widget.eightChar.getTimeGan()+widget.eightChar.getTimeZhi()]??"",
             10,Colors.black87
         ),
-        getTable( "空亡",lunar.getTimeXunKong(),lunar.getDayXunKong(),lunar.getMonthXunKong(),lunar.getYearXunKong(),lunar.getYearXunKong(),
+        getTable( "空亡",nowLunar.getTimeXunKong(),nowLunar.getDayXunKong(),nowLunar.getMonthXunKong(),nowLunar.getYearXunKong(),luckyLunar.getYearXunKong(),
             widget.eightChar.getYearXunKong(),widget.eightChar.getMonthXunKong(),widget.eightChar.getDayXunKong(),widget.eightChar.getTimeXunKong(),
             10,Colors.black87
         ),
-        getTableNode( "纳音",lunar.getTimeNaYin(),lunar.getDayNaYin(),lunar.getMonthNaYin(),lunar.getYearNaYin(),lunar.getYearNaYin(),
+        getTableNode( "纳音",nowLunar.getTimeNaYin(),nowLunar.getDayNaYin(),nowLunar.getMonthNaYin(),nowLunar.getYearNaYin(),luckyLunar.getYearNaYin(),
             widget.eightChar.getYearNaYin(),widget.eightChar.getMonthNaYin(),widget.eightChar.getDayNaYin(),widget.eightChar.getTimeNaYin(),
             10,Colors.black87
         ),
         Divider(),
-        getShensa(widget.eightChar,lunar,10,Colors.black87,ssMap),
+        getShensa(widget.eightChar,10,Colors.black87,ssMap),
         Divider(),
         getBigLucky(bigLuckyList,10,Colors.black87),
         Divider(),
@@ -188,71 +188,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         getNowDay(currentYear,currentMonth,currentDay,8,Colors.black87),
         Divider(),
         getNowHour(currentYear,currentMonth,currentDay,currentHour,8,Colors.black87),
-        // Divider(),
-      ],
-    );
-  }
-
-  Widget _weakSelectTextTabBar(BuildContext context) {
-    return TDBottomTabBar(
-      TDBottomTabBarBasicType.text,
-      componentType: TDBottomTabBarComponentType.normal,
-      useVerticalDivider: true,
-      navigationTabs: [
-        TDBottomTabBarTabConfig(
-          badgeConfig: BadgeConfig(
-            showBage: true,
-            tdBadge: const TDBadge(TDBadgeType.redPoint),
-            badgeTopOffset: -2,
-            badgeRightOffset: -10,
-          ),
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签1');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签2');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签2');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签2');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签2');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签2');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签2');
-          },
-        ),
-        TDBottomTabBarTabConfig(
-          tabText: '标签',
-          onTap: () {
-            // onTapTab(context, '标签3');
-          },
-        ),
       ],
     );
   }
@@ -266,15 +201,15 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     );
   }
 
-  Widget getBaziShishen(Lunar luna
+  Widget getBaziShishen(
       ){
     // "十神",ganzhiMap[widget.eightChar.getDayGan()+lunar.getTimeGan()]??"",
     String title="十神";
-    String v1=ganzhiMap[widget.eightChar.getDayGan()+lunar.getTimeGan()]??"";
-    String v2=ganzhiMap[widget.eightChar.getDayGan()+lunar.getDayGan()]??"";
-    String v3=ganzhiMap[widget.eightChar.getDayGan()+lunar.getMonthGan()]??"";
-    String v4=ganzhiMap[widget.eightChar.getDayGan()+lunar.getYearGan()]??"";
-    String v5=ganzhiMap[widget.eightChar.getDayGan()+lunar.getYearGan()]??"";
+    String v1=ganzhiMap[widget.eightChar.getDayGan()+nowLunar.getTimeGan()]??"";
+    String v2=ganzhiMap[widget.eightChar.getDayGan()+nowLunar.getDayGan()]??"";
+    String v3=ganzhiMap[widget.eightChar.getDayGan()+nowLunar.getMonthGan()]??"";
+    String v4=ganzhiMap[widget.eightChar.getDayGan()+nowLunar.getYearGan()]??"";
+    String v5=ganzhiMap[widget.eightChar.getDayGan()+luckyLunar.getYearGan()]??"";
     String bz1=widget.eightChar.getYearShiShenGan();
     String bz2=widget.eightChar.getMonthShiShenGan();
     String bz3=widget.eightChar.getDayShiShenGan();
@@ -406,25 +341,25 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     );
   }
   //神煞
-  Widget getShensa(EightChar eightChar,Lunar lunar,double size,Color color,Map<String,List<dynamic>> ssMap){
+  Widget getShensa(EightChar eightChar,double size,Color color,Map<String,List<dynamic>> ssMap){
     int max=1;
-    List<dynamic> timeSSList = ssMap[lunar.getTimeGan()+lunar.getTimeZhi()]??[];
+    List<dynamic> timeSSList = ssMap[nowLunar.getTimeGan()+nowLunar.getTimeZhi()]??[];
     if(timeSSList.length>max){
       max=timeSSList.length;
     }
-    List<dynamic> daySSList = ssMap[lunar.getDayGan()+lunar.getDayZhi()]??[];
+    List<dynamic> daySSList = ssMap[nowLunar.getDayGan()+nowLunar.getDayZhi()]??[];
     if(daySSList.length>max){
       max=daySSList.length;
     }
-    List<dynamic> monthSSList = ssMap[lunar.getMonthGan()+lunar.getMonthZhi()]??[];
+    List<dynamic> monthSSList = ssMap[nowLunar.getMonthGan()+nowLunar.getMonthZhi()]??[];
     if(monthSSList.length>max){
       max=monthSSList.length;
     }
-    List<dynamic> yearSSList = ssMap[lunar.getYearGan()+lunar.getYearZhi()]??[];
+    List<dynamic> yearSSList = ssMap[nowLunar.getYearGan()+nowLunar.getYearZhi()]??[];
     if(yearSSList.length>max){
       max=yearSSList.length;
     }
-    List<dynamic> luckySSList = ssMap[lunar.getYearGan()+lunar.getYearZhi()]??[];
+    List<dynamic> luckySSList = ssMap[luckyLunar.getYearGan()+luckyLunar.getYearZhi()]??[];
     if(luckySSList.length>max){
       max=luckySSList.length;
     }
@@ -462,7 +397,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child: Column(
             children: <Widget>[
               for(var shensa in timeSSList)
-                  getBzText(shensa.toString(),size,color),
+                getBzText(shensa.toString(),size,color),
             ],
           ),
         ),
@@ -576,81 +511,68 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     return   Row(
       children: <Widget>[
         Expanded(
+          flex: 1,
           child: Column(
             children: <Widget>[
               getSmallTitle("鸿运"),
             ],
           ),
         ),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
+        Expanded(
+          flex: 21,
+          child: Row(
+            children: <Widget>[
+              for(int i=0;i<bigLuckyList.length;i++)
+               getBigLuckyCell(bigLuckyList[i],i),
+
+            ],
+          ),
         ),
-        getBigLuckyCell(bigLuckyList[0]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[1]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[2]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[4]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[5]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[6]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[7]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[8]),
-        SizedBox(
-          height: hight, // 使用 double.infinity
-          child: VerticalDivider(),
-        ),
-        getBigLuckyCell(bigLuckyList[9]),
       ],
     );
 
   }
 
-  Widget getBigLuckyCell(LuckyYearModel lcky) {
+  Widget getBigLuckyCell(LuckyYearModel lcky,int number) {
+    Border border = Border(
+      left: BorderSide(
+          width: 1.0,
+          color: Colors.black
+      ), // 左边框宽度和颜色
+    );
     return Expanded(
       child: GestureDetector(
         onTap: () {
+          setState(() {
+            luckDaYunIndex=number;
+            currentYear=lcky.year!;
+            currentMonth=1;
+            currentDay=1;
+            currentHour=0;
+            nowLunar = Solar.fromYmdHms(currentYear,currentMonth,currentDay,currentHour,11,11).getLunar();
+            luckyLunar = Solar.fromYmdHms(currentYear,1,1,1,00,11).getLunar();
+          });
           // 处理点击事件
         },
         child: Container(
-          color: Colors.grey.withOpacity(0.1), // 设置背景颜色
+          decoration: BoxDecoration(
+            color: number == luckDaYunIndex ? Colors.black12 : Colors.white, // 设置背景颜色
+            border: border, // 应用左边框样式
+          ),
+          // color: Colors.grey.withOpacity(0.1), // 设置背景颜色
           child: Column(
             children: <Widget>[
-              getBzText(lcky.year ?? "", 9, Colors.black),
-              getBzText(lcky.age ?? "", 10, Colors.black),
+              getBzText(lcky.year!.toString(), 9, Colors.black),
+              getBzText(lcky.age.toString()+"岁" ?? "", 10, Colors.black),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   getBzText(lcky.gan ?? "", 12, Colors.black),
                   getBzText(lcky.ganShishenIntro ?? "", 8, Colors.orange),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   getBzText(lcky.zhi ?? "", 12, Colors.black),
                   getBzText(lcky.zhiShishenIntro ?? "", 8, Colors.orange),
@@ -668,10 +590,10 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   Widget getNowYear(DaYun daYun,double size,Color color){
     int max=4;
     double hight=max*10+30;
-   List<LuckyYearModel> nowBigLuckyList=[];
+    List<LuckyYearModel> nowBigLuckyList=[];
     for(var year in daYun.getLiuNian()){
       LuckyYearModel luckyYear=LuckyYearModel();
-      luckyYear.year=year.getYear().toString();
+      luckyYear.year=year.getYear();
       String ganzhi=year.getGanZhi();
       luckyYear.gan = ganzhi[0];
       luckyYear.zhi = ganzhi[1];
@@ -698,8 +620,8 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           flex: 21,
           child: Row(
             children: <Widget>[
-              for(var nowBigLucky in nowBigLuckyList)
-              getNowYearCell(nowBigLucky),
+              for(var i=0;i<nowBigLuckyList.length;i++)
+                getNowYearCell(nowBigLuckyList[i],i),
             ],
           ),
         ),
@@ -708,7 +630,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
 
   }
 
-  Widget getNowYearCell(LuckyYearModel lcky) {
+  Widget getNowYearCell(LuckyYearModel lcky,int number) {
     Border border = Border(
       left: BorderSide(
           width: 1.0,
@@ -719,22 +641,32 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       child: GestureDetector(
         onTap: () {
           // 处理点击事件
+          setState(() {
+            currentYear=lcky.year!;
+            currentMonth=1;
+            currentDay=1;
+            currentHour=0;
+            nowLunar = Solar.fromYmdHms(currentYear,currentMonth,currentDay,currentHour,11,11).getLunar();
+          });
         },
         child: Container(
           decoration: BoxDecoration(
+            color: lcky.year! == currentYear ? Colors.black12 : Colors.white, // 设置背景颜色
             border: border, // 应用左边框样式
           ),
           // color: Colors.grey.withOpacity(0.1), // 设置背景颜色
           child: Column(
             children: <Widget>[
-              getBzText(lcky.year ?? "", 9, Colors.black),
+              getBzText(lcky.year!.toString(), 9, Colors.black),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   getBzText(lcky.gan ?? "", 12, Colors.black),
                   getBzText(lcky.ganShishenIntro ?? "", 8, Colors.orange),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   getBzText(lcky.zhi ?? "", 12, Colors.black),
                   getBzText(lcky.zhiShishenIntro ?? "", 8, Colors.orange),
@@ -760,7 +692,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       Solar d = Solar.fromYmd(year,i,1);
       Lunar l = d.getLunar();
       LuckyDateModel luckyDate=new LuckyDateModel();
-      luckyDate.date=i.toString();
+      luckyDate.date=i;
       // luckyDate.solarTermsDay=
       luckyDate.gan=l.getMonthGan();
       luckyDate.zhi=l.getMonthZhi();
@@ -830,9 +762,16 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       child: GestureDetector(
         onTap: () {
           // 处理点击事件
+          setState(() {
+            currentMonth=luckyModel.date!;
+            currentDay=1;
+            currentHour=0;
+            nowLunar = Solar.fromYmdHms(currentYear,currentMonth,currentDay,currentHour,11,11).getLunar();
+          });
         },
         child: Container(
           decoration: BoxDecoration(
+            color: luckyModel.date! == currentMonth ? Colors.black12 : Colors.white, // 设置背景颜色
             border: border, // 应用左边框样式
           ),
           // color: Colors.grey.withOpacity(0.1), // 设置背景颜色
@@ -849,7 +788,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       ),
     );
   }
-  //流月
+  //流日
   Widget getNowDay(int year,int month,int day,double size,Color color){
     int max=5;
     double hight=max*15+50;
@@ -859,7 +798,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       Solar d = Solar.fromYmd(year,month,i+1);
       Lunar l = d.getLunar();
       LuckyDateModel luckyDate=new LuckyDateModel();
-      luckyDate.date=(i+1).toString();
+      luckyDate.date=(i+1);
       luckyDate.chinaDay=l.getDayInChinese();
       luckyDate.gan=l.getDayGan();
       luckyDate.zhi=l.getDayZhi();
@@ -887,10 +826,10 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         Expanded(
           flex: 21,
           child: Column(children: <Widget>[
-           Row(children: <Widget>[
-             for(var i=0;i<11;i++)
-               getNowDayCell(LuckyDateList[i],size,color),
-           ],),
+            Row(children: <Widget>[
+              for(var i=0;i<11;i++)
+                getNowDayCell(LuckyDateList[i],size,color),
+            ],),
             Divider(),
             Row(children: <Widget>[
               for(var i=11;i<22;i++)
@@ -901,7 +840,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
               for(var i=22;i<LuckyDateList.length;i++)
                 getNowDayCell(LuckyDateList[i],size,color),
               Expanded(
-                flex: (11-(LuckyDateList.length-22)),
+                  flex: (11-(LuckyDateList.length-22)),
                   child: SizedBox()),
             ],),
           ],),
@@ -924,9 +863,15 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       child: GestureDetector(
         onTap: () {
           // 处理点击事件
+          setState(() {
+            currentDay=luckyModel.date!;
+            currentHour=0;
+            nowLunar = Solar.fromYmdHms(currentYear,currentMonth,currentDay,currentHour,11,11).getLunar();
+          });
         },
         child: Container(
           decoration: BoxDecoration(
+            color: luckyModel.date! == currentDay ? Colors.black12 : Colors.white, // 设置背景颜色
             border: border, // 应用左边框样式
           ),
           padding: EdgeInsets.all(3.0),
@@ -934,13 +879,13 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child:
           // Row(
           //     children: <Widget>[
-                // SizedBox(
-                //   height: 10, // 使用 double.infinity
-                //   child: VerticalDivider(),
-                // ),
-            Column(
+          // SizedBox(
+          //   height: 10, // 使用 double.infinity
+          //   child: VerticalDivider(),
+          // ),
+          Column(
             children: <Widget>[
-              getBzText(luckyModel.date??"", size, color),
+              getBzText(luckyModel.date!.toString(), size, color),
               getBzText(luckyModel.chinaDay??"", size, color),
               getBzText(luckyModel.gan??"", size, color),
               getBzText(luckyModel.zhi??"", size, color),
@@ -954,7 +899,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     );
   }
 
-  //流月
+  //流时
   Widget getNowHour(int year,int month,int day,int hour,double size,Color color){
     int max=4;
     double hight=max*10+50;
@@ -962,10 +907,17 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     Solar d = Solar.fromYmd(year,month,day);
     Lunar l = d.getLunar();
     List<LunarTime> timeList= l.getTimes();
-    for(var time in timeList){
-
+    int hourStart=1;
+    for(int i=0;i<timeList.length;i++ ){
+      var time = timeList[i];
       LuckyDateModel luckyDate=new LuckyDateModel();
-      luckyDate.date=time.getMinHm();
+      if(i == 0 || i == 1) {
+        luckyDate.date = i;
+      }else{
+        hourStart=hourStart+2;
+        luckyDate.date = hourStart;
+      }
+      luckyDate.chinaDay=time.getMinHm();
       luckyDate.gan=time.getGan();
       luckyDate.zhi=time.getZhi();
       String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+luckyDate.gan!]??"";
@@ -1004,12 +956,17 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       child: GestureDetector(
         onTap: () {
           // 处理点击事件
+          setState(() {
+            currentHour=luckyModel.date!;
+            nowLunar = Solar.fromYmdHms(currentYear,currentMonth,currentDay,currentHour,11,11).getLunar();
+          });
         },
         child: Container(
-          color: Colors.grey.withOpacity(0.1), // 设置背景颜色
+          color: luckyModel.date == currentHour ? Colors.black12 : Colors.white, // 设置背景颜色
+          // color: Colors.grey.withOpacity(0.1), // 设置背景颜色
           child: Column(
             children: <Widget>[
-              getBzText(luckyModel.date??"", size, color),
+              getBzText(luckyModel.chinaDay??"", size, color),
               getBzText(luckyModel.gan??"", size, color),
               getBzText(luckyModel.zhi??"", size, color),
               getBzText((luckyModel.ganShishenIntro??"")+(luckyModel.zhiShishenIntro??""), size, color),
@@ -1024,7 +981,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   Widget getAllYear(List<DaYun> daYun,double size,Color color){
     int max=10;
     double hight=max*15+50;
-
     return   Row(
       children: <Widget>[
         Expanded(
@@ -1040,22 +996,12 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
               ],
             ),),
         ),
-        // Expanded(
-        //   flex: 1,
-        //   child: Column(
-        //     children: <Widget>[
-        //       MongolText("流年"),
-        //       getSmallTitle("小运"),
-        //     ],
-        //   ),
-        // ),
         Expanded(
           flex: 21,
           child: Row(
             children: <Widget>[
               for(var dayun in daYun)
                 getAllYearCell(dayun,12,Colors.black87),
-
             ],
           ),
         ),
@@ -1075,6 +1021,9 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       child: GestureDetector(
         onTap: () {
           // 处理点击事件
+          // setState(() {
+          //
+          // });
         },
         child: Container(
           height: 210, // 设置固定高度为150
@@ -1083,10 +1032,27 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           ),
           // color: Colors.grey.withOpacity(0.1), // 设置背景颜色
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // 将内容垂直居中
             children: <Widget>[
               getBzText(daYun.getStartYear().toString(), size, color),
               for(var yunYear in daYun.getLiuNian())
-                getBzText(yunYear.getGanZhi(), size, color),
+                GestureDetector(
+                    onTap: () {
+                      // 处理点击事件
+                      setState(() {
+                        currentYear=yunYear.getYear();
+                        currentMonth=1;
+                        currentDay=1;
+                        currentHour=0;
+                        nowLunar = Solar.fromYmdHms(currentYear,currentMonth,currentDay,currentHour,11,11).getLunar();
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: yunYear.getYear() == currentYear ? Colors.black12 : Colors.white, // 设置背景颜色
+                      ),
+                      child: getBzText(yunYear.getGanZhi(), size, color),
+                    )),
               getBzText(daYun.getEndYear().toString(), size, color),
             ],
           ),
@@ -1096,22 +1062,17 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   }
 
   //藏干
-  Widget getZgan(Lunar lunar){
+  Widget getZgan(){
     //流时
-    String lsTg="";
-    String lsDz=lunar.getTimeZhi();
+    String lsDz=nowLunar.getTimeZhi();
     //流日
-    String lrTg="";
-    String lrDz=lunar.getDayZhi();
+    String lrDz=nowLunar.getDayZhi();
     //流月
-    String lyTg="";
-    String lyDz=lunar.getMonthZhi();
+    String lyDz=nowLunar.getMonthZhi();
     //流年
-    String lnTg="";
-    String lnDz=lunar.getYearZhi();
+    String lnDz=nowLunar.getYearZhi();
     //大运
-    String dyTg="";
-    String dyDz=lunar.getYearZhi();
+    String dyDz=luckyLunar.getYearZhi();
 
     return   Row(
       children: <Widget>[
@@ -1186,22 +1147,26 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           ),
         ),
         Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[lnDz]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-               Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[lnDz]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
+          flex: 1,
+          child: Container(
+            height: 70, // 设置固定高度为150
+            color: Colors.black12, // 设置背景颜色
+            child: Column(
+              children: <Widget>[
+                for(var gan in dizhiMap[lnDz]!)
+                  Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text.rich(
+                    TextSpan(
+                      style: TextStyle(fontSize: 11, color: Colors.black),
+                      children: [
+                        for(var gan in dizhiMap[lnDz]!)
+                          TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
+                      ],
+                    )
+                ),
+              ],
+            ),
+          ),),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -1224,22 +1189,26 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child: VerticalDivider(),
         ),
         Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
+          flex: 1,
+          child: Container(
+            height: 70, // 设置固定高度为150
+            color: Colors.black12, // 设置背景颜色
+            child:  Column(
+              children: <Widget>[
+                for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
+                  Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text.rich(
+                    TextSpan(
+                      style: TextStyle(fontSize: 11, color: Colors.black),
+                      children: [
+                        for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
+                          TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
+                      ],
+                    )
+                ),
+              ],
+            ),
+          ),),
         Expanded(
           child: Column(
             children: <Widget>[
@@ -1258,21 +1227,28 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           ),
         ),
         Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
+          flex: 1,
+          child: Container(
+            height: 70, // 设置固定高度为150
+            color: Colors.black12, // 设置背景颜色
+            child: Expanded(
+              child: Column(
+                children: <Widget>[
+                  for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
+                    Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                  Text.rich(
+                      TextSpan(
+                        style: TextStyle(fontSize: 11, color: Colors.black),
+                        children: [
+                          for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
+                            TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
+                        ],
+                      )
+                  ),
+                ],
 
+              ),
+            ),
           ),),
         Expanded(
           child: Column(
@@ -1294,340 +1270,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       ],
     );
 
-  }
-
-  Widget getTb(){
-    return Expanded(child: ListView(
-      children: [
-        // 数据行
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('30'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('30'),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('30'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('30'),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('30'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('John Doe'),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(color: Colors.black, width: 1),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('30'),
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        // 可以继续添加更多数据行...
-      ],
-    ),);
   }
 
   Widget getSmallTitle(String title){

@@ -32,29 +32,9 @@ class SplayedFigureDetailScreen extends StatefulWidget {
 class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  with TickerProviderStateMixin {
 
   SplayedFigureModel? splayedFigureModel;
-  // bool isRefreshing = false; // 用于表示是否正在刷新数据
-  // GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey<RefreshIndicatorState>();
-  // Lunar lunar = Lunar.fromDate(DateTime.now());
   late final TabController _tabController;
-  // //获取当前年
-  // DateTime now = DateTime.now();
-  // int currentYear =DateTime.now().year ;
 
   EightChar? eightChar;
-  // int luckDaYunIndex=-1;
-  // int luckYearIndex=-1;
-  // List<DaYun> daYunList=[];
-
-  //八字
-  // Map<String, String>? bzMap;
-  //星运
-  // Map<String, String> xyMap={};
-  // List<LuckyYearModel> bigLuckyList=[];
-  //
-  // //自座
-  // Map<String, String> zzMap= {};
-  // //神煞
-  // Map<String, List<dynamic>> ssMap= {};
   // 创建日期格式化器
   RegExp regExp = RegExp(r'\d+');
 
@@ -85,34 +65,6 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
     }
     setState(() {
       eightChar = birthLunar.getEightChar();
-      // Yun yun = eightChar!.getYun(sex);
-      // daYunList=yun.getDaYun();
-      // for(var daYun in daYunList){
-      //   LuckyYearModel luckyYear=LuckyYearModel();
-      //   if( daYun.getStartYear() <= currentYear && currentYear <= daYun.getEndYear() ){
-      //     luckDaYunIndex=daYun.getIndex();
-      //     // luckyYearMonth(daYun,currentYear);
-      //   }
-      //   luckyYear.year=daYun.getStartYear().toString();
-      //   luckyYear.age=daYun.getStartAge().toString();
-      //   if(0==daYun.getIndex()) {
-      //     Lunar yartLunar = daYun.getLunar();
-      //     luckyYear.gan = yartLunar.getGan();
-      //     luckyYear.zhi = yartLunar.getZhi();
-      //   }else{
-      //     String ganzhi=daYun.getGanZhi();
-      //     luckyYear.gan = ganzhi[0];
-      //     luckyYear.zhi = ganzhi[1];
-      //   }
-      //   String tianganShishen=ganzhiMap[eightChar!.getDayGan()+lunar.getGan()]??"";
-      //   luckyYear.ganShishenIntro=tenGods[tianganShishen];
-      //   var oneZG=dizhiMap[luckyYear.zhi]![0];
-      //   var dizhiShishen= ganzhiMap[eightChar!.getDayGan()+oneZG]??"";
-      //   luckyYear.zhiShishenIntro=tenGods[dizhiShishen];
-      //   luckyYear.twelveGod=twelveGods[eightChar!.getDayGan()+luckyYear.zhi!];
-      //   luckyYear.number=daYun.getIndex();
-      //   bigLuckyList.add(luckyYear);
-      // }
     });
   }
   Future<void> _refreshApiData() async {

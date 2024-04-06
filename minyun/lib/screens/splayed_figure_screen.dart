@@ -1,4 +1,5 @@
 
+import 'package:bruno/bruno.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -178,7 +179,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
               //排盘方式
               buildQipan(),
               _selectedQipanValue ==5 ? buildBirth(context) : buildXiala(),
-              buildTime(context),
+              //buildTime(context),
               buildSex(),
               //真太阳时
               if (_selectedPaipanValue ==2)
@@ -201,6 +202,16 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                 onTap: (){
                   SplayedFigureFindModel sera=new SplayedFigureFindModel();
                   sera.name=_nameController.text;
+                  if (sera.name == null || sera.name!.isEmpty) {
+                    BrnDialogManager.showSingleButtonDialog(context,
+                        label: "确定",
+                        title: '信息',
+                        warning: '请输入命主姓名', onTap: () {
+                          // BrnToast.show('知道了', context);
+                        });
+                    return;
+                  }
+
                   sera.dateType=_selectedQipanValue;
                   if(_selectedQipanValue == 4){
                     sera.ng = _selectedYearValue;
@@ -225,15 +236,25 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                           .hour}时${sera.minute}分";
                     }
                   }
-                  sera.sex=_selectedSexValue;
-                  sera.paipanFs=_selectedPaipanValue;
+                  sera.sex = _selectedSexValue;
+                  sera.paipanFs = _selectedPaipanValue;
                   //是否专业排盘
                   if(_selectedPaipanValue==2) {
+                    sera.ztys=_selectedSunValue;
                     //如果时真太阳时
                     if (_selectedSunValue == 1) {
                       sera.city1 = city1;
                       sera.city2 = city2;
                       sera.city3 = city3;
+                      if (sera.city1 == null || sera.city1!.isEmpty) {
+                        BrnDialogManager.showSingleButtonDialog(context,
+                            label: "确定",
+                            title: '信息',
+                            warning: '请选择地区', onTap: () {
+                              // BrnToast.show('知道了', context);
+                            });
+                        return;
+                      }
                     }
                     sera.sect = _selectedLateValue;
                     sera.siling = _selectedRenyuanValue;
@@ -760,11 +781,11 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
     return Column(
       children: [
         TDInput(
-          leftLabel: '标签文字',
+          leftLabel: '姓名',
           required: true,
           controller: _nameController,
           backgroundColor: Colors.white,
-          hintText: '请输入文字',
+          hintText: '请输入姓名',
           onChanged: (text) {
             setState(() {});
           },

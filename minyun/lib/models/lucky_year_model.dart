@@ -1,7 +1,7 @@
 import 'JsonSerializable.dart';
 
 class LuckyYearModel   {
-  String? year;
+  int? year;
   String? age;
   String? gan;
   String? zhi;
