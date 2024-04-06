@@ -1,11 +1,8 @@
-import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lunar/calendar/eightchar/DaYun.dart';
 import 'package:lunar/lunar.dart';
-import 'package:minyun/api/SplayedFigureApi.dart';
 import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
@@ -14,14 +11,13 @@ import 'package:minyun/models/lucky_year_model.dart';
 import 'package:mongol/mongol.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../utils/color.dart';
-import '../utils/common.dart';
-import '../utils/images.dart';
 
 class SplayedFigureDetailPaipanScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
+  final EightChar eightChar;
+
   final SplayedFigureModel splayedFigureModel;
-  SplayedFigureDetailPaipanScreen({required this.search, required this.splayedFigureModel});
+  SplayedFigureDetailPaipanScreen({required this.search,required this.eightChar, required this.splayedFigureModel});
 
   @override
   State<SplayedFigureDetailPaipanScreen> createState() => _SplayedFigureDetailPaipanScreenState();
@@ -29,11 +25,7 @@ class SplayedFigureDetailPaipanScreen extends StatefulWidget {
 
 class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPaipanScreen>  with TickerProviderStateMixin {
 
-  // SplayedFigureModel? splayedFigureModel;
-  // bool isRefreshing = false; // 用于表示是否正在刷新数据
-  // GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey<RefreshIndicatorState>();
   Lunar lunar = Lunar.fromDate(DateTime.now());
-  // late final TabController _tabController;
   //获取当前年
   DateTime now = DateTime.now();
   int currentYear =DateTime.now().year ;
@@ -41,7 +33,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   int currentDay= DateTime.now().day;
   int currentHour= DateTime.now().hour;
 
-  EightChar? eightChar;
   int luckDaYunIndex=-1;
   int luckYearIndex=-1;
   List<DaYun> daYunList=[];
@@ -65,7 +56,6 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   @override
   void initState() {
     super.initState();
-    // _tabController = TabController(length: 3, vsync: this);
     _refreshApiData();
     _refreshSdkData();
   }
@@ -76,22 +66,20 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   }
   Future<void> _refreshSdkData() async {
 // 今日八字甲戌 丁卯 戊申 戊午
-    var birthSolor = Solar.fromYmdHms(widget.search.year!,widget.search.month!,widget.search.day!,widget.search.hour!,widget.search.minute ?? 0,0);
-    var birthLunar = birthSolor.getLunar();
+//     var birthSolor = Solar.fromYmdHms(widget.search.year!,widget.search.month!,widget.search.day!,widget.search.hour!,widget.search.minute ?? 0,0);
+//     var birthLunar = birthSolor.getLunar();
     int sex=1;
     if('0' == widget.search.sex ){
       sex=0;
     }
 
     setState(() {
-      eightChar = birthLunar.getEightChar();
-      Yun yun = eightChar!.getYun(sex);
+      Yun yun = widget.eightChar.getYun(sex);
       daYunList=yun.getDaYun();
       for(var daYun in daYunList){
         LuckyYearModel luckyYear=LuckyYearModel();
         if( daYun.getStartYear() <= currentYear && currentYear <= daYun.getEndYear() ){
           luckDaYunIndex=daYun.getIndex();
-          // luckyYearMonth(daYun,currentYear);
         }
         luckyYear.year=daYun.getStartYear().toString();
         luckyYear.age=daYun.getStartAge().toString();
@@ -104,12 +92,12 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           luckyYear.gan = ganzhi[0];
           luckyYear.zhi = ganzhi[1];
         }
-        String tianganShishen=ganzhiMap[eightChar!.getDayGan()+lunar.getGan()]??"";
+        String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+lunar.getGan()]??"";
         luckyYear.ganShishenIntro=tenGods[tianganShishen];
         var oneZG=dizhiMap[luckyYear.zhi]![0];
-        var dizhiShishen= ganzhiMap[eightChar!.getDayGan()+oneZG]??"";
+        var dizhiShishen= ganzhiMap[widget.eightChar.getDayGan()+oneZG]??"";
         luckyYear.zhiShishenIntro=tenGods[dizhiShishen];
-        luckyYear.twelveGod=twelveGods[eightChar!.getDayGan()+luckyYear.zhi!];
+        luckyYear.twelveGod=twelveGods[widget.eightChar.getDayGan()+luckyYear.zhi!];
         luckyYear.number=daYun.getIndex();
         bigLuckyList.add(luckyYear);
       }
@@ -160,34 +148,34 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       children: [
         nowDate(lunar.getSolar(),lunar),
         getBaziTitle("标注","流时","流日","流月","流年","大运","年柱","月柱","日柱","时柱",10,Colors.black87),
-        getBaziShishen(eightChar!,lunar),
+        getBaziShishen(lunar),
         getBaziTitle("天干",lunar.getTimeGan(),lunar.getDayGan(),lunar.getMonthGan(),lunar.getYearGan(),lunar.getYearGan(),
-            eightChar!.getYearGan(),eightChar!.getMonthGan(), eightChar!.getDayGan(), eightChar!.getTimeGan(),
+            widget.eightChar.getYearGan(),widget.eightChar.getMonthGan(), widget.eightChar.getDayGan(), widget.eightChar.getTimeGan(),
             20,Colors.black87
         ),
         getBaziTitle("地支",lunar.getTimeZhi(),lunar.getDayZhi(),lunar.getMonthZhi(),lunar.getYearZhi(),lunar.getYearZhi(),
-            eightChar!.getYearZhi(),eightChar!.getMonthZhi(), eightChar!.getDayZhi(), eightChar!.getTimeZhi(),
+            widget.eightChar.getYearZhi(),widget.eightChar.getMonthZhi(), widget.eightChar.getDayZhi(), widget.eightChar.getTimeZhi(),
             20,Colors.black87
         ),
-        getZgan(eightChar!,lunar),
+        getZgan(lunar),
         getTable( "星运",xyMap[lunar.getTimeZhi()]??"",xyMap[lunar.getDayZhi()]??"",xyMap[lunar.getMonthZhi()]??"",xyMap[lunar.getYearZhi()]??"",xyMap[lunar.getYearZhi()]??"",
-            xyMap[eightChar!.getYearZhi()]??"",xyMap[eightChar!.getMonthZhi()]??"",xyMap[eightChar!.getDayZhi()]??"",xyMap[eightChar!.getTimeZhi()]??"",
+            xyMap[widget.eightChar.getYearZhi()]??"",xyMap[widget.eightChar.getMonthZhi()]??"",xyMap[widget.eightChar.getDayZhi()]??"",xyMap[widget.eightChar.getTimeZhi()]??"",
             10,Colors.black87
         ),
         getTable( "自坐",zzMap[lunar.getTimeGan()+lunar.getTimeZhi()]??"",zzMap[lunar.getDayGan()+lunar.getDayZhi()]??"",zzMap[lunar.getMonthGan()+lunar.getMonthZhi()]??"",zzMap[lunar.getYearGan()+lunar.getYearZhi()]??"",zzMap[lunar.getYearGan()+lunar.getYearZhi()]??"",
-            zzMap[eightChar!.getYearGan()+eightChar!.getYearZhi()]??"",zzMap[eightChar!.getMonthGan()+eightChar!.getMonthZhi()]??"",zzMap[eightChar!.getDayGan()+eightChar!.getDayZhi()]??"",zzMap[eightChar!.getTimeGan()+eightChar!.getTimeZhi()]??"",
+            zzMap[widget.eightChar.getYearGan()+widget.eightChar.getYearZhi()]??"",zzMap[widget.eightChar.getMonthGan()+widget.eightChar.getMonthZhi()]??"",zzMap[widget.eightChar.getDayGan()+widget.eightChar.getDayZhi()]??"",zzMap[widget.eightChar.getTimeGan()+widget.eightChar.getTimeZhi()]??"",
             10,Colors.black87
         ),
         getTable( "空亡",lunar.getTimeXunKong(),lunar.getDayXunKong(),lunar.getMonthXunKong(),lunar.getYearXunKong(),lunar.getYearXunKong(),
-            eightChar!.getYearXunKong(),eightChar!.getMonthXunKong(),eightChar!.getDayXunKong(),eightChar!.getTimeXunKong(),
+            widget.eightChar.getYearXunKong(),widget.eightChar.getMonthXunKong(),widget.eightChar.getDayXunKong(),widget.eightChar.getTimeXunKong(),
             10,Colors.black87
         ),
         getTableNode( "纳音",lunar.getTimeNaYin(),lunar.getDayNaYin(),lunar.getMonthNaYin(),lunar.getYearNaYin(),lunar.getYearNaYin(),
-            eightChar!.getYearNaYin(),eightChar!.getMonthNaYin(),eightChar!.getDayNaYin(),eightChar!.getTimeNaYin(),
+            widget.eightChar.getYearNaYin(),widget.eightChar.getMonthNaYin(),widget.eightChar.getDayNaYin(),widget.eightChar.getTimeNaYin(),
             10,Colors.black87
         ),
         Divider(),
-        getShensa(eightChar!,lunar,10,Colors.black87,ssMap),
+        getShensa(widget.eightChar,lunar,10,Colors.black87,ssMap),
         Divider(),
         getBigLucky(bigLuckyList,10,Colors.black87),
         Divider(),
@@ -278,19 +266,19 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     );
   }
 
-  Widget getBaziShishen(EightChar eightChar,Lunar luna
+  Widget getBaziShishen(Lunar luna
       ){
-    // "十神",ganzhiMap[eightChar!.getDayGan()+lunar.getTimeGan()]??"",
+    // "十神",ganzhiMap[widget.eightChar.getDayGan()+lunar.getTimeGan()]??"",
     String title="十神";
-    String v1=ganzhiMap[eightChar!.getDayGan()+lunar.getTimeGan()]??"";
-    String v2=ganzhiMap[eightChar!.getDayGan()+lunar.getDayGan()]??"";
-    String v3=ganzhiMap[eightChar!.getDayGan()+lunar.getMonthGan()]??"";
-    String v4=ganzhiMap[eightChar!.getDayGan()+lunar.getYearGan()]??"";
-    String v5=ganzhiMap[eightChar!.getDayGan()+lunar.getYearGan()]??"";
-    String bz1=eightChar.getYearShiShenGan();
-    String bz2=eightChar.getMonthShiShenGan();
-    String bz3=eightChar.getDayShiShenGan();
-    String bz4=eightChar.getTimeShiShenGan();
+    String v1=ganzhiMap[widget.eightChar.getDayGan()+lunar.getTimeGan()]??"";
+    String v2=ganzhiMap[widget.eightChar.getDayGan()+lunar.getDayGan()]??"";
+    String v3=ganzhiMap[widget.eightChar.getDayGan()+lunar.getMonthGan()]??"";
+    String v4=ganzhiMap[widget.eightChar.getDayGan()+lunar.getYearGan()]??"";
+    String v5=ganzhiMap[widget.eightChar.getDayGan()+lunar.getYearGan()]??"";
+    String bz1=widget.eightChar.getYearShiShenGan();
+    String bz2=widget.eightChar.getMonthShiShenGan();
+    String bz3=widget.eightChar.getDayShiShenGan();
+    String bz4=widget.eightChar.getTimeShiShenGan();
     return   Row(
         children: <Widget>[
           Expanded(child: getSmallTitle(title)),
@@ -687,12 +675,12 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       String ganzhi=year.getGanZhi();
       luckyYear.gan = ganzhi[0];
       luckyYear.zhi = ganzhi[1];
-      String tianganShishen=ganzhiMap[eightChar!.getDayGan()+luckyYear.gan!]??"";
+      String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+luckyYear.gan!]??"";
       luckyYear.ganShishenIntro=tenGods[tianganShishen];
       var oneZG=dizhiMap[luckyYear.zhi]![0];
-      var dizhiShishen= ganzhiMap[eightChar!.getDayGan()+oneZG]??"";
+      var dizhiShishen= ganzhiMap[widget.eightChar.getDayGan()+oneZG]??"";
       luckyYear.zhiShishenIntro=tenGods[dizhiShishen];
-      luckyYear.twelveGod=twelveGods[eightChar!.getDayGan()+luckyYear.zhi!];
+      luckyYear.twelveGod=twelveGods[widget.eightChar.getDayGan()+luckyYear.zhi!];
       luckyYear.number=year.getIndex();
       nowBigLuckyList.add(luckyYear);
     }
@@ -776,10 +764,10 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       // luckyDate.solarTermsDay=
       luckyDate.gan=l.getMonthGan();
       luckyDate.zhi=l.getMonthZhi();
-      String tianganShishen=ganzhiMap[eightChar!.getDayGan()+luckyDate.gan!]??"";
+      String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+luckyDate.gan!]??"";
       luckyDate.ganShishenIntro=tenGods[tianganShishen];
       var oneZG=dizhiMap[luckyDate.zhi]![0];
-      var dizhiShishen= ganzhiMap[eightChar!.getDayGan()+oneZG]??"";
+      var dizhiShishen= ganzhiMap[widget.eightChar.getDayGan()+oneZG]??"";
       luckyDate.zhiShishenIntro=tenGods[dizhiShishen];
       LuckyDateList.add(luckyDate);
     }
@@ -873,12 +861,12 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       LuckyDateModel luckyDate=new LuckyDateModel();
       luckyDate.date=(i+1).toString();
       luckyDate.chinaDay=l.getDayInChinese();
-      luckyDate.gan=l.getMonthGan();
-      luckyDate.zhi=l.getMonthZhi();
-      String tianganShishen=ganzhiMap[eightChar!.getDayGan()+luckyDate.gan!]??"";
+      luckyDate.gan=l.getDayGan();
+      luckyDate.zhi=l.getDayZhi();
+      String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+luckyDate.gan!]??"";
       luckyDate.ganShishenIntro=tenGods[tianganShishen];
       var oneZG=dizhiMap[luckyDate.zhi]![0];
-      var dizhiShishen= ganzhiMap[eightChar!.getDayGan()+oneZG]??"";
+      var dizhiShishen= ganzhiMap[widget.eightChar.getDayGan()+oneZG]??"";
       luckyDate.zhiShishenIntro=tenGods[dizhiShishen];
       LuckyDateList.add(luckyDate);
     }
@@ -980,10 +968,10 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
       luckyDate.date=time.getMinHm();
       luckyDate.gan=time.getGan();
       luckyDate.zhi=time.getZhi();
-      String tianganShishen=ganzhiMap[eightChar!.getDayGan()+luckyDate.gan!]??"";
+      String tianganShishen=ganzhiMap[widget.eightChar.getDayGan()+luckyDate.gan!]??"";
       luckyDate.ganShishenIntro=tenGods[tianganShishen];
       var oneZG=dizhiMap[luckyDate.zhi]![0];
-      var dizhiShishen= ganzhiMap[eightChar!.getDayGan()+oneZG]??"";
+      var dizhiShishen= ganzhiMap[widget.eightChar.getDayGan()+oneZG]??"";
       luckyDate.zhiShishenIntro=tenGods[dizhiShishen];
       LuckyDateList.add(luckyDate);
     }
@@ -1108,7 +1096,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
   }
 
   //藏干
-  Widget getZgan(EightChar eightChar,Lunar lunar){
+  Widget getZgan(Lunar lunar){
     //流时
     String lsTg="";
     String lsDz=lunar.getTimeZhi();
@@ -1145,7 +1133,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child: Column(
             children: <Widget>[
               for(var gan in dizhiMap[lsDz]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
@@ -1167,7 +1155,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 for(var gan in dizhiMap[lrDz]!)
-                  Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                  Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
                 Text.rich(
                     TextSpan(
                       style: TextStyle(fontSize: 11, color: Colors.black),
@@ -1184,7 +1172,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child: Column(
             children: <Widget>[
               for(var gan in dizhiMap[lyDz]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
@@ -1201,7 +1189,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child: Column(
             children: <Widget>[
               for(var gan in dizhiMap[lnDz]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
                Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
@@ -1218,7 +1206,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
           child: Column(
             children: <Widget>[
               for(var gan in dizhiMap[dyDz]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
@@ -1238,13 +1226,13 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         Expanded(
           child: Column(
             children: <Widget>[
-              for(var gan in dizhiMap[eightChar.getYearZhi()]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+              for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
                     children: [
-                      for(var gan in dizhiMap[eightChar.getYearZhi()]!)
+                      for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
                         TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
                     ],
                   )
@@ -1255,13 +1243,13 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         Expanded(
           child: Column(
             children: <Widget>[
-              for(var gan in dizhiMap[eightChar.getMonthZhi()]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+              for(var gan in dizhiMap[widget.eightChar.getMonthZhi()]!)
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
                     children: [
-                      for(var gan in dizhiMap[eightChar.getMonthZhi()]!)
+                      for(var gan in dizhiMap[widget.eightChar.getMonthZhi()]!)
                         TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
                     ],
                   )
@@ -1272,13 +1260,13 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         Expanded(
           child: Column(
             children: <Widget>[
-              for(var gan in dizhiMap[eightChar.getDayZhi()]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+              for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
                     children: [
-                      for(var gan in dizhiMap[eightChar.getDayZhi()]!)
+                      for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
                         TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
                     ],
                   )
@@ -1289,13 +1277,13 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
         Expanded(
           child: Column(
             children: <Widget>[
-              for(var gan in dizhiMap[eightChar.getTimeZhi()]!)
-                Text(ganzhiMap[eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
+              for(var gan in dizhiMap[widget.eightChar.getTimeZhi()]!)
+                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
               Text.rich(
                   TextSpan(
                     style: TextStyle(fontSize: 11, color: Colors.black),
                     children: [
-                      for(var gan in dizhiMap[eightChar.getTimeZhi()]!)
+                      for(var gan in dizhiMap[widget.eightChar.getTimeZhi()]!)
                         TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
                     ],
                   )

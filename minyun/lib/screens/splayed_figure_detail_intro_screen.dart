@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:lunar/lunar.dart';
 
@@ -10,10 +7,9 @@ import 'package:minyun/models/SplayedFigureModel.dart';
 
 class SplayedFigureDetailIntroScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
-  final Lunar lunar;
   final SplayedFigureModel splayedFigureModel;
   final EightChar eightChar;
-  SplayedFigureDetailIntroScreen({required this.search,required this.lunar, required this.splayedFigureModel, required this.eightChar});
+  SplayedFigureDetailIntroScreen({required this.search, required this.splayedFigureModel, required this.eightChar});
 
   @override
   State<SplayedFigureDetailIntroScreen> createState() => _SplayedFigureDetailIntroScreenState();
@@ -31,14 +27,11 @@ class _SplayedFigureDetailIntroScreenState extends State<SplayedFigureDetailIntr
   void initState() {
     super.initState();
     _refreshApiData();
-    _refreshSdkData();
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-  Future<void> _refreshSdkData() async {
   }
   Future<void> _refreshApiData() async {
     setState(() {
@@ -69,8 +62,8 @@ class _SplayedFigureDetailIntroScreenState extends State<SplayedFigureDetailIntr
             Expanded(child: getText("生肖",system!.shengxiao??""),),
           ],
         ),
-        getText("农历",system!.sexx??""),
-        getText("阴历",widget.lunar.toString()),
+        getText("公历",chusheng!.gongli??""),
+        getText("阴历",chusheng!.nongli ?? ""),
         getText("出生地区",system!.city??""),
         getText("节气",(chusheng!.cl1 ??"")+" "+(chusheng!.dl1 ??"")+" "+(chusheng!.cl2 ??"")+" "+(chusheng!.dl2 ??"") ),
         getText("物候",(system!.wuHou??"")+" "+(system!.hou??"")),

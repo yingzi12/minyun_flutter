@@ -33,31 +33,38 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   TextEditingController _birthController = TextEditingController();
   final TextEditingController colorController = TextEditingController();
   final TextEditingController iconController = TextEditingController();
-  ColorLabel? selectedColor;
-  IconLabel? selectedIcon;
   String selected_2 = '';
   List<List<String>> data_2 = [];
-  String xz="1";
+  //
+  int _selectedRenyuanValue = 0;
   //起盘方式
-  int _selectedQipanValue=1;
-  //排盘
+  int _selectedQipanValue=5;
+  //排盘 是否专业
   int _selectedPaipanValue=1;
   //晚子时
   int _selectedLateValue=1;
   //真太阳时
   int _selectedSunValue=1;
   //性别
-  int _selectedSexValue=1;
-  //生日
-  int _selectedBirthValue=1;
+  int _selectedSexValue=0;
 
   String birthValue="";
 
   //下拉
-   String _selectedYearValue = '甲子';
+  String _selectedYearValue = '甲子';
   String _selectedMonthValue = '甲子';
   String _selectedDayValue = '甲子';
   String _selectedHourValue = '甲子';
+
+  int _selectedYearDate = 1990;
+  int _selectedMonthDate = 1;
+  int _selectedDayDate = 1;
+  int _selectedHourDate = 1;
+  int _selectedMinuteDate=0;
+
+  String city1 = '';
+  String city2 = '';
+  String city3 = '';
 
   /// 日期
   String? time = '1995-11-8 12:12';
@@ -116,6 +123,12 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
         setState(() {
           this.time =
           "${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
+          _selectedYearDate = time.year;
+          _selectedMonthDate = time.month;
+          _selectedDayDate = time.day;
+          _selectedHourDate = time.hour;
+          _selectedMinuteDate = time.minute;
+
           _birthController.text="${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
           // DateTime dateTime = formatter.parse(time.toString());
           //isLunar=
@@ -164,7 +177,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
               _basicTypeRequire(context),
               //排盘方式
               buildQipan(),
-              _selectedQipanValue ==1 ? buildBirth(context) : buildXiala(),
+              _selectedQipanValue ==5 ? buildBirth(context) : buildXiala(),
               buildTime(context),
               buildSex(),
               //真太阳时
@@ -187,11 +200,44 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                 theme: TDButtonTheme.defaultTheme,
                 onTap: (){
                   SplayedFigureFindModel sera=new SplayedFigureFindModel();
-                  sera.year=1994;
-                  sera.month=3;
-                  sera.day=23;
-                  sera.hour=11;
-                  sera.minute=11;
+                  sera.name=_nameController.text;
+                  sera.dateType=_selectedQipanValue;
+                  if(_selectedQipanValue == 4){
+                    sera.ng = _selectedYearValue;
+                    sera.yg = _selectedMonthValue;
+                    sera.rg = _selectedDayValue;
+                    sera.sg = _selectedHourValue;
+                  }
+                  //日期排盘
+                  if(_selectedQipanValue == 5){
+                    sera.year=_selectedYearDate;
+                    sera.month=_selectedMonthDate;
+                    sera.day=_selectedDayDate;
+                    sera.hour=_selectedHourDate;
+                    sera.minute=_selectedMinuteDate;
+                    if(10 > _selectedMinuteDate) {
+                      sera.inputdate =
+                      "公历${sera.year}年${sera.month}月${sera.day}日 0${sera
+                          .hour}时${sera.minute}分";
+                    }else{
+                      sera.inputdate =
+                      "公历${sera.year}年${sera.month}月${sera.day}日 ${sera
+                          .hour}时${sera.minute}分";
+                    }
+                  }
+                  sera.sex=_selectedSexValue;
+                  sera.paipanFs=_selectedPaipanValue;
+                  //是否专业排盘
+                  if(_selectedPaipanValue==2) {
+                    //如果时真太阳时
+                    if (_selectedSunValue == 1) {
+                      sera.city1 = city1;
+                      sera.city2 = city2;
+                      sera.city3 = city3;
+                    }
+                    sera.sect = _selectedLateValue;
+                    sera.siling = _selectedRenyuanValue;
+                  }
 
                   SplayedFigureDetailScreen(search: sera,).launch(context);
                 }
@@ -225,7 +271,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                 children: [
                   Expanded(
                     child: RadioListTile(
-                      value: 1,
+                      value: 5,
                       groupValue: _selectedQipanValue,
                       contentPadding: EdgeInsets.zero,
                       title: Text('日期排盘'),
@@ -238,7 +284,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                   ),
                   Expanded(
                     child: RadioListTile(
-                      value: 2,
+                      value: 4,
                       groupValue: _selectedQipanValue,
                       contentPadding: EdgeInsets.zero,
                       title: Text('八字反推'),
@@ -382,7 +428,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
               children: [
                 Expanded(
                   child: RadioListTile(
-                    value: 1,
+                    value: 0,
                     groupValue: _selectedSexValue,
                     contentPadding: EdgeInsets.zero,
                     title: Text('男'),
@@ -395,7 +441,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                 ),
                 Expanded(
                   child: RadioListTile(
-                    value: 2,
+                    value: 1,
                     groupValue: _selectedSexValue,
                     contentPadding: EdgeInsets.zero,
                     title: Text('女'),
@@ -466,58 +512,6 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
     );
   }
 
-  //横
-  Widget buildRadioCross(){
-    return Row(
-      children: [
-        SizedBox(
-          // flex: 3,
-          child:
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Text("出生时间：",
-              // style: boldTextStyle(fontSize: 18)
-            ),
-          ),
-        ),
-        Expanded(
-          // flex: 9,
-          child:  Center(
-            child:
-            Row(
-              children: [
-                Expanded(
-                  child: RadioListTile(
-                    value: 1,
-                    groupValue: _selectedBirthValue,
-                    title: Text('选项一'),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedBirthValue = value as int;
-                      });
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: RadioListTile(
-                    value: 2,
-                    groupValue: _selectedBirthValue,
-                    title: Text('选项二'),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedBirthValue = value as int;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            )
-          ),
-        ),
-      ],
-    );
-  }
-
   //人元司令
   Widget buildRenyuan(){
     return Row(
@@ -537,63 +531,63 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
               spacing: 8.0, // 子组件之间的间距
               runSpacing: 4.0, // 换行之间的间距
               children: <Widget>[
-                RadioListTile<String>(
+                RadioListTile<int>(
                   title: const Text('子平真诠'),
-                  value: "1",
-                  groupValue: xz,
+                  value: 0,
+                  groupValue: _selectedRenyuanValue,
                   onChanged: ( value) {
                     setState(() {
-                      xz = value!;
+                      _selectedRenyuanValue = value as int;
                     });
                   },
                 ),
-                RadioListTile<String>(
+                RadioListTile<int>(
                   title: const Text('三命通会'),
-                  value: "2",
-                  groupValue: xz,
+                  value: 1,
+                  groupValue: _selectedRenyuanValue,
                   onChanged: ( value) {
                     setState(() {
-                      xz = value!;
+                      _selectedRenyuanValue = value  as int;
                     });
                   },
                 ),
-                RadioListTile<String>(
+                RadioListTile<int>(
                   title: const Text('渊海子平'),
-                  value: "3",
-                  groupValue: xz,
+                  value: 2,
+                  groupValue: _selectedRenyuanValue,
                   onChanged: (value) {
                     setState(() {
-                      xz = value!;
+                      _selectedRenyuanValue = value  as int;
                     });
                   },
                 ),
-                RadioListTile<String>(
+                RadioListTile<int>(
                   title: const Text('神峰通考'),
-                  value: "4",
-                  groupValue: xz,
+                  value: 3,
+                  groupValue: _selectedRenyuanValue,
                   onChanged: (value) {
                     setState(() {
-                      xz = value!;
+                      _selectedRenyuanValue = value  as int;
                     });
                   },
                 ),
-                RadioListTile<String>(
+                RadioListTile<int>(
                   title: const Text('星平会海'),
-                  value: "5",
-                  groupValue: xz,
+                  value: 4,
+                  groupValue: _selectedRenyuanValue,
                   onChanged: (value) {
                     setState(() {
-                      xz = value!;
+                      _selectedRenyuanValue = value  as int;
                     });
                   },
                 ),
-                RadioListTile<String>(
+                RadioListTile<int>(
                   title: const Text('万育吾之法诀'),
-                  value: "6",
-                  groupValue: xz,
+                  value: 5,
+                  groupValue: _selectedRenyuanValue,
                   onChanged: (value) {
                     setState(() {
-                      xz = value!;
+                      _selectedRenyuanValue = value as int;
                     });
                   },
                 ),
@@ -880,6 +874,10 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
             onConfirm: (selected) {
               setState(() {
                 selected_3 = '${selected[0]} ${selected[1]} ${selected[2]}';
+                city1=selected[0];
+                city2=selected[1];
+                city3=selected[2];
+
               });
               Navigator.of(context).pop();
             },
@@ -890,30 +888,4 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
       child: buildSelectRow(context, selected_3, '选择地区'),
     );
   }
-}
-enum ColorLabel {
-  blue('测试1', Colors.blue),
-  pink('测试2', Colors.pink),
-  green('测试3', Colors.green),
-  yellow('测试4', Colors.orange),
-  grey('测试5', Colors.grey);
-
-  const ColorLabel(this.label, this.color);
-  final String label;
-  final Color color;
-}
-
-// DropdownMenuEntry labels and values for the second dropdown menu.
-enum IconLabel {
-  smile('Smile', Icons.sentiment_satisfied_outlined),
-  cloud(
-    'Cloud',
-    Icons.cloud_outlined,
-  ),
-  brush('Brush', Icons.brush_outlined),
-  heart('Heart', Icons.favorite);
-
-  const IconLabel(this.label, this.icon);
-  final String label;
-  final IconData icon;
 }

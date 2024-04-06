@@ -30,7 +30,6 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
   @override
   void initState() {
     super.initState();
-    // _refreshApiData();
     _refreshSdkData();
   }
 
@@ -42,12 +41,6 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
 
   }
 
-
-  // Future<void> _refreshApiData() async {
-  //   Fx fx=widget.fx!;
-  //
-  //
-  // }
 
   //获取指定月的天数
   int getDaysInMonth(int year, int month) {
