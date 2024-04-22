@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lunar/calendar/Lunar.dart';
 import 'package:lunar/calendar/Solar.dart';
 import 'package:minyun/api/CalendarApi.dart';
@@ -25,8 +26,19 @@ class LuckyDayScreen extends StatefulWidget {
 }
 
 class _LuckyDayScreenState extends State<LuckyDayScreen> {
-  List<String> timelyList = [];
+  // List<String>  timelyList = ["祭祀","祈福","求嗣","开光","塑绘","齐醮","斋醮","沐浴","酬神","造庙",
+  //   "祀灶","焚香","谢土","出火","雕刻","嫁娶","订婚","纳采","问名","纳婿","归宁","安床","合帐","冠笄",
+  //   "订盟","进人口","裁衣","挽面","开容","修坟","启钻","破土","安葬","立碑",
+  //   "成服","除服","开生坟","合寿木","入殓","移柩","普渡","入宅","安香","安门","修造","起基","动土","上梁","竖柱","开井开池",
+  //   "作陂放水","拆卸","破屋","坏垣","补垣","伐木做梁","作灶","解除","开柱眼","穿屏扇架","盖屋合脊","开厕","造仓","塞穴",
+  //   "平治道涂","造桥","作厕","筑堤","开池","伐木","开渠","掘井","扫舍","放水","造屋","合脊","造畜稠","修门","定磉","作梁",
+  //   "修饰垣墙","架马","开市","挂匾","纳财","求财","开仓","买车","置产","雇庸","出货财","安机械","造车器","经络","酝酿",
+  //   "作染","鼓铸","造船","割蜜","栽种","取渔","结网","牧养","安碓磑","习艺","入学","理发","探病","见贵","乘船","渡水",
+  //   "针灸","出行","移徙","分居","剃头","整手足甲","纳畜","捕捉","畋猎","教牛马","会亲友","赴任","求医","治病","词讼","起基动土",
+  //   "破屋坏垣","盖屋","造仓库","立券交易","交易","立券","安机","会友","求医疗病","诸事不宜","馀事勿取","行丧","断蚁","归岫"];
+  List<String>  timelyList = ["祭祀","祈福","置产","嫁娶","订婚","纳采","动土","安葬","进人口","开市","求医","治病","买车","出行","移徙","分居","交易",];
   String dropdownValue ="";
+  DateFormat formatter = new DateFormat('yyyy-MM-dd'); // Define your desired format
 
   /// 日期
   String format="yyyy-MM-dd";
@@ -35,13 +47,16 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
   List<CalendarModel> calendarList=[];
   //是否有数据
   bool isDate = false;
-  String startDate="";
-  String endDate="";
+  String startDate="1990-01-01";
+  String endDate="1990-01-01";
 
   @override
   void initState() {
     super.initState();
-    _refreshApiData();
+    Solar solar = Solar.fromDate(DateTime.now());
+    String startDate = solar.toString();
+    String endDate  = solar.nextMonth(3).toString();
+    _refreshApiData(widget.search, startDate,endDate);
     // _refreshSdkData();
   }
 
@@ -50,20 +65,17 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
     super.dispose();
   }
 
-  Future<void> _refreshApiData() async {
+  Future<void> _refreshApiData(String timely,String start,String end) async {
     // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
-    Solar solar = Solar.fromDate(DateTime.now());
-    timelyList = timelyMap.keys.toList() ;
-
     Map<String, String> queryParams=new HashMap();
-    queryParams["timely"]=widget.search;
-    queryParams["startDate"]=solar.toString();
-    queryParams["endDate"]=solar.nextMonth(3).toString();
+    queryParams["timely"] = timely;
+    queryParams["startDate"] = start;
+    queryParams["endDate"] = end;
     ResultListModel<CalendarModel> resultModel = await CalendarApi.getList(queryParams);
     setState(() {
-      dropdownValue = widget.search;
-      startDate=solar.toString();
-      endDate=solar.nextMonth(3).toString();
+      dropdownValue = timely;
+      startDate=start;
+      endDate=end;
       if(resultModel.code! == 200) {
         calendarList = resultModel.data!;
         if(calendarList.length >0) {
@@ -79,6 +91,8 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
       }
     });
   }
+
+
 
 
   @override
@@ -136,12 +150,12 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                                 Row(
                                   children: [
                                     Text(solar.toYmd(), style: TextStyle(fontSize:   20,color: Colors.black)),
-                                    CircleBackgroundText(lunar.getDayTianShen(),lunar.getDayTianShenLuck() == '吉'?Colors.yellow :Colors.red,30),
+                                    CircleBackgroundText(lunar.getDayTianShenLuck(),lunar.getDayTianShenLuck() == '吉'?Colors.yellow :Colors.red,30),
                                   ],
                                 ),
                                 Text( "${lunar.getDayShengXiao()}日冲${lunar.getDayChongShengXiao()}煞${lunar.getDaySha()}", style: TextStyle(fontSize:   14,color: Colors.black45)),
                                 Text("财神${lunar.getDayPositionCaiDesc()} 喜神${lunar.getDayShengXiao()}  福神${lunar.getDayPositionFuDesc()} 阳神${lunar.getDayPositionYangGuiDesc()} 阴神${lunar.getDayPositionYinGuiDesc()}", style: TextStyle(fontSize:   12,color: Colors.black45)),
-                                getYJ(lunar,widget.search),
+                                getYJ(lunar,dropdownValue),
                               ],
                             ),
                           ),
@@ -186,9 +200,14 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                   minuteDivider: 10,
                   pickerTitleConfig: pickerTitleConfig,
                   dateFormat: format,
-                  initialStartDateTime: DateTime(2020, 06, 21, 11, 00, 00),
-                  initialEndDateTime: DateTime(2020, 06, 23, 10, 00, 00),
+                  initialStartDateTime:  formatter.parse(startDate),
+                  initialEndDateTime:  formatter.parse(endDate),
                   onConfirm: (startDateTime, endDateTime, startlist, endlist) {
+                     setState(() {
+                       startDate = formatter.format(startDateTime); // Convert to String representation
+                       endDate = formatter.format(endDateTime); // Convert to String representation
+                       _refreshApiData(dropdownValue, startDate, endDate);
+                     });
                     BrnToast.show(
                         "onConfirm:  $startDateTime   $endDateTime     $startlist     $endlist", context);
                   }, onClose: () {
@@ -196,8 +215,8 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                   }, onCancel: () {
                     print("onCancel");
                   }, onChange: (startDateTime, endDateTime, startlist, endlist) {
-                    BrnToast.show(
-                        "onChange:  $startDateTime   $endDateTime     $startlist     $endlist", context);
+                    // BrnToast.show(
+                    //     "onChange:  $startDateTime   $endDateTime     $startlist     $endlist", context);
                   });
               // 你可以在这里导航到新的页面、显示对话框等
             },
@@ -226,13 +245,14 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                  // Expanded(
                  //   child:
                    DropdownMenu<String>(
-                  initialSelection: timelyList.first,
+                  initialSelection: dropdownValue,
                   width: 100,
                   onSelected: (String? value) {
                     // This is called when the user selects an item.
                     setState(() {
                       dropdownValue = value!;
                     });
+                    _refreshApiData(dropdownValue,startDate,endDate);
                   },
                   dropdownMenuEntries: timelyList.map<DropdownMenuEntry<String>>((String value) {
                     return DropdownMenuEntry<String>(
@@ -254,10 +274,10 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
   }
   Widget getYJ(Lunar lunar,String title){
     List<String> yList = lunar.getDayYi();
-    String y=yList.join(",");
+    // String y=yList.join(",");
     // 忌
     List<String> jList = lunar.getDayJi();
-    String j=jList.join(",");
+    // String j=jList.join(",");
     return Column(
       children: [
         Row(

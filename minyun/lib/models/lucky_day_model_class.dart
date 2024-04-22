@@ -16,13 +16,13 @@ List<LuckyDayModel> luckyDayList = [
       id: 1,
       color: Color(0xFFfff7eb),
       title: "搬家吉日",
-      search:"搬家"
+      search:"移徙"
   ),
   LuckyDayModel(
       id: 2,
       color: Color(0xFFfff7eb),
       title: "装修吉日",
-      search:"装修"
+      search:"塑绘"
 
   ),
   LuckyDayModel(
@@ -33,28 +33,28 @@ List<LuckyDayModel> luckyDayList = [
   LuckyDayModel(
       id: 4,
       color: Color(0xFFfff7eb),
-      title: "订婚吉日",
-      search:"订婚"),
+      title: "嫁娶吉日",
+      search:"嫁娶"),
   LuckyDayModel(
       id: 5,
       color: Color(0xFFfff7eb),
-      title: "结婚吉日",
-      search:"结婚"),
+      title: "订婚吉日",
+      search:"订婚"),
   LuckyDayModel(
       id: 6,
       color: Color(0xFFfff7eb),
-      title: "领证吉日",
-      search:"搬家"),
+      title: "纳采吉日",
+      search:"纳采"),
   LuckyDayModel(
       id: 7,
       color: Color(0xFFfff7eb),
-      title: "剖腹产日",
-      search:"剖腹"),
+      title: "置产产日",
+      search:"置产"),
   LuckyDayModel(
       id: 8,
       color: Color(0xFFfff7eb),
-      title: "开业吉日",
-      search:"开业"),
+      title: "开市吉日",
+      search:"开市"),
   LuckyDayModel(
       id: 8,
       color: Color(0xFFfff7eb),
