@@ -288,7 +288,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                   for(var y in yList)
                     Container(
                       decoration: BoxDecoration(
-                        color: title== j ? Colors.red :Colors.white10,
+                        color: title== y ? Colors.red :Colors.white10,
                       ),
                       child: Text(
                         y,
