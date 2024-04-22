@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
-import 'package:minyun/utils/constant.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 import '../component/AppButton.dart';
 import '../component/text_form_field_label_text.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 import 'bottom_navigation_bar_screen.dart';
 

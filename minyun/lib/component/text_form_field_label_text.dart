@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppCommon.dart';
 
 class TextFormFieldLabelText extends StatelessWidget {
   final String text;

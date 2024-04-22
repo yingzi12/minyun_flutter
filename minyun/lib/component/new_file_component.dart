@@ -6,9 +6,9 @@ import 'package:minyun/component/text_form_field_label_text.dart';
 
 import '../models/dashboard_model_class.dart';
 import '../screens/account_screen.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import '../utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 import 'AppButton.dart';
 
 Future<dynamic> NewFileBottomSheet({required BuildContext context, required File scannedImage}) {

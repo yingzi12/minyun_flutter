@@ -3,15 +3,15 @@ import 'package:minyun/component/rename_bottom_sheet_component.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/merge_pdf_screen.dart';
 import 'package:minyun/screens/protect_pdf_screen.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../models/dashboard_model_class.dart';
 import '../screens/add_digital_signature_screen.dart';
 import '../screens/compress_pdf_screen.dart';
 import '../screens/export_to_screen.dart';
 import '../screens/move_to_folder_screen.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import '../utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 import 'add_watermark_bottom_sheet_component.dart';
 import 'delete_file_bottom_sheet_component.dart';
 

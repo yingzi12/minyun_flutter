@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppCommon.dart';
 
 import '../component/text_form_field_label_text.dart';
 import '../models/prefrance_screen_model.dart';
-import '../utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 import 'account_screen.dart';
 
 class PreferencesScreen extends StatefulWidget {

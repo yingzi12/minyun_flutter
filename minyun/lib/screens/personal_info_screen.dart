@@ -5,11 +5,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppCommon.dart';
 
 import '../component/text_form_field_label_text.dart';
-import '../utils/color.dart';
-import '../utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppContents.dart';
 import '../utils/images.dart';
 import '../utils/lists.dart';
 import 'account_screen.dart';

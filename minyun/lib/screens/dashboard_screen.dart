@@ -12,8 +12,8 @@ import 'package:minyun/models/hour_model_class.dart';
 import 'package:minyun/models/lucky_day_model_class.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/lucky_day_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppContents.dart';
 import 'package:mongol/mongol.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -655,7 +655,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             Text( "喜神："+  lunar.getDayShengXiao()),
             Text( "福神："+  lunar.getDayPositionFuDesc()),
             Text( "阳神："+  lunar.getDayPositionYangGuiDesc()),
-            Text("阴神："+  lunar.getDayPositionYinGuiDesc()),
+            Text( "阴神："+  lunar.getDayPositionYinGuiDesc()),
             Text( "彭祖："+ lunar.getPengZuGan()+" "+lunar.getPengZuZhi()),
           ]
       ),

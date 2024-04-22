@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/account_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 class AppButton extends StatelessWidget {
   final Color? color;

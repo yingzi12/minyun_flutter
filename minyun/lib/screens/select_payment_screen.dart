@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/review_summary_screen.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../models/select_payment_screen_model.dart';
-import '../utils/common.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 import 'add_new_payment_screen.dart';
 

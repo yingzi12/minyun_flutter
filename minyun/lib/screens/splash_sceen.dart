@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:minyun/screens/walkthrough_screen.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppCommon.dart';
 
-import '../utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 import '../utils/images.dart';
 
 class SplashScreen extends StatefulWidget {

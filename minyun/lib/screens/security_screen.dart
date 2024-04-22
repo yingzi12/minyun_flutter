@@ -3,8 +3,8 @@ import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/account_screen.dart';
 
 import '../models/prefrance_screen_model.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import '../utils/AppCommon.dart';
 
 class SecurityScreen extends StatefulWidget {
   const SecurityScreen({Key? key}) : super(key: key);

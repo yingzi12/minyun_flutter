@@ -3,14 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:minyun/main.dart';
-// import 'package:minyun/models/MusicModel.dart';
-// import 'package:minyun/screen/album_screen/AlbumListScreen.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:minyun/utils/AppColors.dart';
-// import 'package:minyun/utils/AppImages.dart';
 
 bool value = true;
 

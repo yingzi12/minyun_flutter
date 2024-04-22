@@ -1,39 +1,85 @@
+import 'dart:collection';
+
 import 'package:bruno/bruno.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_lunar_datetime_picker/date_init.dart';
-import 'package:flutter_lunar_datetime_picker/flutter_lunar_datetime_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:lunar/calendar/Lunar.dart';
-import 'package:lunar/calendar/LunarTime.dart';
 import 'package:lunar/calendar/Solar.dart';
-import 'package:minyun/models/hour_model_class.dart';
+import 'package:minyun/api/CalendarApi.dart';
+import 'package:minyun/constant.dart';
+import 'package:minyun/models/CalendarModel.dart';
+import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
-import '../component/new_folder_bottom_sheet_component.dart';
 
-import '../models/dashboard_model_class.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppContents.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 
 class LuckyDayScreen extends StatefulWidget {
   final String search;
-  LuckyDayScreen({required this.search});
+  LuckyDayScreen({super.key, required this.search});
 
   @override
   State<LuckyDayScreen> createState() => _LuckyDayScreenState();
 }
 
 class _LuckyDayScreenState extends State<LuckyDayScreen> {
+  List<String> timelyList = [];
+  String dropdownValue ="";
 
-  // Lunar lunar = Lunar.fromDate(DateTime.now());
-  // Solar solar = Solar.fromDate(DateTime.now());
   /// 日期
   String format="yyyy-MM-dd";
   /// 是否是农历
   bool isLunar = true;
+  List<CalendarModel> calendarList=[];
+  //是否有数据
+  bool isDate = false;
+  String startDate="";
+  String endDate="";
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshApiData();
+    // _refreshSdkData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _refreshApiData() async {
+    // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
+    Solar solar = Solar.fromDate(DateTime.now());
+    timelyList = timelyMap.keys.toList() ;
+
+    Map<String, String> queryParams=new HashMap();
+    queryParams["timely"]=widget.search;
+    queryParams["startDate"]=solar.toString();
+    queryParams["endDate"]=solar.nextMonth(3).toString();
+    ResultListModel<CalendarModel> resultModel = await CalendarApi.getList(queryParams);
+    setState(() {
+      dropdownValue = widget.search;
+      startDate=solar.toString();
+      endDate=solar.nextMonth(3).toString();
+      if(resultModel.code! == 200) {
+        calendarList = resultModel.data!;
+        if(calendarList.length >0) {
+          isDate = true;
+        }else{
+          calendarList=[];
+          isDate=false;
+        }
+      }else{
+        calendarList=[];
+        isDate=false;
+
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +105,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Text("共 ${recentFilesList.length} 天", style: boldTextStyle(fontSize: 18,color: Colors.black45)),
+                    child: Text("${widget.search} 共 ${calendarList.length} 天", style: boldTextStyle(fontSize: 18,color: Colors.black45)),
                   ),
                   Spacer(),
                 ],
@@ -67,14 +113,14 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
               Expanded(
                 child:
                 ListView.builder(
-                  itemCount: hourList.length,
+                  itemCount: calendarList.length,
                   primary: false,
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   shrinkWrap: true,
                   itemBuilder: (context, int index) {
-                    HourModel hour= hourList[index];
-                    Lunar lunar = Lunar.fromDate(DateTime.now());
-                    LunarTime lunarTime = LunarTime.fromYmdHms(lunar.getYear(), lunar.getMonth(), lunar.getDay(), hour.sj, 30, 0);
+                    CalendarModel calendar= calendarList[index];
+                    Solar solar = Solar.fromYmd(calendar.year!.toInt(),calendar.month!.toInt(),calendar.day!.toInt());
+                    Lunar lunar = solar.getLunar();
                     return Container(
                       margin: EdgeInsets.symmetric(vertical: 8),
                       padding: EdgeInsets.all(16),
@@ -89,13 +135,12 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Text("2012-11-11", style: TextStyle(fontSize:   20,color: Colors.black)),
-                                    CircleBackgroundText(lunarTime.getTianShenLuck(),lunarTime.getTianShenLuck() == '吉'?Colors.yellow :Colors.red,30),
+                                    Text(solar.toYmd(), style: TextStyle(fontSize:   20,color: Colors.black)),
+                                    CircleBackgroundText(lunar.getDayTianShen(),lunar.getDayTianShenLuck() == '吉'?Colors.yellow :Colors.red,30),
                                   ],
                                 ),
-                                // SizedBox(height: 16),
-                                Text("${lunarTime.getMinHm() + '-' + lunarTime.getMaxHm()}  时冲${lunarTime.getChongDesc()} 煞${lunarTime.getSha()}", style: TextStyle(fontSize:   14,color: Colors.black45)),
-                                Text("财神${lunarTime.getPositionCaiDesc()} 喜神${lunarTime.getPositionXiDesc()}  福神${lunarTime.getPositionFuDesc()} 阳神${lunarTime.getPositionYangGuiDesc()} 阴神${lunarTime.getPositionYinGuiDesc()}", style: TextStyle(fontSize:   12,color: Colors.black45)),
+                                Text( "${lunar.getDayShengXiao()}日冲${lunar.getDayChongShengXiao()}煞${lunar.getDaySha()}", style: TextStyle(fontSize:   14,color: Colors.black45)),
+                                Text("财神${lunar.getDayPositionCaiDesc()} 喜神${lunar.getDayShengXiao()}  福神${lunar.getDayPositionFuDesc()} 阳神${lunar.getDayPositionYangGuiDesc()} 阴神${lunar.getDayPositionYinGuiDesc()}", style: TextStyle(fontSize:   12,color: Colors.black45)),
                                 getYJ(lunar,widget.search),
                               ],
                             ),
@@ -132,7 +177,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
           GestureDetector(
             onTap: () {
               // 这里是点击事件发生时调用的代码
-              print('2013-11-11');
+              // print('2013-11-11');
               BrnDateRangePicker.showDatePicker(context,
                   isDismissible: false,
                   minDateTime: DateTime(2010, 06, 01, 00, 00, 00),
@@ -159,7 +204,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center, // 水平居中
               children: [Text(
-              '2024-11-11',
+                startDate,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.blue, // 可以设置文本颜色以指示它是可点击的
@@ -170,14 +215,39 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                 Text("至"),
                 SizedBox(width: 10,),
                 Text(
-                  '2024-11-11',
+                  endDate,
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.blue, // 可以设置文本颜色以指示它是可点击的
                     // decoration: TextDecoration.underline, // 可以添加下划线以指示它是可点击的
                   ),
                 ),
-            ],
+                SizedBox(width: 10,),
+                 // Expanded(
+                 //   child:
+                   DropdownMenu<String>(
+                  initialSelection: timelyList.first,
+                  width: 100,
+                  onSelected: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      dropdownValue = value!;
+                    });
+                  },
+                  dropdownMenuEntries: timelyList.map<DropdownMenuEntry<String>>((String value) {
+                    return DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                        labelWidget: SizedBox(
+                        width: 80, // Set desired width
+                        height: 30, // Set desired height
+                        child: Text(value),
+                      ),
+                    );
+                  }).toList(),
+                ),
+          // ),
+              ],
             ),
           ),
     );

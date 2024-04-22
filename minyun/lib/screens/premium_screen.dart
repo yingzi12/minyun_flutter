@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/select_payment_screen.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 import '../component/AppButton.dart';
 import '../models/premium_screen_model.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 import '../utils/lists.dart';
 

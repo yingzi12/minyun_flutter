@@ -1,1 +1,0 @@
-const DEFAULT_RADIUS = 24.0;

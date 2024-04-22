@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
-import 'package:minyun/utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 import '../models/contact_us_screen_model.dart';
 import 'account_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../utils/images.dart';
 import '../utils/lists.dart';

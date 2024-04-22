@@ -5,12 +5,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
 import 'package:minyun/theme_mode.dart';
-import 'package:minyun/utils/constant.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 import '../component/logout_component.dart';
 import '../models/account_screen_model.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 import '../utils/lists.dart';
 

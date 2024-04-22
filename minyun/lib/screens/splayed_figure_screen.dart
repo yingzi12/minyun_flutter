@@ -9,10 +9,10 @@ import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/screens/splayed_figure_detail_screen.dart';
-import 'package:minyun/utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppContents.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
-import '../utils/color.dart';
 import '../utils/images.dart';
 
 class SplayedFigureScreen extends StatefulWidget {

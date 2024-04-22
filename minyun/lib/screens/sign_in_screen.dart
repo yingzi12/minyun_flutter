@@ -3,11 +3,11 @@ import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
 import 'package:minyun/screens/signin_with_password_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/lists.dart';
 
-import '../utils/constant.dart';
 import '../utils/images.dart';
 import 'bottom_navigation_bar_screen.dart';
 

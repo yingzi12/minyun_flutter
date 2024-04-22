@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/account_screen.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../component/text_form_field_label_text.dart';
-import '../utils/common.dart';
+import '../utils/AppCommon.dart';
 import '../utils/lists.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                             color: mode.theme
                                 ? selectedIndex == index
                                     ? primaryColor
-                                    : scaffoldColor
+                                    : appScaffoldColor
                                 : selectedIndex == index
                                     ? primaryColor
                                     : Colors.white),
@@ -94,7 +94,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                             color: mode.theme
                                 ? selectedIndex == (index + suggestedList.length)
                                     ? primaryColor
-                                    : scaffoldColor
+                                    : appScaffoldColor
                                 : selectedIndex == (index + suggestedList.length)
                                     ? primaryColor
                                     : Colors.white),

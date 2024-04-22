@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/create_new_password_screen.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../component/AppButton.dart';
-import '../utils/common.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 
 class OtpScreen extends StatefulWidget {

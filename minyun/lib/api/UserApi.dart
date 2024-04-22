@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// import 'package:minyun/models/AlbumDiscoverModel.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/SystemInfoModel.dart';
 import 'package:minyun/models/UserModel.dart';

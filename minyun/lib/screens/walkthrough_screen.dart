@@ -3,8 +3,8 @@ import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/models/walkthrough_model.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/sign_in_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalkthroughScreen extends StatefulWidget {

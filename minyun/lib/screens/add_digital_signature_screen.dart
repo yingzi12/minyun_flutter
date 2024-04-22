@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/account_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class AddDigitalSignatureScreen extends StatefulWidget {

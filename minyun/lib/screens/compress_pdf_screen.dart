@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/account_screen.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../component/AppButton.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import '../utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 import '../utils/images.dart';
 
 class CompressPdfScreen extends StatefulWidget {

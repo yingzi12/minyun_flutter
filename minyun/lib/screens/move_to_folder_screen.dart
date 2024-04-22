@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/account_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 
 import '../component/recent_files_menu_options_bottom_sheet_component.dart';
 import '../component/recent_files_share_bottom_sheet_component.dart';
 import '../models/dashboard_model_class.dart';
-import '../utils/constant.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 class MoveToFolderScreen extends StatelessWidget {
   const MoveToFolderScreen({Key? key}) : super(key: key);

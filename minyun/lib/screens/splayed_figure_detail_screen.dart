@@ -3,21 +3,16 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:lunar/calendar/eightchar/DaYun.dart';
 import 'package:lunar/lunar.dart';
 import 'package:minyun/api/SplayedFigureApi.dart';
-import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
-import 'package:minyun/models/lucky_model.dart';
-import 'package:minyun/models/lucky_year_model.dart';
 import 'package:minyun/screens/splayed_figure_detail_analyze_screen.dart';
 import 'package:minyun/screens/splayed_figure_detail_intro_screen.dart';
 import 'package:minyun/screens/splayed_figure_detail_paipan_screen.dart';
+import 'package:minyun/utils/AppColors.dart';
 
-import '../utils/color.dart';
-import '../utils/common.dart';
+import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 import 'splayed_figure_detail_book_screen.dart';
 

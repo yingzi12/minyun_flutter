@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/rename_bottom_sheet_component.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../models/dashboard_model_class.dart';
 import '../screens/account_screen.dart';
 import '../screens/move_to_folder_screen.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import '../utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 import '../utils/images.dart';
 import 'delete_file_bottom_sheet_component.dart';
 

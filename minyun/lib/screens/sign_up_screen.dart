@@ -7,11 +7,11 @@ import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/component/text_form_field_label_text.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/create_account_screen.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/images.dart';
 
-import '../utils/constant.dart';
 import '../utils/lists.dart';
 
 class SignUpScreen extends StatefulWidget {

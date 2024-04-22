@@ -40,3 +40,20 @@ const appShadowColorDark = Color(0x1A3E3942);
 const success = Color(0xFF36d592);
 const error = Color(0xFFF32323);
 
+
+const primaryLightColor = Color(0xFFedf0ff);
+const iconColor = Colors.black;
+
+const appTextPrimaryColor = Color(0xFF000000);
+const appTextSecondaryColor = Color(0xD04D4B4B);
+const appTextBoldColor = Color(0xFF000000);
+
+/// dark mode text colors
+const appScaffoldColor = Color(0xFF181a20);
+const darkPrimaryColor = Color(0xFF35383e);
+const darkPrimaryLightColor = Color(0xFF1f222a);
+const darkIconColor = Colors.white;
+
+const darkTextPrimaryColor = Colors.white;
+const darkTextSecondaryColor = Colors.white70;
+const darkTextBoldColor = Colors.white;

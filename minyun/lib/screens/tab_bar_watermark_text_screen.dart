@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/screens/account_screen.dart';
-import 'package:minyun/utils/color.dart';
+import 'package:minyun/utils/AppColors.dart';
 
 import '../component/text_form_field_label_text.dart';
-import '../utils/common.dart';
+import '../utils/AppCommon.dart';
 
 class TabBarWatermarkTextScreen extends StatelessWidget {
   const TabBarWatermarkTextScreen({Key? key}) : super(key: key);

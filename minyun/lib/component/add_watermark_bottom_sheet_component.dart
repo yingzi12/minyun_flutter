@@ -3,9 +3,9 @@ import 'package:minyun/screens/account_screen.dart';
 
 import '../screens/tab_bar_watermark_icon_screen.dart';
 import '../screens/tab_bar_watermark_text_screen.dart';
-import '../utils/color.dart';
-import '../utils/common.dart';
-import '../utils/constant.dart';
+import 'package:minyun/utils/AppColors.dart';
+import '../utils/AppCommon.dart';
+import 'package:minyun/utils/AppContents.dart';
 
 Future<dynamic> AddWatermarkBottomSheetComponent(BuildContext context) {
   return showModalBottomSheet(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/models/dashboard_model_class.dart';
-import 'package:minyun/utils/color.dart';
-import 'package:minyun/utils/common.dart';
+import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 
 import '../utils/images.dart';
 import '../utils/lists.dart';
