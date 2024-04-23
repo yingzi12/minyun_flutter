@@ -44,12 +44,6 @@ class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookS
   }
 
 
-  // Future<void> _refreshApiData() async {
-  //   Fx fx=widget.fx!;
-  //
-  //
-  // }
-
   //获取指定月的天数
   int getDaysInMonth(int year, int month) {
     var a = Solar.fromYmd(year, month, 1);

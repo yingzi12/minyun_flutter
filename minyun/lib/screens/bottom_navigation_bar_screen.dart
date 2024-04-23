@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/dashboard_screen.dart';
+import 'package:minyun/screens/premium_screen.dart';
+import 'package:minyun/screens/splayed_figure_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 
 import '../utils/images.dart';
@@ -13,6 +17,13 @@ class BottomNavigationBarScreen extends StatefulWidget {
 }
 
 class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
+  List navigationPages = [
+    DashBoardScreen(),
+    SplayedFigureScreen(),
+    PremiumScreen(),
+    AccountScreen(),
+  ];
+
   int selectedIndex = 0;
   void onTimeTapped(int index) {
     setState(() {
@@ -57,8 +68,13 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
           BottomNavigationBarItem(
             icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
             activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
-            label: "Premium",
+            label: "档案",
           ),
+          // BottomNavigationBarItem(
+          //   icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
+          //   activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
+          //   label: "会员",
+          // ),
           BottomNavigationBarItem(
             icon: Image.asset(user_outlined, height: 24, color: Colors.grey),
             activeIcon: Image.asset(user_filled, color: primaryColor, height: 28),

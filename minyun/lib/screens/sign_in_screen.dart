@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/AppButton.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
-import 'package:minyun/screens/signin_with_password_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
@@ -91,9 +91,9 @@ class SignInScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: AppButton(
-                text: "Sign in with password",
+                text: "使用密码登录",
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignInWithPasswordScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TabBarSignInScreen(0)));
                 },
               ),
             ),
@@ -102,7 +102,7 @@ class SignInScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Don't have an account?  ",
+                  "还没有账号?  ",
                   style: secondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                 ),
                 GestureDetector(
@@ -113,7 +113,7 @@ class SignInScreen extends StatelessWidget {
                     );
                   },
                   child: Text(
-                    "Sign up",
+                    "注册",
                     style: secondaryTextStyle(color: primaryColor),
                   ),
                 )

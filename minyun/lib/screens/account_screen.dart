@@ -32,7 +32,7 @@ class _AccountScreenState extends State<AccountScreen> {
       builder: (context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Account"),
+            title: Text("用户中心"),
             titleTextStyle: boldTextStyle(fontSize: 24),
             elevation: 0,
             titleSpacing: 0,
@@ -85,7 +85,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [
                               nameCont.text.length == 0
                                   ? Text(
-                                      "User Name",
+                                      "这是用户昵称",
                                       style: boldTextStyle(),
                                     )
                                   : Text(
@@ -101,7 +101,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   border: Border.all(color: primaryColor),
                                 ),
                                 child: Text(
-                                  "Basic",
+                                  "1级会员",
                                   style: secondaryTextStyle(color: primaryColor, fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
@@ -109,22 +109,22 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text("0 MB / 1024 MB", style: secondaryTextStyle()),
-                          SizedBox(height: 8),
-                          Container(
-                            height: 8,
-                            width: width * 0.5,
-                            decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: width * 0.03,
-                                  height: 8,
-                                  decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
-                                ),
-                              ],
-                            ),
-                          ),
+                          Text("这是简介，这是简介", style: secondaryTextStyle()),
+                          // SizedBox(height: 8),
+                          // Container(
+                          //   height: 8,
+                          //   width: width * 0.5,
+                          //   decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
+                          //   child: Row(
+                          //     children: [
+                          //       Container(
+                          //         width: width * 0.03,
+                          //         height: 8,
+                          //         decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],

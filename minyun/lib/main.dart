@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minyun/screens/account_screen.dart';
 import 'package:minyun/screens/splash_sceen.dart';
+import 'package:minyun/store/AppStore.dart';
 void main() {
   runApp(const MyApp());
 }
+AppStore appStore = AppStore();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

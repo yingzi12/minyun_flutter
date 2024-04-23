@@ -36,9 +36,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   DateFormat formatter = DateFormat("yyyy-MM-dd Hh:mm");
   /// 是否是农历
   bool isLunar = true;
-
-  Lunar lunar = Lunar.fromDate(DateTime.now());
   Solar solar = Solar.fromDate(DateTime.now());
+
+  Lunar lunar = Solar.fromDate(DateTime.now()).getLunar();
 
 
   File? image;

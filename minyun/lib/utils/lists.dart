@@ -21,13 +21,8 @@ List signInOptions = [
   "Continue with Apple",
   "Continue with Facebook",
 ];
-List<String> genders = ['Male', 'Female', 'Other'];
-List navigationPages = [
-  DashBoardScreen(),
-  SplayedFigureScreen(),
-  PremiumScreen(),
-  AccountScreen(),
-];
+List<String> genders = ['男', '女'];
+
 List selectedFilesList = [];
 List searchList = [
   "Job Application Letter",
@@ -70,13 +65,13 @@ List languageList = [
   "Indonesia",
 ];
 List aboutScreenList = [
-  "Job Vacancy",
-  "Developer",
-  "Partner",
-  "Accessibility",
-  "Privacy Policy",
-  "Feedback",
-  "Rate us",
-  "Visit Our Website",
-  "Follow us on Social Media",
+  // "Job Vacancy",
+  // "Developer",
+  // "Partner",
+  // "Accessibility",
+  "隐私政策",
+  "反馈",
+  // "Rate us",
+  // "Visit Our Website",
+  // "Follow us on Social Media",
 ];

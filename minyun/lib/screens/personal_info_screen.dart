@@ -39,7 +39,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Personal Info",
+          "个人信息",
           style: boldTextStyle(fontSize: 24),
         ),
         elevation: 0,
@@ -95,24 +95,34 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
             SizedBox(height: 16),
             Column(
               children: [
-                TextFormFieldLabelText(text: "Full name"),
+                TextFormFieldLabelText(text: "昵称"),
                 TextFormField(
-                  decoration: inputDecoration(hintText: "Full Name"),
+                  decoration: inputDecoration(hintText: "昵称"),
                 ),
+                SizedBox(height: 16),
+                TextFormFieldLabelText(text: "简介"),
+                TextFormField(
+                  decoration: inputDecoration(hintText: "简介"),
+                ),
+                TextFormFieldLabelText(text: "姓名"),
+                TextFormField(
+                  decoration: inputDecoration(hintText: "姓名"),
+                ),
+
                 SizedBox(height: 16),
                 TextFormFieldLabelText(text: "Email"),
                 TextFormField(
-                  decoration: inputDecoration(hintText: "Email Id"),
+                  decoration: inputDecoration(hintText: "Email"),
                 ),
                 SizedBox(height: 16),
-                TextFormFieldLabelText(text: "Phone Number"),
+                TextFormFieldLabelText(text: "手机号码"),
                 TextFormField(
-                  decoration: inputDecoration(hintText: "Phone Number"),
+                  decoration: inputDecoration(hintText: "手机号码"),
                 ),
                 SizedBox(height: 16),
-                TextFormFieldLabelText(text: "Gender"),
+                TextFormFieldLabelText(text: "性别"),
                 DropdownButtonFormField(
-                  decoration: inputDecoration(hintText: 'Select Gender'),
+                  decoration: inputDecoration(hintText: '请选择性别'),
                   borderRadius: BorderRadius.circular(DEFAULT_RADIUS),
                   dropdownColor: mode.theme ? darkPrimaryLightColor : Colors.white,
                   value: dropdownValue,
@@ -133,12 +143,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   },
                 ),
                 SizedBox(height: 16),
-                TextFormFieldLabelText(text: "Date of Birth"),
+                TextFormFieldLabelText(text: "生日（阳历）"),
                 TextFormField(
                   readOnly: true,
                   controller: dateInput,
                   decoration: inputDecoration(
-                    hintText: "MM/DD/YYYY",
+                    hintText: "YYYY-MM-dd",
                     suffixIcon: GestureDetector(
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
@@ -148,7 +158,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           lastDate: DateTime.now(),
                         );
                         if (pickedDate != null) {
-                          String formattedDate = DateFormat('MM/dd/yyyy').format(pickedDate);
+                          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                           setState(() {
                             dateInput.text = formattedDate;
                           });
@@ -164,23 +174,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                TextFormFieldLabelText(text: "Street Address"),
+                TextFormFieldLabelText(text: "出生地址"),
                 TextFormField(
-                  decoration: inputDecoration(hintText: "Street Address"),
+                  decoration: inputDecoration(hintText: "出生地址"),
                 ),
                 SizedBox(height: 16),
-                TextFormFieldLabelText(text: "Country"),
-                TextFormField(
-                  decoration: inputDecoration(hintText: "Country"),
-                ),
-                SizedBox(height: 16),
-                TextFormFieldLabelText(text: "State"),
-                TextFormField(
-                  decoration: inputDecoration(hintText: "State"),
-                ),
-                SizedBox(height: 24),
                 AppButton(
-                    text: "Save",
+                    text: "保存",
                     onTap: () {
                       Navigator.pop(context);
                     }),

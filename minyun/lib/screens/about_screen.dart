@@ -17,7 +17,7 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "About ProScan",
+          "关于命运",
           style: boldTextStyle(fontSize: 24),
         ),
         elevation: 0,
@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 32),
-            Text("ProScan v9.5.7", style: boldTextStyle(fontSize: 18)),
+            Text("命运 v9.5.7", style: boldTextStyle(fontSize: 18)),
             SizedBox(height: 24),
             Divider(indent: 16, endIndent: 16),
             ListView.builder(

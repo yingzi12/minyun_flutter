@@ -71,8 +71,8 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   /// 是否是农历
   bool isLunar = true;
 
-  Lunar lunar = Lunar.fromDate(DateTime.now());
   Solar solar = Solar.fromDate(DateTime.now());
+  Lunar lunar = Solar.fromDate(DateTime.now()).getLunar();
 
    List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
