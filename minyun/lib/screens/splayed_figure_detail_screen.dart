@@ -8,6 +8,8 @@ import 'package:minyun/api/SplayedFigureApi.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/screens/splayed_figure_detail_analyze_screen.dart';
+import 'package:minyun/screens/splayed_figure_detail_common_screen.dart';
+import 'package:minyun/screens/splayed_figure_detail_info_screen.dart';
 import 'package:minyun/screens/splayed_figure_detail_intro_screen.dart';
 import 'package:minyun/screens/splayed_figure_detail_paipan_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
@@ -156,10 +158,16 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
               text: '八字排盘',
             ),
             Tab(
-              text: '分析',
+              text: '八字分析',
             ),
             Tab(
-              text: '古籍',
+              text: '古籍参考',
+            ),
+            Tab(
+              text: '大师点评',
+            ),
+            Tab(
+              text: '个人说明',
             ),
           ],
         ),
@@ -213,6 +221,12 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
                     SplayedFigureDetailBookScreen(
                       search: widget.search,
                       fx: splayedFigureModel!.fx!,
+                    ),
+                    SplayedFigureDetailCommonScreen(
+                      search: widget.search,
+                    ),
+                    SplayedFigureDetailInfoScreen(
+                      search: widget.search,
                     ),
                   ],
                 ),

@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:minyun/component/text_form_field_label_text.dart';
 
 import '../models/dashboard_model_class.dart';
-import '../screens/account_screen.dart';
+import '../screens/user/account_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import '../utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';

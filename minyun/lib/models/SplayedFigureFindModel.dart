@@ -83,4 +83,14 @@ class SplayedFigureFindModel{
   //1保存，2不保存
   int isSave=1;
 
+  //1是自己的，user_eight_char uecid
+  //2是别人的  analyze_eight_char aecid
+  int? commonType=1;
+
+  //1保存，2不保存
+  int? uecid;
+
+  int? aecid;
+
+
 }

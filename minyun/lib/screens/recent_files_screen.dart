@@ -10,7 +10,7 @@ import 'package:minyun/utils/AppColors.dart';
 import '../utils/AppCommon.dart';
 import '../utils/images.dart';
 import '../utils/lists.dart';
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 
 class RecentFilesScreen extends StatefulWidget {
   const RecentFilesScreen({Key? key}) : super(key: key);

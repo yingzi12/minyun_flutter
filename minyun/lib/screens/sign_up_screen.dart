@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/component/text_form_field_label_text.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/create_account_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppCommon.dart';

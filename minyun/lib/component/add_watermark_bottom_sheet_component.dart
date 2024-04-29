@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 
 import '../screens/tab_bar_watermark_icon_screen.dart';
 import '../screens/tab_bar_watermark_text_screen.dart';

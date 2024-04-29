@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
 import 'package:minyun/utils/AppContents.dart';
 

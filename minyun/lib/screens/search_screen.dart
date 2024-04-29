@@ -5,7 +5,7 @@ import 'package:minyun/utils/AppCommon.dart';
 
 import '../utils/images.dart';
 import '../utils/lists.dart';
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);

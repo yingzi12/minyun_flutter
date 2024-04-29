@@ -3,11 +3,11 @@ import 'package:minyun/screens/security_screen.dart';
 import 'package:minyun/screens/splayed_figure_screen.dart';
 
 import '../screens/about_screen.dart';
-import '../screens/account_screen.dart';
+import '../screens/user/account_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/files_screen.dart';
 import '../screens/language_screen.dart';
-import '../screens/personal_info_screen.dart';
+import '../screens/user/personal_info_screen.dart';
 import '../screens/prefrances_screen.dart';
 import '../screens/premium_screen.dart';
 
@@ -46,8 +46,6 @@ List premiumDetailsList = [
   "Translation",
   "25GB Cloud Storage Space"
 ];
-List accountScreenInfoRouteList = [PersonalInfoScreen(), PreferencesScreen(), SecurityScreen(), LanguageScreen()];
-List accountScreenHelpRoutList = [HelpCenterScreen(), AboutScreen()];
 List<String> faqScreenOptions = ["General", "Account", "Service", "Scan"];
 List suggestedList = [
   "English (US)",

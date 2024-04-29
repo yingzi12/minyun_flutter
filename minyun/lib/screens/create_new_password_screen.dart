@@ -6,7 +6,7 @@ import 'package:minyun/utils/AppColors.dart';
 import '../utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
 import '../utils/images.dart';
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 import 'bottom_navigation_bar_screen.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {

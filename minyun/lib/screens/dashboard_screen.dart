@@ -10,7 +10,7 @@ import 'package:lunar/lunar.dart';
 import 'package:minyun/constant.dart';
 import 'package:minyun/models/hour_model_class.dart';
 import 'package:minyun/models/lucky_day_model_class.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/lucky_day_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';

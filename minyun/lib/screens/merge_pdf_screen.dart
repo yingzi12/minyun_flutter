@@ -6,7 +6,7 @@ import 'package:minyun/utils/AppColors.dart';
 import '../component/text_form_field_label_text.dart';
 import '../utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 
 class MergePdfScreen extends StatelessWidget {
   MergePdfScreen({Key? key}) : super(key: key);

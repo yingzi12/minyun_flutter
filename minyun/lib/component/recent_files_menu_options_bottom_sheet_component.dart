@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/rename_bottom_sheet_component.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/merge_pdf_screen.dart';
 import 'package:minyun/screens/protect_pdf_screen.dart';
 import 'package:minyun/utils/AppColors.dart';

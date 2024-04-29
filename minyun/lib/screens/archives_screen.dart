@@ -12,7 +12,7 @@ import 'package:minyun/constant.dart';
 import 'package:minyun/models/CalendarModel.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/analyze_eight_char_modell.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
 
 import 'package:minyun/utils/AppColors.dart';

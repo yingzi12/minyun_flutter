@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/search_screen.dart';
 
 import '../component/folder_bottom_sheet_component.dart';

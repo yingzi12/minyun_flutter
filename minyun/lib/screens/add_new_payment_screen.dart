@@ -8,7 +8,7 @@ import '../models/select_payment_screen_model.dart';
 import 'package:minyun/utils/AppColors.dart';
 import '../utils/AppCommon.dart';
 import '../utils/images.dart';
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 
 class AddNewPaymentScreen extends StatefulWidget {
   const AddNewPaymentScreen({Key? key}) : super(key: key);

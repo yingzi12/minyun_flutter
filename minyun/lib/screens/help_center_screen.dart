@@ -4,7 +4,7 @@ import 'package:minyun/screens/faq_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppCommon.dart';
 
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 
 class HelpCenterScreen extends StatelessWidget {
   const HelpCenterScreen({Key? key}) : super(key: key);

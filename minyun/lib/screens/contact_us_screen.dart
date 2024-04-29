@@ -4,7 +4,7 @@ import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
 
 import '../models/contact_us_screen_model.dart';
-import 'account_screen.dart';
+import 'user/account_screen.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({Key? key}) : super(key: key);

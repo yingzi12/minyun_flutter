@@ -3,7 +3,7 @@ import 'package:minyun/component/rename_bottom_sheet_component.dart';
 import 'package:minyun/utils/AppColors.dart';
 
 import '../models/dashboard_model_class.dart';
-import '../screens/account_screen.dart';
+import '../screens/user/account_screen.dart';
 import '../screens/move_to_folder_screen.dart';
 import '../utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';

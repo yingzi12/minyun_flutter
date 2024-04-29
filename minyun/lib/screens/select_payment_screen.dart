@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/AppButton.dart';
-import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/review_summary_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 
