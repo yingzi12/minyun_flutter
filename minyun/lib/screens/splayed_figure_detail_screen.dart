@@ -42,9 +42,12 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+
     _refreshApiData();
     // _refreshSdkData();
   }
+
+
 
   @override
   void dispose() {
@@ -86,7 +89,6 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
         queryParams["city1"] = widget.search.city1 ?? "";
         queryParams["city2"] = widget.search.city2 ?? "";
         queryParams["city3"] = widget.search.city3 ?? "";
-
       }
       queryParams["Sect"] = (widget.search.sect ?? 2).toString();
       queryParams["Siling"] =(widget.search.siling ?? 0).toString()  ;

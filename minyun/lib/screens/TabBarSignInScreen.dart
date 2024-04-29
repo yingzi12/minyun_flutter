@@ -86,7 +86,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
     }
   }
 
-// 注册函数
+  // 注册函数
   Future<void> register(String name, String email, String password) async {
    bool ok=await  UserApi.regis({'name': name, 'email': email, 'password': password});
     if (ok) {

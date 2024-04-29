@@ -1,13 +1,18 @@
 
+import 'dart:collection';
+
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lunar_datetime_picker/date_init.dart';
 import 'package:flutter_lunar_datetime_picker/flutter_lunar_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lunar/lunar.dart';
+import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/constant.dart';
+import 'package:minyun/models/ResultModel.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
+import 'package:minyun/models/analyze_eight_char_modell.dart';
 import 'package:minyun/screens/splayed_figure_detail_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
@@ -40,6 +45,9 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   int _selectedQipanValue=5;
   //排盘 是否专业
   int _selectedPaipanValue=1;
+  //是否保存
+  int _selectedSaveValue=1;
+
   //晚子时
   int _selectedLateValue=1;
   //真太阳时
@@ -99,6 +107,10 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
     setState(() {
       _nameController.clear();
     });
+  }
+
+  Future<void> _refreshSaveData( Map<String, String> addMap) async {
+    AnalyzeEightCharApi.addModel(addMap);
   }
 
   // DateTime _selectedDate = DateTime.now();
@@ -190,6 +202,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
               if (_selectedPaipanValue ==2)
                 buildRenyuan(),
               buildPaipan(),
+              buildSave(),
 
               TDButton(
                 text: '开始排盘',
@@ -199,7 +212,10 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                 theme: TDButtonTheme.defaultTheme,
                 onTap: (){
                   SplayedFigureFindModel sera=new SplayedFigureFindModel();
+                  Map<String, String> addMap=new HashMap();
                   sera.name=_nameController.text;
+                  addMap["name"]=sera.name ??"";
+
                   if (sera.name == null || sera.name!.isEmpty) {
                     BrnDialogManager.showSingleButtonDialog(context,
                         label: "确定",
@@ -211,39 +227,61 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                   }
 
                   sera.dateType=_selectedQipanValue;
+                  addMap["dateType"]=sera.dateType!.toString() ?? "5";
+
                   if(_selectedQipanValue == 4){
                     sera.ng = _selectedYearValue;
+                    addMap["ng"]=sera.ng ?? "";
                     sera.yg = _selectedMonthValue;
+                    addMap["yg"]=sera.yg ?? "";
                     sera.rg = _selectedDayValue;
+                    addMap["rg"]=sera.rg ?? "";
                     sera.sg = _selectedHourValue;
+                    addMap["sg"]=sera.sg ?? "";
                   }
                   //日期排盘
                   if(_selectedQipanValue == 5){
                     sera.year=_selectedYearDate;
+                    addMap["year"]=sera.year!.toString() ?? "";
+
                     sera.month=_selectedMonthDate;
+                    addMap["month"]=sera.month!.toString() ?? "";
                     sera.day=_selectedDayDate;
+                    addMap["day"]=sera.day!.toString() ?? "";
                     sera.hour=_selectedHourDate;
+                    addMap["hour"]=sera.hour!.toString() ?? "";
                     sera.minute=_selectedMinuteDate;
+                    addMap["minute"]=sera.minute!.toString() ?? "";
                     if(10 > _selectedMinuteDate) {
                       sera.inputdate =
                       "公历${sera.year}年${sera.month}月${sera.day}日 0${sera
                           .hour}时${sera.minute}分";
+                      addMap["inputdate"]=sera.inputdate ?? "";
                     }else{
                       sera.inputdate =
                       "公历${sera.year}年${sera.month}月${sera.day}日 ${sera
                           .hour}时${sera.minute}分";
+                      addMap["inputdate"]=sera.inputdate ?? "";
+
                     }
                   }
                   sera.sex = _selectedSexValue;
+                  addMap["sex"]=sera.dateType!.toString() ?? "0";
                   sera.paipanFs = _selectedPaipanValue;
+                  addMap["isMajor"]=sera.dateType!.toString() ?? "1";
+
                   //是否专业排盘
                   if(_selectedPaipanValue==2) {
                     sera.ztys=_selectedSunValue;
+                    addMap["ztys"]=sera.ztys!.toString() ?? "1";
                     //如果时真太阳时
                     if (_selectedSunValue == 1) {
                       sera.city1 = city1;
+                      addMap["city1"]=sera.city1!.toString() ?? "1";
                       sera.city2 = city2;
+                      addMap["city2"]=sera.city2!.toString() ?? "1";
                       sera.city3 = city3;
+                      addMap["city3"]=sera.city3!.toString() ?? "1";
                       if (sera.city1 == null || sera.city1!.isEmpty) {
                         BrnDialogManager.showSingleButtonDialog(context,
                             label: "确定",
@@ -255,9 +293,14 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                       }
                     }
                     sera.sect = _selectedLateValue;
+                    addMap["sect"]=sera.city1!.toString() ?? "1";
                     sera.siling = _selectedRenyuanValue;
+                    addMap["siling"]=sera.city1!.toString() ?? "1";
                   }
-
+                  sera.isSave=_selectedSaveValue;
+                  if(sera.isSave ==1){
+                    _refreshSaveData(addMap);
+                  }
                   SplayedFigureDetailScreen(search: sera,).launch(context);
                 }
               ),
@@ -519,6 +562,59 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                     onChanged: (value) {
                       setState(() {
                         _selectedPaipanValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            )
+          // ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget buildSave(){
+    return Row(
+      children: [
+        SizedBox(
+          width: 90.0,
+          child:
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text("是否保存：",
+              // style: boldTextStyle(fontSize: 18)
+            ),
+          ),
+        ),
+        Expanded(
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RadioListTile(
+                    value: 1,
+                    groupValue: _selectedSaveValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('保存'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSaveValue = value as int;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile(
+                    value: 2,
+                    groupValue: _selectedSaveValue,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('不保存'),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedSaveValue = value as int;
                       });
                     },
                   ),

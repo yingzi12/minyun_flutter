@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/account_screen.dart';
+import 'package:minyun/screens/archives_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
 import 'package:minyun/screens/premium_screen.dart';
 import 'package:minyun/screens/splayed_figure_screen.dart';
@@ -20,6 +21,8 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
   List navigationPages = [
     DashBoardScreen(),
     SplayedFigureScreen(),
+    ArchivesScreen(),
+    ArchivesScreen(),
     PremiumScreen(),
     AccountScreen(),
   ];
@@ -69,6 +72,16 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
             activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
             label: "档案",
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
+            activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
+            label: "大师",
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
+            activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
+            label: "解惑",
           ),
           // BottomNavigationBarItem(
           //   icon: Image.asset(star_outlined, height: 24, color: Colors.grey),

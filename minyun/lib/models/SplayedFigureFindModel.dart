@@ -79,4 +79,8 @@ class SplayedFigureFindModel{
    *
    */
   String? bcxx="1";
+
+  //1保存，2不保存
+  int isSave=1;
+
 }
