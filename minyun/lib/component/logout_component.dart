@@ -30,13 +30,13 @@ Future<dynamic> LogoutBottomSheet(BuildContext context) {
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("Logout", style: appBoldTextStyle(fontSize: 24, color: Colors.redAccent)),
+              Text("Logout", style: appMainBoldTextStyle(fontSize: 24, color: Colors.redAccent)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),
               Text(
                 "Are you sure you want to log out?",
-                style: appPrimaryTextStyle(),
+                style: appMainPrimaryTextStyle(),
               ),
               SizedBox(height: 24),
               Row(

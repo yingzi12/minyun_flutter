@@ -74,14 +74,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               children: [
                 Row(
                   children: [
-                    Text("Create an account", style: appBoldTextStyle(fontSize: 24)),
+                    Text("Create an account", style: appMainBoldTextStyle(fontSize: 24)),
                     Image.asset(create_account_screen_lock_image, height: 30, width: 30),
                   ],
                 ),
                 SizedBox(height: 16),
                 Text(
                   "Enter your email & password, if you forgot it, then you have to do forgot password.",
-                  style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
+                  style: appMainSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                 ),
                 SizedBox(height: 24),
                 Column(
@@ -167,7 +167,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       ),
                     ),
                     SizedBox(width: 16),
-                    Text("Remember me", style: appBoldTextStyle())
+                    Text("Remember me", style: appMainBoldTextStyle())
                   ],
                 ),
               ],
@@ -200,9 +200,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             ),
                           ),
                           SizedBox(height: 24),
-                          Text("Sign Up Successful!", style: appBoldTextStyle(color: primaryColor, fontSize: 20)),
+                          Text("Sign Up Successful!", style: appMainBoldTextStyle(color: primaryColor, fontSize: 20)),
                           SizedBox(height: 16),
-                          Text("Your account has been created.", style: appSecondaryTextStyle(), textAlign: TextAlign.center),
+                          Text("Your account has been created.", style: appMainSecondaryTextStyle(), textAlign: TextAlign.center),
                           SizedBox(height: 24),
                           AppButton(
                             text: "Go to Home",

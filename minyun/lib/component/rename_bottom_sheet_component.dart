@@ -29,7 +29,7 @@ Future<dynamic> RenameBottomSheetComponent(BuildContext context, double height) 
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("Rename", style: appBoldTextStyle(fontSize: 24)),
+              Text("Rename", style: appMainBoldTextStyle(fontSize: 24)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),

@@ -33,7 +33,7 @@ Future<dynamic> RecentFilesShareBottomSheetComponent(BuildContext context, doubl
                     decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
                   ),
                   SizedBox(height: 16),
-                  Text("Share", style: appBoldTextStyle(fontSize: 24)),
+                  Text("Share", style: appMainBoldTextStyle(fontSize: 24)),
                   SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -55,8 +55,8 @@ Future<dynamic> RecentFilesShareBottomSheetComponent(BuildContext context, doubl
                             title: RichText(
                                 text: TextSpan(
                                     text: "${recentFileShareOptions[index].Text.toString()} ",
-                                    style: appPrimaryTextStyle(),
-                                    children: [TextSpan(text: "${recentFileShareOptions[index].size}", style: appSecondaryTextStyle())])),
+                                    style: appMainPrimaryTextStyle(),
+                                    children: [TextSpan(text: "${recentFileShareOptions[index].size}", style: appMainSecondaryTextStyle())])),
                             leading: Image.asset(recentFileShareOptions[index].image.toString(),
                                 height: 20, color: mode.theme ? Colors.white : Colors.black),
                           ),

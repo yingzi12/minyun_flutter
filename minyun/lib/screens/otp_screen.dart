@@ -85,7 +85,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   children: [
                     Text(
                       "You've got mail",
-                      style: appBoldTextStyle(fontSize: 24),
+                      style: appMainBoldTextStyle(fontSize: 24),
                     ),
                     SizedBox(width: 8),
                     Image.asset(
@@ -100,7 +100,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "We have sent the OTP verification code to your email address. Check your email and enter the code below.",
-                    style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
+                    style: appMainSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                   ),
                 ),
                 SizedBox(height: 24),
@@ -230,20 +230,20 @@ class _OtpScreenState extends State<OtpScreen> {
                   ],
                 ),
                 SizedBox(height: 24),
-                Text("Didn't receive an email?", style: appPrimaryTextStyle()),
+                Text("Didn't receive an email?", style: appMainPrimaryTextStyle()),
                 SizedBox(height: 18),
                 RichText(
                   text: TextSpan(
                     text: "You can resend code in",
-                    style: appPrimaryTextStyle(),
+                    style: appMainPrimaryTextStyle(),
                     children: [
                       TextSpan(
                         text: " $_start ",
-                        style: appPrimaryTextStyle(color: primaryColor),
+                        style: appMainPrimaryTextStyle(color: primaryColor),
                       ),
                       TextSpan(
                         text: "s",
-                        style: appPrimaryTextStyle(),
+                        style: appMainPrimaryTextStyle(),
                       )
                     ],
                   ),

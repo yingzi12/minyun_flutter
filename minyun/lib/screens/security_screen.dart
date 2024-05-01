@@ -19,7 +19,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Security", style: appBoldTextStyle(fontSize: 24)),
+        title: Text("Security", style: appMainBoldTextStyle(fontSize: 24)),
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
       ),
       body: Column(
@@ -35,7 +35,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                 },
                 child: Row(
                   children: [
-                    Text(securityScreenList[index].title!, style: appPrimaryTextStyle()),
+                    Text(securityScreenList[index].title!, style: appMainPrimaryTextStyle()),
                     Spacer(),
                     securityScreenList[index].isSwitch == true
                         ? Switch(

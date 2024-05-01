@@ -33,7 +33,7 @@ class _AccountScreenOldState extends State<AccountScreenOld> {
         return Scaffold(
           appBar: AppBar(
             title: Text("Account"),
-            titleTextStyle: appBoldTextStyle(fontSize: 24),
+            titleTextStyle: appMainBoldTextStyle(fontSize: 24),
             elevation: 0,
             titleSpacing: 0,
             leading: Padding(
@@ -86,11 +86,11 @@ class _AccountScreenOldState extends State<AccountScreenOld> {
                               nameCont.text.length == 0
                                   ? Text(
                                       "User Name",
-                                      style: appBoldTextStyle(),
+                                      style: appMainBoldTextStyle(),
                                     )
                                   : Text(
                                       nameCont.text,
-                                      style: appBoldTextStyle(),
+                                      style: appMainBoldTextStyle(),
                                     ),
                               SizedBox(width: 16),
                               Container(
@@ -102,14 +102,14 @@ class _AccountScreenOldState extends State<AccountScreenOld> {
                                 ),
                                 child: Text(
                                   "Basic",
-                                  style: appSecondaryTextStyle(color: primaryColor, fontSize: 10),
+                                  style: appMainSecondaryTextStyle(color: primaryColor, fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text("0 MB / 1024 MB", style: appSecondaryTextStyle()),
+                          Text("0 MB / 1024 MB", style: appMainSecondaryTextStyle()),
                           SizedBox(height: 8),
                           Container(
                             height: 8,
@@ -204,13 +204,13 @@ class _AccountScreenOldState extends State<AccountScreenOld> {
                           children: [
                             Image.asset(accountOptions[index].image ?? "", height: 20, width: 20, color: mode.theme ? Colors.white : Colors.black),
                             SizedBox(width: 16),
-                            Text(accountOptions[index].title ?? "", style: appPrimaryTextStyle()),
+                            Text(accountOptions[index].title ?? "", style: appMainPrimaryTextStyle()),
                             Spacer(),
                             Row(
                               children: [
                                 Text(
                                   accountOptions[index].trailingText ?? "",
-                                  style: appPrimaryTextStyle(),
+                                  style: appMainPrimaryTextStyle(),
                                 ),
                                 index == accountOptions.length - 1
                                     ? Observer(
@@ -268,14 +268,14 @@ class _AccountScreenOldState extends State<AccountScreenOld> {
                                     height: 20, width: 20, color: mode.theme ? Colors.white : Colors.black),
                             SizedBox(width: 16),
                             index == 2
-                                ? Text(aboutAppOptions[index].title ?? "", style: appPrimaryTextStyle(color: Colors.redAccent))
-                                : Text(aboutAppOptions[index].title ?? "", style: appPrimaryTextStyle()),
+                                ? Text(aboutAppOptions[index].title ?? "", style: appMainPrimaryTextStyle(color: Colors.redAccent))
+                                : Text(aboutAppOptions[index].title ?? "", style: appMainPrimaryTextStyle()),
                             Spacer(),
                             Row(
                               children: [
                                 Text(
                                   aboutAppOptions[index].trailingText ?? "",
-                                  style: appPrimaryTextStyle(),
+                                  style: appMainPrimaryTextStyle(),
                                 ),
                                 index == 2
                                     ? IconButton(

@@ -34,7 +34,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
               children: [
                 Row(
                   children: [
-                    Text("Create new password", style: appBoldTextStyle(fontSize: 24)),
+                    Text("Create new password", style: appMainBoldTextStyle(fontSize: 24)),
                     SizedBox(width: 8),
                     Image.asset(create_new_password_screen_key_image, height: 30, width: 30)
                   ],
@@ -42,7 +42,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 SizedBox(height: 16),
                 Text(
                   "Enter your new password, if you forgot it, then you have to do forgot password.",
-                  style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
+                  style: appMainSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                 ),
                 SizedBox(height: 24),
                 Column(
@@ -97,7 +97,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                     SizedBox(width: 16),
                     Text(
                       "Remember me",
-                      style: appBoldTextStyle(),
+                      style: appMainBoldTextStyle(),
                     )
                   ],
                 ),
@@ -134,10 +134,10 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                           Text(
                             "Reset password Successful!",
                             textAlign: TextAlign.center,
-                            style: appBoldTextStyle(color: primaryColor, fontSize: 20),
+                            style: appMainBoldTextStyle(color: primaryColor, fontSize: 20),
                           ),
                           SizedBox(height: 16),
-                          Text("Your password has been successfully changed.", style: appSecondaryTextStyle(), textAlign: TextAlign.center),
+                          Text("Your password has been successfully changed.", style: appMainSecondaryTextStyle(), textAlign: TextAlign.center),
                           SizedBox(height: 24),
                           AppButton(
                             text: "Go to Home",

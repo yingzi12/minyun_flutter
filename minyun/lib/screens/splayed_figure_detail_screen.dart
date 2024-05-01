@@ -172,7 +172,7 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
           ],
         ),
         title: Text("排盘详细"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         elevation: 0,
         titleSpacing: 0,
         leading: Padding(

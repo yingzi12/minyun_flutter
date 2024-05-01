@@ -30,7 +30,7 @@ class _AddDigitalSignatureScreenState extends State<AddDigitalSignatureScreen> {
         ),
         title: Text(
           "Add Digital Signature",
-          style: appBoldTextStyle(color: Colors.white, fontSize: 20),
+          style: appMainBoldTextStyle(color: Colors.white, fontSize: 20),
         ),
         leading: IconButton(
           onPressed: () {

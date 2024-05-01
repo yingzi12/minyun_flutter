@@ -44,9 +44,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                         child: Image.asset(WalkthroughPages[index].image.toString(), fit: BoxFit.fill, height: height * 0.5, width: width * 1),
                       ),
                       SizedBox(height: 30),
-                      Text(WalkthroughPages[index].titleText.toString(), style: appBoldTextStyle(fontSize: 18), textAlign: TextAlign.center),
+                      Text(WalkthroughPages[index].titleText.toString(), style: appMainBoldTextStyle(fontSize: 18), textAlign: TextAlign.center),
                       SizedBox(height: 8),
-                      Text(WalkthroughPages[index].bodyText.toString(), style: appSecondaryTextStyle(), textAlign: TextAlign.center),
+                      Text(WalkthroughPages[index].bodyText.toString(), style: appMainSecondaryTextStyle(), textAlign: TextAlign.center),
                     ],
                   ),
                 );

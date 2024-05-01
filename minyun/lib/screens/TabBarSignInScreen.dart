@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:minyun/api/UserApi.dart';
 import 'package:minyun/screens/UserForgotPasswordScreen.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
-import 'package:minyun/screens/dashboard_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
@@ -149,7 +148,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
               child: Column(children: [
                 AppTextField(
                   controller: contEmailAddress,
-                  textStyle: appPrimaryTextStyle(color: white),
+                  textStyle: appMainPrimaryTextStyle(color: white),
                   // nextFocus: focusNodePassword,
                   cursorColor: Colors.white,
                   textFieldType: TextFieldType.NAME,
@@ -158,7 +157,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                 16.height,
                 AppTextField(
                   controller: contPassword,
-                  textStyle: appPrimaryTextStyle(color: white),
+                  textStyle: appMainPrimaryTextStyle(color: white),
                   focus: focusNodePassword,
                   cursorColor: Colors.white,
                   textFieldType: TextFieldType.PASSWORD,
@@ -168,7 +167,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                 16.height,
                 Align(
                   alignment: Alignment.topRight,
-                  child: Text('忘记密码?', style: primaryTextStyle(color: mpAppButtonColor, size: 14)),
+                  child: Text('忘记密码?', style: appMainPrimaryTextStyle(color: mpAppButtonColor, fontSize: 14)),
                 ).onTap(() {
                    UserForgotPasswordScreen().launch(context);
                 }),
@@ -177,7 +176,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                   data: ThemeData(unselectedWidgetColor: white),
                   child: CheckboxListTile(
                     contentPadding: EdgeInsets.all(0),
-                    title: Text("记住账号", style: appSecondaryTextStyle(color: Colors.white)),
+                    title: Text("记住账号", style: appMainSecondaryTextStyle(color: Colors.white)),
                     value: checkedValue,
                     dense: true,
                     onChanged: (newValue) {
@@ -190,7 +189,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                 ),
                 16.height,
                 AppButton(
-                  child: Text('登陆', style: appPrimaryTextStyle(color: Colors.white)),
+                  child: Text('登陆', style: appMainPrimaryTextStyle(color: Colors.white)),
                   color: mpAppButtonColor,
                   width: context.width(),
                   onTap: () {
@@ -231,7 +230,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                 children: [
                   AppTextField(
                     controller: controllerName,
-                    textStyle: appPrimaryTextStyle(color: white),
+                    textStyle: appMainPrimaryTextStyle(color: white),
                     textFieldType: TextFieldType.EMAIL,
                     nextFocus: addressFocusNode,
                     cursorColor: Colors.white,
@@ -247,7 +246,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                   16.height,
                   AppTextField(
                     controller: controllerEmailAddress,
-                    textStyle: appPrimaryTextStyle(color: white),
+                    textStyle: appMainPrimaryTextStyle(color: white),
                     textFieldType: TextFieldType.EMAIL,
                     focus: addressFocusNode,
                     cursorColor: Colors.white,
@@ -264,7 +263,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                   16.height,
                   AppTextField(
                     controller: controllerPassword,
-                    textStyle: appPrimaryTextStyle(color: white),
+                    textStyle: appMainPrimaryTextStyle(color: white),
                     textFieldType: TextFieldType.PASSWORD,
                     focus: passwordFocusNode,
                     cursorColor: Colors.white,
@@ -280,7 +279,7 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                   ),
                   20.height,
                   AppButton(
-                    child: Text('注册', style: appPrimaryTextStyle(color: Colors.white)),
+                    child: Text('注册', style: appMainPrimaryTextStyle(color: Colors.white)),
                     color: mpAppButtonColor,
                     width: context.width(),
                     onTap: () {

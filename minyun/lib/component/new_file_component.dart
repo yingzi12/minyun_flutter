@@ -35,7 +35,7 @@ Future<dynamic> NewFileBottomSheet({required BuildContext context, required File
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("New File", style: appBoldTextStyle(fontSize: 24)),
+              Text("New File", style: appMainBoldTextStyle(fontSize: 24)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),

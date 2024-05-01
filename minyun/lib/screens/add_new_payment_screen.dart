@@ -48,7 +48,7 @@ class _AddNewPaymentScreenState extends State<AddNewPaymentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add New Payment"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close, color: mode.theme ? Colors.white : Colors.black),
@@ -93,39 +93,39 @@ class _AddNewPaymentScreenState extends State<AddNewPaymentScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 16),
-                            Text("Card", style: appBoldTextStyle(color: Colors.white, fontSize: 20)),
+                            Text("Card", style: appMainBoldTextStyle(color: Colors.white, fontSize: 20)),
                             SizedBox(height: 24),
                             cardNumCont.text.length == 0
-                                ? Text(".... .... .... ....", style: appBoldTextStyle(color: Colors.white, fontSize: 40))
+                                ? Text(".... .... .... ....", style: appMainBoldTextStyle(color: Colors.white, fontSize: 40))
                                 : format == true
                                     ? Text(
                                         "${cardNumCont.text.substring(0, 4)} ${cardNumCont.text.substring(4, 8)} ${cardNumCont.text.substring(8, 12)} ${cardNumCont.text.substring(12, 16)}",
-                                        style: appBoldTextStyle(color: Colors.white, fontSize: 24),
+                                        style: appMainBoldTextStyle(color: Colors.white, fontSize: 24),
                                       )
                                     : Text(
                                         cardNumCont.text,
-                                        style: appBoldTextStyle(color: Colors.white, fontSize: 24),
+                                        style: appMainBoldTextStyle(color: Colors.white, fontSize: 24),
                                       ),
                             SizedBox(height: 32),
                             Row(
                               children: [
                                 Column(
                                   children: [
-                                    Text("Card Holder Name", style: appPrimaryTextStyle(fontSize: 12, color: Colors.white)),
+                                    Text("Card Holder Name", style: appMainPrimaryTextStyle(fontSize: 12, color: Colors.white)),
                                     SizedBox(height: 8),
                                     cardHolderNameCont.text.length == 0
-                                        ? Text("********", style: appPrimaryTextStyle(fontSize: 20, color: Colors.white))
-                                        : Text(cardHolderNameCont.text, style: appPrimaryTextStyle(fontSize: 14, color: Colors.white)),
+                                        ? Text("********", style: appMainPrimaryTextStyle(fontSize: 20, color: Colors.white))
+                                        : Text(cardHolderNameCont.text, style: appMainPrimaryTextStyle(fontSize: 14, color: Colors.white)),
                                   ],
                                 ),
                                 SizedBox(width: 16),
                                 Column(
                                   children: [
-                                    Text("Expiry Date", style: appPrimaryTextStyle(fontSize: 12, color: Colors.white)),
+                                    Text("Expiry Date", style: appMainPrimaryTextStyle(fontSize: 12, color: Colors.white)),
                                     SizedBox(height: 8),
                                     dateInput.text.length == 0
-                                        ? Text("00/00", style: appPrimaryTextStyle(color: Colors.white))
-                                        : Text(dateInput.text, style: appPrimaryTextStyle(color: Colors.white)),
+                                        ? Text("00/00", style: appMainPrimaryTextStyle(color: Colors.white))
+                                        : Text(dateInput.text, style: appMainPrimaryTextStyle(color: Colors.white)),
                                   ],
                                 ),
                               ],

@@ -129,7 +129,7 @@ class _CaseScreenState extends State<CaseScreen> {
         ),
         backgroundColor: mpAppBackGroundColor,
         elevation: 0.0,
-        title: Text(title, style: appBoldTextStyle(color: Colors.white.withOpacity(0.9))),
+        title: Text(title, style: appMainBoldTextStyle(color: Colors.white.withOpacity(0.9))),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.search,color: Colors.white),

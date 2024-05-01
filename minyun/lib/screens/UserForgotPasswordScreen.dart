@@ -48,7 +48,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
           },
         ),
         centerTitle: true,
-        title: Text('Forgot password', style: appBoldTextStyle(color: white)),
+        title: Text('Forgot password', style: appMainBoldTextStyle(color: white)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,7 +56,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
           children: [
             AppTextField(
               controller: contEmailAddress,
-              textStyle: appPrimaryTextStyle(color: white),
+              textStyle: appMainPrimaryTextStyle(color: white),
               nextFocus: focusNodePassword,
               textFieldType: TextFieldType.EMAIL,
               cursorColor: Colors.white,
@@ -65,7 +65,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
             20.height,
             AppTextField(
               controller: contPassword,
-              textStyle: appPrimaryTextStyle(color: white),
+              textStyle: appMainPrimaryTextStyle(color: white),
               focus: focusNodePassword,
               nextFocus: focusNodeConfirmPassword,
               textFieldType: TextFieldType.PASSWORD,
@@ -76,7 +76,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
             20.height,
             AppTextField(
               controller: contConfirmPassword,
-              textStyle: appPrimaryTextStyle(color: white),
+              textStyle: appMainPrimaryTextStyle(color: white),
               focus: focusNodeConfirmPassword,
               textFieldType: TextFieldType.PASSWORD,
               cursorColor: Colors.white,
@@ -85,7 +85,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
             ),
             50.height,
             AppButton(
-              child: Text('Reset My Password', style: appPrimaryTextStyle(color: Colors.white)),
+              child: Text('Reset My Password', style: appMainPrimaryTextStyle(color: Colors.white)),
               color: mpAppButtonColor,
               width: context.width(),
               onTap: () {

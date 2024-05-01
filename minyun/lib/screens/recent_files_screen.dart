@@ -29,7 +29,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
         elevation: 0,
         titleSpacing: 0,
         title: Text("Recent Files"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         actions: [
           IconButton(
             onPressed: () {
@@ -84,7 +84,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                               children: [
                                 Text(
                                   recentFilesList[index].titleText.toString(),
-                                  style: appPrimaryTextStyle(),
+                                  style: appMainPrimaryTextStyle(),
                                   overflow: TextOverflow.fade,
                                 ),
                                 SizedBox(height: 8),
@@ -93,11 +93,11 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                                     children: [
                                       Image.asset("assets/images/document.png", color: Colors.grey, height: 15, width: 15),
                                       SizedBox(width: 8),
-                                      Text(" 0 files", style: appSecondaryTextStyle()),
+                                      Text(" 0 files", style: appMainSecondaryTextStyle()),
                                     ],
                                   ),
                                 SizedBox(height: 8),
-                                Text("${recentFilesList[index].date}  ${recentFilesList[index].time}", style: appSecondaryTextStyle()),
+                                Text("${recentFilesList[index].date}  ${recentFilesList[index].time}", style: appMainSecondaryTextStyle()),
                               ],
                             ),
                           ),

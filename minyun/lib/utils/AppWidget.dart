@@ -14,7 +14,7 @@ bool value = true;
 InputDecoration buildInputDecoration(String name) {
   return InputDecoration(
     hintText: name,
-    hintStyle: appPrimaryTextStyle(color: white),
+    hintStyle: appMainPrimaryTextStyle(color: white),
     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide(color: viewLineColor, width: 0.5)),
     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide(color: viewLineColor, width: 0.5)),
   );
@@ -68,8 +68,8 @@ Widget editProfileWidget({required String title, required String uName}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(title, style: appPrimaryTextStyle(color: Colors.white)),
-      Text(uName, style: secondaryTextStyle(color: Colors.white.withOpacity(0.7), size: 14)),
+      Text(title, style: appMainPrimaryTextStyle(color: Colors.white)),
+      Text(uName, style: appMainSecondaryTextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14)),
     ],
   );
 }
@@ -83,7 +83,7 @@ Widget editProfileIconWidget({required String title, IconData? icon, VoidCallbac
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: appPrimaryTextStyle(color: Colors.white)),
+          Text(title, style: appMainPrimaryTextStyle(color: Colors.white)),
           Icon(icon, color: white, size: 20),
         ],
       ),
@@ -122,7 +122,7 @@ class EditProfileSwitchWidgetState extends State<EditProfileSwitchWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(widget.name!, style: appPrimaryTextStyle(color: Colors.white)),
+        Text(widget.name!, style: appMainPrimaryTextStyle(color: Colors.white)),
         Switch(
           activeColor: white,
           activeTrackColor: mpAppButtonColor,
@@ -150,7 +150,7 @@ Widget searchIconWidget({Function? onPressed}) {
 
 Widget socialButton({String? btnText, Function? onTap, Color? btnBgColor}) {
   return Container(
-    child: Text(btnText!, style: appPrimaryTextStyle(color: Colors.white)),
+    child: Text(btnText!, style: appMainPrimaryTextStyle(color: Colors.white)),
     width: 120,
     height: 50,
     alignment: Alignment.center,
@@ -261,7 +261,7 @@ Widget redirectionButtonContainer({
     width: width ?? 100,
     alignment: Alignment.center,
     decoration: BoxDecoration(color: color ?? Colors.red, borderRadius: BorderRadius.circular(borderRadius ?? 4)),
-    child: Text(title!, style: appBoldTextStyle(color: Colors.white)),
+    child: Text(title!, style: appMainBoldTextStyle(color: Colors.white)),
   );
 }
 
@@ -281,7 +281,7 @@ PreferredSizeWidget customAppBar({required bool? isLeading, Widget? leading, Str
     leading: leading ?? (isLeading! ? GestureDetector(onTap: onTap, child: backButton()) : Offstage()),
     title: Text(
       title ?? '',
-      style: boldTextStyle(size: 24),
+      style: appMainBoldTextStyle(fontSize: 24),
     ),
     centerTitle: true,
   );
@@ -321,7 +321,7 @@ Widget titleRowItem({String? title, Function()? onTap, required bool isSeeAll,
         child: Text(
           title ?? 'Title',
           textAlign: TextAlign.left,
-          style: boldTextStyle(size: 20, color: textColor),
+          style: appMainBoldTextStyle(fontSize: 20, color: textColor),
         ),
       ),
       if (isSeeAll)
@@ -331,7 +331,7 @@ Widget titleRowItem({String? title, Function()? onTap, required bool isSeeAll,
             visualDensity: VisualDensity.compact,
           ),
           onPressed: onTap,
-          child: Text('See all>', style: secondaryTextStyle(size: 12)),
+          child: Text('See all>', style: appMainSecondaryTextStyle(fontSize: 12)),
         ),
       SizedBox(width: 16)
     ],
@@ -351,7 +351,7 @@ Widget titleAddRowItem({
         child: Text(
           title ?? 'Title',
           textAlign: TextAlign.left,
-          style: boldTextStyle(size: 20, color: textColor), // 使用颜色参数
+          style: appMainBoldTextStyle(fontSize: 20, color: textColor), // 使用颜色参数
         ),
       ),
       if (isSeeAll)
@@ -363,7 +363,7 @@ Widget titleAddRowItem({
           onPressed: onTap,
           child: Text(
             '添加',
-            style: secondaryTextStyle(size: 16, color: textColor), // 使用颜色参数
+            style: appMainSecondaryTextStyle(fontSize: 16, color: textColor), // 使用颜色参数
           ),
         ),
       SizedBox(width: 16)
@@ -382,7 +382,7 @@ Widget actorImageItem({String? imageName, String? name}) {
           borderRadius: BorderRadius.circular(14),
         ),
         SizedBox(height: 8),
-        Text(name!, textAlign: TextAlign.center, style: primaryTextStyle(size: 14)),
+        Text(name!, textAlign: TextAlign.center, style: appMainPrimaryTextStyle(fontSize: 14)),
       ],
     ),
   );
@@ -643,7 +643,7 @@ Widget bankingOption(var icon, var heading, Color color) {
           children: <Widget>[
             Image.asset(icon, color: color, height: 20, width: 20),
             16.width,
-            Text(heading, style: appPrimaryTextStyle()),
+            Text(heading, style: appMainPrimaryTextStyle()),
           ],
         ).expand(),
         Icon(Icons.keyboard_arrow_right, color: textColorSecondary),
@@ -675,7 +675,7 @@ class TopCard extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.account_balance_wallet, color: textPrimaryColor, size: 30).paddingOnly(top: 8, left: 8),
-                Text(name, style: primaryTextStyle(size: 18)).paddingOnly(left: 8, top: 8).expand(),
+                Text(name, style: appMainPrimaryTextStyle(fontSize: 18)).paddingOnly(left: 8, top: 8).expand(),
                 Icon(Icons.info, color: Colors.grey, size: 20).paddingOnly(right: 8)
               ],
             ),
@@ -683,15 +683,15 @@ class TopCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title1, style: secondaryTextStyle(size: 16)).paddingOnly(left: 8, top: 8, bottom: 8),
-              Text(acno, style: appPrimaryTextStyle(color: Colors.yellow)).paddingOnly(right: 8, top: 8, bottom: 8),
+              Text(title1, style: appMainSecondaryTextStyle(fontSize: 16)).paddingOnly(left: 8, top: 8, bottom: 8),
+              Text(acno, style: appMainPrimaryTextStyle(color: Colors.yellow)).paddingOnly(right: 8, top: 8, bottom: 8),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title2, style: secondaryTextStyle(size: 16)).paddingOnly(left: 8, top: 8, bottom: 8),
-              Text(bal, style: appPrimaryTextStyle(color: Colors.green)).paddingOnly(right: 8, top: 8, bottom: 8),
+              Text(title2, style: appMainSecondaryTextStyle(fontSize: 16)).paddingOnly(left: 8, top: 8, bottom: 8),
+              Text(bal, style: appMainPrimaryTextStyle(color: Colors.green)).paddingOnly(right: 8, top: 8, bottom: 8),
             ],
           )
         ],
@@ -739,10 +739,10 @@ class EditTextState extends State<EditText> {
         obscureText: widget.isPassword,
         cursorColor: appColorPrimary,
         maxLines: widget.maxLine,
-        style: appPrimaryTextStyle(),
+        style: appMainPrimaryTextStyle(),
         decoration: InputDecoration(
           hintText: widget.text,
-          hintStyle: appPrimaryTextStyle(),
+          hintStyle: appMainPrimaryTextStyle(),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: appColorPrimary, width: 0.5)),
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColorSecondary, width: 0.5)),
         ),
@@ -752,10 +752,10 @@ class EditTextState extends State<EditText> {
         controller: widget.mController,
         obscureText: widget.isPassword,
         cursorColor: appColorPrimary,
-        style: appPrimaryTextStyle(),
+        style: appMainPrimaryTextStyle(),
         decoration: InputDecoration(
             hintText: widget.text,
-            hintStyle: appPrimaryTextStyle(),
+            hintStyle: appMainPrimaryTextStyle(),
             suffixIcon: GestureDetector(
               onTap: () {
                 setState(() {
@@ -797,7 +797,7 @@ Widget headerView(var title, double height, BuildContext context) {
         ),
         Text(
           title,
-          style: boldTextStyle(size: 30),
+          style: appMainBoldTextStyle(fontSize: 30),
         ).paddingOnly(left: spacing_standard_new, right: spacing_standard),
       ],
     ),

@@ -61,7 +61,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("档案"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         elevation: 0,
         titleSpacing: 0,
         leading: Padding(
@@ -77,7 +77,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Text("共 ${stories.length} 条", style: appBoldTextStyle(fontSize: 18,color: Colors.black45)),
+                    child: Text("共 ${stories.length} 条", style: appMainBoldTextStyle(fontSize: 18,color: Colors.black45)),
                   ),
                   Spacer(),
                 ],
@@ -135,7 +135,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text(title, style: appPrimaryTextStyle(fontSize: 14)), Divider()],
+        children: [Text(title, style: appMainPrimaryTextStyle(fontSize: 14)), Divider()],
       ),
       value: value,
     );

@@ -27,7 +27,7 @@ class _FilesScreenState extends State<FilesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Files"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         elevation: 0,
         titleSpacing: 0,
         leading: Padding(
@@ -57,7 +57,7 @@ class _FilesScreenState extends State<FilesScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Text("Total ${recentFilesList.length} files", style: appBoldTextStyle(fontSize: 18)),
+                    child: Text("Total ${recentFilesList.length} files", style: appMainBoldTextStyle(fontSize: 18)),
                   ),
                   Spacer(),
                   PopupMenuButton(
@@ -118,7 +118,7 @@ class _FilesScreenState extends State<FilesScreen> {
                                 children: [
                                   Text(
                                     recentFilesList[index].titleText.toString(),
-                                    style: appPrimaryTextStyle(),
+                                    style: appMainPrimaryTextStyle(),
                                     overflow: TextOverflow.fade,
                                   ),
                                   SizedBox(height: 8),
@@ -127,11 +127,11 @@ class _FilesScreenState extends State<FilesScreen> {
                                       children: [
                                         Image.asset(document_image, color: Colors.grey, height: 15, width: 15),
                                         SizedBox(width: 8),
-                                        Text(" 0 files", style: appSecondaryTextStyle()),
+                                        Text(" 0 files", style: appMainSecondaryTextStyle()),
                                       ],
                                     ),
                                   SizedBox(height: 8),
-                                  Text("${recentFilesList[index].date}  ${recentFilesList[index].time}", style: appSecondaryTextStyle()),
+                                  Text("${recentFilesList[index].date}  ${recentFilesList[index].time}", style: appMainSecondaryTextStyle()),
                                 ],
                               ),
                             ),
@@ -223,7 +223,7 @@ class _FilesScreenState extends State<FilesScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text(title, style: appPrimaryTextStyle(fontSize: 14)), Divider()],
+        children: [Text(title, style: appMainPrimaryTextStyle(fontSize: 14)), Divider()],
       ),
       value: value,
     );

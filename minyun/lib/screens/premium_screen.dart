@@ -25,7 +25,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Premium"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.all(12.0),
@@ -62,9 +62,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: " \$${premiumOptionList[index].amount.toString()}",
-                      style: appBoldTextStyle(fontSize: 30, color: Colors.white),
+                      style: appMainBoldTextStyle(fontSize: 30, color: Colors.white),
                       children: [
-                        TextSpan(text: "  / ${premiumOptionList[index].months} months", style: appBoldTextStyle(fontSize: 16, color: Colors.white)),
+                        TextSpan(text: "  / ${premiumOptionList[index].months} months", style: appMainBoldTextStyle(fontSize: 16, color: Colors.white)),
                       ],
                     ),
                   ),
@@ -72,7 +72,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   Text(
                     "Go Premium, and enjoy the benefits",
                     textAlign: TextAlign.center,
-                    style: appPrimaryTextStyle(color: Colors.white),
+                    style: appMainPrimaryTextStyle(color: Colors.white),
                   ),
                   SizedBox(height: 16),
                   Divider(thickness: 2, color: Colors.white),
@@ -95,7 +95,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                                 child: Text(
                                   premiumDetailsList[index],
                                   overflow: TextOverflow.ellipsis,
-                                  style: appPrimaryTextStyle(fontSize: 14, color: Colors.white),
+                                  style: appMainPrimaryTextStyle(fontSize: 14, color: Colors.white),
                                 ),
                               )
                             ],

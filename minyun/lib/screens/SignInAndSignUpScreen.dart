@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minyun/main.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -48,7 +49,7 @@ class SignInAndSignUpScreenState extends State<SignInAndSignUpScreen> {
           ).cornerRadiusWithClipRRect(24),
           16.height,
           AppButton(
-            child: Text('Sign up', style: primaryTextStyle(color: Colors.white)),
+            child: Text('Sign up', style: appMainPrimaryTextStyle(color: Colors.white)),
             color: mpAppButtonColor,
             width: context.width(),
             onTap: () {
@@ -57,7 +58,7 @@ class SignInAndSignUpScreenState extends State<SignInAndSignUpScreen> {
             },
           ).cornerRadiusWithClipRRect(24),
           16.height,
-          Text('Terms of Service', style: primaryTextStyle(color: mpAppButtonColor, size: 14))
+          Text('Terms of Service', style: appMainPrimaryTextStyle(color: mpAppButtonColor, fontSize: 14))
         ],
       ).paddingSymmetric(horizontal: 16),
     );

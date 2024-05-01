@@ -24,7 +24,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Select Payment Method"),
-        titleTextStyle: appBoldTextStyle(fontSize: 24),
+        titleTextStyle: appMainBoldTextStyle(fontSize: 24),
         elevation: 0,
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
         actions: [
@@ -63,7 +63,7 @@ class _SelectPaymentScreenState extends State<SelectPaymentScreen> {
                       },
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 8),
-                        title: Text(paymentOptions[index].title ?? "", style: appBoldTextStyle(fontSize: 18)),
+                        title: Text(paymentOptions[index].title ?? "", style: appMainBoldTextStyle(fontSize: 18)),
                         leading: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Image.asset(paymentOptions[index].image ?? "", height: 35, width: 35),

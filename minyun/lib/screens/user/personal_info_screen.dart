@@ -40,7 +40,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       appBar: AppBar(
         title: Text(
           "个人信息",
-          style: appBoldTextStyle(fontSize: 24),
+          style: appMainBoldTextStyle(fontSize: 24),
         ),
         elevation: 0,
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),

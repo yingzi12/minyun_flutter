@@ -18,7 +18,7 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "关于命运",
-          style: appBoldTextStyle(fontSize: 24),
+          style: appMainBoldTextStyle(fontSize: 24),
         ),
         elevation: 0,
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 32),
-            Text("命运 v9.5.7", style: appBoldTextStyle(fontSize: 18)),
+            Text("命运 v9.5.7", style: appMainBoldTextStyle(fontSize: 18)),
             SizedBox(height: 24),
             Divider(indent: 16, endIndent: 16),
             ListView.builder(
@@ -55,7 +55,7 @@ class AboutScreen extends StatelessWidget {
                     // color: Colors.red,
                     child: Row(
                       children: [
-                        Expanded(child: Text(aboutScreenList[index], style: appPrimaryTextStyle())),
+                        Expanded(child: Text(aboutScreenList[index], style: appMainPrimaryTextStyle())),
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mode.theme ? Colors.white : Colors.black54,

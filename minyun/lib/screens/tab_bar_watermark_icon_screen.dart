@@ -22,7 +22,7 @@ class TabBarWatermarkIconScreen extends StatelessWidget {
             color: primaryColor,
             borderRadius: BorderRadius.circular(DEFAULT_RADIUS),
           ),
-          child: Text("Select Icon", style: appPrimaryTextStyle(color: Colors.white), textAlign: TextAlign.center),
+          child: Text("Select Icon", style: appMainPrimaryTextStyle(color: Colors.white), textAlign: TextAlign.center),
         ),
         SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
       ],

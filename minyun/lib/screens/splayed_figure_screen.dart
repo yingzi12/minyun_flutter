@@ -9,13 +9,13 @@ import 'package:intl/intl.dart';
 import 'package:lunar/lunar.dart';
 import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/constant.dart';
-import 'package:minyun/models/ResultModel.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
-import 'package:minyun/models/analyze_eight_char_modell.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/splayed_figure_detail_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
+import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../utils/images.dart';
@@ -46,7 +46,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   //排盘 是否专业
   int _selectedPaipanValue=1;
   //是否保存
-  int _selectedSaveValue=1;
+  int _selectedSaveValue=2;
 
   //晚子时
   int _selectedLateValue=1;
@@ -598,9 +598,40 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                     contentPadding: EdgeInsets.zero,
                     title: Text('保存'),
                     onChanged: (value) {
-                      setState(() {
-                        _selectedSaveValue = value as int;
-                      });
+                      var token =  SecureStorage().getLoginToken();
+
+                      if(token ==null){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            // 返回一个对话框
+                            return AlertDialog(
+                              title: new Text("警告"),
+                              content: new Text("只有登陆之后才能保存，点击取消继续，点击确定跳转登陆页面"),
+                              // preferredSize: Size.fromHeight(200.0), // 可选，设置对话框的大小
+                              actions: <Widget>[
+                                // 通常是按钮
+                                new TextButton(
+                                  child: new Text("取消"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                new TextButton(
+                                  child: new Text("登陆"),
+                                  onPressed: () {
+                                    TabBarSignInScreen(0).launch(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }else {
+                        setState(() {
+                          _selectedSaveValue = value as int;
+                        });
+                      }
                     },
                   ),
                 ),

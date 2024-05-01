@@ -21,7 +21,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Preferences", style: appBoldTextStyle(fontSize: 24)),
+        title: Text("Preferences", style: appMainBoldTextStyle(fontSize: 24)),
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
       ),
       body: SingleChildScrollView(
@@ -29,7 +29,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormFieldLabelText(text: "Scan", style: appBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
+              child: TextFormFieldLabelText(text: "Scan", style: appMainBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
             ),
             SizedBox(height: 8),
             ListView.builder(
@@ -45,7 +45,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                     padding: const EdgeInsets.only(left: 16, right: 8),
                     child: Row(
                       children: [
-                        Text(preferenceScreenList[index].title!, style: appPrimaryTextStyle()),
+                        Text(preferenceScreenList[index].title!, style: appMainPrimaryTextStyle()),
                         Spacer(),
                         preferenceScreenList[index].isSwitch == true
                             ? Switch(
@@ -76,7 +76,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             SizedBox(height: 16),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormFieldLabelText(text: "File Naming", style: appBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
+              child: TextFormFieldLabelText(text: "File Naming", style: appMainBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
             ),
             SizedBox(height: 8),
             GestureDetector(
@@ -92,7 +92,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormFieldLabelText(text: "Files & Storage", style: appBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
+              child: TextFormFieldLabelText(text: "Files & Storage", style: appMainBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
             ),
             SizedBox(height: 8),
             GestureDetector(
@@ -103,7 +103,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 padding: EdgeInsets.only(left: 16, right: 8),
                 child: Row(
                   children: [
-                    Text("Save Original Image to Gallery ", style: appPrimaryTextStyle()),
+                    Text("Save Original Image to Gallery ", style: appMainPrimaryTextStyle()),
                     Spacer(),
                     Switch(
                       value: isTappedForGallery,
@@ -134,7 +134,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormFieldLabelText(text: "Payment & Subscriptions", style: appBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
+              child: TextFormFieldLabelText(text: "Payment & Subscriptions", style: appMainBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
             ),
             SizedBox(height: 8),
             GestureDetector(
@@ -153,7 +153,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormFieldLabelText(text: "Cloud & Sync", style: appBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
+              child: TextFormFieldLabelText(text: "Cloud & Sync", style: appMainBoldTextStyle(color: mode.theme ? Colors.white : Colors.grey)),
             ),
             SizedBox(height: 8),
             GestureDetector(
@@ -179,7 +179,7 @@ class preferencesTile extends StatelessWidget {
       padding: EdgeInsets.only(left: 16, right: 8),
       child: Row(
         children: [
-          Text(title, style: appPrimaryTextStyle()),
+          Text(title, style: appMainPrimaryTextStyle()),
           Spacer(),
           IconButton(onPressed: () {}, splashRadius: 1, icon: Icon(Icons.arrow_forward_ios, size: 20)),
         ],

@@ -27,15 +27,15 @@ class MergePdfScreen extends StatelessWidget {
               children: [
                 Text(
                   "Merge PDF",
-                  style: appBoldTextStyle(fontSize: 30),
+                  style: appMainBoldTextStyle(fontSize: 30),
                   // textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 16),
-                Text("2 Selected files to be merged", style: appSecondaryTextStyle(fontSize: 16)),
+                Text("2 Selected files to be merged", style: appMainSecondaryTextStyle(fontSize: 16)),
                 SizedBox(height: 8),
                 Divider(),
                 SizedBox(height: 8),
-                TextFormFieldLabelText(text: "File Name", style: appBoldTextStyle()),
+                TextFormFieldLabelText(text: "File Name", style: appMainBoldTextStyle()),
                 TextFormField(
                   decoration: inputDecoration(hintText: "Enter file name"),
                 ),
@@ -70,12 +70,12 @@ class MergePdfScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     dashboardFilesList[index].titleText.toString(),
-                                    style: appBoldTextStyle(),
+                                    style: appMainBoldTextStyle(),
                                     overflow: TextOverflow.fade,
                                   ),
                                   SizedBox(height: 16),
                                   Text("${dashboardFilesList[index].date}  ${dashboardFilesList[index].time}",
-                                      style: appSecondaryTextStyle(fontSize: 12)),
+                                      style: appMainSecondaryTextStyle(fontSize: 12)),
                                 ],
                               ),
                             ),

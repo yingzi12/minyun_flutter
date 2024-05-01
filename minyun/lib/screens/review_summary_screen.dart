@@ -26,7 +26,7 @@ class ReviewSummaryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Review Summary",
-          style: appBoldTextStyle(fontSize: 24),
+          style: appMainBoldTextStyle(fontSize: 24),
         ),
         elevation: 0,
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
@@ -49,24 +49,24 @@ class ReviewSummaryScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Subscription plan", style: appSecondaryTextStyle(fontSize: 18)),
-                        Text("$months months", style: appBoldTextStyle(fontSize: 18))
+                        Text("Subscription plan", style: appMainSecondaryTextStyle(fontSize: 18)),
+                        Text("$months months", style: appMainBoldTextStyle(fontSize: 18))
                       ],
                     ),
                     SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Amount", style: appSecondaryTextStyle(fontSize: 18)),
-                        Text(amount, style: appBoldTextStyle(fontSize: 18)),
+                        Text("Amount", style: appMainSecondaryTextStyle(fontSize: 18)),
+                        Text(amount, style: appMainBoldTextStyle(fontSize: 18)),
                       ],
                     ),
                     SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Tax", style: appSecondaryTextStyle(fontSize: 18)),
-                        Text("\$$tax", style: appBoldTextStyle(fontSize: 18)),
+                        Text("Tax", style: appMainSecondaryTextStyle(fontSize: 18)),
+                        Text("\$$tax", style: appMainBoldTextStyle(fontSize: 18)),
                       ],
                     ),
                     SizedBox(height: 16),
@@ -75,8 +75,8 @@ class ReviewSummaryScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Amount", style: appSecondaryTextStyle(fontSize: 18)),
-                        Text("\$${total.toString().substring(0, 4)}", style: appBoldTextStyle(fontSize: 18)),
+                        Text("Total Amount", style: appMainSecondaryTextStyle(fontSize: 18)),
+                        Text("\$${total.toString().substring(0, 4)}", style: appMainBoldTextStyle(fontSize: 18)),
                       ],
                     ),
                     SizedBox(height: 16),
@@ -94,12 +94,12 @@ class ReviewSummaryScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Payment Method", style: appBoldTextStyle(fontSize: 18)),
+                    Text("Payment Method", style: appMainBoldTextStyle(fontSize: 18)),
                     SizedBox(height: 16),
                     Divider(),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: Text(paymentMethod, style: appBoldTextStyle(fontSize: 18)),
+                      title: Text(paymentMethod, style: appMainBoldTextStyle(fontSize: 18)),
                       leading: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Image.asset(image, height: 36, width: 36),
@@ -110,7 +110,7 @@ class ReviewSummaryScreen extends StatelessWidget {
                         },
                         child: Text(
                           "Change",
-                          style: appPrimaryTextStyle(color: primaryColor),
+                          style: appMainPrimaryTextStyle(color: primaryColor),
                         ),
                       ),
                     ),
@@ -149,11 +149,11 @@ class ReviewSummaryScreen extends StatelessWidget {
                             Text(
                               "Welcome to Premium!",
                               textAlign: TextAlign.center,
-                              style: appBoldTextStyle(color: primaryColor, fontSize: 20),
+                              style: appMainBoldTextStyle(color: primaryColor, fontSize: 20),
                             ),
                             SizedBox(height: 16),
                             Text("You have successfully subscribed for $months months premium. Enjoy the benefits.",
-                                style: appSecondaryTextStyle(), textAlign: TextAlign.center),
+                                style: appMainSecondaryTextStyle(), textAlign: TextAlign.center),
                             SizedBox(height: 24),
                             AppButton(
                               text: "Ok",
