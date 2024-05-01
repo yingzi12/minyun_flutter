@@ -28,6 +28,7 @@ class SplayedFigureDetailScreen extends StatefulWidget {
 
 class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  with TickerProviderStateMixin {
 
+  List<String> tabsTiles=["基本","排盘","分析","古籍","点评","资料"];
   SplayedFigureModel? splayedFigureModel;
   late final TabController _tabController;
 
@@ -43,7 +44,7 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: tabsTiles.length, vsync: this);
 
     _refreshApiData();
     // _refreshSdkData();
@@ -150,24 +151,25 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
         bottom: TabBar(
           controller: _tabController,
           tabs: const <Widget>[
+            // for(var tit in tabsTiles)
             Tab(
-              text: '基本信息',
+              text: '基本',
               // icon: Icon(Icons.cloud_outlined),
             ),
             Tab(
-              text: '八字排盘',
+              text: '排盘',
             ),
             Tab(
-              text: '八字分析',
+              text: '分析',
             ),
             Tab(
-              text: '古籍参考',
+              text: '古籍',
             ),
             Tab(
-              text: '大师点评',
+              text: '点评',
             ),
             Tab(
-              text: '个人说明',
+              text: '说明',
             ),
           ],
         ),
@@ -191,8 +193,7 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
                     splayedFigureModel == null ?
                     Center(
                       child: Center(child: Text("加载中"),), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailIntroScreen(
+                    ) : SplayedFigureDetailIntroScreen(
                       search: widget.search,
                       splayedFigureModel: splayedFigureModel!, eightChar: eightChar!,
                     ),
@@ -200,8 +201,7 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
                     splayedFigureModel == null ?
                     Center(
                       child: CircularProgressIndicator(), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailPaipanScreen(
+                    ) : SplayedFigureDetailPaipanScreen(
                       search: widget.search,
                       eightChar: eightChar!,
                       splayedFigureModel: splayedFigureModel!,
@@ -209,16 +209,14 @@ class _SplayedFigureDetailScreenState extends State<SplayedFigureDetailScreen>  
                     splayedFigureModel == null ?
                     Center(
                       child: Center(child: Text("加载中"),), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailAnalyzeScreen(
+                    ) : SplayedFigureDetailAnalyzeScreen(
                       search: widget.search,
                       fx: splayedFigureModel!.fx!,
                     ),
                     splayedFigureModel == null ?
                     Center(
                       child: Center(child: Text("加载中"),), // 加载中的指示器
-                    ) :
-                    SplayedFigureDetailBookScreen(
+                    ) : SplayedFigureDetailBookScreen(
                       search: widget.search,
                       fx: splayedFigureModel!.fx!,
                     ),

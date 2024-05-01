@@ -12,7 +12,6 @@ import '../../models/account_screen_model.dart';
 import 'package:minyun/utils/AppColors.dart';
 import '../../utils/AppCommon.dart';
 import '../../utils/images.dart';
-import '../../utils/lists.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);

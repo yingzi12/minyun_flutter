@@ -12,7 +12,6 @@ import '../../models/account_screen_model.dart';
 import 'package:minyun/utils/AppColors.dart';
 import '../../utils/AppCommon.dart';
 import '../../utils/images.dart';
-import '../../utils/lists.dart';
 
 class eight_char_screen extends StatefulWidget {
   const eight_char_screen({Key? key}) : super(key: key);

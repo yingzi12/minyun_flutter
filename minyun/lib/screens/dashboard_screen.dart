@@ -265,10 +265,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     });
                   },
                   onChanged: (time, lunar) {
-                    // setState(() {
-                    // this.lunar=lunar;
-                    // this.solar=
-                    // });
                     debugPrint("onChanged:${time.toString()} ${lunar.toString()}");
                   },
                 );
@@ -333,10 +329,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   style: TextStyle(fontSize: 100, color: Colors.red),
                 ),
               ),
-              // Text(
-              //   solar.getDay().toString(),
-              //   style: TextStyle(fontSize: 100,color: Colors.red),
-              // ),
             ),
             Flexible(
               flex: 1, // 这里分配3份的空间，相对于前一个和后一个元素更大
@@ -365,12 +357,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       crossAxisAlignment: CrossAxisAlignment.center, // 垂直居中
       children: [
         Expanded(child:SizedBox(),),
-
         Expanded(child: Center(  child:  MongolText.rich(
           getMongolText("年",lunar.getYearGan(),lunar.getYearZhi()),
           textScaleFactor: 2.5,
         ),),),
-
         Expanded(child:Center(  child:MongolText.rich(
           getMongolText("月",lunar.getMonthGan(),lunar.getMonthZhi()),
           textScaleFactor: 2.5,

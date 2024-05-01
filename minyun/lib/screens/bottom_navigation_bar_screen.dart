@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/user/account_screen.dart';
-import 'package:minyun/screens/archives_screen.dart';
+import 'package:minyun/screens/archives/archives_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
 import 'package:minyun/screens/premium_screen.dart';
 import 'package:minyun/screens/splayed_figure_screen.dart';

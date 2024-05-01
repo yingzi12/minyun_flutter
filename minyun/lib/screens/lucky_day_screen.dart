@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:lunar/calendar/Lunar.dart';
 import 'package:lunar/calendar/Solar.dart';
 import 'package:minyun/api/CalendarApi.dart';
-import 'package:minyun/constant.dart';
 import 'package:minyun/models/CalendarModel.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/screens/user/account_screen.dart';
@@ -53,6 +52,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
   @override
   void initState() {
     super.initState();
+
     Solar solar = Solar.fromDate(DateTime.now());
     String startDate = solar.toString();
     String endDate  = solar.nextMonth(3).toString();
@@ -66,11 +66,17 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
   }
 
   Future<void> _refreshApiData(String timely,String start,String end) async {
+    setState(() {
+      dropdownValue = timely;
+      startDate = start;
+      endDate = end;
+    });
     // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
     Map<String, String> queryParams=new HashMap();
     queryParams["timely"] = timely;
     queryParams["startDate"] = start;
     queryParams["endDate"] = end;
+
     ResultListModel<CalendarModel> resultModel = await CalendarApi.getList(queryParams);
     setState(() {
       dropdownValue = timely;
@@ -208,8 +214,8 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                        endDate = formatter.format(endDateTime); // Convert to String representation
                        _refreshApiData(dropdownValue, startDate, endDate);
                      });
-                    BrnToast.show(
-                        "onConfirm:  $startDateTime   $endDateTime     $startlist     $endlist", context);
+                    // BrnToast.show(
+                    //     "onConfirm:  $startDateTime   $endDateTime     $startlist     $endlist", context);
                   }, onClose: () {
                     print("onClose");
                   }, onCancel: () {

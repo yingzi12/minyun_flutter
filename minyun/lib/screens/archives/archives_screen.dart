@@ -13,8 +13,8 @@ import 'package:minyun/screens/dashboard_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:nb_utils/nb_utils.dart';
-import '../utils/AppCommon.dart';
-import '../utils/images.dart';
+import '../../utils/AppCommon.dart';
+import '../../utils/images.dart';
 
 /**
  *档案
@@ -165,7 +165,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                 Row(
                   children: [
                     Text(analyze.name??"", style: TextStyle(fontSize:   20,color: Colors.black)),
-                    CircleBackgroundText(sex ==0 ? "男":"女",sex == '男'?Colors.yellow :Colors.red,30),
+                    CircleBackgroundText(sex ==0 ? "女":"男",sex == '女'?Colors.yellow :Colors.orange,30),
                   ],
                 ),
                 Text(analyze.dateType!.toInt() ==5 ? "${analyze.year}-${analyze.month}-${analyze.day} ${analyze.hour}:00": "${analyze.ng} ${analyze.yg} ${analyze.rg} ${analyze.sg}", style: TextStyle(fontSize:   12,color: Colors.black45)),

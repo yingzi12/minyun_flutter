@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -26,7 +27,7 @@ class HttpUtil {
   static Future<Map<String, dynamic>> get(String path, [Map<String, String>? queryParams]) async {
     if (_isPathForAdmin(path) && !await _hasValidToken()) {
       throw UnauthorizedAccessException(); // 自定义异常
-    }
+    }//http://192.168.0.102:8099/admin/minyun/analyzeEightChar/list?
     var urlPath=path;
     if(!path.startsWith("https")){
       urlPath=baseUrl + path;
@@ -67,11 +68,11 @@ class HttpUtil {
     return _processResponse(response);
   }
   static Map<String, dynamic> _processResponse(http.Response response) {
-    var data = json.decode(response.body);
     if (response.statusCode == 200 ) {
+      var data = json.decode(response.body);
       if (data['code'] != 200) {
-       // print(data['msg']);
-       //  Get.dialog(
+       print(data['msg']);
+        Get.dialog(
           AlertDialog(
             title: Text("错误"),
             content: Text(data['msg']),
@@ -83,10 +84,12 @@ class HttpUtil {
                 },
               ),
             ],
-          );
-        //   barrierDismissible: false, // 点击对话框外部不关闭对话框
-        // );
+          ),
+          barrierDismissible: false, // 点击对话框外部不关闭对话框
+        );
         throw ServiceException(data['code'].toString(),data['msg']);
+      }else{
+        return data;
       }
     }else{
       if(response.statusCode == 401) {
@@ -109,10 +112,15 @@ class HttpUtil {
           ),
           barrierDismissible: false, // 点击对话框外部不关闭对话框
         );
+        debugPrint("${response.statusCode}  ${response.body} ${response.toString()}");
         throw ServiceException('500','服务器连接异常');
       }
     }
-    return data;
+    HashMap<String,dynamic> map=new HashMap();
+    map["code"]=500;
+    map["date"]={};
+
+    return map;
   }
 
 
@@ -157,7 +165,6 @@ class HttpUtil {
           file.path,
         ),
       );
-
     var response = await request.send();
     if (response.statusCode == HttpStatus.ok) {
       // 将响应数据转换为字符串

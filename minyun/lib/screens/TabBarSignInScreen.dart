@@ -215,7 +215,6 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
                   children: [
                     socialButton(btnText: "返回首页", btnBgColor: mpFacebookBtnBgColor,onTap: ()=>{
                 BottomNavigationBarScreen(itemIndex: 0).launch(context)
-                    // DashBoardScreen().launch(context)
                     }),
                     // 24.width,
                     // socialButton(btnText: "Twitter", btnBgColor: mpTwitterBtnBgColor),
