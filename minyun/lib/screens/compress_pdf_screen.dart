@@ -37,14 +37,14 @@ class _CompressPdfScreenState extends State<CompressPdfScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     "Compress PDF",
-                    style: boldTextStyle(fontSize: 30),
+                    style: appBoldTextStyle(fontSize: 30),
                     // textAlign: TextAlign.left,
                   ),
                 ),
                 SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Reduce the size of your PDF file.", style: primaryTextStyle(fontSize: 16)),
+                  child: Text("Reduce the size of your PDF file.", style: appPrimaryTextStyle(fontSize: 16)),
                 ),
                 SizedBox(height: 16),
                 Padding(
@@ -72,9 +72,9 @@ class _CompressPdfScreenState extends State<CompressPdfScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(widget.cardTitleText!, style: boldTextStyle(), overflow: TextOverflow.fade),
+                            Text(widget.cardTitleText!, style: appBoldTextStyle(), overflow: TextOverflow.fade),
                             SizedBox(height: 16),
-                            Text("${widget.date} ${widget.time}", style: secondaryTextStyle(fontSize: 12)),
+                            Text("${widget.date} ${widget.time}", style: appSecondaryTextStyle(fontSize: 12)),
                           ],
                         ),
                       ),
@@ -91,7 +91,7 @@ class _CompressPdfScreenState extends State<CompressPdfScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     "Select compression level:",
-                    style: boldTextStyle(fontSize: 18),
+                    style: appBoldTextStyle(fontSize: 18),
                     // textAlign: TextAlign.left,
                   ),
                 ),
@@ -99,7 +99,7 @@ class _CompressPdfScreenState extends State<CompressPdfScreen> {
                 RadioListTile(
                   activeColor: primaryColor,
                   contentPadding: EdgeInsets.symmetric(horizontal: 4),
-                  title: Text("High Compression", style: boldTextStyle(fontSize: 18)),
+                  title: Text("High Compression", style: appBoldTextStyle(fontSize: 18)),
                   subtitle: Text("Smallest size, lower quality"),
                   value: "High Compression",
                   groupValue: selectedRadioButton,
@@ -111,7 +111,7 @@ class _CompressPdfScreenState extends State<CompressPdfScreen> {
                 RadioListTile(
                   activeColor: primaryColor,
                   contentPadding: EdgeInsets.symmetric(horizontal: 4),
-                  title: Text("Medium Compression", style: boldTextStyle(fontSize: 18)),
+                  title: Text("Medium Compression", style: appBoldTextStyle(fontSize: 18)),
                   subtitle: Text("Medium size, medium quality"),
                   value: "Medium Compression",
                   groupValue: selectedRadioButton,
@@ -123,7 +123,7 @@ class _CompressPdfScreenState extends State<CompressPdfScreen> {
                 RadioListTile(
                   activeColor: primaryColor,
                   contentPadding: EdgeInsets.symmetric(horizontal: 4),
-                  title: Text("Low Compression", style: boldTextStyle(fontSize: 18)),
+                  title: Text("Low Compression", style: appBoldTextStyle(fontSize: 18)),
                   subtitle: Text("Largest size, better quality"),
                   value: "Low Compression",
                   groupValue: selectedRadioButton,

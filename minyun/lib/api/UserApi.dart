@@ -22,9 +22,9 @@ class UserApi{
 
   static String random ="/systemUser/random";
 
-  static String loginUrl ="/systemUser/loginModile";
+  static String loginUrl ="/loginModile";
 
-  static String regisUrl ="/systemUser/regis";
+  static String regisUrl ="/registerModile";
 
   static String logutUrl ="/admin/systemUser/logout";
 

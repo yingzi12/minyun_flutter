@@ -27,7 +27,7 @@ Future<dynamic> DeleteFileBottomSheetComponent(
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("Delete", style: boldTextStyle(fontSize: 24, color: Colors.red)),
+              Text("Delete", style: appBoldTextStyle(fontSize: 24, color: Colors.red)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),
@@ -50,9 +50,9 @@ Future<dynamic> DeleteFileBottomSheetComponent(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(cardTitleText, style: boldTextStyle(), overflow: TextOverflow.fade),
+                          Text(cardTitleText, style: appBoldTextStyle(), overflow: TextOverflow.fade),
                           SizedBox(height: 16),
-                          Text("${date} ${time}", style: secondaryTextStyle(fontSize: 12)),
+                          Text("${date} ${time}", style: appSecondaryTextStyle(fontSize: 12)),
                         ],
                       ),
                     ),
@@ -62,7 +62,7 @@ Future<dynamic> DeleteFileBottomSheetComponent(
               SizedBox(height: 16),
               Text(
                 "Are you sure you want to delete this file?",
-                style: boldTextStyle(color: mode.theme ? Colors.white : Color(0xFF1A1818)),
+                style: appBoldTextStyle(color: mode.theme ? Colors.white : Color(0xFF1A1818)),
               ),
               SizedBox(height: 16),
               Divider(),

@@ -34,7 +34,7 @@ class ContactUsScreen extends StatelessWidget {
                   SizedBox(width: 16),
                   Text(
                     contactUsList[index].title!,
-                    style: primaryTextStyle(),
+                    style: appPrimaryTextStyle(),
                   )
                 ],
               ),

@@ -85,7 +85,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   children: [
                     Text(
                       "You've got mail",
-                      style: boldTextStyle(fontSize: 24),
+                      style: appBoldTextStyle(fontSize: 24),
                     ),
                     SizedBox(width: 8),
                     Image.asset(
@@ -100,7 +100,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "We have sent the OTP verification code to your email address. Check your email and enter the code below.",
-                    style: secondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
+                    style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                   ),
                 ),
                 SizedBox(height: 24),
@@ -230,20 +230,20 @@ class _OtpScreenState extends State<OtpScreen> {
                   ],
                 ),
                 SizedBox(height: 24),
-                Text("Didn't receive an email?", style: primaryTextStyle()),
+                Text("Didn't receive an email?", style: appPrimaryTextStyle()),
                 SizedBox(height: 18),
                 RichText(
                   text: TextSpan(
                     text: "You can resend code in",
-                    style: primaryTextStyle(),
+                    style: appPrimaryTextStyle(),
                     children: [
                       TextSpan(
                         text: " $_start ",
-                        style: primaryTextStyle(color: primaryColor),
+                        style: appPrimaryTextStyle(color: primaryColor),
                       ),
                       TextSpan(
                         text: "s",
-                        style: primaryTextStyle(),
+                        style: appPrimaryTextStyle(),
                       )
                     ],
                   ),

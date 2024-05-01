@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 
 import '../screens/sign_in_screen.dart';
@@ -29,13 +30,13 @@ Future<dynamic> LogoutBottomSheet(BuildContext context) {
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("Logout", style: boldTextStyle(fontSize: 24, color: Colors.redAccent)),
+              Text("Logout", style: appBoldTextStyle(fontSize: 24, color: Colors.redAccent)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),
               Text(
                 "Are you sure you want to log out?",
-                style: primaryTextStyle(),
+                style: appPrimaryTextStyle(),
               ),
               SizedBox(height: 24),
               Row(
@@ -55,7 +56,7 @@ Future<dynamic> LogoutBottomSheet(BuildContext context) {
                     child: AppButton(
                       text: "Yes, Logout",
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => TabBarSignInScreen(0)));
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Logout")));
                       },
                     ),

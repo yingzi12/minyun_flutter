@@ -89,14 +89,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Row(
                   children: [
-                    Text("Complete your profile", style: boldTextStyle(fontSize: 24)),
+                    Text("Complete your profile", style: appBoldTextStyle(fontSize: 24)),
                     Image.asset(profile_image, height: 30, width: 30),
                   ],
                 ),
                 SizedBox(height: 16),
                 Text(
                   "Don't worry, only you can see your personal data. No one else will be able to see it.",
-                  style: secondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
+                  style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                 ),
                 SizedBox(height: 24),
                 Stack(

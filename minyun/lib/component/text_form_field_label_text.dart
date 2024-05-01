@@ -8,6 +8,6 @@ class TextFormFieldLabelText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(alignment: Alignment.centerLeft, child: Text(text, style: style ?? boldTextStyle()));
+    return Align(alignment: Alignment.centerLeft, child: Text(text, style: style ?? appBoldTextStyle()));
   }
 }

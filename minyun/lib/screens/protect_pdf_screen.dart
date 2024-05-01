@@ -54,13 +54,13 @@ class _ProtectPdfScreenState extends State<ProtectPdfScreen> {
               children: [
                 Text(
                   "Protect PDF",
-                  style: boldTextStyle(fontSize: 30),
+                  style: appBoldTextStyle(fontSize: 30),
                   // textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 16),
                 Text(
                     "Set a password to protect your scan. This password will be required if you or the person you provide the scanned document wants to access the file. If you forget the password, then this file will not be accessible forever.",
-                    style: secondaryTextStyle(fontSize: 16)),
+                    style: appSecondaryTextStyle(fontSize: 16)),
                 SizedBox(height: 8),
                 Divider(),
                 SizedBox(height: 8),

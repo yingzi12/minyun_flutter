@@ -19,7 +19,7 @@ class MoveToFolderScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Move to Folder"),
-        titleTextStyle: boldTextStyle(fontSize: 24),
+        titleTextStyle: appBoldTextStyle(fontSize: 24),
         elevation: 0,
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
       ),
@@ -32,7 +32,7 @@ class MoveToFolderScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    Text("Total ${dashboardFilesList.length} files", style: boldTextStyle(fontSize: 18)),
+                    Text("Total ${dashboardFilesList.length} files", style: appBoldTextStyle(fontSize: 18)),
                     Spacer(),
                     IconButton(
                       onPressed: () {},
@@ -85,9 +85,9 @@ class MoveToFolderScreen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(dashboardFilesList[index].titleText.toString(), style: primaryTextStyle(), overflow: TextOverflow.fade),
+                                  Text(dashboardFilesList[index].titleText.toString(), style: appPrimaryTextStyle(), overflow: TextOverflow.fade),
                                   SizedBox(height: 16),
-                                  Text("${dashboardFilesList[index].date}  ${dashboardFilesList[index].time}", style: secondaryTextStyle()),
+                                  Text("${dashboardFilesList[index].date}  ${dashboardFilesList[index].time}", style: appSecondaryTextStyle()),
                                 ],
                               ),
                             ),

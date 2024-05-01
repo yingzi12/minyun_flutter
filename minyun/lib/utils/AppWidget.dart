@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -13,7 +14,7 @@ bool value = true;
 InputDecoration buildInputDecoration(String name) {
   return InputDecoration(
     hintText: name,
-    hintStyle: primaryTextStyle(color: white),
+    hintStyle: appPrimaryTextStyle(color: white),
     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide(color: viewLineColor, width: 0.5)),
     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide(color: viewLineColor, width: 0.5)),
   );
@@ -36,9 +37,9 @@ InputDecoration buildInputDecoration(String name) {
 //             Column(
 //               crossAxisAlignment: CrossAxisAlignment.start,
 //               children: [
-//                 Text("You Are Free", style: boldTextStyle(color: white.withOpacity(0.8))),
+//                 Text("You Are Free", style: appBoldTextStyle(color: white.withOpacity(0.8))),
 //                 4.height,
-//                 Text(" Bally Wonger", maxLines: 2, overflow: TextOverflow.ellipsis, style: secondaryTextStyle(color: mpAppTextColor1)),
+//                 Text(" Bally Wonger", maxLines: 2, overflow: TextOverflow.ellipsis, style: appSecondaryTextStyle(color: mpAppTextColor1)),
 //               ],
 //             ).expand(),
 //             Row(
@@ -67,7 +68,7 @@ Widget editProfileWidget({required String title, required String uName}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(title, style: primaryTextStyle(color: Colors.white)),
+      Text(title, style: appPrimaryTextStyle(color: Colors.white)),
       Text(uName, style: secondaryTextStyle(color: Colors.white.withOpacity(0.7), size: 14)),
     ],
   );
@@ -82,7 +83,7 @@ Widget editProfileIconWidget({required String title, IconData? icon, VoidCallbac
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: primaryTextStyle(color: Colors.white)),
+          Text(title, style: appPrimaryTextStyle(color: Colors.white)),
           Icon(icon, color: white, size: 20),
         ],
       ),
@@ -121,7 +122,7 @@ class EditProfileSwitchWidgetState extends State<EditProfileSwitchWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(widget.name!, style: primaryTextStyle(color: Colors.white)),
+        Text(widget.name!, style: appPrimaryTextStyle(color: Colors.white)),
         Switch(
           activeColor: white,
           activeTrackColor: mpAppButtonColor,
@@ -149,7 +150,7 @@ Widget searchIconWidget({Function? onPressed}) {
 
 Widget socialButton({String? btnText, Function? onTap, Color? btnBgColor}) {
   return Container(
-    child: Text(btnText!, style: primaryTextStyle(color: Colors.white)),
+    child: Text(btnText!, style: appPrimaryTextStyle(color: Colors.white)),
     width: 120,
     height: 50,
     alignment: Alignment.center,
@@ -171,7 +172,7 @@ Widget socialButton({String? btnText, Function? onTap, Color? btnBgColor}) {
 //     alignment: Alignment.topLeft,
 //     child: AppTextField(
 //       controller: TextEditingController(),
-//       textStyle: primaryTextStyle(color: Colors.white.withOpacity(0.4)),
+//       textStyle: appPrimaryTextStyle(color: Colors.white.withOpacity(0.4)),
 //       textFieldType: TextFieldType.EMAIL,
 //       textAlign: TextAlign.start,
 //       onFieldSubmitted: (value) {
@@ -184,7 +185,7 @@ Widget socialButton({String? btnText, Function? onTap, Color? btnBgColor}) {
 //         prefixIcon: Icon(Icons.search, color: Colors.white.withOpacity(0.2)),
 //         fillColor: mpSearchBarBackGroundColor,
 //         hintText: '搜索 图集, 现在...',
-//         hintStyle: primaryTextStyle(color: Colors.white.withOpacity(0.4)),
+//         hintStyle: appPrimaryTextStyle(color: Colors.white.withOpacity(0.4)),
 //         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25.7)),
 //         enabledBorder: UnderlineInputBorder(borderRadius: BorderRadius.circular(25.7)),
 //       ),
@@ -260,7 +261,7 @@ Widget redirectionButtonContainer({
     width: width ?? 100,
     alignment: Alignment.center,
     decoration: BoxDecoration(color: color ?? Colors.red, borderRadius: BorderRadius.circular(borderRadius ?? 4)),
-    child: Text(title!, style: boldTextStyle(color: Colors.white)),
+    child: Text(title!, style: appBoldTextStyle(color: Colors.white)),
   );
 }
 
@@ -565,7 +566,7 @@ Widget placeholderWidget() => Image.asset('images/app/placeholder.jpg', fit: Box
 //       children: <Widget>[
 //         Text(
 //           title,
-//           style: boldTextStyle(color: color ?? appStore.textPrimaryColor, size: 20),
+//           style: appBoldTextStyle(color: color ?? appStore.textPrimaryColor, size: 20),
 //           maxLines: 1,
 //         ).expand(),
 //       ],
@@ -620,7 +621,7 @@ Widget placeholderWidget() => Image.asset('images/app/placeholder.jpg', fit: Box
 //         alignment: Alignment.center,
 //         child: Text(
 //           widget.textContent.toUpperCase(),
-//           style: boldTextStyle(color: widget.isStroked ? appColorPrimary : Colors.white),
+//           style: appBoldTextStyle(color: widget.isStroked ? appColorPrimary : Colors.white),
 //         ).center(),
 //         decoration: widget.isStroked
 //             ? boxDecoration(
@@ -642,7 +643,7 @@ Widget bankingOption(var icon, var heading, Color color) {
           children: <Widget>[
             Image.asset(icon, color: color, height: 20, width: 20),
             16.width,
-            Text(heading, style: primaryTextStyle()),
+            Text(heading, style: appPrimaryTextStyle()),
           ],
         ).expand(),
         Icon(Icons.keyboard_arrow_right, color: textColorSecondary),
@@ -683,14 +684,14 @@ class TopCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title1, style: secondaryTextStyle(size: 16)).paddingOnly(left: 8, top: 8, bottom: 8),
-              Text(acno, style: primaryTextStyle(color: Colors.yellow)).paddingOnly(right: 8, top: 8, bottom: 8),
+              Text(acno, style: appPrimaryTextStyle(color: Colors.yellow)).paddingOnly(right: 8, top: 8, bottom: 8),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title2, style: secondaryTextStyle(size: 16)).paddingOnly(left: 8, top: 8, bottom: 8),
-              Text(bal, style: primaryTextStyle(color: Colors.green)).paddingOnly(right: 8, top: 8, bottom: 8),
+              Text(bal, style: appPrimaryTextStyle(color: Colors.green)).paddingOnly(right: 8, top: 8, bottom: 8),
             ],
           )
         ],
@@ -738,10 +739,10 @@ class EditTextState extends State<EditText> {
         obscureText: widget.isPassword,
         cursorColor: appColorPrimary,
         maxLines: widget.maxLine,
-        style: primaryTextStyle(),
+        style: appPrimaryTextStyle(),
         decoration: InputDecoration(
           hintText: widget.text,
-          hintStyle: primaryTextStyle(),
+          hintStyle: appPrimaryTextStyle(),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: appColorPrimary, width: 0.5)),
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColorSecondary, width: 0.5)),
         ),
@@ -751,10 +752,10 @@ class EditTextState extends State<EditText> {
         controller: widget.mController,
         obscureText: widget.isPassword,
         cursorColor: appColorPrimary,
-        style: primaryTextStyle(),
+        style: appPrimaryTextStyle(),
         decoration: InputDecoration(
             hintText: widget.text,
-            hintStyle: primaryTextStyle(),
+            hintStyle: appPrimaryTextStyle(),
             suffixIcon: GestureDetector(
               onTap: () {
                 setState(() {

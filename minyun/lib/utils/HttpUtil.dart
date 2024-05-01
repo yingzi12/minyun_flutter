@@ -71,7 +71,7 @@ class HttpUtil {
     if (response.statusCode == 200 ) {
       if (data['code'] != 200) {
        // print(data['msg']);
-        Get.dialog(
+       //  Get.dialog(
           AlertDialog(
             title: Text("错误"),
             content: Text(data['msg']),
@@ -83,9 +83,9 @@ class HttpUtil {
                 },
               ),
             ],
-          ),
-          barrierDismissible: false, // 点击对话框外部不关闭对话框
-        );
+          );
+        //   barrierDismissible: false, // 点击对话框外部不关闭对话框
+        // );
         throw ServiceException(data['code'].toString(),data['msg']);
       }
     }else{

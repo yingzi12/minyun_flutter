@@ -6,6 +6,7 @@ import 'package:minyun/component/CaseComponent.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/case_analyze_model.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -128,7 +129,7 @@ class _CaseScreenState extends State<CaseScreen> {
         ),
         backgroundColor: mpAppBackGroundColor,
         elevation: 0.0,
-        title: Text(title, style: boldTextStyle(color: Colors.white.withOpacity(0.9))),
+        title: Text(title, style: appBoldTextStyle(color: Colors.white.withOpacity(0.9))),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.search,color: Colors.white),

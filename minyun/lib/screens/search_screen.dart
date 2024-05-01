@@ -116,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               children: [
                                 Text(
                                   "Previous Search",
-                                  style: boldTextStyle(fontSize: 18),
+                                  style: appBoldTextStyle(fontSize: 18),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -125,7 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   },
                                   child: Text(
                                     "Clear All",
-                                    style: boldTextStyle(fontSize: 18, color: primaryColor),
+                                    style: appBoldTextStyle(fontSize: 18, color: primaryColor),
                                   ),
                                 ),
                               ],
@@ -147,7 +147,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   children: [
                                     Text(
                                       searchList[index],
-                                      style: secondaryTextStyle(fontSize: 18),
+                                      style: appSecondaryTextStyle(fontSize: 18),
                                       overflow: TextOverflow.fade,
                                     ),
                                     IconButton(
@@ -172,7 +172,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ?
 
                     /// if data found
-                    Text("Data found", style: boldTextStyle())
+                    Text("Data found", style: appBoldTextStyle())
 
                     /// end
                     : Column(
@@ -182,13 +182,13 @@ class _SearchScreenState extends State<SearchScreen> {
                             width: width * 1,
                             height: height * 0.5,
                           ),
-                          Text("Not Found", style: boldTextStyle(fontSize: 24)),
+                          Text("Not Found", style: appBoldTextStyle(fontSize: 24)),
                           SizedBox(height: 16),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               "We're sorry, the keyword you were looking for could not be found. Please search with another keywords.",
-                              style: primaryTextStyle(),
+                              style: appPrimaryTextStyle(),
                               textAlign: TextAlign.center,
                             ),
                           )

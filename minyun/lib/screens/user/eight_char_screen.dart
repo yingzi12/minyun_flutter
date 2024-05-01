@@ -33,7 +33,7 @@ class _eight_char_screenState extends State<eight_char_screen> {
         return Scaffold(
           appBar: AppBar(
             title: Text("用户中心"),
-            titleTextStyle: boldTextStyle(fontSize: 24),
+            titleTextStyle: appBoldTextStyle(fontSize: 24),
             elevation: 0,
             titleSpacing: 0,
             leading: Padding(
@@ -86,11 +86,11 @@ class _eight_char_screenState extends State<eight_char_screen> {
                               nameCont.text.length == 0
                                   ? Text(
                                       "这是用户昵称",
-                                      style: boldTextStyle(),
+                                      style: appBoldTextStyle(),
                                     )
                                   : Text(
                                       nameCont.text,
-                                      style: boldTextStyle(),
+                                      style: appBoldTextStyle(),
                                     ),
                               SizedBox(width: 16),
                               Container(
@@ -102,14 +102,14 @@ class _eight_char_screenState extends State<eight_char_screen> {
                                 ),
                                 child: Text(
                                   "1级会员",
-                                  style: secondaryTextStyle(color: primaryColor, fontSize: 10),
+                                  style: appSecondaryTextStyle(color: primaryColor, fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text("这是简介，这是简介", style: secondaryTextStyle()),
+                          Text("这是简介，这是简介", style: appSecondaryTextStyle()),
                           // SizedBox(height: 8),
                           // Container(
                           //   height: 8,
@@ -153,9 +153,9 @@ class _eight_char_screenState extends State<eight_char_screen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Go to Premium!", style: boldTextStyle(fontSize: 18, color: Colors.white)),
+                          Text("Go to Premium!", style: appBoldTextStyle(fontSize: 18, color: Colors.white)),
                           SizedBox(height: 8),
-                          Text("Enjoy all the benefits", style: secondaryTextStyle(color: Colors.white)),
+                          Text("Enjoy all the benefits", style: appSecondaryTextStyle(color: Colors.white)),
                         ],
                       ),
                       Spacer(),
@@ -176,7 +176,7 @@ class _eight_char_screenState extends State<eight_char_screen> {
                           ),
                           child: Text(
                             "Upgrade",
-                            style: primaryTextStyle(color: primaryColor, fontSize: 16),
+                            style: appPrimaryTextStyle(color: primaryColor, fontSize: 16),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -204,13 +204,13 @@ class _eight_char_screenState extends State<eight_char_screen> {
                           children: [
                             Image.asset(accountOptions[index].image ?? "", height: 20, width: 20, color: mode.theme ? Colors.white : Colors.black),
                             SizedBox(width: 16),
-                            Text(accountOptions[index].title ?? "", style: primaryTextStyle()),
+                            Text(accountOptions[index].title ?? "", style: appPrimaryTextStyle()),
                             Spacer(),
                             Row(
                               children: [
                                 Text(
                                   accountOptions[index].trailingText ?? "",
-                                  style: primaryTextStyle(),
+                                  style: appPrimaryTextStyle(),
                                 ),
                                 index == accountOptions.length - 1
                                     ? Observer(
@@ -268,14 +268,14 @@ class _eight_char_screenState extends State<eight_char_screen> {
                                     height: 20, width: 20, color: mode.theme ? Colors.white : Colors.black),
                             SizedBox(width: 16),
                             index == 2
-                                ? Text(aboutAppOptions[index].title ?? "", style: primaryTextStyle(color: Colors.redAccent))
-                                : Text(aboutAppOptions[index].title ?? "", style: primaryTextStyle()),
+                                ? Text(aboutAppOptions[index].title ?? "", style: appPrimaryTextStyle(color: Colors.redAccent))
+                                : Text(aboutAppOptions[index].title ?? "", style: appPrimaryTextStyle()),
                             Spacer(),
                             Row(
                               children: [
                                 Text(
                                   aboutAppOptions[index].trailingText ?? "",
-                                  style: primaryTextStyle(),
+                                  style: appPrimaryTextStyle(),
                                 ),
                                 index == 2
                                     ? IconButton(

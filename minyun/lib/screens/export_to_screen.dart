@@ -38,14 +38,14 @@ class _ExportToScreenState extends State<ExportToScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     "Export to...",
-                    style: boldTextStyle(fontSize: 30),
+                    style: appBoldTextStyle(fontSize: 30),
                     textAlign: TextAlign.left,
                   ),
                 ),
                 SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Export \"${widget.export_to_text}\" to...", style: secondaryTextStyle(fontSize: 16)),
+                  child: Text("Export \"${widget.export_to_text}\" to...", style: appSecondaryTextStyle(fontSize: 16)),
                 ),
                 SizedBox(height: 8),
                 Divider(indent: 16, endIndent: 16),
@@ -53,7 +53,7 @@ class _ExportToScreenState extends State<ExportToScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormFieldLabelText(
-                      text: "Documents", style: primaryTextStyle(fontSize: 20, color: mode.theme ? darkTextPrimaryColor : Colors.black45)),
+                      text: "Documents", style: appPrimaryTextStyle(fontSize: 20, color: mode.theme ? darkTextPrimaryColor : Colors.black45)),
                 ),
                 SizedBox(height: 8),
                 ListView.separated(
@@ -80,15 +80,15 @@ class _ExportToScreenState extends State<ExportToScreen> {
                                     overflow: TextOverflow.fade,
                                     text: TextSpan(
                                       text: "${exportScreenDocumentsOptionsList[index].title} ",
-                                      style: primaryTextStyle(),
+                                      style: appPrimaryTextStyle(),
                                       children: [
                                         TextSpan(
                                           text: "${exportScreenDocumentsOptionsList[index].ext} ",
-                                          style: primaryTextStyle(),
+                                          style: appPrimaryTextStyle(),
                                         ),
                                         TextSpan(
                                           text: "${exportScreenDocumentsOptionsList[index].size}",
-                                          style: secondaryTextStyle(),
+                                          style: appSecondaryTextStyle(),
                                         ),
                                       ],
                                     ),
@@ -118,7 +118,7 @@ class _ExportToScreenState extends State<ExportToScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextFormFieldLabelText(
-                      text: "Images", style: primaryTextStyle(fontSize: 20, color: mode.theme ? darkTextPrimaryColor : Colors.black45)),
+                      text: "Images", style: appPrimaryTextStyle(fontSize: 20, color: mode.theme ? darkTextPrimaryColor : Colors.black45)),
                 ),
                 SizedBox(height: 8),
                 ListView.separated(
@@ -144,15 +144,15 @@ class _ExportToScreenState extends State<ExportToScreen> {
                                     overflow: TextOverflow.fade,
                                     text: TextSpan(
                                       text: "${exportScreenImagesOptionsList[index].title} ",
-                                      style: primaryTextStyle(),
+                                      style: appPrimaryTextStyle(),
                                       children: [
                                         TextSpan(
                                           text: "${exportScreenImagesOptionsList[index].ext} ",
-                                          style: primaryTextStyle(),
+                                          style: appPrimaryTextStyle(),
                                         ),
                                         TextSpan(
                                           text: "${exportScreenImagesOptionsList[index].size}",
-                                          style: secondaryTextStyle(),
+                                          style: appSecondaryTextStyle(),
                                         ),
                                       ],
                                     ),

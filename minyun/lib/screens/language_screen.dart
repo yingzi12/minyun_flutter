@@ -20,7 +20,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Language", style: boldTextStyle(fontSize: 24)),
+        title: Text("Language", style: appBoldTextStyle(fontSize: 24)),
         iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
       ),
       body: SingleChildScrollView(
@@ -28,7 +28,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 16, bottom: 8, right: 16, left: 16),
-              child: TextFormFieldLabelText(text: "Suggested", style: boldTextStyle(fontSize: 18)),
+              child: TextFormFieldLabelText(text: "Suggested", style: appBoldTextStyle(fontSize: 18)),
             ),
             ListView.builder(
               itemCount: suggestedList.length,
@@ -46,7 +46,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: Text(suggestedList[index], style: primaryTextStyle()),
+                          child: Text(suggestedList[index], style: appPrimaryTextStyle()),
                         ),
                         Spacer(),
                         Icon(Icons.check,
@@ -67,7 +67,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             Divider(height: 0, indent: 16, endIndent: 16),
             Padding(
               padding: EdgeInsets.only(top: 16, bottom: 8, left: 16, right: 16),
-              child: TextFormFieldLabelText(text: "Language", style: boldTextStyle(fontSize: 18)),
+              child: TextFormFieldLabelText(text: "Language", style: appBoldTextStyle(fontSize: 18)),
             ),
             ListView.builder(
               itemCount: languageList.length,
@@ -86,7 +86,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: Text(languageList[index], style: primaryTextStyle()),
+                          child: Text(languageList[index], style: appPrimaryTextStyle()),
                         ),
                         Spacer(),
                         Icon(Icons.check,

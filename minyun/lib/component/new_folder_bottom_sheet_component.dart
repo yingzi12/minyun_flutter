@@ -34,7 +34,7 @@ Future<dynamic> NewFolderBottomSheetComponent(BuildContext context) {
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("New Folder", style: boldTextStyle(fontSize: 24)),
+              Text("New Folder", style: appBoldTextStyle(fontSize: 24)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),

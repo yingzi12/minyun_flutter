@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/models/walkthrough_model.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
-import 'package:minyun/screens/sign_in_screen.dart';
+// import 'package:minyun/screens/sign_in_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppCommon.dart';
+// import 'package:nb_utils/nb_utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalkthroughScreen extends StatefulWidget {
@@ -42,9 +44,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                         child: Image.asset(WalkthroughPages[index].image.toString(), fit: BoxFit.fill, height: height * 0.5, width: width * 1),
                       ),
                       SizedBox(height: 30),
-                      Text(WalkthroughPages[index].titleText.toString(), style: boldTextStyle(fontSize: 18), textAlign: TextAlign.center),
+                      Text(WalkthroughPages[index].titleText.toString(), style: appBoldTextStyle(fontSize: 18), textAlign: TextAlign.center),
                       SizedBox(height: 8),
-                      Text(WalkthroughPages[index].bodyText.toString(), style: secondaryTextStyle(), textAlign: TextAlign.center),
+                      Text(WalkthroughPages[index].bodyText.toString(), style: appSecondaryTextStyle(), textAlign: TextAlign.center),
                     ],
                   ),
                 );
@@ -72,8 +74,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignInScreen()),
+                            MaterialPageRoute(builder: (context) => TabBarSignInScreen(0)),
                           );
+                          // TabBarSignInScreen(0).launch(context);
                         },
                       )),
                       SizedBox(width: 16),
@@ -82,7 +85,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                           text: "Next",
                           onTap: () {
                             pageIndex == 2
-                                ? Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()))
+                                ? Navigator.push(context, MaterialPageRoute(builder: (context) => TabBarSignInScreen(0)))
                                 : pages.nextPage(duration: Duration(seconds: 1), curve: Curves.decelerate);
                           },
                         ),

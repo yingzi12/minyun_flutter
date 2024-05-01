@@ -54,7 +54,7 @@ class _SignInWithPasswordScreenState extends State<SignInWithPasswordScreen> {
               children: [
                 Row(
                   children: [
-                    Text("Hello there", style: boldTextStyle(fontSize: 24)),
+                    Text("Hello there", style: appBoldTextStyle(fontSize: 24)),
                     SizedBox(width: 8),
                     Image.asset("assets/images/hand.png", height: 30, width: 30),
                   ],
@@ -63,7 +63,7 @@ class _SignInWithPasswordScreenState extends State<SignInWithPasswordScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text("Please enter your email and password to sign in.",
-                      style: secondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black)),
+                      style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black)),
                 ),
                 Column(
                   children: [
@@ -120,7 +120,7 @@ class _SignInWithPasswordScreenState extends State<SignInWithPasswordScreen> {
                     SizedBox(width: 16),
                     Text(
                       "Remember me",
-                      style: boldTextStyle(),
+                      style: appBoldTextStyle(),
                     )
                   ],
                 ),
@@ -133,7 +133,7 @@ class _SignInWithPasswordScreenState extends State<SignInWithPasswordScreen> {
                   },
                   child: Text(
                     "Forgot Password",
-                    style: boldTextStyle(color: primaryColor),
+                    style: appBoldTextStyle(color: primaryColor),
                   ),
                 ),
                 SizedBox(height: 24),
@@ -142,7 +142,7 @@ class _SignInWithPasswordScreenState extends State<SignInWithPasswordScreen> {
                     Expanded(child: Divider()),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text("or continue with", style: secondaryTextStyle()),
+                      child: Text("or continue with", style: appSecondaryTextStyle()),
                     ),
                     Expanded(child: Divider()),
                   ],

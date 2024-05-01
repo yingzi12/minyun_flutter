@@ -60,17 +60,17 @@ Future<dynamic> FolderBottomSheetComponent(BuildContext context, double height, 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(cardTitleText!, style: primaryTextStyle(), overflow: TextOverflow.fade),
+                              Text(cardTitleText!, style: appPrimaryTextStyle(), overflow: TextOverflow.fade),
                               SizedBox(height: 8),
                               Row(
                                 children: [
                                   Image.asset(document_image, color: Colors.grey, height: 15, width: 15),
                                   SizedBox(width: 8),
-                                  Text(fileText!, style: secondaryTextStyle()),
+                                  Text(fileText!, style: appSecondaryTextStyle()),
                                 ],
                               ),
                               SizedBox(height: 8),
-                              Text("${date} ${time}", style: secondaryTextStyle()),
+                              Text("${date} ${time}", style: appSecondaryTextStyle()),
                             ],
                           ),
                         ),
@@ -103,7 +103,7 @@ Future<dynamic> FolderBottomSheetComponent(BuildContext context, double height, 
                             title: RichText(
                               text: TextSpan(
                                 text: "${recentFilesMenuOptionsBottomList[index].Text.toString()} ",
-                                style: primaryTextStyle(),
+                                style: appPrimaryTextStyle(),
                               ),
                             ),
                             leading: Image.asset(

@@ -76,7 +76,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text("万年历"),
-            // titleTextStyle: boldTextStyle(fontSize: 24),
+            // titleTextStyle: appBoldTextStyle(fontSize: 24),
             elevation: 0,
             titleSpacing: 0,
             leading: Padding(
@@ -182,7 +182,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                     Text(
                                       // dashboardFilesList[index].titleText.toString(),
                                       hour.title.toString(),
-                                      // style: primaryTextStyle(),
+                                      // style: appPrimaryTextStyle(),
                                       overflow: TextOverflow.fade,
                                     ),
                                     SizedBox(height: 16),

@@ -82,8 +82,6 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   Solar solar = Solar.fromDate(DateTime.now());
   Lunar lunar = Solar.fromDate(DateTime.now()).getLunar();
 
-   List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-
   String selected_3 = '';
 
   @override
@@ -173,7 +171,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("排盘"),
-        // titleTextStyle: boldTextStyle(fontSize: 24),
+        // titleTextStyle: appBoldTextStyle(fontSize: 24),
         elevation: 0,
         titleSpacing: 0,
         leading: Padding(
@@ -322,7 +320,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("起盘方式：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),
         ),
@@ -374,7 +372,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("晚子时：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),
         ),
@@ -427,7 +425,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("真太阳时：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),
         ),
@@ -479,7 +477,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("性别：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),
         ),
@@ -531,7 +529,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("排盘方式：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),
         ),
@@ -584,7 +582,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("是否保存：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),
         ),
@@ -637,7 +635,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("人元司令：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),),
         Expanded(
@@ -722,7 +720,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text("出生时间：",
-              // style: boldTextStyle(fontSize: 18)
+              // style: appBoldTextStyle(fontSize: 18)
             ),
           ),),
         Expanded(

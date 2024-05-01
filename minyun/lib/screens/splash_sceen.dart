@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(splash_screen_image, color: primaryColor, height: height * 0.3, width: width * 0.40),
-                  Text("ProScan", style: boldTextStyle(fontSize: 30)),
+                  Text("ProScan", style: appBoldTextStyle(fontSize: 30)),
                 ],
               )),
           Positioned(

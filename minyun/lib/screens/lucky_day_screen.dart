@@ -102,7 +102,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("吉日"),
-        titleTextStyle: boldTextStyle(fontSize: 24),
+        titleTextStyle: appBoldTextStyle(fontSize: 24),
         elevation: 0,
         titleSpacing: 0,
         leading: Padding(
@@ -119,7 +119,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Text("${widget.search} 共 ${calendarList.length} 天", style: boldTextStyle(fontSize: 18,color: Colors.black45)),
+                    child: Text("${widget.search} 共 ${calendarList.length} 天", style: appBoldTextStyle(fontSize: 18,color: Colors.black45)),
                   ),
                   Spacer(),
                 ],
@@ -178,7 +178,7 @@ class _LuckyDayScreenState extends State<LuckyDayScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text(title, style: primaryTextStyle(fontSize: 14)), Divider()],
+        children: [Text(title, style: appPrimaryTextStyle(fontSize: 14)), Divider()],
       ),
       value: value,
     );

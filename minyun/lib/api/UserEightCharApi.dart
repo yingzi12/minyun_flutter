@@ -7,15 +7,15 @@ import 'package:minyun/utils/SharedPreferencesUtil.dart';
 
 class UserEightCharApi{
   // 类变量（静态变量）
-  static String info ="/minyun/userEightChar/info";
+  static String info ="/admin/minyun/userEightChar/info";
 
-  static String list ="/minyun/userEightChar/list";
+  static String list ="/admin/minyun/userEightChar/list";
 
-  static String add ="/minyun/userEightChar/add";
+  static String add ="/admin/minyun/userEightChar/add";
 
-  static String del ="/minyun/userEightChar/del";
+  static String del ="/admin/minyun/userEightChar/del";
 
-  static String edit ="/minyun/userEightChar/edit";
+  static String edit ="/admin/minyun/userEightChar/edit";
 
   static Future<Map<String, dynamic>> addModel(Map<String, String> body) async {
     final response = await HttpUtil.post(add, body);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -47,7 +48,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
           },
         ),
         centerTitle: true,
-        title: Text('Forgot password', style: boldTextStyle(color: white)),
+        title: Text('Forgot password', style: appBoldTextStyle(color: white)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -55,7 +56,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
           children: [
             AppTextField(
               controller: contEmailAddress,
-              textStyle: primaryTextStyle(color: white),
+              textStyle: appPrimaryTextStyle(color: white),
               nextFocus: focusNodePassword,
               textFieldType: TextFieldType.EMAIL,
               cursorColor: Colors.white,
@@ -64,7 +65,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
             20.height,
             AppTextField(
               controller: contPassword,
-              textStyle: primaryTextStyle(color: white),
+              textStyle: appPrimaryTextStyle(color: white),
               focus: focusNodePassword,
               nextFocus: focusNodeConfirmPassword,
               textFieldType: TextFieldType.PASSWORD,
@@ -75,7 +76,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
             20.height,
             AppTextField(
               controller: contConfirmPassword,
-              textStyle: primaryTextStyle(color: white),
+              textStyle: appPrimaryTextStyle(color: white),
               focus: focusNodeConfirmPassword,
               textFieldType: TextFieldType.PASSWORD,
               cursorColor: Colors.white,
@@ -84,7 +85,7 @@ class UserForgotPasswordScreenState extends State<UserForgotPasswordScreen> {
             ),
             50.height,
             AppButton(
-              child: Text('Reset My Password', style: primaryTextStyle(color: Colors.white)),
+              child: Text('Reset My Password', style: appPrimaryTextStyle(color: Colors.white)),
               color: mpAppButtonColor,
               width: context.width(),
               onTap: () {

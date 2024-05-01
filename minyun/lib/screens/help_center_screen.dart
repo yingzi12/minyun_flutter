@@ -15,15 +15,15 @@ class HelpCenterScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Help Center", style: boldTextStyle(fontSize: 24)),
+          title: Text("Help Center", style: appBoldTextStyle(fontSize: 24)),
           elevation: 0,
           iconTheme: IconThemeData(color: mode.theme ? Colors.white : Colors.black),
           bottom: TabBar(
             labelColor: primaryColor,
-            labelStyle: boldTextStyle(fontSize: 18),
+            labelStyle: appBoldTextStyle(fontSize: 18),
             unselectedLabelColor: Colors.grey,
             indicatorPadding: EdgeInsets.symmetric(horizontal: 16),
-            unselectedLabelStyle: primaryTextStyle(color: Colors.grey, fontSize: 16),
+            unselectedLabelStyle: appPrimaryTextStyle(color: Colors.grey, fontSize: 16),
             indicatorColor: primaryColor,
             indicator: UnderlineTabIndicator(borderSide: BorderSide(color: primaryColor, width: 2)),
             tabs: [

@@ -66,9 +66,9 @@ Future<dynamic> RecentFilesMenuOptionsBottomSheet(BuildContext context, double h
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(cardTitleText!, style: primaryTextStyle(), overflow: TextOverflow.fade),
+                              Text(cardTitleText!, style: appPrimaryTextStyle(), overflow: TextOverflow.fade),
                               SizedBox(height: 16),
-                              Text("${date} ${time}", style: secondaryTextStyle()),
+                              Text("${date} ${time}", style: appSecondaryTextStyle()),
                             ],
                           ),
                         ),
@@ -86,7 +86,7 @@ Future<dynamic> RecentFilesMenuOptionsBottomSheet(BuildContext context, double h
                     },
                     child: ListTile(
                       title: RichText(
-                        text: TextSpan(text: "Save to Device", style: primaryTextStyle()),
+                        text: TextSpan(text: "Save to Device", style: appPrimaryTextStyle()),
                       ),
                       leading: Image.asset(
                         "assets/icons/dashboard_icons/save.png",
@@ -111,7 +111,7 @@ Future<dynamic> RecentFilesMenuOptionsBottomSheet(BuildContext context, double h
                     },
                     child: ListTile(
                       title: RichText(
-                        text: TextSpan(text: "Export to ...", style: primaryTextStyle()),
+                        text: TextSpan(text: "Export to ...", style: appPrimaryTextStyle()),
                       ),
                       leading: Image.asset(
                         "assets/icons/dashboard_icons/export.png",
@@ -163,7 +163,7 @@ Future<dynamic> RecentFilesMenuOptionsBottomSheet(BuildContext context, double h
                             title: RichText(
                               text: TextSpan(
                                 text: recentFilesMenuOptionsList[index].Text,
-                                style: primaryTextStyle(),
+                                style: appPrimaryTextStyle(),
                               ),
                             ),
                             leading: Image.asset(
@@ -201,7 +201,7 @@ Future<dynamic> RecentFilesMenuOptionsBottomSheet(BuildContext context, double h
                             title: RichText(
                               text: TextSpan(
                                 text: "${recentFilesMenuOptionsBottomList[index].Text.toString()} ",
-                                style: primaryTextStyle(),
+                                style: appPrimaryTextStyle(),
                               ),
                             ),
                             leading: Image.asset(

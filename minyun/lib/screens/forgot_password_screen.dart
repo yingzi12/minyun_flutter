@@ -24,7 +24,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text("Forgot Password", style: boldTextStyle(fontSize: 24)),
+                    Text("Forgot Password", style: appBoldTextStyle(fontSize: 24)),
                     Image.asset(forgot_password_screen_image, height: 30, width: 30)
                   ],
                 ),
@@ -33,7 +33,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "Enter your email address,We will send an OTP code for verification in the next step.",
-                    style: secondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
+                    style: appSecondaryTextStyle(color: mode.theme ? darkTextSecondaryColor : Colors.black),
                   ),
                 ),
                 SizedBox(height: 24),

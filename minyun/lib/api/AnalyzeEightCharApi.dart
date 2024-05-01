@@ -7,15 +7,15 @@ import 'package:minyun/utils/SharedPreferencesUtil.dart';
 
 class AnalyzeEightCharApi{
   // 类变量（静态变量）
-  static String info ="/minyun/analyzeEightChar/info";
+  static String info ="/admin/minyun/analyzeEightChar/info";
 
-  static String list ="/minyun/analyzeEightChar/list";
+  static String list ="/admin/minyun/analyzeEightChar/list";
 
-  static String add ="/minyun/analyzeEightChar/add";
+  static String add ="/admin/minyun/analyzeEightChar/add";
 
-  static String del ="/minyun/analyzeEightChar/del";
+  static String del ="/admin/minyun/analyzeEightChar/del";
 
-  static String edit ="/minyun/analyzeEightChar/edit";
+  static String edit ="/admin/minyun/analyzeEightChar/edit";
 
   static Future<Map<String, dynamic>> addModel(Map<String, String> body) async {
     final response = await HttpUtil.post(add, body);

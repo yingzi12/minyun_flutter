@@ -37,7 +37,7 @@ Future<dynamic> AddWatermarkBottomSheetComponent(BuildContext context) {
                           decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
                         ),
                         SizedBox(height: 16),
-                        Text("Add Watermark", style: boldTextStyle(fontSize: 24)),
+                        Text("Add Watermark", style: appBoldTextStyle(fontSize: 24)),
                         SizedBox(height: 16),
                         Divider(),
                         Expanded(
@@ -51,7 +51,7 @@ Future<dynamic> AddWatermarkBottomSheetComponent(BuildContext context) {
                                   labelColor: primaryColor,
                                   unselectedLabelColor: Colors.grey,
                                   indicatorColor: primaryColor,
-                                  labelStyle: primaryTextStyle(),
+                                  labelStyle: appPrimaryTextStyle(),
                                   tabs: [
                                     Tab(
                                       text: "Watermark Text",

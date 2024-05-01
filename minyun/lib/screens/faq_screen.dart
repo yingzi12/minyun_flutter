@@ -55,7 +55,7 @@ class _FAQScreenState extends State<FAQScreen> {
                     ),
                     child: Text(
                       faqScreenOptions[index],
-                      style: primaryTextStyle(color: selectedIndex == index ? Colors.white : primaryColor),
+                      style: appPrimaryTextStyle(color: selectedIndex == index ? Colors.white : primaryColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -128,7 +128,7 @@ class _FAQScreenState extends State<FAQScreen> {
                               children: [
                                 Expanded(
                                     child: Text(helpCenterQuestionList[index].title!,
-                                        overflow: TextOverflow.visible, style: boldTextStyle(fontSize: 18))),
+                                        overflow: TextOverflow.visible, style: appBoldTextStyle(fontSize: 18))),
                                 IconButton(
                                   splashRadius: 24,
                                   onPressed: () {
@@ -149,7 +149,7 @@ class _FAQScreenState extends State<FAQScreen> {
                                       Text(
                                         "Lorem ipsum dolor sit amet, consecrate disciplining elite, sed do usermod temper incident ut labor et do lore magna aliquot.",
                                         // helpCenterQuestionList[index].description!,
-                                        style: secondaryTextStyle(),
+                                        style: appSecondaryTextStyle(),
                                       ),
                                       SizedBox(height: 8)
                                     ],

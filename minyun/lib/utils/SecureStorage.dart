@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:minyun/models/LoginModel.dart';
+import 'package:minyun/models/login_user_model.dart';
 
 //带加密
 class SecureStorage {
@@ -24,7 +25,7 @@ class SecureStorage {
     await _storage.write(key: 'user_info', value: userInfo);
   }
 
-  Future<void> updateUserInfo(LoginUser loginUser) async {
+  Future<void> updateUserInfo(LoginUserModel loginUser) async {
     try {
       String updatedUserInfo = jsonEncode(loginUser.toJson());
       await setLoginUser(updatedUserInfo);
@@ -33,12 +34,12 @@ class SecureStorage {
      // print("Error updating user info: $e");
     }
   }
-  Future<LoginUser?> getLoginUser() async {
+  Future<LoginUserModel?> getLoginUser() async {
     final userInfoStr=await _storage.read(key: "user_info");
     if (userInfoStr != null) {
       final data = jsonDecode(userInfoStr);
       // Map<String, dynamic> jsonMap = json.decode(userInfoStr);
-      return  LoginUser.fromJson(data);
+      return  LoginUserModel.fromJson(data);
     }
   }
 

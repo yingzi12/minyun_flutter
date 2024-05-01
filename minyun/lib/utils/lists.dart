@@ -11,16 +11,16 @@ import '../screens/user/personal_info_screen.dart';
 import '../screens/prefrances_screen.dart';
 import '../screens/premium_screen.dart';
 
-List signInOptionImage = [
-  "assets/images/sign_in_screen_images/google.png",
-  "assets/images/sign_in_screen_images/apple.png",
-  "assets/images/sign_in_screen_images/facebook.png",
-];
-List signInOptions = [
-  "Continue with Google",
-  "Continue with Apple",
-  "Continue with Facebook",
-];
+// List signInOptionImage = [
+//   "assets/images/sign_in_screen_images/google.png",
+//   "assets/images/sign_in_screen_images/apple.png",
+//   "assets/images/sign_in_screen_images/facebook.png",
+// ];
+// List signInOptions = [
+//   "Continue with Google",
+//   "Continue with Apple",
+//   "Continue with Facebook",
+// ];
 List<String> genders = ['男', '女'];
 
 List selectedFilesList = [];

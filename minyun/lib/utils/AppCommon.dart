@@ -31,15 +31,14 @@ InputDecoration inputDecoration(
   );
 }
 
-TextStyle primaryTextStyle({double? fontSize, Color? color}) {
+TextStyle appPrimaryTextStyle({double? fontSize, Color? color}) {
   if (mode.theme) {
     return TextStyle(fontSize: fontSize ?? 18, color: color ?? darkTextPrimaryColor);
   } else {
     return TextStyle(fontSize: fontSize ?? 18, color: color ?? appTextPrimaryColor);
   }
 }
-
-TextStyle secondaryTextStyle({double? fontSize, Color? color}) {
+TextStyle appSecondaryTextStyle({double? fontSize, Color? color}) {
   if (mode.theme) {
     return TextStyle(fontSize: fontSize ?? 14, color: color ?? darkTextSecondaryColor);
   } else {
@@ -47,7 +46,7 @@ TextStyle secondaryTextStyle({double? fontSize, Color? color}) {
   }
 }
 
-TextStyle boldTextStyle({double? fontSize, Color? color}) {
+TextStyle appBoldTextStyle({double? fontSize, Color? color}) {
   if (mode.theme) {
     return TextStyle(fontSize: fontSize ?? 16, fontWeight: FontWeight.bold, color: color ?? darkTextBoldColor);
   } else {
