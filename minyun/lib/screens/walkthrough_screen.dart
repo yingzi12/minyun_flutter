@@ -68,7 +68,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                     children: [
                       Expanded(
                           child: AppButton(
-                        text: "Skip",
+                        text: "跳过",
                         color: mode.theme ? darkPrimaryColor : primaryLightColor,
                         textColor: mode.theme ? Colors.white : primaryColor,
                         onTap: () {
@@ -82,7 +82,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                       SizedBox(width: 16),
                       Expanded(
                         child: AppButton(
-                          text: "Next",
+                          text: "下一步",
                           onTap: () {
                             pageIndex == 2
                                 ? Navigator.push(context, MaterialPageRoute(builder: (context) => TabBarSignInScreen(0)))

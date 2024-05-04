@@ -2,11 +2,13 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:minyun/api/UserApi.dart';
+import 'package:minyun/models/login_user_model.dart';
 import 'package:minyun/screens/UserForgotPasswordScreen.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
+import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 /**
@@ -48,14 +50,19 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
   }
 
   Future<void> init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    checkedValue = true; // 设置默认为选中状态
-    String? email = prefs.getString('email');
-    String? password = prefs.getString('password');
-    if (email != null && password != null) {
-      contEmailAddress.text = email;
-      contPassword.text = password;
-      checkedValue = true;
+    LoginUserModel? user = await SecureStorage().getLoginUser();
+    if(user != null){
+      BottomNavigationBarScreen(itemIndex: 0).launch(context);
+    }else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      checkedValue = true; // 设置默认为选中状态
+      String? email = prefs.getString('email');
+      String? password = prefs.getString('password');
+      if (email != null && password != null) {
+        contEmailAddress.text = email;
+        contPassword.text = password;
+        checkedValue = true;
+      }
     }
     //
   }

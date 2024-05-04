@@ -7,15 +7,15 @@ import 'package:minyun/models/SplayedFigureFindModel.dart';
 /**
  * 大师点评
  */
-class SplayedFigureDetailInfoScreen extends StatefulWidget {
+class UserSplayedFigureDetailInfoScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
-  SplayedFigureDetailInfoScreen({required this.search});
+  UserSplayedFigureDetailInfoScreen({required this.search});
 
   @override
-  State<SplayedFigureDetailInfoScreen> createState() => _SplayedFigureDetailInfoScreenState();
+  State<UserSplayedFigureDetailInfoScreen> createState() => _UserSplayedFigureDetailInfoScreenState();
 }
 
-class _SplayedFigureDetailInfoScreenState extends State<SplayedFigureDetailInfoScreen>  with TickerProviderStateMixin {
+class _UserSplayedFigureDetailInfoScreenState extends State<UserSplayedFigureDetailInfoScreen>  with TickerProviderStateMixin {
 
   String gz="";
   String py="";

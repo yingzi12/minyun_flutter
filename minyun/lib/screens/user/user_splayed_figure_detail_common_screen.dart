@@ -6,24 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:lunar/lunar.dart';
 
 import 'package:minyun/models/SplayedFigureFindModel.dart';
-import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../constant.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 /**
  * 大师点评
  */
-class SplayedFigureDetailCommonScreen extends StatefulWidget {
+class UserSplayedFigureDetailCommonScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
-  SplayedFigureDetailCommonScreen({required this.search});
+  UserSplayedFigureDetailCommonScreen({required this.search});
 
   @override
-  State<SplayedFigureDetailCommonScreen> createState() => _SplayedFigureDetailCommonScreenState();
+  State<UserSplayedFigureDetailCommonScreen> createState() => _UserSplayedFigureDetailCommonScreenState();
 }
 
-class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCommonScreen>  with TickerProviderStateMixin {
+class _UserSplayedFigureDetailCommonScreenState extends State<UserSplayedFigureDetailCommonScreen>  with TickerProviderStateMixin {
 
   String gz="";
   String py="";
@@ -64,14 +61,14 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
           maxLines: null, // 允许无限行
           keyboardType: TextInputType.multiline, // 多行键盘
           decoration: InputDecoration(
-            labelText: '请输入点评信息',
+            labelText: '请输入需要大师测算的内容（提交之后将会公开姓名生日与资料信息）',
             border: OutlineInputBorder(),
           ),
         ),
         SizedBox(height: 16.0), // 添加一些间距
         buildShare(),
         buildUserId(context),
-        buildPhone(context),
+        // buildPhone(context),
         ElevatedButton(
           onPressed: () {
             // 这里处理提交逻辑
@@ -90,11 +87,11 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
     return Column(
       children: [
         TDInput(
-          leftLabel: '信息通知',
+          leftLabel: '大师',
           required: true,
           controller: _userIdController,
           backgroundColor: Colors.white,
-          hintText: '请输入用户账号',
+          hintText: '请输入大师账号',
           onChanged: (text) {
             setState(() {});
           },
@@ -110,32 +107,6 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
     );
   }
 
-
-  Widget buildPhone(BuildContext context) {
-    return Column(
-      children: [
-        TDInput(
-          leftLabel: '短信通知',
-          required: true,
-          controller: _PhoneNumberController,
-          backgroundColor: Colors.white,
-          hintText: '请输入用户电话号码',
-          onChanged: (text) {
-            setState(() {});
-          },
-          onClearTap: () {
-            _PhoneNumberController.clear();
-            setState(() {});
-          },
-        ),
-        const SizedBox(
-          height: 16,
-        )
-      ],
-    );
-  }
-
-
   Widget buildShare(){
     return Row(
       children: [
@@ -144,7 +115,7 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
           child:
           Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: Text("是否发送给用户：",
+            child: Text("是否指定大师解析：",
               // style: appBoldTextStyle(fontSize: 18)
             ),
           ),

@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:minyun/models/JsonSerializable.dart';
 /// searchValue : ""
 /// createBy : ""
 /// createTime : ""
@@ -25,11 +23,13 @@ import 'package:minyun/models/JsonSerializable.dart';
 /// loginDate : ""
 /// roleId : 0
 /// ranks : 0
+/// sign : ""
+/// starSign : ""
 /// admin : true
 
 LoginUserModel loginUserModelFromJson(String str) => LoginUserModel.fromJson(json.decode(str));
 String loginUserModelToJson(LoginUserModel data) => json.encode(data.toJson());
-class LoginUserModel implements JsonSerializable  {
+class LoginUserModel {
   LoginUserModel({
       String? searchValue, 
       String? createBy, 
@@ -55,6 +55,8 @@ class LoginUserModel implements JsonSerializable  {
       String? loginDate, 
       num? roleId, 
       num? ranks, 
+      String? sign, 
+      String? starSign, 
       bool? admin,}){
     _searchValue = searchValue;
     _createBy = createBy;
@@ -80,6 +82,8 @@ class LoginUserModel implements JsonSerializable  {
     _loginDate = loginDate;
     _roleId = roleId;
     _ranks = ranks;
+    _sign = sign;
+    _starSign = starSign;
     _admin = admin;
 }
 
@@ -108,6 +112,8 @@ class LoginUserModel implements JsonSerializable  {
     _loginDate = json['loginDate'];
     _roleId = json['roleId'];
     _ranks = json['ranks'];
+    _sign = json['sign'];
+    _starSign = json['starSign'];
     _admin = json['admin'];
   }
   String? _searchValue;
@@ -134,6 +140,8 @@ class LoginUserModel implements JsonSerializable  {
   String? _loginDate;
   num? _roleId;
   num? _ranks;
+  String? _sign;
+  String? _starSign;
   bool? _admin;
 LoginUserModel copyWith({  String? searchValue,
   String? createBy,
@@ -159,6 +167,8 @@ LoginUserModel copyWith({  String? searchValue,
   String? loginDate,
   num? roleId,
   num? ranks,
+  String? sign,
+  String? starSign,
   bool? admin,
 }) => LoginUserModel(  searchValue: searchValue ?? _searchValue,
   createBy: createBy ?? _createBy,
@@ -184,6 +194,8 @@ LoginUserModel copyWith({  String? searchValue,
   loginDate: loginDate ?? _loginDate,
   roleId: roleId ?? _roleId,
   ranks: ranks ?? _ranks,
+  sign: sign ?? _sign,
+  starSign: starSign ?? _starSign,
   admin: admin ?? _admin,
 );
   String? get searchValue => _searchValue;
@@ -210,6 +222,8 @@ LoginUserModel copyWith({  String? searchValue,
   String? get loginDate => _loginDate;
   num? get roleId => _roleId;
   num? get ranks => _ranks;
+  String? get sign => _sign;
+  String? get starSign => _starSign;
   bool? get admin => _admin;
 
   Map<String, dynamic> toJson() {
@@ -238,6 +252,8 @@ LoginUserModel copyWith({  String? searchValue,
     map['loginDate'] = _loginDate;
     map['roleId'] = _roleId;
     map['ranks'] = _ranks;
+    map['sign'] = _sign;
+    map['starSign'] = _starSign;
     map['admin'] = _admin;
     return map;
   }

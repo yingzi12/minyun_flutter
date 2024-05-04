@@ -2,10 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:minyun/models/login_user_model.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
 import 'package:minyun/theme_mode.dart';
 import 'package:minyun/utils/AppContents.dart';
+import 'package:minyun/utils/SecureStorage.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../../component/logout_component.dart';
 import '../../models/account_screen_model.dart';
@@ -23,6 +27,41 @@ class AccountScreen extends StatefulWidget {
 theme mode = theme();
 
 class _AccountScreenState extends State<AccountScreen> {
+
+  // String sourceWeb=SOURCEWEB;
+  LoginUserModel? user;
+  String vipTimeStr="过期";
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future<void> init() async {
+    LoginUserModel? loginUser = await SecureStorage().getLoginUser();
+    if (loginUser != null) {
+      setState(() {
+        user = loginUser;
+        // 假设 user?.vipExpirationTime 是一个字符串，格式为 "yyyy-MM-dd HH:mm:ss"
+        // String? vipExpirationTimeStr = user?.vipExpirationTime;
+        // 解析成 DateTime 对象
+        // DateTime? vipExpirationTime = vipExpirationTimeStr != null ? DateTime.tryParse(vipExpirationTimeStr) : null;
+        // 获取当前时间
+        DateTime now = DateTime.now();
+        // if(vipExpirationTime != null && vipExpirationTime.isAfter(now)){
+        //   this.vipTimeStr = user!.vipExpirationTime!.toString();
+        // }
+      });
+    }else{
+      TabBarSignInScreen(0).launch(context);
+    }
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -84,7 +123,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [
                               nameCont.text.length == 0
                                   ? Text(
-                                      "这是用户昵称",
+                                      "${user?.nickName}",
                                       style: appMainBoldTextStyle(),
                                     )
                                   : Text(
@@ -108,7 +147,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text("这是简介，这是简介", style: appMainSecondaryTextStyle()),
+                          Text("${user?.sign}", style: appMainSecondaryTextStyle()),
                           // SizedBox(height: 8),
                           // Container(
                           //   height: 8,
@@ -130,60 +169,62 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                Container(
-                  padding: EdgeInsets.all(16),
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(DEFAULT_RADIUS),
-                    gradient: LinearGradient(colors: [Color(0xFF667fff), Color(0xFF4c69ff)], stops: [0.1, 0.9]),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(color: Color(0xFFfb9f19), shape: BoxShape.circle),
-                        child: Image.asset(
-                          star_image,
-                          height: height * 0.055,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Go to Premium!", style: appMainBoldTextStyle(fontSize: 18, color: Colors.white)),
-                          SizedBox(height: 8),
-                          Text("Enjoy all the benefits", style: appMainSecondaryTextStyle(color: Colors.white)),
-                        ],
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BottomNavigationBarScreen(
-                                        itemIndex: 2,
-                                      )));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(DEFAULT_RADIUS),
-                          ),
-                          child: Text(
-                            "Upgrade",
-                            style: appMainPrimaryTextStyle(color: primaryColor, fontSize: 16),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 16),
+                //  隐藏获取会员的
+
+                // Container(
+                //   padding: EdgeInsets.all(16),
+                //   margin: EdgeInsets.symmetric(horizontal: 16),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(DEFAULT_RADIUS),
+                //     gradient: LinearGradient(colors: [Color(0xFF667fff), Color(0xFF4c69ff)], stops: [0.1, 0.9]),
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         padding: EdgeInsets.all(16),
+                //         decoration: BoxDecoration(color: Color(0xFFfb9f19), shape: BoxShape.circle),
+                //         child: Image.asset(
+                //           star_image,
+                //           height: height * 0.055,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //       SizedBox(width: 16),
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text("Go to Premium!", style: appMainBoldTextStyle(fontSize: 18, color: Colors.white)),
+                //           SizedBox(height: 8),
+                //           Text("Enjoy all the benefits", style: appMainSecondaryTextStyle(color: Colors.white)),
+                //         ],
+                //       ),
+                //       Spacer(),
+                //       GestureDetector(
+                //         onTap: () {
+                //           Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                   builder: (context) => BottomNavigationBarScreen(
+                //                         itemIndex: 2,
+                //                       )));
+                //         },
+                //         child: Container(
+                //           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                //           decoration: BoxDecoration(
+                //             color: Colors.white,
+                //             borderRadius: BorderRadius.circular(DEFAULT_RADIUS),
+                //           ),
+                //           child: Text(
+                //             "Upgrade",
+                //             style: appMainPrimaryTextStyle(color: primaryColor, fontSize: 16),
+                //             textAlign: TextAlign.center,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(height: 16),
                 ListView.builder(
                   itemCount: accountOptions.length,
                   shrinkWrap: true,
