@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'JsonSerializable.dart';
 /// id : 0
 /// wid : 0
 /// wname : ""
@@ -34,7 +36,7 @@ import 'dart:convert';
 
 DiscussCommentModel discussCommentModelFromJson(String str) => DiscussCommentModel.fromJson(json.decode(str));
 String discussCommentModelToJson(DiscussCommentModel data) => json.encode(data.toJson());
-class DiscussCommentModel {
+class DiscussCommentModel  implements JsonSerializable  {
   DiscussCommentModel({
       num? id, 
       num? wid, 
@@ -375,7 +377,7 @@ class ReplyList {
       bool? replyHide, 
       bool? comHide, 
       String? replyComment, 
-      List<dynamic>? replyList, 
+      // List<dynamic>? replyList,
       String? nickname, 
       String? replyNickname, 
       num? sid, 
@@ -442,12 +444,12 @@ class ReplyList {
     _replyHide = json['replyHide'];
     _comHide = json['comHide'];
     _replyComment = json['replyComment'];
-    if (json['replyList'] != null) {
-      _replyList = [];
-      json['replyList'].forEach((v) {
-        _replyList?.add(Dynamic.fromJson(v));
-      });
-    }
+    // if (json['replyList'] != null) {
+    //   _replyList = [];
+    //   json['replyList'].forEach((v) {
+    //     _replyList?.add(Dynamic.fromJson(v));
+    //   });
+    // }
     _nickname = json['nickname'];
     _replyNickname = json['replyNickname'];
     _sid = json['sid'];
@@ -544,7 +546,7 @@ ReplyList copyWith({  num? id,
   replyHide: replyHide ?? _replyHide,
   comHide: comHide ?? _comHide,
   replyComment: replyComment ?? _replyComment,
-  replyList: replyList ?? _replyList,
+  // replyList: replyList ?? _replyList,
   nickname: nickname ?? _nickname,
   replyNickname: replyNickname ?? _replyNickname,
   sid: sid ?? _sid,
@@ -612,9 +614,9 @@ ReplyList copyWith({  num? id,
     map['replyHide'] = _replyHide;
     map['comHide'] = _comHide;
     map['replyComment'] = _replyComment;
-    if (_replyList != null) {
-      map['replyList'] = _replyList?.map((v) => v.toJson()).toList();
-    }
+    // if (_replyList != null) {
+    //   map['replyList'] = _replyList?.map((v) => v.toJson()).toList();
+    // }
     map['nickname'] = _nickname;
     map['replyNickname'] = _replyNickname;
     map['sid'] = _sid;

@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'JsonSerializable.dart';
 /// id : 0
 /// userId : 0
 /// createTime : ""
@@ -18,7 +20,7 @@ import 'dart:convert';
 
 AnalyzeEightCharAnalyzeModel analyzeEightCharAnalyzeModelFromJson(String str) => AnalyzeEightCharAnalyzeModel.fromJson(json.decode(str));
 String analyzeEightCharAnalyzeModelToJson(AnalyzeEightCharAnalyzeModel data) => json.encode(data.toJson());
-class AnalyzeEightCharAnalyzeModel {
+class AnalyzeEightCharAnalyzeModel  implements JsonSerializable   {
   AnalyzeEightCharAnalyzeModel({
       num? id, 
       num? userId, 

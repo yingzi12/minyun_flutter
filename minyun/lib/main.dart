@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get/get.dart';
-import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/splash_sceen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/store/AppStore.dart';
 void main() {
   runApp(const MyApp());

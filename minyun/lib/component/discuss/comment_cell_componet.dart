@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:minyun/models/great_master_comment_model.dart';
+import 'package:minyun/models/discuss_comment_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 
 class CommentCellComponet extends StatelessWidget {
-  final GreatMasterCommentModel comment;
+  final DiscussCommentModel comment;
 
   CommentCellComponet(this.comment);
 

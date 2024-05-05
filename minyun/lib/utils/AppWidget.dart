@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 bool value = true;
 
@@ -992,4 +995,24 @@ Future<File> svGetImageSource() async {
   final picker = ImagePicker();
   final pickedImage = await picker.pickImage(source: ImageSource.camera);
   return File(pickedImage!.path);
+}
+
+
+Widget noLoginWidget(String message,BuildContext context) {
+  return Center(
+    child: Padding(
+      padding: EdgeInsets.all(16.0),
+      child:Column(
+        children: [
+        Text(
+        message,
+        style: TextStyle(color: Colors.grey), ),
+          TDButton(onTap: (){
+            TabBarSignInScreen(0).launch(context);
+          },text:"登陆"),
+        ],
+      )
+
+    ),
+  );
 }

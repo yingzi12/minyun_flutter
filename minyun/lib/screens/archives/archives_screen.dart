@@ -12,6 +12,8 @@ import 'package:minyun/screens/dashboard_screen.dart';
 
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
+import 'package:minyun/utils/AppWidget.dart';
+import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../utils/AppCommon.dart';
 import '../../utils/images.dart';
@@ -29,12 +31,26 @@ class ArchivesScreen extends StatefulWidget {
 class _ArchivesScreenState extends State<ArchivesScreen> {
   List<AnalyzeEightCharModel> stories = [];
 
-
+  String explanation="请先登录。。。";
+  String searchQuery="";
+  bool isLogin=false;
   @override
   void initState() {
     super.initState();
-    _refreshApiData("","","");
-    // _refreshSdkData();
+    init();
+  }
+
+  Future<void> init() async {
+    var token = await SecureStorage().getLoginToken();
+    setState(() {
+      if(token ==null){
+        explanation="请先登录。。。";
+      }else{
+        explanation="数据加载中";
+        isLogin=true;
+        _refreshApiData("","","");
+      }
+    });
   }
 
   @override
@@ -45,9 +61,6 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
   Future<void> _refreshApiData(String timely,String start,String end) async {
     // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
     Map<String, String> queryParams=new HashMap();
-    // queryParams["timely"] = timely;
-    // queryParams["startDate"] = start;
-    // queryParams["endDate"] = end;
     ResultListModel<AnalyzeEightCharModel> resultModel = await AnalyzeEightCharApi.getList(queryParams);
     setState(() {
       stories=resultModel.data??[];
@@ -71,7 +84,9 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
       ),
       body: Stack(
         children: [
-          Column(
+          stories.isEmpty
+              ? noLoginWidget(explanation,context)
+              : Column(
             children: [
               Row(
                 children: [

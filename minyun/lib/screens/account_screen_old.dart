@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/theme_mode.dart';
 import 'package:minyun/utils/AppContents.dart';
 
@@ -21,7 +22,7 @@ class AccountScreenOld extends StatefulWidget {
   State<AccountScreenOld> createState() => _AccountScreenOldState();
 }
 
-theme mode = theme();
+// theme mode = theme();
 
 class _AccountScreenOldState extends State<AccountScreenOld> {
   @override

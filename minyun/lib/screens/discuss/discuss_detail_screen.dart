@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minyun/api/DiscussCommentApi.dart';
 import 'package:minyun/api/GreatMasterApi.dart';
-import 'package:minyun/api/GreatMasterCommentApi.dart';
-import 'package:minyun/component/comment_cell_componet.dart';
+import 'package:minyun/component/discuss/comment_cell_componet.dart';
 import 'package:minyun/models/ResultListModel.dart';
-import 'package:minyun/models/great_master_comment_model.dart';
+import 'package:minyun/models/discuss_comment_model.dart';
 import 'package:minyun/models/great_master_model.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/ScreenUtil.dart';
@@ -21,7 +21,7 @@ class DiscussDetailScreen extends StatefulWidget {
 
 class DiscussDetailScreenState extends State<DiscussDetailScreen> with RouteAware {
   GreatMasterModel? greatMaster;
-  List<GreatMasterCommentModel> comments = [];
+  List<DiscussCommentModel> comments = [];
   ScrollController scrollController = ScrollController();
   double navAlpha = 0;
   bool isSummaryUnfold = false;
@@ -74,7 +74,7 @@ class DiscussDetailScreenState extends State<DiscussDetailScreen> with RouteAwar
     var gaid = this.widget.gaid;
     GreatMasterModel greatMasterModel= await GreatMasterApi.getInfo(gaid);
     //停止
-    ResultListModel<GreatMasterCommentModel>  commentList= await GreatMasterCommentApi.getList({'gaid': gaid.toString(),'source':2.toString()});
+    ResultListModel<DiscussCommentModel>  commentList= await DiscussCommentApi.getList({'gaid': gaid.toString(),'source':2.toString()});
 
     setState(() {
       // this.story = Story.fromStoryEntity(storyEntity);

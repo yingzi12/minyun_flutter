@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
+import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/theme_mode.dart';
 import 'package:minyun/utils/AppContents.dart';
 
@@ -20,7 +21,6 @@ class eight_char_screen extends StatefulWidget {
   State<eight_char_screen> createState() => _eight_char_screenState();
 }
 
-theme mode = theme();
 
 class _eight_char_screenState extends State<eight_char_screen> {
   @override

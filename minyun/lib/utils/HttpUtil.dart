@@ -71,23 +71,45 @@ class HttpUtil {
     if (response.statusCode == 200 ) {
       var data = json.decode(response.body);
       if (data['code'] != 200) {
-       print(data['msg']);
-        Get.dialog(
-          AlertDialog(
-            title: Text("错误"),
-            content: Text(data['msg']),
-            actions: <Widget>[
-              TextButton(
-                child: Text("确定"),
-                onPressed: () {
-                  Get.back(); // 关闭对话框
-                },
-              ),
-            ],
-          ),
-          barrierDismissible: false, // 点击对话框外部不关闭对话框
-        );
-        throw ServiceException(data['code'].toString(),data['msg']);
+        print(data['msg']);
+
+        if(data['code']  == 401) {
+          UserApi.logout();
+          Get.dialog(
+            AlertDialog(
+              title: Text("错误"),
+              content: Text("登陆状态已过期，请重新登陆"),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("确定"),
+                  onPressed: () {
+                    Get.back(); // 关闭对话框
+                  },
+                ),
+              ],
+            ),
+            barrierDismissible: false, // 点击对话框外部不关闭对话框
+          );
+          throw ServiceException(data['code'].toString(),data['msg']);
+          // Get.to(TabBarSignInScreen(0));
+        }else {
+          Get.dialog(
+            AlertDialog(
+              title: Text("错误"),
+              content: Text(data['msg']),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("确定"),
+                  onPressed: () {
+                    Get.back(); // 关闭对话框
+                  },
+                ),
+              ],
+            ),
+            barrierDismissible: false, // 点击对话框外部不关闭对话框
+          );
+          throw ServiceException(data['code'].toString(),data['msg']);
+        }
       }else{
         return data;
       }

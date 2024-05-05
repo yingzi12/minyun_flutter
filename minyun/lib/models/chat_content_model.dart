@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'JsonSerializable.dart';
 /// id : 0
 /// sendUserId : 0
 /// receiverUserId : 0
@@ -10,7 +12,7 @@ import 'dart:convert';
 
 ChatContentModel chatContentModelFromJson(String str) => ChatContentModel.fromJson(json.decode(str));
 String chatContentModelToJson(ChatContentModel data) => json.encode(data.toJson());
-class ChatContentModel {
+class ChatContentModel  implements JsonSerializable  {
   ChatContentModel({
       num? id, 
       num? sendUserId, 
