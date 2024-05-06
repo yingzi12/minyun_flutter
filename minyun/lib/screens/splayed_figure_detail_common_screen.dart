@@ -1,16 +1,16 @@
 import 'dart:collection';
-import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lunar/lunar.dart';
+import 'package:minyun/api/AnalyzeEightCharAnalyzeApi.dart';
+import 'package:minyun/component/analyze/analyze_user_analyze_cell_componet.dart';
+import 'package:minyun/models/ResultListModel.dart';
 
 import 'package:minyun/models/SplayedFigureFindModel.dart';
-import 'package:minyun/models/SplayedFigureModel.dart';
+import 'package:minyun/models/analyze_eight_char_analyze_model.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../constant.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 /**
  * 大师点评
@@ -25,13 +25,13 @@ class SplayedFigureDetailCommonScreen extends StatefulWidget {
 
 class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCommonScreen>  with TickerProviderStateMixin {
 
-  String gz="";
-  String py="";
-  String tyfx="日主分析";
+  List<AnalyzeEightCharAnalyzeModel> stories = [];
+  int size = 0;
   int _selectedShareValue=1;
   TextEditingController _userIdController = TextEditingController();
-  TextEditingController _PhoneNumberController = TextEditingController();
-
+  TextEditingController _phoneNumberController = TextEditingController();
+  TextEditingController _labelController = TextEditingController();
+  TextEditingController _introController = TextEditingController();
 
   @override
   void initState() {
@@ -44,9 +44,24 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
     super.dispose();
   }
   Future<void> _refreshSdkData() async {
-
+    Map<String, String> queryParams=new HashMap();
+    queryParams["uuid"]=widget.search.uuid.toString();
+    ResultListModel<AnalyzeEightCharAnalyzeModel> resultModel = await AnalyzeEightCharAnalyzeApi.getList(queryParams);
+    setState(() {
+      stories=resultModel.data??[];
+    });
   }
 
+  Future<void> _refreshSaveData(Map<String, String> addMap) async {
+    addMap["uuid"]=widget.search.uuid.toString();
+    AnalyzeEightCharAnalyzeApi.addModel(addMap);
+  }
+
+  Future<void> _refreshEditData(Map<String, String> editMap) async {
+    editMap["uuid"]=widget.search.uuid.toString();
+
+    AnalyzeEightCharAnalyzeApi.editModel(editMap);
+  }
 
   //获取指定月的天数
   int getDaysInMonth(int year, int month) {
@@ -61,8 +76,20 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
       children: [
         Text("大师点评"),
         TextField(
+          controller: _labelController,
           maxLines: null, // 允许无限行
           keyboardType: TextInputType.multiline, // 多行键盘
+          inputFormatters: [LengthLimitingTextInputFormatter(100)],
+          decoration: InputDecoration(
+            labelText: '请输入标签，多个用英文;分割',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        TextField(
+          controller: _introController,
+          maxLines: null, // 允许无限行
+          keyboardType: TextInputType.multiline, // 多行键盘
+          inputFormatters: [LengthLimitingTextInputFormatter(500)],
           decoration: InputDecoration(
             labelText: '请输入点评信息',
             border: OutlineInputBorder(),
@@ -70,18 +97,32 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
         ),
         SizedBox(height: 16.0), // 添加一些间距
         buildShare(),
-        buildUserId(context),
-        buildPhone(context),
+        if(_selectedShareValue.toInt()==1) buildUserId(context),
+        if(_selectedShareValue.toInt()==1) buildPhone(context),
         ElevatedButton(
           onPressed: () {
             // 这里处理提交逻辑
-            // 例如，你可以获取TextField的值并处理它
+            Map<String, String> addMap=new HashMap();
+            addMap['label']=_labelController.text;
+            addMap['intro']=_introController.text;
+            addMap['isSms']=_phoneNumberController.text;
+            addMap['isMessage']=_userIdController.text;
+
+            _refreshSaveData(addMap);
+
           },
           child: Text('提交'),
         ),
-        Center(
+        size==0 ? Center(
           child: Text("暂无点评"),
-        )
+        ):Expanded(
+          child: ListView.builder(
+            itemCount: stories.length,
+            itemBuilder: (context, index) {
+              return AnalyzeUserAnalyzeCellComponet(stories[index]);
+            },
+          ),
+        ),
       ],
     );
   }
@@ -96,6 +137,8 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
           backgroundColor: Colors.white,
           hintText: '请输入用户账号',
           onChanged: (text) {
+            print("请 onChanged 输入用户账号${text}");
+
             setState(() {});
           },
           onClearTap: () {
@@ -117,14 +160,19 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
         TDInput(
           leftLabel: '短信通知',
           required: true,
-          controller: _PhoneNumberController,
+          controller: _phoneNumberController,
           backgroundColor: Colors.white,
           hintText: '请输入用户电话号码',
           onChanged: (text) {
-            setState(() {});
+            print("请onChanged输入用户电话号码${text}");
+            setState(() {
+
+            });
           },
           onClearTap: () {
-            _PhoneNumberController.clear();
+            print("请输onClearTap 入用户电话号码");
+
+            _phoneNumberController.clear();
             setState(() {});
           },
         ),

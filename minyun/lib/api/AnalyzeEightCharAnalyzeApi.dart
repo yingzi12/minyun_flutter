@@ -29,17 +29,10 @@ class AnalyzeEightCharAnalyzeApi{
   }
 
 
-  static Future<AnalyzeEightCharAnalyzeModel> getInfo(int id) async {
+  static Future<AnalyzeEightCharAnalyzeModel> getInfo(int id,String uuid) async {
     final key = 'album_info_$id';
-    // final jsonStr = SharedPreferencesUtil.getStringWithExpiry(key);
-    //
-    // if (jsonStr != null) {
-    //   return AlbumModel.fromJson(json.decode(jsonStr));
-    // } else {
-    final url = "$info?id=$id";
+    final url = "$info?id=$id&uuid=$uuid";
     final jsonMap = await HttpUtil.get(url);
-
-
     if (jsonMap['code'] == 200) {
       // SharedPreferencesUtil.setStringWithExpiry(key, json.encode(jsonMap['data']), Duration(days: 1));
       return AnalyzeEightCharAnalyzeModel.fromJson(jsonMap['data']);
@@ -52,8 +45,8 @@ class AnalyzeEightCharAnalyzeApi{
 
 
 
-  static Future<Map<String, dynamic>> deleteModel(int id) async {
-    final jsonMap = await HttpUtil.get("$del?id=$id");
+  static Future<Map<String, dynamic>> deleteModel(int id,String uuid) async {
+    final jsonMap = await HttpUtil.get("$del?id=$id&uuid=$uuid");
     return jsonMap;
   }
 

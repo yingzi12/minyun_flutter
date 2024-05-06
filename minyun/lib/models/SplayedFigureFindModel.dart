@@ -91,6 +91,7 @@ class SplayedFigureFindModel{
   int? uecid;
 
   int? aecid;
+  String? uuid;
 
 
 }

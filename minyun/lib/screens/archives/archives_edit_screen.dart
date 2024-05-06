@@ -6,7 +6,6 @@ import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/analyze_eight_char_model.dart';
-import 'package:minyun/screens/archives/archives_edit_screen.dart';
 import 'package:minyun/screens/splayed_figure_detail_screen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
@@ -22,14 +21,16 @@ import '../../utils/images.dart';
 /**
  *档案
  */
-class ArchivesScreen extends StatefulWidget {
-  ArchivesScreen({super.key});
+class ArchivesEditScreen extends StatefulWidget {
+  final AnalyzeEightCharModel analyzeEightCharModel;
+
+  ArchivesEditScreen({super.key, required this.analyzeEightCharModel});
 
   @override
-  State<ArchivesScreen> createState() => _ArchivesScreenState();
+  State<ArchivesEditScreen> createState() => _ArchivesEditScreenState();
 }
 
-class _ArchivesScreenState extends State<ArchivesScreen> {
+class _ArchivesEditScreenState extends State<ArchivesEditScreen> {
   List<AnalyzeEightCharModel> stories = [];
 
   String explanation="请先登录。。。";
@@ -49,34 +50,23 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
       }else{
         explanation="数据加载中";
         isLogin=true;
-        _refreshApiData();
+        _refreshApiData("","","");
       }
     });
   }
-
-  Future<void> _refreshDelData(String uuid,String id) async {
-
-    AnalyzeEightCharApi.deleteModel(id,uuid);
-  }
-
 
   @override
   void dispose() {
     super.dispose();
   }
 
-  Future<void> _refreshApiData() async {
+  Future<void> _refreshApiData(String timely,String start,String end) async {
     // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
     Map<String, String> queryParams=new HashMap();
     ResultListModel<AnalyzeEightCharModel> resultModel = await AnalyzeEightCharApi.getList(queryParams);
     setState(() {
       stories=resultModel.data??[];
     });
-  }
-
-  Future<void> _delDate(String id,String uuid) async {
-    Map<String,dynamic> resultModel = await AnalyzeEightCharApi.deleteModel(id,uuid);
-    _refreshApiData();
   }
 
   @override
@@ -118,6 +108,34 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                   shrinkWrap: true,
                   itemBuilder: (context, int index) {
                     return buildCall( stories[index]);
+                    // AnalyzeEightCharModel analyze= stories[index];
+                    // int sex=analyze.sex!.toInt();
+                    // return Container(
+                    //   margin: EdgeInsets.symmetric(vertical: 8),
+                    //   padding: EdgeInsets.all(16),
+                    //   decoration: BoxDecoration(
+                    //       color: mode.theme ? darkPrimaryLightColor : Colors.grey.shade200, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         // flex: 7,
+                    //         child: Column(
+                    //           crossAxisAlignment: CrossAxisAlignment.start,
+                    //           children: [
+                    //             Row(
+                    //               children: [
+                    //                 Text(analyze.name??"", style: TextStyle(fontSize:   20,color: Colors.black)),
+                    //                  CircleBackgroundText(sex ==0 ? "男":"女",sex == '男'?Colors.yellow :Colors.red,30),
+                    //               ],
+                    //             ),
+                    //             Text( "${analyze.createTime ?? ""}", style: TextStyle(fontSize:   14,color: Colors.black45)),
+                    //             Text(analyze.dateType!.toInt() ==5 ? "${analyze.year}-${analyze.month}-${analyze.day} ${analyze.hour}:00": "${analyze.ng} ${analyze.yg} ${analyze.rg} ${analyze.sg}", style: TextStyle(fontSize:   12,color: Colors.black45)),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // );
                   },
                 ),
 
@@ -185,8 +203,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                     color: Colors.red,
                     padding: EdgeInsets.all(0.0), // 移除默认的padding
                     onPressed: () {
-                      _delDate(analyze.id.toString(),analyze.uuid.toString());
-                      print('删除');
+                      print('Edit button pressed');
                     },
                   ),
                 ),
@@ -198,8 +215,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                     color: Colors.blue,
                     padding: EdgeInsets.all(0.0), // 移除默认的padding
                     onPressed: () {
-                      ArchivesEditScreen(analyzeEightCharModel: analyze,).launch(context);
-                      // print('编辑');
+                      print('Edit button pressed');
                     },
                   ),
                 ),

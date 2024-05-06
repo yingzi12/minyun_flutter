@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'JsonSerializable.dart';
+import 'package:minyun/models/JsonSerializable.dart';
 /// id : 0
 /// userId : 0
 /// createTime : ""
@@ -11,10 +11,11 @@ import 'JsonSerializable.dart';
 /// inputdate : ""
 /// upateTime : ""
 /// aecid : 0
+/// uuid : ""
 
 AnalyzeEightCharInfoModel analyzeEightCharInfoModelFromJson(String str) => AnalyzeEightCharInfoModel.fromJson(json.decode(str));
 String analyzeEightCharInfoModelToJson(AnalyzeEightCharInfoModel data) => json.encode(data.toJson());
-class AnalyzeEightCharInfoModel  implements JsonSerializable  {
+class AnalyzeEightCharInfoModel  implements JsonSerializable{
   AnalyzeEightCharInfoModel({
       num? id, 
       num? userId, 
@@ -25,7 +26,8 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable  {
       String? analyzeTime, 
       String? inputdate, 
       String? upateTime, 
-      num? aecid,}){
+      num? aecid, 
+      String? uuid,}){
     _id = id;
     _userId = userId;
     _createTime = createTime;
@@ -36,6 +38,7 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable  {
     _inputdate = inputdate;
     _upateTime = upateTime;
     _aecid = aecid;
+    _uuid = uuid;
 }
 
   AnalyzeEightCharInfoModel.fromJson(dynamic json) {
@@ -49,6 +52,7 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable  {
     _inputdate = json['inputdate'];
     _upateTime = json['upateTime'];
     _aecid = json['aecid'];
+    _uuid = json['uuid'];
   }
   num? _id;
   num? _userId;
@@ -60,6 +64,7 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable  {
   String? _inputdate;
   String? _upateTime;
   num? _aecid;
+  String? _uuid;
 AnalyzeEightCharInfoModel copyWith({  num? id,
   num? userId,
   String? createTime,
@@ -70,6 +75,7 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
   String? inputdate,
   String? upateTime,
   num? aecid,
+  String? uuid,
 }) => AnalyzeEightCharInfoModel(  id: id ?? _id,
   userId: userId ?? _userId,
   createTime: createTime ?? _createTime,
@@ -80,6 +86,7 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
   inputdate: inputdate ?? _inputdate,
   upateTime: upateTime ?? _upateTime,
   aecid: aecid ?? _aecid,
+  uuid: uuid ?? _uuid,
 );
   num? get id => _id;
   num? get userId => _userId;
@@ -91,6 +98,7 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
   String? get inputdate => _inputdate;
   String? get upateTime => _upateTime;
   num? get aecid => _aecid;
+  String? get uuid => _uuid;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -104,6 +112,7 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
     map['inputdate'] = _inputdate;
     map['upateTime'] = _upateTime;
     map['aecid'] = _aecid;
+    map['uuid'] = _uuid;
     return map;
   }
 

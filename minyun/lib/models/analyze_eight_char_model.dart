@@ -29,13 +29,14 @@ import 'package:minyun/models/JsonSerializable.dart';
 /// analyzeUserId : ""
 /// analyzeUserName : ""
 /// analyzeDirection : ""
+/// uuid : ""
 
-AnalyzeEightCharModel analyzeEightCharModellFromJson(String str) => AnalyzeEightCharModel.fromJson(json.decode(str));
-String analyzeEightCharModellToJson(AnalyzeEightCharModel data) => json.encode(data.toJson());
-class AnalyzeEightCharModel implements JsonSerializable {
+AnalyzeEightCharModel analyzeEightCharModelFromJson(String str) => AnalyzeEightCharModel.fromJson(json.decode(str));
+String analyzeEightCharModelToJson(AnalyzeEightCharModel data) => json.encode(data.toJson());
+class AnalyzeEightCharModel  implements JsonSerializable {
   AnalyzeEightCharModel({
-    String? id,
-    String? userId,
+      num? id, 
+      num? userId, 
       num? year, 
       num? month, 
       num? day, 
@@ -61,7 +62,8 @@ class AnalyzeEightCharModel implements JsonSerializable {
       String? analyzeTime, 
       String? analyzeUserId, 
       String? analyzeUserName, 
-      String? analyzeDirection,}){
+      String? analyzeDirection, 
+      String? uuid,}){
     _id = id;
     _userId = userId;
     _year = year;
@@ -90,6 +92,7 @@ class AnalyzeEightCharModel implements JsonSerializable {
     _analyzeUserId = analyzeUserId;
     _analyzeUserName = analyzeUserName;
     _analyzeDirection = analyzeDirection;
+    _uuid = uuid;
 }
 
   AnalyzeEightCharModel.fromJson(dynamic json) {
@@ -121,9 +124,10 @@ class AnalyzeEightCharModel implements JsonSerializable {
     _analyzeUserId = json['analyzeUserId'];
     _analyzeUserName = json['analyzeUserName'];
     _analyzeDirection = json['analyzeDirection'];
+    _uuid = json['uuid'];
   }
-  String? _id;
-  String? _userId;
+  num? _id;
+  num? _userId;
   num? _year;
   num? _month;
   num? _day;
@@ -150,8 +154,9 @@ class AnalyzeEightCharModel implements JsonSerializable {
   String? _analyzeUserId;
   String? _analyzeUserName;
   String? _analyzeDirection;
-AnalyzeEightCharModel copyWith({  String? id,
-  String? userId,
+  String? _uuid;
+AnalyzeEightCharModel copyWith({  num? id,
+  num? userId,
   num? year,
   num? month,
   num? day,
@@ -178,6 +183,7 @@ AnalyzeEightCharModel copyWith({  String? id,
   String? analyzeUserId,
   String? analyzeUserName,
   String? analyzeDirection,
+  String? uuid,
 }) => AnalyzeEightCharModel(  id: id ?? _id,
   userId: userId ?? _userId,
   year: year ?? _year,
@@ -206,9 +212,10 @@ AnalyzeEightCharModel copyWith({  String? id,
   analyzeUserId: analyzeUserId ?? _analyzeUserId,
   analyzeUserName: analyzeUserName ?? _analyzeUserName,
   analyzeDirection: analyzeDirection ?? _analyzeDirection,
+  uuid: uuid ?? _uuid,
 );
-  String? get id => _id;
-  String? get userId => _userId;
+  num? get id => _id;
+  num? get userId => _userId;
   num? get year => _year;
   num? get month => _month;
   num? get day => _day;
@@ -235,6 +242,7 @@ AnalyzeEightCharModel copyWith({  String? id,
   String? get analyzeUserId => _analyzeUserId;
   String? get analyzeUserName => _analyzeUserName;
   String? get analyzeDirection => _analyzeDirection;
+  String? get uuid => _uuid;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -266,6 +274,7 @@ AnalyzeEightCharModel copyWith({  String? id,
     map['analyzeUserId'] = _analyzeUserId;
     map['analyzeUserName'] = _analyzeUserName;
     map['analyzeDirection'] = _analyzeDirection;
+    map['uuid'] = _uuid;
     return map;
   }
 

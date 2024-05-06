@@ -39,7 +39,7 @@ class SignInAndSignUpScreenState extends State<SignInAndSignUpScreen> {
           commonCacheImageWidget("assets/icons/bottom_navigation_icons/paipan_outlined.webp", 240, width: 240, fit: BoxFit.cover).cornerRadiusWithClipRRect(120),
           70.height,
           AppButton(
-            child: Text('Sign in', style: boldTextStyle(color: mpAppButtonColor)),
+            child: Text('Sign in', style: appMainBoldTextStyle(color: mpAppButtonColor)),
             color: appStore.isDarkModeOn ? scaffoldDarkColor : white,
             width: context.width(),
             onTap: () {

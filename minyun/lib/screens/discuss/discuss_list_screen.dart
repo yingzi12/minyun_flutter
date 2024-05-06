@@ -6,6 +6,7 @@ import 'package:minyun/component/discuss/discuss_cell_component.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/discuss_model.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class DiscussListScreen extends StatefulWidget {
@@ -118,7 +119,7 @@ class _DiscussListScreenState extends State<DiscussListScreen> {
         ),
         backgroundColor: mpAppBackGroundColor,
         elevation: 0.0,
-        title: Text(title, style: boldTextStyle(color: Colors.white.withOpacity(0.9))),
+        title: Text(title, style: appMainBoldTextStyle(color: Colors.white.withOpacity(0.9))),
         // actions: [
         //   IconButton(
         //     icon: Icon(Icons.search,color: Colors.white),
