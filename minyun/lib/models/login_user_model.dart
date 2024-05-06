@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:minyun/models/JsonSerializable.dart';
 /// searchValue : ""
 /// createBy : ""
 /// createTime : ""
@@ -29,7 +31,7 @@ import 'dart:convert';
 
 LoginUserModel loginUserModelFromJson(String str) => LoginUserModel.fromJson(json.decode(str));
 String loginUserModelToJson(LoginUserModel data) => json.encode(data.toJson());
-class LoginUserModel {
+class LoginUserModel  implements JsonSerializable  {
   LoginUserModel({
       String? searchValue, 
       String? createBy, 

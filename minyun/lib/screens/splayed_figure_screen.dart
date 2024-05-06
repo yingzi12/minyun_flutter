@@ -18,6 +18,7 @@ import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
+import 'package:uuid/uuid.dart';
 import '../utils/images.dart';
 
 class SplayedFigureScreen extends StatefulWidget {
@@ -28,6 +29,8 @@ class SplayedFigureScreen extends StatefulWidget {
 }
 
 class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
+
+  var uuid=Uuid();
 
   SplayedFigureModel? splayedFigureModel;
   bool isRefreshing = false; // 用于表示是否正在刷新数据
@@ -296,6 +299,9 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                     addMap["siling"]=sera.city1!.toString() ?? "1";
                   }
                   sera.isSave=_selectedSaveValue;
+                  sera.uuid=uuid.v4();
+                  addMap["uuid"]=sera.uuid??"";
+
                   if(sera.isSave ==1){
                     _refreshSaveData(addMap);
                   }
