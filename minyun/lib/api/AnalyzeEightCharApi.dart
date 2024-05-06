@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:minyun/models/ResultListModel.dart';
-import 'package:minyun/models/analyze_eight_char_modell.dart';
+import 'package:minyun/models/analyze_eight_char_model.dart';
 import 'package:minyun/utils/HttpUtil.dart';
 import 'package:minyun/utils/SharedPreferencesUtil.dart';
 

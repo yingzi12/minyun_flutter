@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:minyun/models/JsonSerializable.dart';
 /// id : 0
 /// userId : 0
 /// createTime : ""
@@ -12,7 +14,7 @@ import 'dart:convert';
 
 AnalyzeEightCharInfoModel analyzeEightCharInfoModelFromJson(String str) => AnalyzeEightCharInfoModel.fromJson(json.decode(str));
 String analyzeEightCharInfoModelToJson(AnalyzeEightCharInfoModel data) => json.encode(data.toJson());
-class AnalyzeEightCharInfoModel {
+class AnalyzeEightCharInfoModel implements JsonSerializable{
   AnalyzeEightCharInfoModel({
       num? id, 
       num? userId, 
