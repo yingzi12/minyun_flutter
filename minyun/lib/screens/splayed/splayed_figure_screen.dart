@@ -12,14 +12,14 @@ import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
-import 'package:minyun/screens/splayed_figure_detail_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'package:uuid/uuid.dart';
-import '../utils/images.dart';
+import '../../utils/images.dart';
 
 class SplayedFigureScreen extends StatefulWidget {
   const SplayedFigureScreen({Key? key}) : super(key: key);

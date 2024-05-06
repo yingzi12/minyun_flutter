@@ -12,7 +12,7 @@ import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
-import 'package:minyun/screens/splayed_figure_detail_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/SecureStorage.dart';

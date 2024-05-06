@@ -9,7 +9,7 @@ import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
-import '../constant.dart';
+import '../../constant.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 /**

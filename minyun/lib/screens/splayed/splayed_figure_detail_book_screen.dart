@@ -3,33 +3,35 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lunar/lunar.dart';
 
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
-
-import '../constant.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class SplayedFigureDetailAnalyzeScreen extends StatefulWidget {
+import '../../constant.dart';
+
+class SplayedFigureDetailBookScreen extends StatefulWidget {
   final SplayedFigureFindModel search;
   final Fx fx;
-  SplayedFigureDetailAnalyzeScreen({required this.search, required this.fx});
+  SplayedFigureDetailBookScreen({required this.search, required this.fx});
 
   @override
-  State<SplayedFigureDetailAnalyzeScreen> createState() => _SplayedFigureDetailAnalyzeScreenState();
+  State<SplayedFigureDetailBookScreen> createState() => _SplayedFigureDetailBookScreenState();
 }
 
-class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAnalyzeScreen>  with TickerProviderStateMixin {
+class _SplayedFigureDetailBookScreenState extends State<SplayedFigureDetailBookScreen>  with TickerProviderStateMixin {
 
   String gz="";
   String py="";
-  String tyfx="日主分析";
+  String gjck="穷通宝鉴";
 
 
   @override
   void initState() {
     super.initState();
+    // _refreshApiData();
     _refreshSdkData();
   }
 
@@ -53,27 +55,27 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
   Widget build(BuildContext context) {
     return  ListView(
       children: [
-        Text("袁天罡称骨"),
-        getText("骨重",widget.fx.gz??""),
-        getText("评语",widget.fx.cgg??""),
-        Text("通用分析"),
+        Text("古籍参考"),
         Center(
           child: Wrap(
             spacing: 8.0, // 子组件之间的间距
             runSpacing: 4.0, // 换行之间的间距
             children: <Widget>[
               // 在这里放置你的组件
-              getTitle('日主分析'),
-              getTitle('星座分析'),
-              getTitle('宫度论命'),
-              getTitle('综合分析'),
-              getTitle('三才五格'),
-              getTitle('喜用神参考'),
-              getTitle('月日精参'),
+              getTitle('穷通宝鉴'),
+              getTitle('滴天髓'),
+              getTitle('三命通会'),
+              getTitle('八字提要'),
+              getTitle('神峰通考'),
+              getTitle('天元巫咸'),
+              getTitle('五行经纪'),
+              getTitle('李虚中命书'),
+              getTitle('鬼谷子两头钳'),
+              getTitle('格物至言'),
             ],
           ),
         ),
-        getTAnalyzeText(tyfx),
+        getTAnalyzeText(gjck),
       ],
     );
   }
@@ -83,12 +85,12 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
       onTap: () {
         // 在这里处理点击事件  
         setState(() {
-          tyfx=generalAnalyzeCode[title]!;
+          gjck=ancientBooksAnalyzeCode[title]!;
         });
       },
       child: Chip(
           label: Text(title),
-            backgroundColor: tyfx == generalAnalyzeCode[title] ? Colors.grey : Colors.transparent,
+            backgroundColor: gjck == ancientBooksAnalyzeCode[title] ? Colors.grey : Colors.transparent,
            // selected: selectedChips[title],
       ),
     );
@@ -96,43 +98,68 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
 
   Widget getTAnalyzeText(String key){
     switch (key){
-      case "rizhufenxi":
-        return getMap(widget.fx.rizhufenxi);
-      case "xingZuo":
-        return getMap(widget.fx.xingZuo);
-      case "kwsc":
-        return getList(widget.fx.kwsc2 ?? []);
-      case "gdlm":
-        return getList(widget.fx.gdlm ?? []);
-      case "scwg":
-        return getList(widget.fx.scwg ?? []);
-      case "xiyongshencankao":
+      case "qiongtongbaojian":
+        return getFxText(widget.fx.qiongtongbaojian??"");
+      case "ditiansui":
+        return getFxText(widget.fx.ditiansui??"");
+      case "sanmingtonghui":
         List<String> list=[];
-        list.add(widget.fx.xiyongshencankao1??"");
-        list.add(widget.fx.xiyongshencankao2??"");
+        list.add(widget.fx.sanmingtonghui1??"");
+        list.add(widget.fx.sanmingtonghui2??"");
+        list.add(widget.fx.sanmingtonghui3??"");
+        list.add(widget.fx.sanmingtonghui4??"");
         return getList(list);
-      case "yrjpfx":
-        return getFxText(widget.fx.yrjpfx ?? "");
+      case "bazitiyao":
+        List<String> list=[];
+        list.add(widget.fx.bazitiyao1??"");
+        list.add(widget.fx.bazitiyao2??"");
+        list.add(widget.fx.bazitiyao3??"");
+        return getList(list);
+      case "shenfengtongkao":
+        List<String> list=[];
+        list.add(widget.fx.shenfengtongkao1??"");
+        list.add(widget.fx.shenfengtongkao2??"");
+        list.add(widget.fx.shenfengtongkao3??"");
+        return getList(list);
+
+      case "tianwuwuxian":
+        return getFxText(widget.fx.tianwuwuxian ?? "");
+      case "wuxingjingji":
+        List<String> list=[];
+        list.add(widget.fx.wuxingjingji1??"");
+        list.add(widget.fx.wuxingjingji2??"");
+        list.add(widget.fx.wuxingjingji3??"");
+        list.add(widget.fx.wuxingjingji4??"");
+        list.add(widget.fx.wuxingjingji5??"");
+        list.add(widget.fx.wuxingjingji6??"");
+        return getList(list);
+      case "lixuzhongmingshu":
+        List<String> list=[];
+        list.add(widget.fx.lixuzhongmingshu1??"");
+        list.add(widget.fx.lixuzhongmingshu2??"");
+        return getList(list);
+      case "liangtoqian":
+        return getFxText(widget.fx.liangtoqian??"");
+      case "gewuzhiyan":
+        return getFxText(widget.fx.gewuzhiyan??"");
       default:
-        return getMap(widget.fx.rizhufenxi);
+        return getFxText(widget.fx.qiongtongbaojian??"");
     }
     }
 
     Widget getFxText(String text){
-      return Html(
+     return Html(
         data: text,
-        style: {
+       style: {
           "p":Style(
             fontSize: FontSize(20),
             color:  Colors.black,
           )
-        },
+       },
       );
+     // return document.outerHtml;
     }
   Widget getList(List<String> lists){
-    if(lists.length==0){
-      return Text("无数据");
-    }
     return RichText(
       text: TextSpan(
         children: [
@@ -141,14 +168,13 @@ class _SplayedFigureDetailAnalyzeScreenState extends State<SplayedFigureDetailAn
               text: str+"\n",
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
-
         ],
       ),
     );
 
   }
 
-  Widget getMap(dynamic keyValue){
+  Widget getRizhufenxi(dynamic keyValue){
     Map<String,String> map = Map<String, String>.from(keyValue.map(
           (key, value) => MapEntry(key, value.toString()),
     ));

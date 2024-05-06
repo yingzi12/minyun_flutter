@@ -6,7 +6,7 @@ import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/analyze_eight_char_model.dart';
-import 'package:minyun/screens/splayed_figure_detail_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
 

@@ -7,15 +7,15 @@ import 'package:lunar/lunar.dart';
 import 'package:minyun/api/SplayedFigureApi.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
-import 'package:minyun/screens/splayed_figure_detail_analyze_screen.dart';
-import 'package:minyun/screens/splayed_figure_detail_common_screen.dart';
-import 'package:minyun/screens/splayed_figure_detail_info_screen.dart';
-import 'package:minyun/screens/splayed_figure_detail_intro_screen.dart';
-import 'package:minyun/screens/splayed_figure_detail_paipan_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_analyze_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_common_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_info_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_intro_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_detail_paipan_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 
-import '../utils/AppCommon.dart';
-import '../utils/images.dart';
+import '../../utils/AppCommon.dart';
+import '../../utils/images.dart';
 import 'splayed_figure_detail_book_screen.dart';
 
 class SplayedFigureDetailScreen extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/archives/archives_screen.dart';
 import 'package:minyun/screens/dashboard_screen.dart';
 import 'package:minyun/screens/premium_screen.dart';
-import 'package:minyun/screens/splayed_figure_screen.dart';
+import 'package:minyun/screens/splayed/splayed_figure_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 
 import '../utils/images.dart';

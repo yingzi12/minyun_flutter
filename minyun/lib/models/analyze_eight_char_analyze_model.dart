@@ -17,10 +17,11 @@ import 'package:minyun/models/JsonSerializable.dart';
 /// smsStatus : 0
 /// messageStatus : 0
 /// emailStatus : 0
+/// uuid : ""
 
 AnalyzeEightCharAnalyzeModel analyzeEightCharAnalyzeModelFromJson(String str) => AnalyzeEightCharAnalyzeModel.fromJson(json.decode(str));
 String analyzeEightCharAnalyzeModelToJson(AnalyzeEightCharAnalyzeModel data) => json.encode(data.toJson());
-class AnalyzeEightCharAnalyzeModel implements JsonSerializable {
+class AnalyzeEightCharAnalyzeModel  implements JsonSerializable {
   AnalyzeEightCharAnalyzeModel({
       num? id, 
       num? userId, 
@@ -37,7 +38,8 @@ class AnalyzeEightCharAnalyzeModel implements JsonSerializable {
       num? isEmail, 
       num? smsStatus, 
       num? messageStatus, 
-      num? emailStatus,}){
+      num? emailStatus, 
+      String? uuid,}){
     _id = id;
     _userId = userId;
     _createTime = createTime;
@@ -54,6 +56,7 @@ class AnalyzeEightCharAnalyzeModel implements JsonSerializable {
     _smsStatus = smsStatus;
     _messageStatus = messageStatus;
     _emailStatus = emailStatus;
+    _uuid = uuid;
 }
 
   AnalyzeEightCharAnalyzeModel.fromJson(dynamic json) {
@@ -73,6 +76,7 @@ class AnalyzeEightCharAnalyzeModel implements JsonSerializable {
     _smsStatus = json['smsStatus'];
     _messageStatus = json['messageStatus'];
     _emailStatus = json['emailStatus'];
+    _uuid = json['uuid'];
   }
   num? _id;
   num? _userId;
@@ -90,6 +94,7 @@ class AnalyzeEightCharAnalyzeModel implements JsonSerializable {
   num? _smsStatus;
   num? _messageStatus;
   num? _emailStatus;
+  String? _uuid;
 AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   num? userId,
   String? createTime,
@@ -106,6 +111,7 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   num? smsStatus,
   num? messageStatus,
   num? emailStatus,
+  String? uuid,
 }) => AnalyzeEightCharAnalyzeModel(  id: id ?? _id,
   userId: userId ?? _userId,
   createTime: createTime ?? _createTime,
@@ -122,6 +128,7 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   smsStatus: smsStatus ?? _smsStatus,
   messageStatus: messageStatus ?? _messageStatus,
   emailStatus: emailStatus ?? _emailStatus,
+  uuid: uuid ?? _uuid,
 );
   num? get id => _id;
   num? get userId => _userId;
@@ -139,6 +146,7 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   num? get smsStatus => _smsStatus;
   num? get messageStatus => _messageStatus;
   num? get emailStatus => _emailStatus;
+  String? get uuid => _uuid;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -158,6 +166,7 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
     map['smsStatus'] = _smsStatus;
     map['messageStatus'] = _messageStatus;
     map['emailStatus'] = _emailStatus;
+    map['uuid'] = _uuid;
     return map;
   }
 
