@@ -35,8 +35,8 @@ AnalyzeEightCharModel analyzeEightCharModelFromJson(String str) => AnalyzeEightC
 String analyzeEightCharModelToJson(AnalyzeEightCharModel data) => json.encode(data.toJson());
 class AnalyzeEightCharModel  implements JsonSerializable {
   AnalyzeEightCharModel({
-      num? id, 
-      num? userId, 
+    String? id,
+    String? userId,
       num? year, 
       num? month, 
       num? day, 
@@ -126,8 +126,8 @@ class AnalyzeEightCharModel  implements JsonSerializable {
     _analyzeDirection = json['analyzeDirection'];
     _uuid = json['uuid'];
   }
-  num? _id;
-  num? _userId;
+  String? _id;
+  String? _userId;
   num? _year;
   num? _month;
   num? _day;
@@ -155,8 +155,8 @@ class AnalyzeEightCharModel  implements JsonSerializable {
   String? _analyzeUserName;
   String? _analyzeDirection;
   String? _uuid;
-AnalyzeEightCharModel copyWith({  num? id,
-  num? userId,
+AnalyzeEightCharModel copyWith({  String? id,
+  String? userId,
   num? year,
   num? month,
   num? day,
@@ -214,8 +214,8 @@ AnalyzeEightCharModel copyWith({  num? id,
   analyzeDirection: analyzeDirection ?? _analyzeDirection,
   uuid: uuid ?? _uuid,
 );
-  num? get id => _id;
-  num? get userId => _userId;
+  String? get id => _id;
+  String? get userId => _userId;
   num? get year => _year;
   num? get month => _month;
   num? get day => _day;

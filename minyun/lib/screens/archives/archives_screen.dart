@@ -91,34 +91,6 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                   shrinkWrap: true,
                   itemBuilder: (context, int index) {
                     return buildCall( stories[index]);
-                    // AnalyzeEightCharModel analyze= stories[index];
-                    // int sex=analyze.sex!.toInt();
-                    // return Container(
-                    //   margin: EdgeInsets.symmetric(vertical: 8),
-                    //   padding: EdgeInsets.all(16),
-                    //   decoration: BoxDecoration(
-                    //       color: mode.theme ? darkPrimaryLightColor : Colors.grey.shade200, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(
-                    //         // flex: 7,
-                    //         child: Column(
-                    //           crossAxisAlignment: CrossAxisAlignment.start,
-                    //           children: [
-                    //             Row(
-                    //               children: [
-                    //                 Text(analyze.name??"", style: TextStyle(fontSize:   20,color: Colors.black)),
-                    //                  CircleBackgroundText(sex ==0 ? "男":"女",sex == '男'?Colors.yellow :Colors.red,30),
-                    //               ],
-                    //             ),
-                    //             Text( "${analyze.createTime ?? ""}", style: TextStyle(fontSize:   14,color: Colors.black45)),
-                    //             Text(analyze.dateType!.toInt() ==5 ? "${analyze.year}-${analyze.month}-${analyze.day} ${analyze.hour}:00": "${analyze.ng} ${analyze.yg} ${analyze.rg} ${analyze.sg}", style: TextStyle(fontSize:   12,color: Colors.black45)),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
                   },
                 ),
 

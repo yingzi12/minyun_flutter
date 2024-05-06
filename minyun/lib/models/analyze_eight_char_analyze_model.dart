@@ -23,8 +23,8 @@ AnalyzeEightCharAnalyzeModel analyzeEightCharAnalyzeModelFromJson(String str) =>
 String analyzeEightCharAnalyzeModelToJson(AnalyzeEightCharAnalyzeModel data) => json.encode(data.toJson());
 class AnalyzeEightCharAnalyzeModel  implements JsonSerializable {
   AnalyzeEightCharAnalyzeModel({
-      num? id, 
-      num? userId, 
+    String? id,
+    String? userId,
       String? createTime, 
       String? label, 
       String? intro, 
@@ -32,8 +32,7 @@ class AnalyzeEightCharAnalyzeModel  implements JsonSerializable {
       String? analyzeTime, 
       String? inputdate, 
       String? upateTime, 
-      num? uecid, 
-      num? isSms, 
+      num? isSms,
       num? isMessage, 
       num? isEmail, 
       num? smsStatus, 
@@ -49,7 +48,6 @@ class AnalyzeEightCharAnalyzeModel  implements JsonSerializable {
     _analyzeTime = analyzeTime;
     _inputdate = inputdate;
     _upateTime = upateTime;
-    _uecid = uecid;
     _isSms = isSms;
     _isMessage = isMessage;
     _isEmail = isEmail;
@@ -78,8 +76,8 @@ class AnalyzeEightCharAnalyzeModel  implements JsonSerializable {
     _emailStatus = json['emailStatus'];
     _uuid = json['uuid'];
   }
-  num? _id;
-  num? _userId;
+  String? _id;
+  String? _userId;
   String? _createTime;
   String? _label;
   String? _intro;
@@ -95,8 +93,8 @@ class AnalyzeEightCharAnalyzeModel  implements JsonSerializable {
   num? _messageStatus;
   num? _emailStatus;
   String? _uuid;
-AnalyzeEightCharAnalyzeModel copyWith({  num? id,
-  num? userId,
+AnalyzeEightCharAnalyzeModel copyWith({  String? id,
+  String? userId,
   String? createTime,
   String? label,
   String? intro,
@@ -121,7 +119,6 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   analyzeTime: analyzeTime ?? _analyzeTime,
   inputdate: inputdate ?? _inputdate,
   upateTime: upateTime ?? _upateTime,
-  uecid: uecid ?? _uecid,
   isSms: isSms ?? _isSms,
   isMessage: isMessage ?? _isMessage,
   isEmail: isEmail ?? _isEmail,
@@ -130,8 +127,8 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   emailStatus: emailStatus ?? _emailStatus,
   uuid: uuid ?? _uuid,
 );
-  num? get id => _id;
-  num? get userId => _userId;
+  String? get id => _id;
+  String? get userId => _userId;
   String? get createTime => _createTime;
   String? get label => _label;
   String? get intro => _intro;
@@ -139,7 +136,6 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
   String? get analyzeTime => _analyzeTime;
   String? get inputdate => _inputdate;
   String? get upateTime => _upateTime;
-  num? get uecid => _uecid;
   num? get isSms => _isSms;
   num? get isMessage => _isMessage;
   num? get isEmail => _isEmail;
@@ -159,7 +155,6 @@ AnalyzeEightCharAnalyzeModel copyWith({  num? id,
     map['analyzeTime'] = _analyzeTime;
     map['inputdate'] = _inputdate;
     map['upateTime'] = _upateTime;
-    map['uecid'] = _uecid;
     map['isSms'] = _isSms;
     map['isMessage'] = _isMessage;
     map['isEmail'] = _isEmail;

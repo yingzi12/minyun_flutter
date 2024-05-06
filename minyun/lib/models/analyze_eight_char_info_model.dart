@@ -17,8 +17,8 @@ AnalyzeEightCharInfoModel analyzeEightCharInfoModelFromJson(String str) => Analy
 String analyzeEightCharInfoModelToJson(AnalyzeEightCharInfoModel data) => json.encode(data.toJson());
 class AnalyzeEightCharInfoModel  implements JsonSerializable{
   AnalyzeEightCharInfoModel({
-      num? id, 
-      num? userId, 
+    String? id,
+    String? userId,
       String? createTime, 
       String? label, 
       String? intro, 
@@ -26,7 +26,6 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable{
       String? analyzeTime, 
       String? inputdate, 
       String? upateTime, 
-      num? aecid, 
       String? uuid,}){
     _id = id;
     _userId = userId;
@@ -37,7 +36,6 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable{
     _analyzeTime = analyzeTime;
     _inputdate = inputdate;
     _upateTime = upateTime;
-    _aecid = aecid;
     _uuid = uuid;
 }
 
@@ -51,11 +49,10 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable{
     _analyzeTime = json['analyzeTime'];
     _inputdate = json['inputdate'];
     _upateTime = json['upateTime'];
-    _aecid = json['aecid'];
     _uuid = json['uuid'];
   }
-  num? _id;
-  num? _userId;
+  String? _id;
+  String? _userId;
   String? _createTime;
   String? _label;
   String? _intro;
@@ -63,10 +60,9 @@ class AnalyzeEightCharInfoModel  implements JsonSerializable{
   String? _analyzeTime;
   String? _inputdate;
   String? _upateTime;
-  num? _aecid;
   String? _uuid;
-AnalyzeEightCharInfoModel copyWith({  num? id,
-  num? userId,
+AnalyzeEightCharInfoModel copyWith({  String? id,
+  String? userId,
   String? createTime,
   String? label,
   String? intro,
@@ -74,7 +70,6 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
   String? analyzeTime,
   String? inputdate,
   String? upateTime,
-  num? aecid,
   String? uuid,
 }) => AnalyzeEightCharInfoModel(  id: id ?? _id,
   userId: userId ?? _userId,
@@ -85,11 +80,10 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
   analyzeTime: analyzeTime ?? _analyzeTime,
   inputdate: inputdate ?? _inputdate,
   upateTime: upateTime ?? _upateTime,
-  aecid: aecid ?? _aecid,
   uuid: uuid ?? _uuid,
 );
-  num? get id => _id;
-  num? get userId => _userId;
+  String? get id => _id;
+  String? get userId => _userId;
   String? get createTime => _createTime;
   String? get label => _label;
   String? get intro => _intro;
@@ -97,7 +91,6 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
   String? get analyzeTime => _analyzeTime;
   String? get inputdate => _inputdate;
   String? get upateTime => _upateTime;
-  num? get aecid => _aecid;
   String? get uuid => _uuid;
 
   Map<String, dynamic> toJson() {
@@ -111,7 +104,6 @@ AnalyzeEightCharInfoModel copyWith({  num? id,
     map['analyzeTime'] = _analyzeTime;
     map['inputdate'] = _inputdate;
     map['upateTime'] = _upateTime;
-    map['aecid'] = _aecid;
     map['uuid'] = _uuid;
     return map;
   }
