@@ -36,7 +36,7 @@ class AnalyzeUserAnalyzeCellComponet extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 7,
+            // flex: 7,
             child: GestureDetector(
               onTap: () {
                 // routerCell(analyze);
@@ -57,39 +57,39 @@ class AnalyzeUserAnalyzeCellComponet extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 30.0, // 设置Container的宽度
-                  height: 30.0, // 设置Container的高度
-                  child: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Colors.red,
-                    padding: EdgeInsets.all(0.0), // 移除默认的padding
-                    onPressed: () {
-                      print('Edit button pressed');
-                    },
-                  ),
-                ),
-                Container(
-                  width: 30.0, // 设置Container的宽度
-                  height: 30.0, // 设置Container的高度
-                  child: IconButton(
-                    icon: Icon(Icons.edit),
-                    color: Colors.blue,
-                    padding: EdgeInsets.all(0.0), // 移除默认的padding
-                    onPressed: () {
-                      print('Edit button pressed');
-                    },
-                  ),
-                ),
-
-              ],
-            ),
-          ),
+          // Expanded(
+          //   flex: 1,
+          //   child: Column(
+          //     // crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Container(
+          //         width: 30.0, // 设置Container的宽度
+          //         height: 30.0, // 设置Container的高度
+          //         child: IconButton(
+          //           icon: Icon(Icons.delete),
+          //           color: Colors.red,
+          //           padding: EdgeInsets.all(0.0), // 移除默认的padding
+          //           onPressed: () {
+          //             print('Edit button pressed');
+          //           },
+          //         ),
+          //       ),
+          //       Container(
+          //         width: 30.0, // 设置Container的宽度
+          //         height: 30.0, // 设置Container的高度
+          //         child: IconButton(
+          //           icon: Icon(Icons.edit),
+          //           color: Colors.blue,
+          //           padding: EdgeInsets.all(0.0), // 移除默认的padding
+          //           onPressed: () {
+          //             print('Edit button pressed');
+          //           },
+          //         ),
+          //       ),
+          //
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

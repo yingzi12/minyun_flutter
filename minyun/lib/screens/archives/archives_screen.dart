@@ -187,6 +187,8 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
     SplayedFigureFindModel sera=new SplayedFigureFindModel();
     // Map<String, String> addMap=new HashMap();
     sera.name=analyze.name;
+    sera.uuid=analyze.uuid;
+
     // addMap["name"]=sera.name ??"";
 
     if (sera.name == null || sera.name!.isEmpty) {
