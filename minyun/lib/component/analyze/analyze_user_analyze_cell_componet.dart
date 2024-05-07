@@ -3,6 +3,7 @@ import 'package:minyun/models/analyze_eight_char_analyze_model.dart';
 import 'package:minyun/models/analyze_eight_char_info_model.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -45,10 +46,10 @@ class AnalyzeUserAnalyzeCellComponet extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text( "${infoModel.createTime ?? ""}", style: TextStyle(fontSize:   14,color: Colors.black45)),
+                  Text( "${infoModel.createTime ?? ""}", style: appMainBoldTextStyle(fontSize:   14)),
                   Row(
                     children: [
-                      Text(infoModel.intro??"", style: TextStyle(fontSize:   20,color: Colors.black)),
+                      Text(infoModel.intro??"", style: appMainBoldTextStyle(fontSize:   20)),
                       // CircleBackgroundText(sex ==0 ? "女":"男",sex == '女'?Colors.yellow :Colors.orange,30),
                     ],
                   ),

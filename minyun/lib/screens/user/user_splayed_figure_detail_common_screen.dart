@@ -27,7 +27,6 @@ class _UserSplayedFigureDetailCommonScreenState extends State<UserSplayedFigureD
   String tyfx="日主分析";
   int _selectedShareValue=1;
   TextEditingController _userIdController = TextEditingController();
-  TextEditingController _PhoneNumberController = TextEditingController();
 
 
   @override

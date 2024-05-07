@@ -342,7 +342,6 @@ Widget titleAddRowItem({
   String? title,
   Function()? onTap,
   required bool isSeeAll,
-  Color textColor = Colors.black // 添加颜色参数，默认为黑色
 }) {
   return Row(
     children: [
@@ -351,7 +350,7 @@ Widget titleAddRowItem({
         child: Text(
           title ?? 'Title',
           textAlign: TextAlign.left,
-          style: appMainBoldTextStyle(fontSize: 20, color: textColor), // 使用颜色参数
+          style: appMainBoldTextStyle(fontSize: 20), // 使用颜色参数
         ),
       ),
       if (isSeeAll)
@@ -363,7 +362,7 @@ Widget titleAddRowItem({
           onPressed: onTap,
           child: Text(
             '添加',
-            style: appMainSecondaryTextStyle(fontSize: 16, color: textColor), // 使用颜色参数
+            style: appMainSecondaryTextStyle(fontSize: 16), // 使用颜色参数
           ),
         ),
       SizedBox(width: 16)

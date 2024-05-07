@@ -17,6 +17,8 @@ class SplayedAddCommonScreen extends StatefulWidget {
 }
 
 class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
+  final _formKey = GlobalKey<FormState>(); // 添加全局Key来跟踪Form的状态
+
   int _selectedShareValue = 1;
   TextEditingController _userIdController = TextEditingController();
   TextEditingController _phoneNumberController = TextEditingController();
@@ -43,102 +45,112 @@ class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
   Widget build(BuildContext context){
     return AlertDialog(
       title: Text('点评'),
-      content: SingleChildScrollView( // Wrap content with SingleChildScrollView
-        child: Center(
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _labelController,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                inputFormatters: [LengthLimitingTextInputFormatter(20)],
-                decoration: InputDecoration(
-                  labelText: '请输入标签，多个用英文;分割',
-                  border: OutlineInputBorder(),
+      content: SingleChildScrollView(
+        // Wrap content with SingleChildScrollView
+        child: Form( // 将AlertDialog包装在Form组件中
+          key: _formKey, // 将全局Key分配给Form
+          child:
+          Center(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _labelController,
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  inputFormatters: [LengthLimitingTextInputFormatter(100)], // 调整了限制
+                  decoration: InputDecoration(
+                    labelText: '请输入标签，多个用英文;分割',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    print("validator ${value}");
+                    if (value == null || value.isEmpty) {
+                      return '输入不能为空';
+                    }
+                    List<String> labels = value.split(';'); // 通过分号拆分标签
+                    for (String label in labels) {
+                      if (label.trim().isEmpty) {
+                        return '标签不能为空';
+                      }
+                      if (label.trim().length < 2 || label.trim().length > 20) {
+                        return '标签长度必须在2到20之间';
+                      }
+                    }
+                    return null; // 返回null表示输入有效
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '输入不能为空';
-                  }
-                  if (value.length < 2 || value.length > 20) {
-                    return '点评的长度必须在2到100之间';
-                  }
-                  return null; // 返回null表示输入有效
-                },
-              ),
-              TextFormField(
-                controller: _introController,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                inputFormatters: [LengthLimitingTextInputFormatter(500)],
-                decoration: InputDecoration(
-                  labelText: '请输入点评',
-                  border: OutlineInputBorder(),
+                TextFormField(
+                  controller: _introController,
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                  decoration: InputDecoration(
+                    labelText: '请输入点评',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '点评不能为空';
+                    }
+                    if (value.length < 10 || value.length > 500) {
+                      return '点评的长度必须在10到100之间';
+                    }
+                    return null; // 返回null表示输入有效
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '点评不能为空';
-                  }
-                  if (value.length < 10 || value.length > 500) {
-                    return '点评的长度必须在10到100之间';
-                  }
-                  return null; // 返回null表示输入有效
-                },
-              ),
-              SizedBox(height: 16.0),
-              buildShare(),
-              if(_selectedShareValue.toInt()==1) buildUserId(context),
-              if(_selectedShareValue.toInt()==1) buildPhone(context),
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // 验证输入框内容是否为空
-                        if (_labelController.text.isEmpty ||
-                            _introController.text.isEmpty ||
-                            _labelController.text.length>20 ||
-                            _labelController.text.length <2 ||
-                            _introController.text.length>500 ||
-                            _introController.text.length <10
-                        ) {
-                          // 如果有任何一个输入框内容为空，不执行提交操作
-                          return;
-                        }
-
-                        if (_selectedShareValue ==1){
-                            if(_phoneNumberController.text.isEmpty || _userIdController.text.isEmpty) {
-                              // 如果有任何一个输入框内容为空，不执行提交操作
-                              return;
+                SizedBox(height: 16.0),
+                buildShare(),
+                if(_selectedShareValue.toInt()==1) buildUserId(context),
+                if(_selectedShareValue.toInt()==1) buildPhone(context),
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // 调用FormState的validate()方法来触发验证器
+                          if (_formKey.currentState!.validate()) {
+                            // 如果验证通过，执行提交操作
+                            _formKey.currentState!.save();
+                            Map<String, String> addMap=new HashMap();
+                            addMap['label']=_labelController.text;
+                            addMap['intro']=_introController.text;
+                            addMap['isSms']="0";
+                            addMap['isMessage']="0";
+                            if (_selectedShareValue ==1){
+                              if(_phoneNumberController.text.isEmpty || _userIdController.text.isEmpty) {
+                                // 如果有任何一个输入框内容为空，不执行提交操作
+                                return;
+                              }
+                              if( _phoneNumberController.text.isNotEmpty &&  _phoneNumberController.text.length != 11 ){
+                                return;
+                              }else{
+                                addMap['isSms']="1";
+                                addMap['send_phone']="1";
+                              }
+                              if( _userIdController.text.isNotEmpty &&  _userIdController.text.length >50 ){
+                                return;
+                              }else{
+                                addMap['isMessage']="1";
+                                addMap['send_user_id']="1";
+                              }
                             }
-                            if( _phoneNumberController.text.isNotEmpty &&  _phoneNumberController.text.length != 11 ){
-                              return;
-                            }
-                            if( _userIdController.text.isNotEmpty &&  _userIdController.text.length >50 ){
-                              return;
-                            }
-                        }
+                            _refreshSaveData(addMap);
+                            Navigator.pop(context,true);
+                          }
 
-                        Map<String, String> addMap=new HashMap();
-                        addMap['label']=_labelController.text;
-                        addMap['intro']=_introController.text;
-                        addMap['isSms']=_phoneNumberController.text;
-                        addMap['isMessage']=_userIdController.text;
-
-                        _refreshSaveData(addMap);
-                        Navigator.pop(context,true);
-                      },
-                      child: Text('提交'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context,false);
-                      },
-                      child: Text('取消'),
-                    ),
-                  ]
-              )
-            ],
+                        },
+                        child: Text('提交'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context,false);
+                        },
+                        child: Text('取消'),
+                      ),
+                    ]
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -205,10 +217,12 @@ class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
           additionInfoColor: TDTheme.of(context).errorColor6,
           onChanged: (text) {
             print("请 onChanged 输入用户账号${text}");
-            if (text == null || text.isEmpty) {
-              userIdError= '输入不能为空';
-            }
-            setState(() {});
+            setState(() {
+              if (text == null || text.isEmpty) {
+                userIdError= '输入不能为空';
+                return;
+              }});
+            return;
           },
           onClearTap: () {
             _userIdController.clear();
@@ -240,16 +254,19 @@ class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
             setState(() {
               if (text == null || text.isEmpty) {
                 phoneNumberError= '输入不能为空';
+                return;
               }
-             // 使用正则表达式检查输入是否为11位数字
-             if (!RegExp(r'^[0-9]{11}$').hasMatch(text)) {
+              // 使用正则表达式检查输入是否为11位数字
+              if (!RegExp(r'^[0-9]{11}$').hasMatch(text)) {
                 phoneNumberError='输入必须为11位数字';
+                return;
               }
+              phoneNumberError="";
             });
+            return;
           },
           onClearTap: () {
             print("请输onClearTap 入用户电话号码");
-
             _phoneNumberController.clear();
             setState(() {});
           },

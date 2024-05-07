@@ -11,6 +11,7 @@ import 'package:minyun/models/ResultListModel.dart';
 
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/analyze_eight_char_analyze_model.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
 import 'splayed_add_common_screen.dart';
 
@@ -78,6 +79,8 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
               }
           ).then((value) {
             if (value == true) {
+              // 执行页面刷新操作
+              _refreshSdkData();
               Get.dialog(
                 AlertDialog(
                   title: Text("信息"),
@@ -93,14 +96,13 @@ class _SplayedFigureDetailCommonScreenState extends State<SplayedFigureDetailCom
                 ),
                 barrierDismissible: false, // 点击对话框外部不关闭对话框
               );
-              // 执行页面刷新操作
-              _refreshSdkData();
+
             }
           })
         }
         ),
         size==0 ? Center(
-          child: Text("暂无点评"),
+          child: Text("暂无点评",style: appMainBoldTextStyle(),),
         ):Expanded(
           child: ListView.builder(
             itemCount: stories.length,

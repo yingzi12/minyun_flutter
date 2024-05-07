@@ -28,7 +28,7 @@ class AnalyzeEightCharApi{
   }
 
 
-  static Future<AnalyzeEightCharModel> getInfo(int id,String uuid) async {
+  static Future<AnalyzeEightCharModel> getInfo(String id,String uuid) async {
     final key = 'album_info_$id';
     // final jsonStr = SharedPreferencesUtil.getStringWithExpiry(key);
     //

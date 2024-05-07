@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
@@ -33,8 +34,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
   @override
   void initState() {
     super.initState();
-    _refreshApiData("","","");
-    // _refreshSdkData();
+    _refreshApiData();
   }
 
   @override
@@ -42,7 +42,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
     super.dispose();
   }
 
-  Future<void> _refreshApiData(String timely,String start,String end) async {
+  Future<void> _refreshApiData() async {
     // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
     Map<String, String> queryParams=new HashMap();
     // queryParams["timely"] = timely;
@@ -52,6 +52,34 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
     setState(() {
       stories=resultModel.data??[];
     });
+  }
+
+  Future<void> _delApiData(AnalyzeEightCharModel eightCharModel) async {
+    // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
+    Map<String, String> queryParams=new HashMap();
+    // queryParams["timely"] = timely;
+    // queryParams["startDate"] = start;
+    // queryParams["endDate"] = end;
+    Map<String,dynamic> result = await AnalyzeEightCharApi.deleteModel(eightCharModel.id.toString(),eightCharModel.uuid.toString());
+    if(result["code"].toString().toInt == 200){
+      _refreshApiData();
+      Get.dialog(
+        AlertDialog(
+          title: Text("信息"),
+          content: Text("添加成功"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("确定"),
+              onPressed: () {
+                Get.back(); // 关闭对话框
+              },
+            ),
+          ],
+        ),
+        barrierDismissible: false, // 点击对话框外部不关闭对话框
+      );
+
+    }
   }
 
   @override
@@ -77,7 +105,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Text("共 ${stories.length} 条", style: appMainBoldTextStyle(fontSize: 18,color: Colors.black45)),
+                    child: Text("共 ${stories.length} 条", style: appMainBoldTextStyle(fontSize: 18)),
                   ),
                   Spacer(),
                 ],
@@ -107,7 +135,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Text(title, style: appMainPrimaryTextStyle(fontSize: 14)), Divider()],
+        children: [Text(title, style: appMainPrimaryTextStyle()), Divider()],
       ),
       value: value,
     );
@@ -133,14 +161,14 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text( "${analyze.createTime ?? ""}", style: TextStyle(fontSize:   14,color: Colors.black45)),
+                Text( "${analyze.createTime ?? ""}", style: appMainSecondaryTextStyle()),
                 Row(
                   children: [
-                    Text(analyze.name??"", style: TextStyle(fontSize:   20,color: Colors.black)),
+                    Text(analyze.name??"", style: appMainSecondaryTextStyle(fontSize:   20)),
                     CircleBackgroundText(sex ==0 ? "女":"男",sex == '女'?Colors.yellow :Colors.orange,30),
                   ],
                 ),
-                Text(analyze.dateType!.toInt() ==5 ? "${analyze.year}-${analyze.month}-${analyze.day} ${analyze.hour}:00": "${analyze.ng} ${analyze.yg} ${analyze.rg} ${analyze.sg}", style: TextStyle(fontSize:   12,color: Colors.black45)),
+                Text(analyze.dateType!.toInt() ==5 ? "${analyze.year}-${analyze.month}-${analyze.day} ${analyze.hour}:00": "${analyze.ng} ${analyze.yg} ${analyze.rg} ${analyze.sg}", style: appMainSecondaryTextStyle(fontSize:   12)),
               ],
             ),
             ),
@@ -158,7 +186,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                     color: Colors.red,
                     padding: EdgeInsets.all(0.0), // 移除默认的padding
                     onPressed: () {
-                      print('Edit button pressed');
+                      _delApiData(analyze);
                     },
                   ),
                 ),
@@ -170,7 +198,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                     color: Colors.blue,
                     padding: EdgeInsets.all(0.0), // 移除默认的padding
                     onPressed: () {
-                      print('Edit button pressed');
+
                     },
                   ),
                 ),

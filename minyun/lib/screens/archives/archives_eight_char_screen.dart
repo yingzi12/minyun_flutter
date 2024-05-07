@@ -1,5 +1,5 @@
-
 import 'dart:collection';
+import 'dart:html';
 
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/constant.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/SplayedFigureModel.dart';
+import 'package:minyun/models/analyze_eight_char_model.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
@@ -18,19 +19,18 @@ import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
-import 'package:uuid/uuid.dart';
 import '../../utils/images.dart';
 
-class SplayedFigureScreen extends StatefulWidget {
-  const SplayedFigureScreen({Key? key}) : super(key: key);
+class ArchivesEightCharScreen extends StatefulWidget {
+  final String id;
+  final String uuid;
+  ArchivesEightCharScreen({required this.id,required this.uuid});
 
   @override
-  State<SplayedFigureScreen> createState() => _SplayedFigureScreenState();
+  State<ArchivesEightCharScreen> createState() => _ArchivesEightCharScreenState();
 }
 
-class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
-
-  var uuid=Uuid();
+class _ArchivesEightCharScreenState extends State<ArchivesEightCharScreen> {
 
   SplayedFigureModel? splayedFigureModel;
   bool isRefreshing = false; // 用于表示是否正在刷新数据
@@ -48,8 +48,6 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   int _selectedQipanValue=5;
   //排盘 是否专业
   int _selectedPaipanValue=1;
-  //是否保存
-  int _selectedSaveValue=2;
 
   //晚子时
   int _selectedLateValue=1;
@@ -57,7 +55,8 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
   int _selectedSunValue=1;
   //性别
   int _selectedSexValue=0;
-
+   //是否保存
+  int _selectedSaveValue=2;
   String birthValue="";
 
   //下拉
@@ -89,11 +88,12 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
 
   @override
   void initState() {
-    data_2.add(yearTianGanList);
-    data_2.add(yearTianGanList);
-    data_2.add(yearTianGanList);
-    data_2.add(yearTianGanList);
     super.initState();
+    data_2.add(yearTianGanList);
+    data_2.add(yearTianGanList);
+    data_2.add(yearTianGanList);
+    data_2.add(yearTianGanList);
+    _refreshApiData();
   }
 
   //获取指定月的天数
@@ -109,9 +109,45 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
       _nameController.clear();
     });
   }
+  Future<void> _refreshApiData( ) async {
+    AnalyzeEightCharModel eightChar =await AnalyzeEightCharApi.getInfo(widget.id,widget.uuid);
+    setState(() {
+      _nameController.text = eightChar.name ?? "";
+      _selectedQipanValue = eightChar.dateType!.toInt();
+      if (_selectedQipanValue == 4) {
+        _selectedYearValue = eightChar.ng ?? "";
+        _selectedMonthValue = eightChar.yg ?? "";
+        _selectedDayValue = eightChar.rg ?? "";
+        _selectedHourValue = eightChar.sg ?? "";
+      }
+      //日期排盘
+      if (_selectedQipanValue == 5) {
+        _selectedYearDate = eightChar.year!.toInt();
+        _selectedMonthDate = eightChar.month!.toInt();
+        _selectedDayDate = eightChar.day!.toInt();
+        _selectedHourDate = eightChar.hour!.toInt();
+        _selectedMinuteDate = 00;
+      }
+      _selectedSexValue = eightChar.sex!.toInt();
+      _selectedPaipanValue = eightChar.isMajor!.toInt();
+      //是否专业排盘
+      if (_selectedPaipanValue == 2) {
+        _selectedSunValue= eightChar.ztys!.toInt();
+        //如果时真太阳时
+        if (_selectedSunValue == 1) {
+          city1= eightChar.city1!.toString();
+          city2= eightChar.city2!.toString();
+          city3= eightChar.city3!.toString();
+        }
+        _selectedLateValue= eightChar.sect!.toInt();
+        _selectedRenyuanValue= eightChar.siling!.toInt();
+      }
+    });
+  }
 
-  Future<void> _refreshSaveData( Map<String, String> addMap) async {
-    AnalyzeEightCharApi.addModel(addMap);
+  Future<void> _refreshUpdateData( Map<String, String> editMap) async {
+    editMap["id"]=widget.id;
+    AnalyzeEightCharApi.editModel(editMap);
   }
 
   // DateTime _selectedDate = DateTime.now();
@@ -217,15 +253,15 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                   sera.name=_nameController.text;
                   addMap["name"]=sera.name ??"";
 
-                  if (sera.name == null || sera.name!.isEmpty) {
-                    BrnDialogManager.showSingleButtonDialog(context,
-                        label: "确定",
-                        title: '信息',
-                        warning: '请输入命主姓名', onTap: () {
-                          // BrnToast.show('知道了', context);
-                        });
-                    return;
-                  }
+                  // if (sera.name == null || sera.name!.isEmpty) {
+                  //   BrnDialogManager.showSingleButtonDialog(context,
+                  //       label: "确定",
+                  //       title: '信息',
+                  //       warning: '请输入命主姓名', onTap: () {
+                  //         // BrnToast.show('知道了', context);
+                  //       });
+                  //   return;
+                  // }
 
                   sera.dateType=_selectedQipanValue;
                   addMap["dateType"]=sera.dateType!.toString() ?? "5";
@@ -253,7 +289,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                     addMap["hour"]=sera.hour!.toString() ?? "";
                     sera.minute=_selectedMinuteDate;
                     addMap["minute"]=sera.minute!.toString() ?? "";
-                    if(10 > _selectedHourDate) {
+                    if(10 > _selectedMinuteDate) {
                       sera.inputdate =
                       "公历${sera.year}年${sera.month}月${sera.day}日 0${sera
                           .hour}时${sera.minute}分";
@@ -299,11 +335,11 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                     addMap["siling"]=sera.city1!.toString() ?? "1";
                   }
                   sera.isSave=_selectedSaveValue;
-                  sera.uuid=uuid.v4();
+                  sera.uuid=widget.uuid;
                   addMap["uuid"]=sera.uuid??"";
 
                   if(sera.isSave ==1){
-                    _refreshSaveData(addMap);
+                    _refreshUpdateData(addMap);
                   }
                   SplayedFigureDetailScreen(search: sera,).launch(context);
                 }
@@ -912,6 +948,7 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
         TDInput(
           leftLabel: '姓名',
           required: true,
+          readOnly: true,
           controller: _nameController,
           backgroundColor: Colors.white,
           hintText: '请输入姓名',

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:lunar/lunar.dart';
 import 'package:minyun/api/AnalyzeEightCharInfoApi.dart';
 import 'package:minyun/component/analyze/analyze_user_info_cell_componet.dart';
@@ -9,6 +10,7 @@ import 'package:minyun/models/ResultListModel.dart';
 
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/analyze_eight_char_info_model.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 /**
  * 大师点评
@@ -49,8 +51,28 @@ class _SplayedFigureDetailInfoScreenState extends State<SplayedFigureDetailInfoS
   }
   Future<void> _refreshSaveData(Map<String, String> addMap) async {
     addMap["uuid"]=widget.search.uuid.toString();
+    Map<String, dynamic> result= await AnalyzeEightCharInfoApi.addModel(addMap);
+    if(result["code"].toString().toInt == 200){
+      _labelController.clear();
+      _introController.clear();
+      _refreshSdkData();
+      Get.dialog(
+        AlertDialog(
+          title: Text("信息"),
+          content: Text("添加成功"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("确定"),
+              onPressed: () {
+                Get.back(); // 关闭对话框
+              },
+            ),
+          ],
+        ),
+        barrierDismissible: false, // 点击对话框外部不关闭对话框
+      );
 
-    AnalyzeEightCharInfoApi.addModel(addMap);
+    }
   }
 
   Future<void> _refreshEditData(Map<String, String> editMap) async {
