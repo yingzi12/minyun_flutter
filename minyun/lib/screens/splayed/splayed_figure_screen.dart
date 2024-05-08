@@ -267,9 +267,9 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                     }
                   }
                   sera.sex = _selectedSexValue;
-                  addMap["sex"]=sera.dateType!.toString() ?? "0";
+                  addMap["sex"]=sera.sex!.toString() ?? "0";
                   sera.paipanFs = _selectedPaipanValue;
-                  addMap["isMajor"]=sera.dateType!.toString() ?? "1";
+                  addMap["isMajor"]=sera.paipanFs!.toString() ?? "1";
 
                   //是否专业排盘
                   if(_selectedPaipanValue==2) {
@@ -294,9 +294,9 @@ class _SplayedFigureScreenState extends State<SplayedFigureScreen> {
                       }
                     }
                     sera.sect = _selectedLateValue;
-                    addMap["sect"]=sera.city1!.toString() ?? "1";
+                    addMap["sect"]=sera.sect!.toString() ?? "1";
                     sera.siling = _selectedRenyuanValue;
-                    addMap["siling"]=sera.city1!.toString() ?? "1";
+                    addMap["siling"]=sera.siling!.toString() ?? "1";
                   }
                   sera.isSave=_selectedSaveValue;
                   sera.uuid=uuid.v4();

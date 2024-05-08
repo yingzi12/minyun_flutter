@@ -9,6 +9,7 @@ import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/analyze_eight_char_model.dart';
 import 'package:minyun/models/login_user_model.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
+import 'package:minyun/screens/archives/archives_eight_char_screen.dart';
 import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/calendar_screen.dart';
@@ -248,7 +249,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                     color: Colors.blue,
                     padding: EdgeInsets.all(0.0), // 移除默认的padding
                     onPressed: () {
-
+                       ArchivesEightCharScreen(analyze: analyze).launch(context);
                     },
                   ),
                 ),

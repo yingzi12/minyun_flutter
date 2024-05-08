@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:html';
 
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +21,8 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../utils/images.dart';
 
 class ArchivesEightCharScreen extends StatefulWidget {
-  final String id;
-  final String uuid;
-  ArchivesEightCharScreen({required this.id,required this.uuid});
+  AnalyzeEightCharModel analyze;
+  ArchivesEightCharScreen({required this.analyze});
 
   @override
   State<ArchivesEightCharScreen> createState() => _ArchivesEightCharScreenState();
@@ -110,7 +108,8 @@ class _ArchivesEightCharScreenState extends State<ArchivesEightCharScreen> {
     });
   }
   Future<void> _refreshApiData( ) async {
-    AnalyzeEightCharModel eightChar =await AnalyzeEightCharApi.getInfo(widget.id,widget.uuid);
+    AnalyzeEightCharModel eightChar =await AnalyzeEightCharApi.getInfo(widget.analyze.id.toString(),widget.analyze.uuid.toString());
+
     setState(() {
       _nameController.text = eightChar.name ?? "";
       _selectedQipanValue = eightChar.dateType!.toInt();
@@ -127,6 +126,7 @@ class _ArchivesEightCharScreenState extends State<ArchivesEightCharScreen> {
         _selectedDayDate = eightChar.day!.toInt();
         _selectedHourDate = eightChar.hour!.toInt();
         _selectedMinuteDate = 00;
+        time=eightChar.year.toString()+"-"+eightChar.month.toString()+"-"+eightChar.day.toString()+" "+eightChar.hour.toString()+":"+"00";
       }
       _selectedSexValue = eightChar.sex!.toInt();
       _selectedPaipanValue = eightChar.isMajor!.toInt();
@@ -146,11 +146,10 @@ class _ArchivesEightCharScreenState extends State<ArchivesEightCharScreen> {
   }
 
   Future<void> _refreshUpdateData( Map<String, String> editMap) async {
-    editMap["id"]=widget.id;
+    editMap["id"]=widget.analyze.id.toString();
+    editMap["uuid"]=widget.analyze.uuid.toString();
     AnalyzeEightCharApi.editModel(editMap);
   }
-
-  // DateTime _selectedDate = DateTime.now();
 
   Future<void> _showDatePicker(BuildContext context) async {
     DatePicker.showDatePicker(
@@ -335,7 +334,7 @@ class _ArchivesEightCharScreenState extends State<ArchivesEightCharScreen> {
                     addMap["siling"]=sera.city1!.toString() ?? "1";
                   }
                   sera.isSave=_selectedSaveValue;
-                  sera.uuid=widget.uuid;
+                  sera.uuid=widget.analyze.uuid;
                   addMap["uuid"]=sera.uuid??"";
 
                   if(sera.isSave ==1){

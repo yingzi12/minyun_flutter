@@ -7,7 +7,7 @@ import 'package:minyun/utils/SharedPreferencesUtil.dart';
 
 class AnalyzeEightCharApi{
   // 类变量（静态变量）
-  static String info ="/admin/minyun/analyzeEightChar/info";
+  static String info ="/admin/minyun/analyzeEightChar/getInfo";
 
   static String list ="/admin/minyun/analyzeEightChar/list";
 
