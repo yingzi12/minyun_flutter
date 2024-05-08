@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minyun/models/login_user_model.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
+import 'package:minyun/screens/user/message_list_screen.dart';
 import 'package:minyun/screens/user/personal_info_screen.dart';
 import 'package:minyun/screens/user/user_splayed_figure_list_screen.dart';
 import 'package:minyun/theme_mode.dart';
@@ -32,6 +33,8 @@ class _AccountScreenState extends State<AccountScreen> {
   // String sourceWeb=SOURCEWEB;
   LoginUserModel? user;
   String vipTimeStr="过期";
+
+
   @override
   void initState() {
     super.initState();
@@ -48,7 +51,7 @@ class _AccountScreenState extends State<AccountScreen> {
         // 解析成 DateTime 对象
         // DateTime? vipExpirationTime = vipExpirationTimeStr != null ? DateTime.tryParse(vipExpirationTimeStr) : null;
         // 获取当前时间
-        DateTime now = DateTime.now();
+        // DateTime now = DateTime.now();
         // if(vipExpirationTime != null && vipExpirationTime.isAfter(now)){
         //   this.vipTimeStr = user!.vipExpirationTime!.toString();
         // }
@@ -140,7 +143,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   border: Border.all(color: primaryColor),
                                 ),
                                 child: Text(
-                                  "1级会员",
+                                  "普通会员",
                                   style: appMainSecondaryTextStyle(color: primaryColor, fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
@@ -242,6 +245,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           if(index==1){
                             Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendUserId: user!.userId!.toString(),)));
                           }
+                          if(index==2){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>MessageListScreen()));
+                          }
+
 
                         }
                       },
@@ -279,6 +286,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                           }
                                           if(index==1){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendUserId: user!.userId!.toString(),)));
+                                          }
+                                          if(index==2){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>MessageListScreen()));
                                           }
                                         },
                                         splashRadius: 28,
@@ -357,4 +367,7 @@ class _AccountScreenState extends State<AccountScreen> {
       },
     );
   }
+
+
+
 }

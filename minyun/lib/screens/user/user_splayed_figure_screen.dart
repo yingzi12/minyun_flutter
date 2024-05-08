@@ -15,6 +15,7 @@ import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
+import 'package:minyun/utils/AppWidget.dart';
 import 'package:minyun/utils/SecureStorage.dart';
 import 'package:minyun/utils/images.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -858,47 +859,7 @@ class _UserSplayedFigureScreenState extends State<UserSplayedFigureScreen> {
       child: buildSelectRow(context, selected_2, '选择时间'),
     );
   }
-  Widget buildSelectRow(BuildContext context, String output, String title) {
-    return Container(
-      color: TDTheme.of(context).whiteColor1,
-      height: 56,
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                child: TDText(title, font: TDTheme.of(context).fontBodyLarge,),
-              ),
-              Expanded(child: Padding(
-                padding: const EdgeInsets.only(right: 16, left: 16),
-                child: Row(
-                  children: [
-                    Expanded(child: TDText(
-                      output,
-                      font: TDTheme.of(context).fontBodyLarge,
-                      textColor: TDTheme.of(context).fontGyColor3.withOpacity(0.4),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 2),
-                      child: Icon(
-                        TDIcons.chevron_right,
-                        color: TDTheme.of(context).fontGyColor3.withOpacity(0.4),),
-                    ),
-                  ],
-                ),
-              )),
-            ],
-          ),
-          const TDDivider(margin: EdgeInsets.only(left: 16, ),)
-        ],
-      ),
-    );
-  }
+
  //输入框
   Widget _basicTypeRequire(BuildContext context) {
     return Column(

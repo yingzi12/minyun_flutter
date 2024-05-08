@@ -15,11 +15,11 @@ class AccountScreenOptions {
 }
 List<AccountScreenOptions> accountOptions = [
   AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "个人资料", ""),
-  AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "我的命盘与解析", ""),
-  AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "我的订单", ""),
-  AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "查询档案", ""),
-  AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "分享", ""),
-  AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "通知", ""),
+  AccountScreenOptions("assets/icons/bagua.png", "我的命盘与解析", ""),
+  // AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "我的订单", ""),
+  // AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "查询档案", ""),
+  // AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "分享", ""),
+  AccountScreenOptions("assets/icons/message.png", "通知", ""),
 
   // AccountScreenOptions("assets/images/setting.png", "Preferences", ""),
   // AccountScreenOptions("assets/images/security.png", "Security", ""),

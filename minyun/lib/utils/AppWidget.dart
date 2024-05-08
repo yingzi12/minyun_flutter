@@ -8,6 +8,7 @@ import 'package:minyun/utils/AppContents.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:minyun/utils/AppColors.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 bool value = true;
 
@@ -993,3 +994,44 @@ Future<File> svGetImageSource() async {
   return File(pickedImage!.path);
 }
 
+Widget buildSelectRow(BuildContext context, String output, String title) {
+  return Container(
+    color: TDTheme.of(context).whiteColor1,
+    height: 56,
+    child: Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
+              child: TDText(title, font: TDTheme.of(context).fontBodyLarge,),
+            ),
+            Expanded(child: Padding(
+              padding: const EdgeInsets.only(right: 16, left: 16),
+              child: Row(
+                children: [
+                  Expanded(child: TDText(
+                    output,
+                    font: TDTheme.of(context).fontBodyLarge,
+                    textColor: TDTheme.of(context).fontGyColor3.withOpacity(0.4),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Icon(
+                      TDIcons.chevron_right,
+                      color: TDTheme.of(context).fontGyColor3.withOpacity(0.4),),
+                  ),
+                ],
+              ),
+            )),
+          ],
+        ),
+        const TDDivider(margin: EdgeInsets.only(left: 16, ),)
+      ],
+    ),
+  );
+}
