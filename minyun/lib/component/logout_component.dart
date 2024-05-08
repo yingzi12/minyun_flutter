@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minyun/api/UserApi.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 
@@ -30,12 +31,12 @@ Future<dynamic> LogoutBottomSheet(BuildContext context) {
                 decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(DEFAULT_RADIUS)),
               ),
               SizedBox(height: 16),
-              Text("Logout", style: appMainBoldTextStyle(fontSize: 24, color: Colors.redAccent)),
+              Text("退出", style: appMainBoldTextStyle(fontSize: 24, color: Colors.redAccent)),
               SizedBox(height: 16),
               Divider(),
               SizedBox(height: 16),
               Text(
-                "Are you sure you want to log out?",
+                "您确定要退出登录吗?",
                 style: appMainPrimaryTextStyle(),
               ),
               SizedBox(height: 24),
@@ -43,7 +44,7 @@ Future<dynamic> LogoutBottomSheet(BuildContext context) {
                 children: [
                   Expanded(
                     child: AppButton(
-                      text: "Cancel",
+                      text: "取消",
                       color: mode.theme ? darkPrimaryColor : primaryLightColor,
                       textColor: mode.theme ? Colors.white : primaryColor,
                       onTap: () {
@@ -54,10 +55,12 @@ Future<dynamic> LogoutBottomSheet(BuildContext context) {
                   SizedBox(width: 16),
                   Expanded(
                     child: AppButton(
-                      text: "Yes, Logout",
+                      text: "确认弹出",
                       onTap: () {
+                        UserApi.logout();
+                        // TabBarSignInScreen(0).launch(context);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => TabBarSignInScreen(0)));
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Logout")));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("退出成功")));
                       },
                     ),
                   ),

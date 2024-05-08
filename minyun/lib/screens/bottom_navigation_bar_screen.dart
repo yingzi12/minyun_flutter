@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minyun/screens/user/account_screen.dart';
 import 'package:minyun/screens/archives/archives_screen.dart';
-import 'package:minyun/screens/dashboard_screen.dart';
+import 'package:minyun/screens/calendar_screen.dart';
 import 'package:minyun/screens/premium_screen.dart';
 import 'package:minyun/screens/splayed/splayed_figure_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
@@ -19,11 +19,11 @@ class BottomNavigationBarScreen extends StatefulWidget {
 
 class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
   List navigationPages = [
-    DashBoardScreen(),
+    CalendarScreen(),
     SplayedFigureScreen(),
+    // ArchivesScreen(),
     ArchivesScreen(),
-    ArchivesScreen(),
-    PremiumScreen(),
+    // PremiumScreen(),
     AccountScreen(),
   ];
 
@@ -73,16 +73,16 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
             activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
             label: "档案",
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
-            activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
-            label: "大师",
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
-            activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
-            label: "解惑",
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
+          //   activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
+          //   label: "大师",
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
+          //   activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),
+          //   label: "解惑",
+          // ),
           // BottomNavigationBarItem(
           //   icon: Image.asset(star_outlined, height: 24, color: Colors.grey),
           //   activeIcon: Image.asset(star_filled, color: primaryColor, height: 28),

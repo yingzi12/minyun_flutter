@@ -4,7 +4,7 @@ import 'package:minyun/screens/splayed/splayed_figure_screen.dart';
 
 import '../screens/about_screen.dart';
 import '../screens/user/account_screen.dart';
-import '../screens/dashboard_screen.dart';
+import '../screens/calendar_screen.dart';
 import '../screens/files_screen.dart';
 import '../screens/language_screen.dart';
 import '../screens/user/personal_info_screen.dart';

@@ -4,6 +4,7 @@ import 'package:minyun/screens/language_screen.dart';
 import 'package:minyun/screens/prefrances_screen.dart';
 import 'package:minyun/screens/security_screen.dart';
 import 'package:minyun/screens/user/personal_info_screen.dart';
+import 'package:minyun/screens/user/user_splayed_figure_list_screen.dart';
 
 class AccountScreenOptions {
   String? image;
@@ -12,7 +13,6 @@ class AccountScreenOptions {
 
   AccountScreenOptions(this.image, this.title, this.trailingText);
 }
-List accountScreenInfoRouteList = [PersonalInfoScreen(), PreferencesScreen(), SecurityScreen(), LanguageScreen()];
 List<AccountScreenOptions> accountOptions = [
   AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "个人资料", ""),
   AccountScreenOptions("assets/icons/bottom_navigation_icons/user_outlined.png", "我的命盘与解析", ""),

@@ -47,6 +47,7 @@ class AnalyzeUserAnalyzeCellComponet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text( "${infoModel.createTime ?? ""}", style: appMainBoldTextStyle(fontSize:   14)),
+                  Text( "${infoModel.label ?? ""}", style: appMainSecondaryTextStyle(fontSize:12)),
                   Row(
                     children: [
                       Text(infoModel.intro??"", style: appMainBoldTextStyle(fontSize:   20)),

@@ -32,12 +32,16 @@ class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
   Future<void> _refreshSaveData(Map<String, String> addMap) async {
     addMap["uuid"]=widget.uuid;
     Map<String, dynamic> result= await AnalyzeEightCharAnalyzeApi.addModel(addMap);
-    if(result["code"].toString().toInt == 200){
+    if("200" == result["code"].toString()){
       _userIdController.clear();
       _phoneNumberController.clear();
       _labelController.clear();
       _introController.clear();
+       Navigator.pop(context,true);
+
     }else{
+      Navigator.pop(context,false);
+
     }
   }
 
@@ -125,17 +129,16 @@ class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
                                 return;
                               }else{
                                 addMap['isSms']="1";
-                                addMap['send_phone']="1";
+                                addMap['sendPhone']=_phoneNumberController.text;
                               }
                               if( _userIdController.text.isNotEmpty &&  _userIdController.text.length >50 ){
                                 return;
                               }else{
                                 addMap['isMessage']="1";
-                                addMap['send_user_id']="1";
+                                addMap['sendUserId']=_userIdController.text;
                               }
                             }
                             _refreshSaveData(addMap);
-                            Navigator.pop(context,true);
                           }
 
                         },

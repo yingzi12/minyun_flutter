@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minyun/models/login_user_model.dart';
 import 'package:minyun/screens/TabBarSignInScreen.dart';
-import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
+import 'package:minyun/screens/user/personal_info_screen.dart';
+import 'package:minyun/screens/user/user_splayed_figure_list_screen.dart';
 import 'package:minyun/theme_mode.dart';
 import 'package:minyun/utils/AppContents.dart';
 import 'package:minyun/utils/SecureStorage.dart';
@@ -235,7 +236,13 @@ class _AccountScreenState extends State<AccountScreen> {
                         if (index == accountOptions.length - 1) {
                           return null;
                         } else {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => accountScreenInfoRouteList[index]));
+                          if(index==0){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>PersonalInfoScreen()));
+                          }
+                          if(index==1){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendUserId: user!.userId!.toString(),)));
+                          }
+
                         }
                       },
                       child: Padding(
@@ -267,10 +274,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                       )
                                     : IconButton(
                                         onPressed: () {
-                                          if (index == 4) {
-                                            return null;
-                                          } else {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => accountScreenInfoRouteList[index]));
+                                          if(index==0){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>PersonalInfoScreen()));
+                                          }
+                                          if(index==1){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendUserId: user!.userId!.toString(),)));
                                           }
                                         },
                                         splashRadius: 28,

@@ -7,13 +7,17 @@ import 'package:minyun/api/AnalyzeEightCharApi.dart';
 import 'package:minyun/models/ResultListModel.dart';
 import 'package:minyun/models/SplayedFigureFindModel.dart';
 import 'package:minyun/models/analyze_eight_char_model.dart';
+import 'package:minyun/models/login_user_model.dart';
+import 'package:minyun/screens/TabBarSignInScreen.dart';
 import 'package:minyun/screens/splayed/splayed_figure_detail_screen.dart';
 import 'package:minyun/screens/user/account_screen.dart';
-import 'package:minyun/screens/dashboard_screen.dart';
+import 'package:minyun/screens/calendar_screen.dart';
 
 import 'package:minyun/utils/AppColors.dart';
 import 'package:minyun/utils/AppContents.dart';
+import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 import '../../utils/AppCommon.dart';
 import '../../utils/images.dart';
 
@@ -31,6 +35,7 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
   List<AnalyzeEightCharModel> stories = [];
 
 
+  bool isLogin=false;
   @override
   void initState() {
     super.initState();
@@ -42,7 +47,14 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
     super.dispose();
   }
 
+
   Future<void> _refreshApiData() async {
+    LoginUserModel? loginUser = await SecureStorage().getLoginUser();
+    if (loginUser != null) {
+      setState(() {
+        isLogin=true;
+      });
+    }
     // timely=嫁娶&startDate=2024-02-03&endDate=2024-03-19
     Map<String, String> queryParams=new HashMap();
     // queryParams["timely"] = timely;
@@ -61,12 +73,12 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
     // queryParams["startDate"] = start;
     // queryParams["endDate"] = end;
     Map<String,dynamic> result = await AnalyzeEightCharApi.deleteModel(eightCharModel.id.toString(),eightCharModel.uuid.toString());
-    if(result["code"].toString().toInt == 200){
+    if(200 == result["code"].toString()){
       _refreshApiData();
       Get.dialog(
         AlertDialog(
           title: Text("信息"),
-          content: Text("添加成功"),
+          content: Text("删除成功"),
           actions: <Widget>[
             TextButton(
               child: Text("确定"),
@@ -79,6 +91,22 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
         barrierDismissible: false, // 点击对话框外部不关闭对话框
       );
 
+    }else{
+      Get.dialog(
+        AlertDialog(
+          title: Text("信息"),
+          content: Text("删除失败"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("确定"),
+              onPressed: () {
+                Get.back(); // 关闭对话框
+              },
+            ),
+          ],
+        ),
+        barrierDismissible: false, // 点击对话框外部不关闭对话框
+      );
     }
   }
 
@@ -99,6 +127,16 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
       ),
       body: Stack(
         children: [
+          isLogin==false?
+              Center(
+                child:Column(children: [
+            Text("请先登录",style: appMainBoldTextStyle(),),
+            TextButton(onPressed: (){
+              TabBarSignInScreen(0).launch(context);
+            },
+              child: Text("登录",style: appMainBoldTextStyle(),),
+            )
+        ],)):
           Column(
             children: [
               Row(
@@ -186,7 +224,19 @@ class _ArchivesScreenState extends State<ArchivesScreen> {
                     color: Colors.red,
                     padding: EdgeInsets.all(0.0), // 移除默认的padding
                     onPressed: () {
-                      _delApiData(analyze);
+                      showGeneralDialog(
+                        context: context,
+                        pageBuilder: (BuildContext buildContext, Animation<double> animation,
+                            Animation<double> secondaryAnimation) {
+                          return TDAlertDialog(
+                            title: "信息",
+                            content: "是否确定删除",
+                            rightBtnAction: (){
+                              _delApiData(analyze);
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
