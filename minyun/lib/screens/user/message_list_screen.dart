@@ -8,6 +8,7 @@ import 'package:minyun/component/user/message_cell_component.dart';
 import 'package:minyun/models/ResultListModel.dart';
 
 import 'package:minyun/models/message_model.dart';
+import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
@@ -41,6 +42,8 @@ class _MessageListScreenState extends State<MessageListScreen>  with TickerProvi
   }
 
   Future<void> loadData() async {
+    if (!mounted) return; // Check if widget is still in the tree
+
     ResultListModel<MessageModel> resultListModel = await MessageApi.getList({"page": currentPage.toString()});
     setState(() {
       if (resultListModel.data != null) {
@@ -69,34 +72,37 @@ class _MessageListScreenState extends State<MessageListScreen>  with TickerProvi
       ),
       body: RefreshIndicator(
         onRefresh: reloadData,
-        child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 16),
+        child: Column(
           children: [
             titleRowItem(
               isSeeAll: false,
-              title: '通知列表（${total}）',
+              title: '统计（${total}）',
             ),
-            Wrap(
-              runSpacing: 16,
-              children: List.generate(
-                values.length,
-                    (index) =>
-                        GestureDetector(
-                          onTap: () {
-                            showGeneralDialog(
-                              context: context,
-                              pageBuilder: (BuildContext buildContext, Animation<double> animation,
-                                  Animation<double> secondaryAnimation) {
-                                return TDConfirmDialog(
-                                  title: "通知",
-                                  content: values[index].centent,
-                                  contentMaxHeight: 300,
-                                );
-                              },
-                            );
-                          },
-                          child: MessageCellComponent(messageModel: values[index],),
-                        ),
+            Expanded(
+              child: total == 0 ?
+              Center(
+                child: Text("暂无通知",style: appMainBoldTextStyle(),),) :
+              ListView.builder(
+                // controller: _scrollController,
+                itemCount: values.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      showGeneralDialog(
+                        context: context,
+                        pageBuilder: (BuildContext buildContext, Animation<double> animation,
+                            Animation<double> secondaryAnimation) {
+                          return TDConfirmDialog(
+                            title: "通知",
+                            content: values[index].centent??"",
+                            contentMaxHeight: 300,
+                          );
+                        },
+                      );
+                    },
+                    child: MessageCellComponent(messageModel: values[index],),
+                  );
+                },
               ),
             ),
             if (values.length < total) // 只有在还有更多数据时显示加载更多

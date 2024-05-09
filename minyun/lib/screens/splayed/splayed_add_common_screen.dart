@@ -135,7 +135,7 @@ class _SplayedAddCommonScreenState extends State<SplayedAddCommonScreen> {
                                 return;
                               }else{
                                 addMap['isMessage']="1";
-                                addMap['sendUserId']=_userIdController.text;
+                                addMap['sendAccount']=_userIdController.text;
                               }
                             }
                             _refreshSaveData(addMap);

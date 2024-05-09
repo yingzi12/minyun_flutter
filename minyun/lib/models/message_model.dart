@@ -22,10 +22,10 @@ MessageModel messageModelFromJson(String str) => MessageModel.fromJson(json.deco
 String messageModelToJson(MessageModel data) => json.encode(data.toJson());
 class MessageModel implements JsonSerializable {
   MessageModel({
-      num? id, 
-      num? createId, 
-      String? createTime, 
-      num? receiveId, 
+    String? id,
+    String? createId,
+      String? createTime,
+    String? receiveId,
       String? receiveName, 
       String? receiveTime, 
       String? receiveStatus, 
@@ -74,10 +74,10 @@ class MessageModel implements JsonSerializable {
     _page = json['page'];
     _size = json['size'];
   }
-  num? _id;
-  num? _createId;
+  String? _id;
+  String? _createId;
   String? _createTime;
-  num? _receiveId;
+  String? _receiveId;
   String? _receiveName;
   String? _receiveTime;
   String? _receiveStatus;
@@ -90,10 +90,10 @@ class MessageModel implements JsonSerializable {
   num? _mid;
   num? _page;
   num? _size;
-MessageModel copyWith({  num? id,
-  num? createId,
+MessageModel copyWith({  String? id,
+  String? createId,
   String? createTime,
-  num? receiveId,
+  String? receiveId,
   String? receiveName,
   String? receiveTime,
   String? receiveStatus,
@@ -123,10 +123,10 @@ MessageModel copyWith({  num? id,
   page: page ?? _page,
   size: size ?? _size,
 );
-  num? get id => _id;
-  num? get createId => _createId;
+  String? get id => _id;
+  String? get createId => _createId;
   String? get createTime => _createTime;
-  num? get receiveId => _receiveId;
+  String? get receiveId => _receiveId;
   String? get receiveName => _receiveName;
   String? get receiveTime => _receiveTime;
   String? get receiveStatus => _receiveStatus;

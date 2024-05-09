@@ -53,7 +53,7 @@ class MessageApi{
 
   static Future<ResultListModel<MessageModel>> getList(Map<String, String> queryParams) async {
     final jsonMap = await HttpUtil.get(list, queryParams);
-
+    print(jsonMap);
     ResultListModel<MessageModel> result = ResultListModel.fromJson(jsonMap, (json) => MessageModel.fromJson(json));
     if (result.code == 200) {
       return result;

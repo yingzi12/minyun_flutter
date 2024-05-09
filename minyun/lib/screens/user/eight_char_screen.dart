@@ -194,7 +194,7 @@
 //                         if (index == accountOptions.length - 1) {
 //                           return null;
 //                         } else {
-//                           List accountScreenInfoRouteList = [PersonalInfoScreen(), UserSplayedFigureListScreen(sendUserId: sendUserId), SecurityScreen(), LanguageScreen()];
+//                           List accountScreenInfoRouteList = [PersonalInfoScreen(), UserSplayedFigureListScreen(sendAccount: sendAccount), SecurityScreen(), LanguageScreen()];
 //
 //                           Navigator.push(context, MaterialPageRoute(builder: (context) => accountScreenInfoRouteList[index]));
 //                         }

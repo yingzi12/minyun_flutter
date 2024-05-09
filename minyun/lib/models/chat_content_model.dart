@@ -1,6 +1,6 @@
 import 'dart:convert';
 /// id : 0
-/// sendUserId : 0
+/// sendAccount : 0
 /// receiverUserId : 0
 /// content : ""
 /// isImage : 0
@@ -13,7 +13,7 @@ String chatContentModelToJson(ChatContentModel data) => json.encode(data.toJson(
 class ChatContentModel {
   ChatContentModel({
       num? id, 
-      num? sendUserId, 
+      num? sendAccount, 
       num? receiverUserId, 
       String? content, 
       num? isImage, 
@@ -21,7 +21,7 @@ class ChatContentModel {
       String? createTime, 
       num? status,}){
     _id = id;
-    _sendUserId = sendUserId;
+    _sendAccount = sendAccount;
     _receiverUserId = receiverUserId;
     _content = content;
     _isImage = isImage;
@@ -32,7 +32,7 @@ class ChatContentModel {
 
   ChatContentModel.fromJson(dynamic json) {
     _id = json['id'];
-    _sendUserId = json['sendUserId'];
+    _sendAccount = json['sendAccount'];
     _receiverUserId = json['receiverUserId'];
     _content = json['content'];
     _isImage = json['isImage'];
@@ -41,7 +41,7 @@ class ChatContentModel {
     _status = json['status'];
   }
   num? _id;
-  num? _sendUserId;
+  num? _sendAccount;
   num? _receiverUserId;
   String? _content;
   num? _isImage;
@@ -49,7 +49,7 @@ class ChatContentModel {
   String? _createTime;
   num? _status;
 ChatContentModel copyWith({  num? id,
-  num? sendUserId,
+  num? sendAccount,
   num? receiverUserId,
   String? content,
   num? isImage,
@@ -57,7 +57,7 @@ ChatContentModel copyWith({  num? id,
   String? createTime,
   num? status,
 }) => ChatContentModel(  id: id ?? _id,
-  sendUserId: sendUserId ?? _sendUserId,
+  sendAccount: sendAccount ?? _sendAccount,
   receiverUserId: receiverUserId ?? _receiverUserId,
   content: content ?? _content,
   isImage: isImage ?? _isImage,
@@ -66,7 +66,7 @@ ChatContentModel copyWith({  num? id,
   status: status ?? _status,
 );
   num? get id => _id;
-  num? get sendUserId => _sendUserId;
+  num? get sendAccount => _sendAccount;
   num? get receiverUserId => _receiverUserId;
   String? get content => _content;
   num? get isImage => _isImage;
@@ -77,7 +77,7 @@ ChatContentModel copyWith({  num? id,
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
-    map['sendUserId'] = _sendUserId;
+    map['sendAccount'] = _sendAccount;
     map['receiverUserId'] = _receiverUserId;
     map['content'] = _content;
     map['isImage'] = _isImage;

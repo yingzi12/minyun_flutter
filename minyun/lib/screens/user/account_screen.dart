@@ -127,7 +127,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             children: [
                               nameCont.text.length == 0
                                   ? Text(
-                                      "${user?.nickName}",
+                                      "${user?.nickName ??"无"}",
                                       style: appMainBoldTextStyle(),
                                     )
                                   : Text(
@@ -151,7 +151,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text("${user?.sign}", style: appMainSecondaryTextStyle()),
+                          Text("${user?.sign ??""}", style: appMainSecondaryTextStyle()),
                           // SizedBox(height: 8),
                           // Container(
                           //   height: 8,
@@ -240,16 +240,14 @@ class _AccountScreenState extends State<AccountScreen> {
                           return null;
                         } else {
                           if(index==0){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>PersonalInfoScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>PersonalInfoScreen(user: user!,)));
                           }
                           if(index==1){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendUserId: user!.userId!.toString(),)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendAccount: user!.userId!.toString(),)));
                           }
                           if(index==2){
                             Navigator.push(context, MaterialPageRoute(builder: (context) =>MessageListScreen()));
                           }
-
-
                         }
                       },
                       child: Padding(
@@ -282,10 +280,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                     : IconButton(
                                         onPressed: () {
                                           if(index==0){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>PersonalInfoScreen()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>PersonalInfoScreen(user: user!,)));
                                           }
                                           if(index==1){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendUserId: user!.userId!.toString(),)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>UserSplayedFigureListScreen(sendAccount: user!.userId!.toString(),)));
                                           }
                                           if(index==2){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) =>MessageListScreen()));

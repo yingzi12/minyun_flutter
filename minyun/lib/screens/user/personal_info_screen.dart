@@ -11,6 +11,7 @@ import 'package:lunar/calendar/Lunar.dart';
 import 'package:lunar/calendar/Solar.dart';
 import 'package:minyun/component/AppButton.dart';
 import 'package:minyun/constant.dart';
+import 'package:minyun/models/login_user_model.dart';
 import 'package:minyun/screens/sign_up_screen.dart';
 import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
@@ -23,7 +24,8 @@ import '../../utils/images.dart';
 import 'account_screen.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
-  const PersonalInfoScreen({Key? key}) : super(key: key);
+  final   LoginUserModel user;
+  const PersonalInfoScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
@@ -72,6 +74,24 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   final _picker = ImagePicker();
 
   String? dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future<void> init() async {
+    _nicknameController.text = widget.user.nickName??"";
+    _introController.text = widget.user.intro??"";
+    _nameController.text = widget.user.name??"";
+    _emailController.text = widget.user.email??"";
+    _phoneNumberController.text =widget.user.phonenumber??"";
+    city1 = widget.user.city1??"";
+    city2 = widget.user.city2??"";
+    city3 = widget.user.city3??"";
+
+  }
 
   Future getImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
@@ -145,7 +165,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               Column(
                 children: [
 
-                  // TextFormFieldLabelText(text: "昵称"),
+                  TextFormFieldLabelText(text: "账号:${widget.user.userName}"),
+                  SizedBox(height: 16),
+
                   // TextFormField(
                   //   decoration: inputDecoration(hintText: "昵称"),
                   // ),

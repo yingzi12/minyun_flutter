@@ -27,11 +27,17 @@ import 'package:minyun/models/JsonSerializable.dart';
 /// ranks : 0
 /// sign : ""
 /// starSign : ""
+/// intro : ""
+/// name : ""
+/// birth : ""
+/// city1 : ""
+/// city2 : ""
+/// city3 : ""
 /// admin : true
 
 LoginUserModel loginUserModelFromJson(String str) => LoginUserModel.fromJson(json.decode(str));
 String loginUserModelToJson(LoginUserModel data) => json.encode(data.toJson());
-class LoginUserModel  implements JsonSerializable  {
+class LoginUserModel implements JsonSerializable {
   LoginUserModel({
       String? searchValue, 
       String? createBy, 
@@ -59,6 +65,12 @@ class LoginUserModel  implements JsonSerializable  {
       num? ranks, 
       String? sign, 
       String? starSign, 
+      String? intro, 
+      String? name, 
+      String? birth, 
+      String? city1, 
+      String? city2, 
+      String? city3, 
       bool? admin,}){
     _searchValue = searchValue;
     _createBy = createBy;
@@ -86,6 +98,12 @@ class LoginUserModel  implements JsonSerializable  {
     _ranks = ranks;
     _sign = sign;
     _starSign = starSign;
+    _intro = intro;
+    _name = name;
+    _birth = birth;
+    _city1 = city1;
+    _city2 = city2;
+    _city3 = city3;
     _admin = admin;
 }
 
@@ -116,6 +134,12 @@ class LoginUserModel  implements JsonSerializable  {
     _ranks = json['ranks'];
     _sign = json['sign'];
     _starSign = json['starSign'];
+    _intro = json['intro'];
+    _name = json['name'];
+    _birth = json['birth'];
+    _city1 = json['city1'];
+    _city2 = json['city2'];
+    _city3 = json['city3'];
     _admin = json['admin'];
   }
   String? _searchValue;
@@ -144,6 +168,12 @@ class LoginUserModel  implements JsonSerializable  {
   num? _ranks;
   String? _sign;
   String? _starSign;
+  String? _intro;
+  String? _name;
+  String? _birth;
+  String? _city1;
+  String? _city2;
+  String? _city3;
   bool? _admin;
 LoginUserModel copyWith({  String? searchValue,
   String? createBy,
@@ -171,6 +201,12 @@ LoginUserModel copyWith({  String? searchValue,
   num? ranks,
   String? sign,
   String? starSign,
+  String? intro,
+  String? name,
+  String? birth,
+  String? city1,
+  String? city2,
+  String? city3,
   bool? admin,
 }) => LoginUserModel(  searchValue: searchValue ?? _searchValue,
   createBy: createBy ?? _createBy,
@@ -198,6 +234,12 @@ LoginUserModel copyWith({  String? searchValue,
   ranks: ranks ?? _ranks,
   sign: sign ?? _sign,
   starSign: starSign ?? _starSign,
+  intro: intro ?? _intro,
+  name: name ?? _name,
+  birth: birth ?? _birth,
+  city1: city1 ?? _city1,
+  city2: city2 ?? _city2,
+  city3: city3 ?? _city3,
   admin: admin ?? _admin,
 );
   String? get searchValue => _searchValue;
@@ -226,6 +268,12 @@ LoginUserModel copyWith({  String? searchValue,
   num? get ranks => _ranks;
   String? get sign => _sign;
   String? get starSign => _starSign;
+  String? get intro => _intro;
+  String? get name => _name;
+  String? get birth => _birth;
+  String? get city1 => _city1;
+  String? get city2 => _city2;
+  String? get city3 => _city3;
   bool? get admin => _admin;
 
   Map<String, dynamic> toJson() {
@@ -256,6 +304,12 @@ LoginUserModel copyWith({  String? searchValue,
     map['ranks'] = _ranks;
     map['sign'] = _sign;
     map['starSign'] = _starSign;
+    map['intro'] = _intro;
+    map['name'] = _name;
+    map['birth'] = _birth;
+    map['city1'] = _city1;
+    map['city2'] = _city2;
+    map['city3'] = _city3;
     map['admin'] = _admin;
     return map;
   }

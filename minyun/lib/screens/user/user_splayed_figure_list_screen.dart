@@ -16,8 +16,8 @@ import 'package:minyun/utils/images.dart';
  * 大师点评
  */
 class UserSplayedFigureListScreen extends StatefulWidget {
-  final String sendUserId;
-  UserSplayedFigureListScreen({required this.sendUserId});
+  final String sendAccount;
+  UserSplayedFigureListScreen({required this.sendAccount});
 
   @override
   State<UserSplayedFigureListScreen> createState() => _UserSplayedFigureListScreenState();
@@ -25,17 +25,21 @@ class UserSplayedFigureListScreen extends StatefulWidget {
 
 class _UserSplayedFigureListScreenState extends State<UserSplayedFigureListScreen>  with TickerProviderStateMixin {
   List<AnalyzeEightCharAnalyzeModel> stories = [];
+  // ScrollController _scrollController = ScrollController();
+
   int size = 0;
 
   @override
   void initState() {
     super.initState();
+    // _scrollController.addListener(_onScroll);
     _refreshSdkData();
   }
 
   Future<void> _refreshSdkData() async {
+    if (!mounted) return; // Check if widget is still in the tree
     Map<String, String> queryParams=new HashMap();
-    queryParams["sendUserId"]=widget.sendUserId;
+    queryParams["sendAccount"]=widget.sendAccount;
     ResultListModel<AnalyzeEightCharAnalyzeModel> resultModel = await AnalyzeEightCharAnalyzeApi.getList(queryParams);
     setState(() {
       stories=resultModel.data??[];
@@ -63,20 +67,20 @@ class _UserSplayedFigureListScreenState extends State<UserSplayedFigureListScree
         //   ),
         // ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 32),
-        child : RefreshIndicator(
+      body: RefreshIndicator(
           onRefresh: _refreshSdkData,
           child: Column(
             children: [
               titleRowItem(
                 isSeeAll: false,
-                title: '已点评（${stories.length}）',
+                title: '已点评（${size}）',
               ),
-              size == 0 ? Center(
-                child: Text("暂无点评",style: appMainBoldTextStyle(),),
-              ) : Expanded(
-                child: ListView.builder(
+              Expanded(
+                child: size == 0 ?
+                Center(
+                child: Text("暂无点评",style: appMainBoldTextStyle(),),) :
+                ListView.builder(
+                  // controller: _scrollController,
                   itemCount: stories.length,
                   itemBuilder: (context, index) {
                     return AnalyzeUserAnalyzeCellComponet(stories[index]);
@@ -85,7 +89,6 @@ class _UserSplayedFigureListScreenState extends State<UserSplayedFigureListScree
               ),
             ],
           ),
-        )
       ),
     );
   }

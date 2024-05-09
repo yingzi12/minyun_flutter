@@ -52,6 +52,7 @@ class AnalyzeEightCharAnalyzeApi{
   static Future<ResultListModel<AnalyzeEightCharAnalyzeModel>> getList(Map<String, String> queryParams) async {
     final jsonMap = await HttpUtil.get(list, queryParams);
 
+    print(jsonMap);
     ResultListModel<AnalyzeEightCharAnalyzeModel> result = ResultListModel.fromJson(jsonMap, (json) => AnalyzeEightCharAnalyzeModel.fromJson(json));
     if (result.code == 200) {
       return result;
