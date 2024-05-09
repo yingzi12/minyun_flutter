@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 
-// const baseUrl="https://admin.aiavr.uk";
 // const baseUrl="https://test.aiavr.uk";
-const baseUrl="http://192.168.0.102:8099";
+// const baseUrl="http://192.168.0.102:8099";
+const baseUrl="https://admin.mingyun.uk";
+
 const SOURCEWEB="https://image.51x.uk/xinshijie";
 const paymentUrl="https://www.aiavr.uk/paypalModile";
 // const paymentUrl="http://192.168.68.106:3000/paypalModile";

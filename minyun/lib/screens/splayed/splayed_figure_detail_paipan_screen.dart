@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lunar/calendar/eightchar/DaYun.dart';
 import 'package:lunar/lunar.dart';
 import 'package:minyun/constant.dart';
@@ -1074,7 +1075,7 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
     //大运
     String dyDz=luckyLunar.getYearZhi();
 
-    return   Row(
+    return  Row(
       children: <Widget>[
         Expanded(
           flex: 1,
@@ -1088,190 +1089,51 @@ class _SplayedFigureDetailPaipanScreenState extends State<SplayedFigureDetailPai
               ],
             ),),
         ),
-        Expanded(
-          flex: 1,
-
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[lsDz]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[lsDz]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            height: 70, // 设置固定高度为150
-            color: Colors.black12, // 设置背景颜色
-            child:  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                for(var gan in dizhiMap[lrDz]!)
-                  Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-                Text.rich(
-                    TextSpan(
-                      style: TextStyle(fontSize: 11, color: Colors.black),
-                      children: [
-                        for(var gan in dizhiMap[lrDz]!)
-                          TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                      ],
-                    )
-                ),
-              ],
-            ),),
-        ),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[lyDz]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[lyDz]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            height: 70, // 设置固定高度为150
-            color: Colors.black12, // 设置背景颜色
-            child: Column(
-              children: <Widget>[
-                for(var gan in dizhiMap[lnDz]!)
-                  Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-                Text.rich(
-                    TextSpan(
-                      style: TextStyle(fontSize: 11, color: Colors.black),
-                      children: [
-                        for(var gan in dizhiMap[lnDz]!)
-                          TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                      ],
-                    )
-                ),
-              ],
-            ),
-          ),),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[dyDz]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[dyDz]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
+        getZGCell(dizhiMap[lsDz]!,0),
+        getZGCell(dizhiMap[lrDz]!,1),
+        getZGCell(dizhiMap[lyDz]!,0),
+        getZGCell(dizhiMap[lnDz]!,1),
+        getZGCell(dizhiMap[dyDz]!,0),
         SizedBox(
           height: 0,
           child: VerticalDivider(),
         ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            height: 70, // 设置固定高度为150
-            color: Colors.black12, // 设置背景颜色
-            child:  Column(
-              children: <Widget>[
-                for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
-                  Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-                Text.rich(
-                    TextSpan(
-                      style: TextStyle(fontSize: 11, color: Colors.black),
-                      children: [
-                        for(var gan in dizhiMap[widget.eightChar.getYearZhi()]!)
-                          TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                      ],
-                    )
-                ),
-              ],
-            ),
-          ),),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[widget.eightChar.getMonthZhi()]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[widget.eightChar.getMonthZhi()]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            height: 70, // 设置固定高度为150
-            color: Colors.black12, // 设置背景颜色
-            child: Expanded(
-              child: Column(
-                children: <Widget>[
-                  for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
-                    Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-                  Text.rich(
-                      TextSpan(
-                        style: TextStyle(fontSize: 11, color: Colors.black),
-                        children: [
-                          for(var gan in dizhiMap[widget.eightChar.getDayZhi()]!)
-                            TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                        ],
-                      )
-                  ),
-                ],
-
-              ),
-            ),
-          ),),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              for(var gan in dizhiMap[widget.eightChar.getTimeZhi()]!)
-                Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: Colors.black),),
-              Text.rich(
-                  TextSpan(
-                    style: TextStyle(fontSize: 11, color: Colors.black),
-                    children: [
-                      for(var gan in dizhiMap[widget.eightChar.getTimeZhi()]!)
-                        TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
-                    ],
-                  )
-              ),
-            ],
-          ),
-        ),
+        getZGCell(dizhiMap[widget.eightChar.getYearZhi()]!,1),
+        getZGCell(dizhiMap[widget.eightChar.getMonthZhi()]!,0),
+        getZGCell(dizhiMap[widget.eightChar.getDayZhi()]!,1),
+        getZGCell(dizhiMap[widget.eightChar.getTimeZhi()]!,0),
       ],
     );
 
   }
 
+  /**
+   * ssList 十神
+   * bj
+   */
+  Widget getZGCell(List<String> ssList,int bj){
+    return Expanded(
+      child:Container(
+            height: 70, // 设置固定高度为150
+            color:bj==1 ? Colors.black12 : Colors.white, // 设置背景颜色
+      child: Column(
+        children: <Widget>[
+          for(var gan in ssList)
+            Text(ganzhiMap[widget.eightChar.getDayGan()+gan]??"", style: TextStyle(fontSize: 11, color: (bj==1 ?Colors.black : Colors.grey )),),
+          Text.rich(
+              TextSpan(
+                style: TextStyle(fontSize: 11, color: Colors.black),
+                children: [
+                  for(var gan in ssList)
+                    TextSpan(text: gan, style: TextStyle(fontSize: 11,color:hourColorMap[gan])),
+                ],
+              )
+          ),
+        ],
+      ),
+    ),
+    );
+  }
   Widget getSmallTitle(String title){
     return Text(title,style: TextStyle(fontSize: 10,color: Colors.grey),);
   }
