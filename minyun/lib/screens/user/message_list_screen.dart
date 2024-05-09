@@ -49,7 +49,9 @@ class _MessageListScreenState extends State<MessageListScreen>  with TickerProvi
       if (resultListModel.data != null) {
         values.addAll(resultListModel.data!);
       }
-      total = resultListModel.total!.toInt();
+      if (resultListModel.total != null) {
+        total = resultListModel.total!.toInt();
+      }
     });
   }
 
@@ -78,11 +80,11 @@ class _MessageListScreenState extends State<MessageListScreen>  with TickerProvi
               isSeeAll: false,
               title: '统计（${total}）',
             ),
-            Expanded(
-              child: total == 0 ?
+               total == 0 ?
               Center(
                 child: Text("暂无通知",style: appMainBoldTextStyle(),),) :
               ListView.builder(
+                shrinkWrap: true, // 自适应子组件高度
                 // controller: _scrollController,
                 itemCount: values.length,
                 itemBuilder: (context, index) {
@@ -100,16 +102,16 @@ class _MessageListScreenState extends State<MessageListScreen>  with TickerProvi
                         },
                       );
                     },
-                    child: MessageCellComponent(messageModel: values[index],),
+                    child: MessageCellComponent(index: index,messageModel: values[index], ),
                   );
                 },
               ),
-            ),
-            if (values.length < total) // 只有在还有更多数据时显示加载更多
-              OutlinedButton(
-                onPressed: loadMoreData,
-                child: Text('加载更多'),
-              ),
+
+            // if (values.length < total) // 只有在还有更多数据时显示加载更多
+            //   OutlinedButton(
+            //     onPressed: loadMoreData,
+            //     child: Text('加载更多'),
+            //   ),
           ],
         ),
       ),
