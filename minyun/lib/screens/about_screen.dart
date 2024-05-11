@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 32),
-            Text("命运 v9.5.7", style: appMainBoldTextStyle(fontSize: 18)),
+            Text("命运 v1.0.1", style: appMainBoldTextStyle(fontSize: 18)),
             SizedBox(height: 24),
             Divider(indent: 16, endIndent: 16),
             ListView.builder(

@@ -1,8 +1,12 @@
 
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:minyun/api/SmsApi.dart';
 import 'package:minyun/api/UserApi.dart';
 import 'package:minyun/models/login_user_model.dart';
+import 'package:minyun/models/sms_model.dart';
 import 'package:minyun/screens/UserForgotPasswordScreen.dart';
 import 'package:minyun/screens/bottom_navigation_bar_screen.dart';
 import 'package:minyun/utils/AppColors.dart';
@@ -10,6 +14,7 @@ import 'package:minyun/utils/AppCommon.dart';
 import 'package:minyun/utils/AppWidget.dart';
 import 'package:minyun/utils/SecureStorage.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 /**
  * 登录/注册
@@ -27,6 +32,8 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
   TabController? _tabController;
   bool? checkedValue = false;
 
+  TextEditingController contPhone = TextEditingController();
+
   TextEditingController contEmailAddress = TextEditingController();
   TextEditingController contPassword = TextEditingController();
 
@@ -43,11 +50,40 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
   bool isPassworldValid = true;
   final regisFormKey = GlobalKey<FormState>();
 
+  String inputText = '请输入...';
+  var controller = [];
+  var browseOn = false;
+  var confirmText = '发送验证码';
+  var countDownText = '重发';
+  Timer? _timer;
+  int _countdownTime = 0;
+
+  String uuid="";
+  String code="";
+
   @override
   void initState() {
+    for (var i = 0; i < 28; i++) {
+      controller.add(TextEditingController());
+    }
     super.initState();
     init();
   }
+
+  void startCountdownTimer() {
+    const oneSec = Duration(seconds: 1);
+    var callback = (timer) => {
+      setState(() {
+        if (_countdownTime < 1) {
+          _timer?.cancel();
+        } else {
+          _countdownTime = _countdownTime - 1;
+        }
+      })
+    };
+    _timer = Timer.periodic(oneSec, callback);
+  }
+
 
   Future<void> init() async {
     LoginUserModel? user = await SecureStorage().getLoginUser();
@@ -70,8 +106,13 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
   @override
   void dispose() {
     _tabController?.dispose();
+
     super.dispose();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
   }
+
 
   @override
   void setState(fn) {
@@ -125,7 +166,13 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
     }
   }
 
-  //
+  Future<void> sendSms(String phone) async {
+    SmsModel smsModel = await SmsApi.sendSms(phone);
+    uuid = smsModel.uuid ?? "";
+    code = smsModel.code ?? "";
+  }
+
+    //
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -234,6 +281,9 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
             key: regisFormKey,
               child: Column(
                 children: [
+                  _basicPhoneCodeBasic(context),
+                  _specialTypePhoneNumber(context),
+                  _specialTypeVerifyCode(context),
                   AppTextField(
                     controller: controllerName,
                     textStyle: appMainPrimaryTextStyle(color: white),
@@ -304,6 +354,119 @@ class TabBarSignInScreenState extends State<TabBarSignInScreen> with SingleTicke
           controller: _tabController,
         ),
       ),
+    );
+  }
+
+  Widget _specialTypeVerifyCode(BuildContext context) {
+    return Column(
+      children: [
+        TDInput(
+          type: TDInputType.normal,
+          size: TDInputSize.small,
+          controller: controller[13],
+          leftLabel: '验证码',
+          hintText: '输入验证码',
+          backgroundColor: Colors.white,
+          rightBtn: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 0.5,
+                height: 24,
+                color: TDTheme.of(context).grayColor3,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              Image.network(
+                'https://img2018.cnblogs.com/blog/736399/202001/736399-20200108170302307-1377487770.jpg',
+                width: 72,
+                height: 36,
+              )
+            ],
+          ),
+          needClear: false,
+          onBtnTap: () {
+            TDToast.showText('点击更换验证码', context: context);
+          },
+        ),
+        const SizedBox(
+          height: 16,
+        )
+      ],
+    );
+  }
+
+  Widget _basicPhoneCodeBasic(BuildContext context) {
+    return Column(
+      children: [
+        TDInput(
+          leftLabel: '手机验证码',
+          controller: controller[0],
+          backgroundColor: Colors.white,
+          hintText: '请输入手机验证码',
+          onChanged: (text) {
+            setState(() {});
+          },
+          onClearTap: () {
+            controller[0].clear();
+            setState(() {});
+          },
+        ),
+        const SizedBox(
+          height: 16,
+        )
+      ],
+    );
+  }
+
+  Widget _specialTypePhoneNumber(BuildContext context) {
+    return Column(
+      children: [
+        TDInput(
+          type: TDInputType.normal,
+          controller: contPhone,
+          leftLabel: '手机号',
+          hintText: '输入手机号',
+          backgroundColor: Colors.white,
+          rightBtn: SizedBox(
+            width: 98,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Container(
+                    width: 0.5,
+                    height: 24,
+                    color: TDTheme.of(context).grayColor3,
+                  ),
+                ),
+                _countdownTime > 0
+                    ? TDText(
+                  '${countDownText}(${_countdownTime}秒)',
+                  textColor: TDTheme.of(context).fontGyColor4,
+                )
+                    : TDText(confirmText, textColor: TDTheme.of(context).brandNormalColor),
+              ],
+            ),
+          ),
+          needClear: false,
+          onBtnTap: () {
+            if (_countdownTime == 0) {
+              sendSms(contPhone.text);
+              TDToast.showText('点击了发送验证码', context: context);
+              setState(() {
+                _countdownTime = 60;
+              });
+              startCountdownTimer();
+            }
+          },
+        ),
+        const SizedBox(
+          height: 16,
+        )
+      ],
     );
   }
 }
