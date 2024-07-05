@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshijie.user.mapper.UserChatPartnerMapper">
+
+    <sql id="selectUserChatPartner">
+        select
+                  id,
+                user_id,
+                user_name,
+                receiver_user_id,
+                receiver_user_name,
+                create_time,
+                last_time
+        from user_chat_partner
+    </sql>
+
+    <select id="selectListUserChatPartner" parameterType="com.xinshijie.user.dto.UserChatPartnerDto" resultType="com.xinshijie.user.vo.UserChatPartnerVo">
+        <include refid="selectUserChatPartner"/>
+        <where>
+                    <if test="id !=null ">and id= #{id}</if>
+                    <if test="userId !=null ">and user_id= #{userId}</if>
+                    <if test="userName !=null ">and user_name= #{userName}</if>
+                    <if test="receiverUserId !=null ">and receiver_user_id= #{receiverUserId}</if>
+                    <if test="receiverUserName !=null ">and receiver_user_name= #{receiverUserName}</if>
+                    <if test="createTime !=null ">and create_time= #{createTime}</if>
+                    <if test="lastTime !=null ">and last_time= #{lastTime}</if>
+        </where>
+    </select>
+
+    <select id="selectPageUserChatPartner"  resultType="com.xinshijie.user.vo.UserChatPartnerVo">
+        <include refid="selectUserChatPartner"/>
+        <where>
+                    <if test="dto.id !=null ">and id= #{dto.id}</if>
+                    <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
+                    <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
+                    <if test="dto.receiverUserId !=null ">and receiver_user_id= #{dto.receiverUserId}</if>
+                    <if test="dto.receiverUserName !=null ">and receiver_user_name= #{dto.receiverUserName}</if>
+                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+                    <if test="dto.lastTime !=null ">and last_time= #{dto.lastTime}</if>
+        </where>
+    </select>
+
+    <select id="getPageUserChatPartner"  resultType="com.xinshijie.user.vo.UserChatPartnerVo">
+        <include refid="selectUserChatPartner"/> ${ew.customSqlSegment}
+    </select>
+
+    <insert id="add"  >
+        insert into user_chat_partner (
+                id,
+                user_id,
+                user_name,
+                receiver_user_id,
+                receiver_user_name,
+                create_time,
+                last_time
+          )
+        values
+            (
+                    #{ id },
+                    #{ userId },
+                    #{ userName },
+                    #{ receiverUserId },
+                    #{ receiverUserName },
+                    #{ createTime },
+                    #{ lastTime }
+       )
+    </insert>
+
+    <update id="edit"  >
+        update  user_chat_partner
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="id !=null ">  id= #{id},</if>
+                    <if test="userId !=null ">  user_id= #{userId},</if>
+                    <if test="userName !=null ">  user_name= #{userName},</if>
+                    <if test="receiverUserId !=null ">  receiver_user_id= #{receiverUserId},</if>
+                    <if test="receiverUserName !=null ">  receiver_user_name= #{receiverUserName},</if>
+                    <if test="createTime !=null ">  create_time= #{createTime},</if>
+                    <if test="lastTime !=null ">  last_time= #{lastTime},</if>
+        </trim>
+        where   id=#{id}
+    </update>
+
+    <delete id="delById"  >
+        delete FROM  user_chat_partner where  id = #{id}
+    </delete>
+
+    <select id="getInfo"  resultType="com.xinshijie.user.vo.UserChatPartnerVo">
+        <include refid="selectUserChatPartner"/> where  id = #{id}
+    </select>
+
+</mapper>

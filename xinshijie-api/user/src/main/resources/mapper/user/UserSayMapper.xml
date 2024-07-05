@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshijie.user.mapper.UserSayMapper">
+
+    <sql id="selectUserSay">
+        select
+                  *
+        from wiki_user_say
+    </sql>
+
+    <select id="selectListUserSay" parameterType="com.xinshijie.user.dto.UserSayDto" resultType="com.xinshijie.user.vo.UserSayVo">
+        <include refid="selectUserSay"/>
+        <where>
+                    <if test="id !=null ">and id= #{id}</if>
+                    <if test="userId !=null ">and user_id= #{userId}</if>
+                    <if test="userName !=null ">and user_name= #{userName}</if>
+                    <if test="userNickname !=null ">and user_nickname= #{userNickname}</if>
+                    <if test="createTime !=null ">and create_time= #{createTime}</if>
+                    <if test="content !=null ">and content= #{content}</if>
+                    <if test="updateTime !=null ">and update_time= #{updateTime}</if>
+                    <if test="countLike !=null ">and count_like= #{countLike}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectPageUserSay"  resultType="com.xinshijie.user.vo.UserSayVo">
+        <include refid="selectUserSay"/>
+        <where>
+                    <if test="dto.id !=null ">and id= #{dto.id}</if>
+                    <if test="dto.userId !=null ">and user_id= #{dto.userId}</if>
+                    <if test="dto.userName !=null ">and user_name= #{dto.userName}</if>
+                    <if test="dto.userNickname !=null ">and user_nickname= #{dto.userNickname}</if>
+                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+                    <if test="dto.content !=null ">and content= #{dto.content}</if>
+                    <if test="dto.updateTime !=null ">and update_time= #{dto.updateTime}</if>
+                    <if test="dto.countLike !=null ">and count_like= #{dto.countLike}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="getPageUserSay"  resultType="com.xinshijie.user.vo.UserSayVo">
+        <include refid="selectUserSay"/> ${ew.customSqlSegment}
+    </select>
+
+
+    <update id="edit"  >
+        update  wiki_user_say
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="id !=null ">  id= #{id},</if>
+                    <if test="userId !=null ">  user_id= #{userId},</if>
+                    <if test="userName !=null ">  user_name= #{userName},</if>
+                    <if test="userNickname !=null ">  user_nickname= #{userNickname},</if>
+                    <if test="createTime !=null ">  create_time= #{createTime},</if>
+                    <if test="content !=null ">  content= #{content},</if>
+                    <if test="urls !=null ">  urls= #{urls},</if>
+                    <if test="updateTime !=null ">  update_time= #{updateTime},</if>
+                    <if test="countLike !=null ">  count_like= #{countLike},</if>
+        </trim>
+        where   id=#{id}
+    </update>
+
+    <delete id="delById"  >
+        delete FROM  wiki_user_say where  id = #{id}
+    </delete>
+
+    <select id="getInfo"  resultType="com.xinshijie.user.vo.UserSayVo">
+        <include refid="selectUserSay"/> where  id = #{id}
+    </select>
+
+</mapper>

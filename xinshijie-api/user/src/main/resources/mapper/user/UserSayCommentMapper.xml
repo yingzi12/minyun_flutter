@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshijie.user.mapper.UserSayCommentMapper">
+
+    <sql id="selectUserSayComment">
+        select
+                  id,
+                upid,
+                comment,
+                reply,
+                ranks,
+                count_like,
+                count_reply,
+                status,
+                create_id,
+                create_name,
+                create_time,
+                usid,
+                pid,
+                circle_url,
+                nickname
+        from wiki_user_say_comment
+    </sql>
+
+    <select id="selectListUserSayComment" parameterType="com.xinshijie.user.dto.UserSayCommentDto" resultType="com.xinshijie.user.vo.UserSayCommentVo">
+        <include refid="selectUserSayComment"/>
+        <where>
+                    <if test="id !=null ">and id= #{id}</if>
+                    <if test="upid !=null ">and upid= #{upid}</if>
+                    <if test="comment !=null ">and comment= #{comment}</if>
+                    <if test="reply !=null ">and reply= #{reply}</if>
+                    <if test="ranks !=null ">and ranks= #{ranks}</if>
+                    <if test="countLike !=null ">and count_like= #{countLike}</if>
+                    <if test="countReply !=null ">and count_reply= #{countReply}</if>
+                    <if test="status !=null ">and status= #{status}</if>
+                    <if test="createId !=null ">and create_id= #{createId}</if>
+                    <if test="createName !=null ">and create_name= #{createName}</if>
+                    <if test="createTime !=null ">and create_time= #{createTime}</if>
+                    <if test="usid !=null ">and usid= #{usid}</if>
+                    <if test="pid !=null ">and pid= #{pid}</if>
+                    <if test="circleUrl !=null ">and circle_url= #{circleUrl}</if>
+                    <if test="nickname !=null ">and nickname= #{nickname}</if>
+        </where>
+    </select>
+
+    <select id="selectPageUserSayComment"  resultType="com.xinshijie.user.vo.UserSayCommentVo">
+        <include refid="selectUserSayComment"/>
+        <where>
+                    <if test="dto.id !=null ">and id= #{dto.id}</if>
+                    <if test="dto.upid !=null ">and upid= #{dto.upid}</if>
+                    <if test="dto.comment !=null ">and comment= #{dto.comment}</if>
+                    <if test="dto.reply !=null ">and reply= #{dto.reply}</if>
+                    <if test="dto.ranks !=null ">and ranks= #{dto.ranks}</if>
+                    <if test="dto.countLike !=null ">and count_like= #{dto.countLike}</if>
+                    <if test="dto.countReply !=null ">and count_reply= #{dto.countReply}</if>
+                    <if test="dto.status !=null ">and status= #{dto.status}</if>
+                    <if test="dto.createId !=null ">and create_id= #{dto.createId}</if>
+                    <if test="dto.createName !=null ">and create_name= #{dto.createName}</if>
+                    <if test="dto.createTime !=null ">and create_time= #{dto.createTime}</if>
+                    <if test="dto.usid !=null ">and usid= #{dto.usid}</if>
+                    <if test="dto.pid !=null ">and pid= #{dto.pid}</if>
+                    <if test="dto.circleUrl !=null ">and circle_url= #{dto.circleUrl}</if>
+                    <if test="dto.nickname !=null ">and nickname= #{dto.nickname}</if>
+        </where>
+    </select>
+
+    <select id="getPageUserSayComment"  resultType="com.xinshijie.user.vo.UserSayCommentVo">
+        <include refid="selectUserSayComment"/> ${ew.customSqlSegment}
+    </select>
+
+
+    <update id="edit"  >
+        update  wiki_user_say_comment
+        <trim prefix="SET" suffixOverrides=",">
+                    <if test="id !=null ">  id= #{id},</if>
+                    <if test="upid !=null ">  upid= #{upid},</if>
+                    <if test="comment !=null ">  comment= #{comment},</if>
+                    <if test="reply !=null ">  reply= #{reply},</if>
+                    <if test="ranks !=null ">  ranks= #{ranks},</if>
+                    <if test="countLike !=null ">  count_like= #{countLike},</if>
+                    <if test="countReply !=null ">  count_reply= #{countReply},</if>
+                    <if test="status !=null ">  status= #{status},</if>
+                    <if test="createId !=null ">  create_id= #{createId},</if>
+                    <if test="createName !=null ">  create_name= #{createName},</if>
+                    <if test="createTime !=null ">  create_time= #{createTime},</if>
+                    <if test="usid !=null ">  usid= #{usid},</if>
+                    <if test="pid !=null ">  pid= #{pid},</if>
+                    <if test="circleUrl !=null ">  circle_url= #{circleUrl},</if>
+                    <if test="nickname !=null ">  nickname= #{nickname},</if>
+        </trim>
+        where   id=#{id}
+    </update>
+
+    <delete id="delById"  >
+        delete FROM  wiki_user_say_comment where  id = #{id}
+    </delete>
+
+    <select id="getInfo"  resultType="com.xinshijie.user.vo.UserSayCommentVo">
+        <include refid="selectUserSayComment"/> where  id = #{id}
+    </select>
+
+</mapper>
